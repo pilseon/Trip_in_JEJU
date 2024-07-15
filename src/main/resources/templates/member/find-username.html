@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>아이디 찾기</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background: rgb(171, 255, 248);
+            background: linear-gradient(180deg, rgba(171, 255, 248, 1) 37%, rgba(255, 228, 192, 1) 81%);
+            overflow: hidden;
+        }
+        .wrap {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        .wave {
+            width: 3800px;
+            height: 3800px;
+            position: absolute;
+            top: 40%;
+            left: -900px;
+            border-radius: 43%;
+            animation: drift 6s infinite linear;
+            background: rgba(255, 255, 255, 0.5);
+        }
+        .wave.layer_1 {
+            animation: drift 8s infinite linear;
+            background: rgba(255, 255, 255, 0.2);
+        }
+        @keyframes drift {
+            100% {
+                transform: rotate(-360deg);
+            }
+        }
+        .container {
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.8); /* 반투명 흰색 배경 */
+            padding: 10px 50px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 600px;
+            z-index: 1;
+            position: relative;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            font-size: 16px;
+        }
+        input[type="email"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .btn {
+            width: 100%;
+            padding: 12px 0;
+            background-color:  #5bc0de;
+            border: none;
+            border-radius: 5px;
+            color: black;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .btn:hover {
+            background-color: yellow;
+        }
+        .error-message {
+            color: red;
+            font-size: 14px;
+        }
+        .link-container {
+            margin-top: 20px;
+        }
+        .link-container a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: black;
+        }
+        .link-container a:hover {
+            text-decoration: underline;
+        }
+        .header-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .header-container img {
+            max-width: 300px;
+            height: auto;
+        }
+        .username {
+            color: orange;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div class="wave layer_1"></div>
+    <div class="wave"></div>
+</div>
+<div class="container">
+    <div class="header-container">
+        <h1>
+            <a href="/">
+                <img src="https://i.ibb.co/s3RSNmC/sdfa-removebg-preview.png" alt="트립인 제주" width="300" height="300">
+            </a>
+        </h1>
+        <h4> 아이디 찾기 </h4>
+    </div>
+    <form th:action="@{/member/find-username}" method="post">
+        <div>
+            <input type="email" name="email" placeholder="이메일" required><br>
+        </div>
+        <button type="submit" class="btn">아이디 찾기</button>
+        <p th:if="${error}" class="error-message" th:text="${error}"></p>
+    </form>
+    <div class="result" th:if="${username != null}">
+        <p>등록된 아이디는 <span th:text="${username}" class="username"></span> 입니다.</p>
+    </div>
+    <div class="link-container">
+        <a th:href="@{/member/login}">로그인</a> |
+        <a th:href="@{/member/request-reset}">비밀번호 찾기</a>
+    </div>
+</div>
+</body>
+</html>

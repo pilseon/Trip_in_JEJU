@@ -10,11 +10,7 @@ spring:
     restart:
       enabled: true
   datasource:
-<<<<<<< HEAD
     url: jdbc:mariadb://127.0.0.1:3306/Trip_In_Jeju?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;serverTimezone=Asia/Seoul
-=======
-    url: jdbc:mariadb://127.0.0.1:3306/market_dev?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;serverTimezone=Asia/Seoul
->>>>>>> e9dac12 (음식점 리스트, 디테일 구현중)
     username: root
     password:
   jpa:

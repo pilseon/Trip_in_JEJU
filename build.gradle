@@ -44,6 +44,7 @@ dependencies {
 	// Thymeleaf Extras
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE'
 
 	// CommonMark for Markdown
 	implementation 'org.commonmark:commonmark:0.22.0'

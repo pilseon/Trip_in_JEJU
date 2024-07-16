@@ -6,136 +6,9 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
+    <link href="/resource/css/request-reset.css" rel="stylesheet" type="text/css"/>
+    <link href="/resource/css/click.css" rel="stylesheet" type="text/css"/>
     <title>비밀번호 재설정 요청</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .container {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 10px;
-           background-color: rgba(255, 255, 255, 0.8); /* 반투명 흰색 배경 */
-            text-align: center;
-            width: 350px;
-        }
-        h2 {
-            color: #333;
-            margin-bottom: 15px;
-            font-size: 24px;
-        }
-        h4 {
-            color: #d9534f;
-            margin-bottom: 25px;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        label {
-            margin-bottom: 8px;
-            color: #666;
-            font-size: 14px;
-        }
-        input[type=text], input[type=email] {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
-        button[type=submit] {
-            background-color: #5bc0de;
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            width: 100%;
-            margin-top: 10px;
-        }
-        button[type=submit]:hover {
-            background-color: #31b0d5;
-        }
-        .error {
-            color: #d9534f;
-            margin-top: 10px;
-            font-size: 14px;
-        }
-        .success {
-            color: #5cb85c;
-            margin-top: 10px;
-            font-size: 14px;
-        }
-        .login-link {
-            display: inline-block;
-            margin-top: 20px;
-        }
-        .login-link a {
-            background-color: #FFD700;
-            color: #333;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-        }
-        .login-link a:hover {
-            background-color: #FFC400;
-        }
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0;
-            height: 100vh;
-            background: rgb(171,255,248);
-            background: linear-gradient(180deg, rgba(171,255,248,1) 37%, rgba(255,228,192,1) 81%);
-            overflow: hidden;
-        }
-        .wrap {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: -1;
-        }
-        .wave {
-            width: 3800px;
-            height: 3800px;
-            position: absolute;
-            top: 40%;
-            left: -900px;
-            border-radius: 43%;
-            animation: drift 6s infinite linear;
-            background: rgba(255, 255, 255, 0.5);
-        }
-        .wave.layer_1 {
-            animation: drift 8s infinite linear;
-            background: rgba(255, 255, 255, 0.2);
-        }
-        @keyframes drift {
-            100% {
-                transform: rotate(-360deg);
-            }
-        }
-    </style>
 </head>
 <body>
 <div class="frame">
@@ -171,6 +44,7 @@
     <div th:if="${message}" class="success">성공: <span th:text="${message}"></span></div>
 
 </div>
+<script th:src="@{/clickjs/click.js}"></script>
 </body>
 </section>
 </html>

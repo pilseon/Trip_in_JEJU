@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html layout:decorate="~{/layout/layout}">
+<section layout:fragment="content" class="section-prod-list">
+    <div class="container">
+        <h1 class="text-[1.5rem] font-bold">카페/디저트</h1>
+        <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[20px] mt-3">
+            <li th:each="dessert, loop : ${dessertList}" class="flex flex-col">
+                <a th:href="@{|/dessert/detail/${dessert.id}|}" data-before="VIEW MORE">
+                    <img class="block w-full" src="https://www.wj1news.com/data/photos/20211251/art_1639967065167_51940c.jpg" alt="">
+                </a>
+                <a href="@{|/dessert/detail/${dessert.id}|}" th:text="${dessert.title}" class="text-center mt-2"></a>
+            </li>
+        </ul>
+    </div>
+</section>
+</html>

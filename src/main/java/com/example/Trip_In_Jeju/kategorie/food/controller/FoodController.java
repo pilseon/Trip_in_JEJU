@@ -1,8 +1,8 @@
-package com.example.Trip_In_Jeju.food.controller;
+package com.example.Trip_In_Jeju.kategorie.food.controller;
 
 
-import com.example.Trip_In_Jeju.food.entity.Food;
-import com.example.Trip_In_Jeju.food.service.FoodService;
+import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
+import com.example.Trip_In_Jeju.kategorie.food.service.FoodService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +27,9 @@ public class FoodController {
 
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable("id") Long id, Model model) {
+        Food food = foodService.getFood(id);
+
+        model.addAttribute("food", food);
 
         return "food/detail";
     }

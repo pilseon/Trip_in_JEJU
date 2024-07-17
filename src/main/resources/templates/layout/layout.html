@@ -20,49 +20,33 @@
     <!-- 테일윈드-->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+
+    <!-- 폰트 어썸-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
-<body class="flex flex-col min-h-screen pt-[56px]">
+<body class="flex flex-col min-h-screen pt-[56px] md:w-1/2">
 <!-- common.css -->
-<link href="/resource/css/common.css" rel="stylesheet" type="text/css"/>
-<link href="/resource/css/click.css" rel="stylesheet" type="text/css"/>
+<link href="/resource/css/common.css" rel="stylesheet" type="text/css" />
+<link href="/resource/css/click.css" rel="stylesheet" type="text/css" />
 <header>
     <!-- Fixed navbar -->
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-blue-900 w-50 ml-auto mr-auto">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">COD 마켓</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
-                    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="/">홈</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/food/list">카테고리</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/member/login}">로그인</a>
-                        <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/member/logout}">로그아웃</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" sec:authorize="isAnonymous()" href="/member/signup">회원가입</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" sec:authorize="hasAuthority('ADMIN')" href="/adm">관리자 홈</a>
-                    </li>
-
-                </ul>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="상품명을 입력해주세요." aria-label="Search">
-                    <button class="btn btn-outline-info whitespace-nowrap" type="submit">검색</button>
-                </form>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top md:w-1/2 ml-auto mr-auto bg-gray-100 rounded-bl-3xl rounded-br-3xl">
+        <div class="flex container-fluid p-0 h-24">
+            <div class="flex-grow">
+                <a class="inline-block w-20" href="/"><img src="https://github.com/user-attachments/assets/49643242-fdac-4917-ba06-fdc50eafaa2b" alt="mainlogo" class="w-20"></a>
             </div>
+            <div class="flex-grow text-center">
+                <a class="inline-block w-28" href="/"><img src="https://github.com/user-attachments/assets/28466e0b-9010-4c25-bba7-6bc67842a315" alt="textlogo" class="w-28"></a>
+            </div>
+            <ul class="flex navbar-nav me-auto mb-2 mb-md-0 flex-grow justify-end flex-row gap-4 h-100 items-center">
+                <li class="nav-item">
+                    <a href="#"><i class="fa-solid fa-bell fa-xl"></i></a>
+                </li>
+                <li class="nav-item mr-5">
+                    <a href="#"><i class="fa-solid fa-magnifying-glass fa-xl"></i></a>
+                </li>
+            </ul>
         </div>
     </nav>
 </header>
@@ -72,11 +56,64 @@
     <!-- Content End -->
 </section>
 
-<footer class="footer py-3 bg-light">
+<footer class="footer py-2 bg-black rounded-tl-3xl rounded-tr-3xl">
     <div class="container text-center">
-        <span class="text-muted">COD 마켓</span>
+        <ul class="flex navbar-nav flex-row h-100 items-center">
+            <li class="nav-item flex-grow">
+                <a class="inline-block w-7 h-7 rounded-full bg-white content-center" href="/"><i class="fa-solid fa-house fa-lg"></i></a>
+            </li>
+            <li class="nav-item flex-grow rounded-full">
+                <a class="inline-block w-7 h-7 rounded-full bg-white content-center" href="#"><i class="fa-solid fa-pen fa-lg"></i></a>
+            </li>
+            <li class="nav-item flex-grow rounded-full">
+                <button id="toggleButton" class="inline-block w-7 h-7 rounded-full bg-white content-center" onclick="toggleActionSheet()"><i class="fa-solid fa-arrow-up fa-lg" id="arrowIcon"></i></button>
+            </li>
+            <li class="nav-item flex-grow rounded-full">
+                <a class="inline-block w-7 h-7 rounded-full bg-white content-center" href="/calendar/list"><i class="fa-solid fa-map fa-lg"></i></a>
+            </li>
+            <li class="nav-item flex-grow rounded-full">
+                <a class="inline-block w-7 h-7 rounded-full bg-white content-center" href="#"><i class="fa-solid fa-user fa-lg"></i></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="action-sheet text-white mx-2" id="actionSheet">
+        <div class="action-options mt-3">
+            <!-- 여러 선택 옵션들 -->
+            <div class="option font-black text-xl pb-2 border-b-2">전체메뉴</div>
+            <ul class="flex flex-col h-96 mb-48">
+                <li class="flex-grow py-1 border-b-2">
+                    <a class="flex option cursor-pointer inline-block w-100 text-left hover:text-green-300" onclick="toggleSubMenu(event)">여행장소
+                        <div class="flex-grow text-right"><i class="fa-solid fa-plus" id="plusIcon"></i></div>
+                    </a>
+                    <ul class="flex w-80 justify-around ml-auto mr-auto flex-wrap gap-2 sub-menu hidden mt-2">
+                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">음식</a></li>
+                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">디저트</a></li>
+                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">관광지</a></li>
+                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">숙박</a></li>
+                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">쇼핑</a></li>
+                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">축제</a></li>
+                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">액티비티</a></li>
+                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">기타</a></li>
+                    </ul>
+                </li>
+                <li class="flex-grow py-1 border-b-2">
+                    <a class="option cursor-pointer inline-block w-100 h-100 text-left hover:text-green-300">마이페이지</a>
+                </li>
+                <li class="flex-grow py-1 border-b-2">
+                    <a class="option cursor-pointer inline-block w-100 h-100 text-left hover:text-green-300">이벤트</a>
+                </li>
+                <li class="flex-grow py-1 border-b-2">
+                    <a class="option cursor-pointer inline-block w-100 h-100 text-left hover:text-green-300">문의하기</a>
+                </li>
+                <li class="flex-grow py-1 border-b-2">
+                    <a class="option cursor-pointer inline-block w-100 h-100 text-left hover:text-green-300">환경설정</a>
+                </li>
+            </ul>
+        </div>
     </div>
 </footer>
+
 <script th:src="@{/clickjs/click.js}"></script>
 </body>
 </html>

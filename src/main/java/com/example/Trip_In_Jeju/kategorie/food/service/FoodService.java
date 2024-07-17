@@ -17,11 +17,12 @@ public class FoodService {
         return foodRepository.findAll();
     }
 
-    public void create(String title, String content) {
-        Food p = new Food();
-        p.setTitle(title);
-        p.setContent(content);
-        p.setCreateDate(LocalDateTime.now());
+    public void create(String title, String content, String place) {
+        Food p = Food.builder()
+                .title(title)
+                .content(content)
+                .place(place)
+                .build();
         foodRepository.save(p);
     }
 

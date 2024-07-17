@@ -36,6 +36,17 @@ public class MemberController {
         return "member/login";
     }
 
+    @GetMapping("/myPage")
+    public String myPage(Model model) {
+        Member currentMember = memberService.getCurrentMember();
+        if (currentMember == null) {
+            logger.warn("No current member found in myPage method");
+            return "redirect:/member/login";
+        }
+        model.addAttribute("member", currentMember);
+        return "member/myPage";
+    }
+
 
     @GetMapping("/admin")
     public String adminPage() {
@@ -52,7 +63,9 @@ public class MemberController {
                          @RequestParam("nickname") String nickname,
                          @RequestParam("password") String password,
                          @RequestParam("email") String email,
-                      @RequestParam("thema") String thema,
+                         @RequestParam("thema") String thema,
+                         @RequestParam("thumbnail") MultipartFile thumbnail,
+
                          HttpSession session) {
 
         String verificationCode = verificationCodeService.generateVerificationCode(email);
@@ -61,7 +74,8 @@ public class MemberController {
         emailService.send(email, subject, body);
 
         session.setAttribute("verificationCode", verificationCode);
-        memberService.signup(username, nickname, password,  email, thema, MemberRole.USER);
+        memberService.signup(username, nickname, password,  email, thema, thumbnail );
+
 
         return "redirect:/member/login";
     }

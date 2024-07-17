@@ -24,6 +24,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.transaction.annotation.Transactional;
 
+
+import java.io.File;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -71,20 +74,22 @@ public class MemberService {
     @Transactional
     public Member signupSocialUser(String username, String nickname, String email) {
         // 소셜 로그인한 회원 저장
-        return signup(username,  nickname, "", email, "",  MemberRole.USER);
+        return signup(username,  nickname, "", email, "", null );
+
     }
 
     @Transactional
     public Member signup(String username, String nickname, String password,
-                         String email, String thema , MemberRole role) {
-//        String thumbnailRelPath = "post/" + UUID.randomUUID().toString() + ".jpg";
-//        File thumbnailFile = new File(fileDirPath + "/" + thumbnailRelPath);
-//
-//        try {
-//            thumbnail.transferTo(thumbnailFile);
-//        } catch ( IOException e ) {
-//            throw new RuntimeException(e);
-//        }
+                         String email, String thema , MultipartFile thumbnail) {
+        String thumbnailRelPath = "post/" + UUID.randomUUID().toString() + ".jpg";
+        File thumbnailFile = new File(fileDirPath + "/" + thumbnailRelPath);
+
+        try {
+            thumbnail.transferTo(thumbnailFile);
+        } catch ( IOException e ) {
+            throw new RuntimeException(e);
+        }
+
 
         Member member = Member.builder()
                 .username(username)
@@ -92,8 +97,7 @@ public class MemberService {
                 .password(passwordEncoder.encode(password))
                 .email(email)
                 .thema(thema)
-//                .thumbnailImg(thumbnailRelPath)
-                .role(role)
+                .thumbnailImg(thumbnailRelPath)
                 .build();
 
         return memberRepository.save(member);
@@ -101,6 +105,24 @@ public class MemberService {
 
     @Value("${custom.fileDirPath}")
     private String fileDirPath;
+
+
+    @Transactional
+    public Member signup2(String username, String nickname, String password,
+                          String email, String thema ) {
+
+        Member member = Member.builder()
+                .username(username)
+                .nickname(nickname)
+                .password(passwordEncoder.encode(password))
+                .email(email)
+                .thema(thema)
+
+                .build();
+
+        return memberRepository.save(member);
+    }
+
 
 
     private Optional<Member> findByUsername(String username) {

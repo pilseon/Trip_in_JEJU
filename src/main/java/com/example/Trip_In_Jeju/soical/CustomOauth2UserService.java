@@ -62,7 +62,6 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService {
                     .provider(provider)
                     .email(email)
                     .providerId(providerId)
-                    .role(MemberRole.USER)
                     .build();
             memberRepository.save(member);
         } else {

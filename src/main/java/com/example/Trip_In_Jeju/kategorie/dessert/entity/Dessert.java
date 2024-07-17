@@ -1,4 +1,4 @@
-package com.example.Trip_In_Jeju.food.entity;
+package com.example.Trip_In_Jeju.kategorie.dessert.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,7 +15,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Entity
 @Getter
 @Setter
-public class Food {
+public class Dessert {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private long id;

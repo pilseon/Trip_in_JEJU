@@ -1,9 +1,6 @@
 package com.example.Trip_In_Jeju.security;
 
 import com.example.Trip_In_Jeju.member.entity.Member;
-
-import com.example.Trip_In_Jeju.member.entity.MemberRole;
-
 import com.example.Trip_In_Jeju.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,6 +20,19 @@ import java.util.Optional;
 public class UserSecurityService implements UserDetailsService {
     private final MemberRepository memberRepository;
 
+    //    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        Optional<Member> _user = this.memberRepository.findByusername(username);
+//
+//        if (_user.isEmpty()) {
+//            throw new UsernameNotFoundException("유저를 찾을 수 없습니다.");
+//        }
+//
+//        Member member = _user.get();
+//        List<GrantedAuthority> authorities = new ArrayList<>();
+//
+//        return new User(member.getUsername(), member.getPassword(), authorities);
+//    }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<Member> _siteUser = this.memberRepository.findByUsername(username);
@@ -32,11 +42,9 @@ public class UserSecurityService implements UserDetailsService {
         Member siteUser = _siteUser.get();
         List<GrantedAuthority> authorities = new ArrayList<>();
         if ("admin".equals(username)) {
-
-            authorities.add(new SimpleGrantedAuthority(MemberRole.ADMIN.getValue()));
+            authorities.add(new SimpleGrantedAuthority(UserRole.ADMIN.getValue()));
         } else {
-            authorities.add(new SimpleGrantedAuthority(MemberRole.MEMBER.getValue()));
-
+            authorities.add(new SimpleGrantedAuthority(UserRole.USER.getValue()));
         }
         return new User(siteUser.getUsername(), siteUser.getPassword(), authorities);
     }

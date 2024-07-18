@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html layout:decorate="~{/layout/layout}">
+<head>
+    <link href="/resource/css/FullCalendar.css" rel="stylesheet" type="text/css"/>
+</head>
+<section layout:fragment="content" class="flex-1 flex justify-center items-center">
+<body>
+<div class="calendar-container">
+    <form th:action="@{/calendar}" th:object="${calendar}" method="post">
+        <input type="text" th:field="*{title}" placeholder="Calendar Title"/>
+        <input type="text" th:field="*{description}" placeholder="Calendar Description"/>
+        <input type="datetime-local" th:field="*{start}" placeholder="Start Date"/>
+        <input type="datetime-local" th:field="*{end}" placeholder="End Date"/>
+        <button type="submit">Add Event</button>
+    </form>
+    <!-- FullCalendar를 위한 div -->
+    <div id="calendar"></div>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Start</th>
+            <th>End</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="calendar : ${calendars}">
+            <td th:text="${calendar.id}">ID</td>
+            <td th:text="${calendar.title}">Title</td>
+            <td th:text="${calendar.description}">Description</td>
+            <td th:text="${calendar.start}">Start</td>
+            <td th:text="${calendar.end}">End</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script th:src="@{/calendarjs/calendar.js}"></script>
+</body>
+</section>
+</html>

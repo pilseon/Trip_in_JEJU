@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +36,7 @@ public class DessertService {
 
         return dessertRepository.findAll(pageable);
     }
-    public void create(String title, String content, String place, MultipartFile thumbnail) {
+    public void create(String title, String content, String place, String closedDay, MultipartFile thumbnail) {
 
         String thumbnailRelPath = "dessert/" + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
@@ -48,11 +49,16 @@ public class DessertService {
             throw new RuntimeException(e);
         }
 
+
+
+
         Dessert p = Dessert.builder()
                 .title(title)
                 .content(content)
                 .place(place)
                 .thumbnailImg(thumbnailRelPath)
+                .closedDay(closedDay)
+                .createDate(LocalDateTime.now())
                 .build();
 
         dessertRepository.save(p);

@@ -28,7 +28,7 @@
             <div class="card">
                 <div class="card-header">회원가입</div>
                 <div class="card-body">
-                    <form th:action="@{/member/signup}" th:object="${memberForm}" method="POST">
+                    <form th:action="@{/member/signup}" th:object="${memberForm}" method="POST"  enctype="multipart/form-data">
                         <div class="mb-3">
                             <label for="username" class="form-label">아이디</label>
                             <input type="text" name="username" id="username" class="form-control" required>
@@ -58,6 +58,11 @@
                             <option value="7">먹방투어</option>
                             <option value="8">반려동물</option>
                         </select>
+
+                        <br><br>
+                        <label for="thumbnail"><i class="fas fa-image"></i> 본인 사진 (필수)</label>
+                        <input type="file" id="thumbnail" name="thumbnail" accept="image/png, image/gif, image/jpeg" required>
+                        <br><br>
 
                         <button type="submit" class="btn btn-primary">회원가입</button>
                     </form>

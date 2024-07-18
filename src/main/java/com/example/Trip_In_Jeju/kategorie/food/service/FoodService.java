@@ -34,7 +34,7 @@ public class FoodService {
 
         return foodRepository.findAll(pageable);
     }
-    public void create(String title, String content, String place, MultipartFile thumbnail) {
+    public void create(String title, String content, String place, String closedDay, MultipartFile thumbnail) {
 
         String thumbnailRelPath = "food/" + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
@@ -51,6 +51,7 @@ public class FoodService {
                 .title(title)
                 .content(content)
                 .place(place)
+                .closedDay(closedDay)
                 .thumbnailImg(thumbnailRelPath)
                 .build();
 

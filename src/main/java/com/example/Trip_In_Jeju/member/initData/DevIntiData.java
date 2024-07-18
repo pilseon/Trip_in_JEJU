@@ -18,6 +18,9 @@ public class DevIntiData implements BeforeIntiData {
             // member init
             String password = "1234"; // noop을 해주면 난수처럼 들어감
             memberService.signup2("admin","관리자",password,"admin@test.com","테마");
+            memberService.signup2("user1","필써니",password,"user1@test.com","데이트");
+            memberService.signup2("user2","송햄지",password,"user2@test.com","데이트");
+            memberService.signup2("user3","근혀기",password,"user3@test.com","혼자");
 
 
 

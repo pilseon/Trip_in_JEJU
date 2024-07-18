@@ -56,7 +56,7 @@
     <!-- Content End -->
 </section>
 
-<footer class="footer py-2 bg-black rounded-tl-3xl rounded-tr-3xl absolute bottom-0 md:w-1/2">
+<footer class="footer py-2 bg-black rounded-tl-3xl rounded-tr-3xl fixed bottom-0 md:w-1/2 w-full z-50">
     <div class="container text-center">
         <ul class="flex navbar-nav flex-row h-100 items-center">
             <li class="nav-item flex-grow">
@@ -109,6 +109,12 @@
                 </li>
                 <li class="flex-grow py-1 border-b-2">
                     <a class="option cursor-pointer inline-block w-100 h-100 text-left hover:text-green-300">환경설정</a>
+                </li>
+                <li class="flex-grow py-1 border-b-2">
+                    <a href="/member/logout"class="option cursor-pointer inline-block w-100 h-100 text-left hover:text-green-300">로그아웃</a>
+                </li>
+                <li sec:authorize="hasAuthority('ADMIN')" class="flex-grow py-1 border-b-2">
+                    <a  href="/adm/home/main"class="option cursor-pointer inline-block w-100 h-100 text-left hover:text-green-300">관리자 페이지</a>
                 </li>
             </ul>
         </div>

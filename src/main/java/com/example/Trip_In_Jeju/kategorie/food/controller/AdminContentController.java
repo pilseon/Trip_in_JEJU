@@ -37,13 +37,14 @@ public class AdminContentController {
             @RequestParam("title") String title,
             @RequestParam("content") String content,
             @RequestParam("place") String place,
+            @RequestParam("closedDay") String closedDay,
             @RequestParam("thumbnail") MultipartFile thumbnail,
             @RequestParam("category") String category) {
 
         if (category.equals("food")) {
-            foodService.create(title, content, place, thumbnail);
+            foodService.create(title, content, place, closedDay,  thumbnail);
         } else if (category.equals("dessert")) {
-            dessertService.create(title, content, place, thumbnail);
+            dessertService.create(title, content, place, closedDay, thumbnail);
         }
 
         return "redirect:/adm/content/create";

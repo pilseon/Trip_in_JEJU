@@ -21,9 +21,8 @@ public class Calendar {
 
     private String title;
 
-    private String description;
+    private LocalDateTime start; // 시작
 
-    private LocalDateTime start; // 언제부터
-    private LocalDateTime end; // 언제까지
+    private LocalDateTime end; // 종료
 
 }

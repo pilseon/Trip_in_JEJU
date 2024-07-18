@@ -1,46 +1,46 @@
 @font-face {
-    font-family: 'Pretendard-Regular';
-    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-    font-weight: 400;
-    font-style: normal;
+  font-family: "Pretendard-Regular";
+  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+    format("woff");
+  font-weight: 400;
+  font-style: normal;
 }
 
 html > body ul,
 html > body li {
-  margin:0;
-  padding:0;
-  list-style:none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 html > body {
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   text-underline-position: under;
-  max-width: 600px;
-  margin:0 auto;
+  margin: 0 auto;
 }
 
 .collapse {
-    visibility: visible !important;
+  visibility: visible !important;
 }
 
 /* 페이지네이션 커스텀 */
 .page-item.active .page-link {
-    background-color: transparent;
-    color: #222;
-    text-decoration: underline;
-    font-weight: bold;
-    opacity: 1;
+  background-color: transparent;
+  color: #222;
+  text-decoration: underline;
+  font-weight: bold;
+  opacity: 1;
 }
 .page-link {
-    color: #1E3A8A;
-    border: none;
-    opacity: .7;
+  color: #1e3a8a;
+  border: none;
+  opacity: 0.7;
 }
 
 .page-link:hover {
-    background-color: transparent;
-    border: none;
-    text-decoration: underline;
+  background-color: transparent;
+  border: none;
+  text-decoration: underline;
 }
 
 .body {
@@ -51,26 +51,76 @@ html > body {
   margin-left: auto;
 }
 
-div.clickEffect{
-	position:fixed;
-	box-sizing:border-box;
-	border-style:solid;
-	border-color:#5aa6e0;
-	border-radius:50%;
-	animation:clickEffect 1.3s ease-out;
-	z-index:-1;
+div.clickEffect {
+  position: fixed;
+  box-sizing: border-box;
+  border-style: solid;
+  border-color: #5aa6e0;
+  border-radius: 50%;
+  animation: clickEffect 1.3s ease-out;
+  z-index: -1;
 }
-@keyframes clickEffect{
-	0%{
-		opacity:1;
-		width:0.5em; height:0.5em;
-		margin:-0.25em;
-		border-width:0.5rem;
-	}
-	100%{
-		opacity:0.2;
-		width:15em; height:15em;
-		margin:-7.5em;
-		border-width:0.03rem;
-	}
+@keyframes clickEffect {
+  0% {
+    opacity: 1;
+    width: 0.5em;
+    height: 0.5em;
+    margin: -0.25em;
+    border-width: 0.5rem;
+  }
+  100% {
+    opacity: 0.2;
+    width: 15em;
+    height: 15em;
+    margin: -7.5em;
+    border-width: 0.03rem;
+  }
+}
+
+.action-sheet {
+  background: black;
+  color: white;
+  display: none; /* 숨김 상태 초기화 */
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  transition: opacity 0.3s ease-out, height 0.3s ease-out;
+  z-index: 10;
+}
+
+.action-sheet.show {
+  display: block;
+}
+
+.action-sheet.visible {
+  opacity: 1;
+  height: 600px; /* 원하는 높이로 설정 */
+}
+
+.rotate {
+  transform: rotate(14580deg);
+  transition: transform 0.8s ease-out;
+}
+
+.nav-item .fa-lg {
+  transition: transform 0.8s ease-out;
+}
+
+.nav-item .fa-lg.rotate {
+  transform: rotate(14580deg);
+}
+
+.action-options ul li:hover {
+  background-color: #666; /* 배경색을 밝게 조정 */
+  transition: background-color 0.3s ease;
+}
+
+.sub-menu {
+  transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+  max-height: 0;
+  overflow: hidden;
+}
+
+.sub-menu.visible {
+  max-height: 200px; /* 적당한 값으로 변경 */
 }

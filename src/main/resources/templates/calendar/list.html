@@ -1,42 +1,39 @@
-<!DOCTYPE html>
 <html layout:decorate="~{/layout/layout}">
-<head>
-    <link href="/resource/css/FullCalendar.css" rel="stylesheet" type="text/css"/>
-</head>
-<section layout:fragment="content" class="flex-1 flex justify-center items-center">
-<body>
-<div class="calendar-container">
-    <form th:action="@{/calendar}" th:object="${calendar}" method="post">
-        <input type="text" th:field="*{title}" placeholder="Calendar Title"/>
-        <input type="text" th:field="*{description}" placeholder="Calendar Description"/>
-        <input type="datetime-local" th:field="*{start}" placeholder="Start Date"/>
-        <input type="datetime-local" th:field="*{end}" placeholder="End Date"/>
-        <button type="submit">Add Event</button>
-    </form>
-    <!-- FullCalendar를 위한 div -->
-    <div id="calendar"></div>
-    <table>
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Start</th>
-            <th>End</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="calendar : ${calendars}">
-            <td th:text="${calendar.id}">ID</td>
-            <td th:text="${calendar.title}">Title</td>
-            <td th:text="${calendar.description}">Description</td>
-            <td th:text="${calendar.start}">Start</td>
-            <td th:text="${calendar.end}">End</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-<script th:src="@{/calendarjs/calendar.js}"></script>
-</body>
+<section layout:fragment="content" class="section-prod-list ">
+    <head>
+        <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css' rel='stylesheet' />
+        <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js'></script>
+        <title>Weekly Calendar</title>
+        <style>
+       .calendar-container .sunday {
+           color: red;
+       }
+
+       .calendar-container .saturday {
+           color: blue;
+       }
+
+       @media (max-width: 600px) {
+           .calendar-container {
+               width: 340px;
+           }
+       }
+        </style>
+    </head>
+    <body>
+    <div class="container w-10/12">
+        <h1 class="text-center text-[1.5rem] font-bold pb-3">Calendar</h1>
+        <form class="flex gap-2 flex-wrap justify-between" th:action="@{/calendar}" th:object="${calendar}" method="post">
+            <input class="ring-2 p-1 w-full" type="text" th:field="*{title}" placeholder="행사 제목"/>
+            <input class="ring-2 p-1 w-5/12" type="date" th:field="*{start}" placeholder="행사 시작날짜"/>~
+            <input class="ring-2 p-1 w-5/12" type="date" th:field="*{end}" placeholder="행사 종료 날짜"/>
+            <button class="btn btn-primary w-32" type="submit">등록하기</button>
+        </form>
+
+        <!-- FullCalendar를 위한 div -->
+        <div class="w-10/12 ml-auto mr-auto" id="calendar" style="margin-top: 10px;"></div>
+    </div>
+    </body>
+    <script th:src="@{/calendarjs/calendar.js}"></script>
 </section>
 </html>

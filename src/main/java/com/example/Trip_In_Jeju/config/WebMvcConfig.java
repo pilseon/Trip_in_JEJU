@@ -5,14 +5,19 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.beans.factory.annotation.Value;
 
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.beans.factory.annotation.Value;
+
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
-    @Value("${custom.fileDirPath}")
-    private String fileDirPath;
+    @Value("${custom.genFileDirPath}")
+    private String genFileDirPath;
 
     @Override
-    public void addResourceHandlers (ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/file/**")
-                .addResourceLocations("file:///" + fileDirPath + "/");
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/gen/**")
+                .addResourceLocations("file:///" + genFileDirPath + "/");
     }
 }

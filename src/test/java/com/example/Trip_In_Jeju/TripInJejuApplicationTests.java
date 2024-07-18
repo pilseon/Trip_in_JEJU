@@ -21,7 +21,7 @@ class TripInJejuApplicationTests {
 			String title = String.format("필선귤:[%03d]", i);
 			String content = String.format("내용:[%03d]", i);
 			String place = String.format("위치:[%03d]", i);
-			foodService.create(title, content, place);
+//			foodService.create(title, content, place);
 		}
 	}
 
@@ -30,7 +30,7 @@ class TripInJejuApplicationTests {
 		for ( int i = 1; i <= 200; i++ ) {
 			String title = String.format("카페:[%03d]", i);
 			String content = String.format("내용:[%03d]", i);
-			dessertService.create(title, content);
+//			dessertService.create(title, content);
 		}
 	}
 

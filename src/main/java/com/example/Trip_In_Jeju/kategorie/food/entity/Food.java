@@ -38,5 +38,7 @@ public class Food {
     @LastModifiedDate
     private LocalDateTime modifyDate;
 
+    private String thumbnailImg;
+
 
 }

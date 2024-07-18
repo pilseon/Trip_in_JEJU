@@ -50,13 +50,13 @@
         </div>
     </nav>
 </header>
-<section class="flex-1 py-[20px] flex flex-col">
+<section class="flex-1 py-[70px] flex flex-col">
     <!-- Content Start -->
     <th:block layout:fragment="content"></th:block>
     <!-- Content End -->
 </section>
 
-<footer class="footer py-2 bg-black rounded-tl-3xl rounded-tr-3xl">
+<footer class="footer py-2 bg-black rounded-tl-3xl rounded-tr-3xl absolute bottom-0 md:w-1/2">
     <div class="container text-center">
         <ul class="flex navbar-nav flex-row h-100 items-center">
             <li class="nav-item flex-grow">
@@ -72,7 +72,8 @@
                 <a class="inline-block w-7 h-7 rounded-full bg-white content-center" href="/calendar/list"><i class="fa-solid fa-map fa-lg"></i></a>
             </li>
             <li class="nav-item flex-grow rounded-full">
-                <a class="inline-block w-7 h-7 rounded-full bg-white content-center" href="#"><i class="fa-solid fa-user fa-lg"></i></a>
+                <a class="inline-block w-7 h-7 rounded-full bg-white content-center" sec:authorize="isAnonymous()" href="/member/login"><i class="fa-solid fa-user fa-lg"></i></a>
+                <a class="inline-block w-7 h-7 rounded-full bg-white content-center" sec:authorize="isAuthenticated()" href="/member/mypage"><i class="fa-solid fa-user fa-lg"></i></a>
             </li>
         </ul>
     </div>
@@ -87,8 +88,8 @@
                         <div class="flex-grow text-right"><i class="fa-solid fa-plus" id="plusIcon"></i></div>
                     </a>
                     <ul class="flex w-80 justify-around ml-auto mr-auto flex-wrap gap-2 sub-menu hidden mt-2">
-                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">음식</a></li>
-                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">디저트</a></li>
+                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="/food/list">음식</a></li>
+                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="/dessert/list">디저트</a></li>
                         <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">관광지</a></li>
                         <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">숙박</a></li>
                         <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">쇼핑</a></li>

@@ -3,32 +3,36 @@
 <section layout:fragment="content" class="section-prod-list" >
     <div class="container">
         <div class="card-header">
-            디저트/커피 상세정보
+            카페/디저트 상세정보
         </div>
 
         <ul class="list-group list-group-flush gap-2">
             <li class="list-group-item">
-                <img class="w-full max-w-[300px]" src="https://previews.123rf.com/images/bohbeh/bohbeh1309/bohbeh130900975/22236147-%EC%BB%A4%ED%94%BC%EC%99%80-%EB%B9%B5.jpg" alt="상품이미지">
+                <img class="w-full max-w-[300px]" th:src="@{|/gen/${dessert.thumbnailImg}|}" alt="상품이미지">
             </li>
             <li class="list-group-item">
                 <span>번호 : </span>
-                <span class="badge bg-primary">123</span>
+                <span th:text="${dessert.id}"></span>
             </li>
             <li class="list-group-item">
                 <span>등록날짜 : </span>
-                <span>2024-07-08</span>
+                <span th:text="${#temporals.format(dessert.createDate, 'yyyy-MM-dd HH:mm')}"></span>
             </li>
             <li class="list-group-item">
-                <span>카페 : </span>
-                <span class="font-bold"></span>
+                <span>디저트 : </span>
+                <span class="font-bold" th:text="${dessert.title}"></span>
             </li>
             <li class="list-group-item">
-                <span>장소 : </span>
-                <span>제주도 어쩌구</span>
+                <span>설명 : </span>
+                <span th:text="${dessert.content}"></span>
+            </li>
+            <li class="list-group-item">
+                <span>위치 : </span>
+                <span th:text="${dessert.place}"></span>
             </li>
             <li class="list-group-item">
                 <span>휴무일 : </span>
-                <span>매주 월요일</span>
+                <span th:text="${dessert.closedDay}"></span>
             </li>
 
             <!--            <li class="list-group-item">-->

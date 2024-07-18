@@ -8,33 +8,37 @@
 
         <ul class="list-group list-group-flush gap-2">
             <li class="list-group-item">
-                <img class="w-full max-w-[300px]" src="https://www.wj1news.com/data/photos/20211251/art_1639967065167_51940c.jpg" alt="상품이미지">
+                <img class="w-full max-w-[300px]" th:src="@{|/gen/${food.thumbnailImg}|}" alt="상품이미지">
             </li>
             <li class="list-group-item">
                 <span>번호 : </span>
-                <span class="badge bg-primary">123</span>
+                <span th:text="${food.id}"></span>
             </li>
             <li class="list-group-item">
                 <span>등록날짜 : </span>
-                <span>2024-07-08</span>
+                <span th:text="${#temporals.format(food.createDate, 'yyyy-MM-dd HH:mm')}"></span>
             </li>
             <li class="list-group-item">
                 <span>음식점 : </span>
-                <span class="font-bold"></span>
+                <span class="font-bold" th:text="${food.title}"></span>
             </li>
             <li class="list-group-item">
-                <span>장소 : </span>
-                <span>제주도 어쩌구</span>
+                <span>설명 : </span>
+                <span th:text="${food.content}"></span>
+            </li>
+            <li class="list-group-item">
+                <span>위치 : </span>
+                <span th:text="${food.place}"></span>
             </li>
             <li class="list-group-item">
                 <span>휴무일 : </span>
-                <span>매주 월요일</span>
+                <span th:text="${food.closedDay}"></span>
             </li>
 
-<!--            <li class="list-group-item">-->
-<!--                <span>마켓 : </span>-->
-<!--                <span class="badge bg-primary">cod</span>-->
-<!--            </li>-->
+            <!--            <li class="list-group-item">-->
+            <!--                <span>마켓 : </span>-->
+            <!--                <span class="badge bg-primary">cod</span>-->
+            <!--            </li>-->
         </ul>
     </div>
 </section>

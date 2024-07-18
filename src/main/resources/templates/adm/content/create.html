@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>컨텐츠 생성 페이지</title>
+</head>
+<body>
+<h1>컨텐츠 생성 페이지</h1>
+<div class="container">
+    <form th:action="@{/adm/content/create}" method="POST" enctype="multipart/form-data">
+        제목: <input type="text" name="title"><br>
+        내용: <input type="text" name="content"><br>
+        위치: <input type="text" name="place"><br>
+        휴뮤일: <input type="text" name="closedDay"><br>
+        썸네일: <input type="file" name="thumbnail" accept="image/png, image/gif, image/jpeg"><br>
+        카테고리:
+        <select name="category">
+            <option value="food">음식점</option>
+            <option value="dessert">디저트</option>
+        </select><br>
+        <button type="submit">전송</button>
+    </form>
+</div>
+</body>

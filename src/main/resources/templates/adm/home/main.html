@@ -1,14 +1,18 @@
 <!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>관리자 페이지</title>
-</head>
-<body>
-<h1>관리자 메인페이지</h1>
-<a th:href="@{/adm/food/create}" class="btn btn-primary">컨텐츠 등록</a>
-</body>
+<html layout:decorate="~{/layout/layout}">
+<section layout:fragment="content" class="section-prod-list">
+    <head>
+        <title>Trip_In_Jeju 관리자</title>
+    </head>
+    <body>
+    <div class="center">
+        <h1>관리자 메인페이지</h1>
+    </div>
+    <div class="container">
+        <br><br><br>
+        <a th:href="@{/adm/content/create}" class="btn btn-primary">컨텐츠 등록</a> &nbsp; &nbsp; &nbsp;
+        <a th:href="@{/adm/members}" class="btn btn-dark">회원 목록</a>
+    </div>
+    </body>
+</section>
 </html>

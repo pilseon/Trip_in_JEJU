@@ -1,41 +1,55 @@
 <!DOCTYPE html>
 <html layout:decorate="~{/layout/layout}">
-<section layout:fragment="content" class="section-prod-list" >
-    <div class="container">
-        <div class="card-header">
-            디저트/커피 상세정보
+<section layout:fragment="content" class="section-prod-list">
+    <body>
+    <section class="container mt-1">
+        <li class="list-group-item">
+            <img class="w-full" style="width: 100%; max-width: 100%;" th:src="@{|/gen/${dessert.thumbnailImg}|}" alt="상품이미지">
+        </li>
+        <!-- 내용 영역 -->
+        <div class="card">
+            <div class="card-body">
+                <span class="font-bold" th:text="${dessert.title}"></span>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <span style="font-weight: bold;">시간 </span>
+                        <span th:text="${#temporals.format(dessert.createDate, 'yyyy-MM-dd HH:mm')}"></span>
+                    </li>
+                    <li class="list-group-item">
+                        <span style="font-weight: bold;">휴무: </span>
+                        <span th:text="${dessert.closedDay}"></span>
+                    </li>
+                    <li class="list-group-item">
+                        <span style="font-weight: bold;">위치: </span>
+                        <span th:text="${dessert.place}"></span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>정보: </strong><a href="https://www.example.com">https://www.example.com</a>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>전화: </strong>042-000-0000
+                    </li>
+                </ul>
+                <div class="mt-4">
+                    <span class="badge bg-primary">#제주도</span>
+                    <span class="badge bg-primary">#해시태그</span>
+                </div>
+                <div class="mt-4">
+                    <span class="me-2">❤️ 좋아요 (999+)</span>
+                    <span>⭐ 4.9 리뷰 (999+)</span>
+                </div>
+                <div class="mt-4">
+                    <p>설명 내용이 여기에 들어갑니다.</p>
+                </div>
+            </div>
         </div>
+        <!-- 지도 영역 -->
+        <div class="mt-4">
+            <img src="/path/to/map_image.png" class="img-fluid w-100" alt="지도 이미지">
+        </div>
+    </section>
 
-        <ul class="list-group list-group-flush gap-2">
-            <li class="list-group-item">
-                <img class="w-full max-w-[300px]" src="https://previews.123rf.com/images/bohbeh/bohbeh1309/bohbeh130900975/22236147-%EC%BB%A4%ED%94%BC%EC%99%80-%EB%B9%B5.jpg" alt="상품이미지">
-            </li>
-            <li class="list-group-item">
-                <span>번호 : </span>
-                <span class="badge bg-primary">123</span>
-            </li>
-            <li class="list-group-item">
-                <span>등록날짜 : </span>
-                <span>2024-07-08</span>
-            </li>
-            <li class="list-group-item">
-                <span>카페 : </span>
-                <span class="font-bold"></span>
-            </li>
-            <li class="list-group-item">
-                <span>장소 : </span>
-                <span>제주도 어쩌구</span>
-            </li>
-            <li class="list-group-item">
-                <span>휴무일 : </span>
-                <span>매주 월요일</span>
-            </li>
-
-            <!--            <li class="list-group-item">-->
-            <!--                <span>마켓 : </span>-->
-            <!--                <span class="badge bg-primary">cod</span>-->
-            <!--            </li>-->
-        </ul>
-    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
 </section>
 </html>

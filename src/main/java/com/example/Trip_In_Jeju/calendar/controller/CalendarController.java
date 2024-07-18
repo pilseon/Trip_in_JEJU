@@ -3,19 +3,24 @@ package com.example.Trip_In_Jeju.calendar.controller;
 import com.example.Trip_In_Jeju.calendar.entity.Calendar;
 import com.example.Trip_In_Jeju.calendar.service.CalendarService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/calendar")
 public class CalendarController {
 
-    @Autowired
     private final CalendarService calendarService;
 
     @GetMapping("/list")
@@ -25,15 +30,37 @@ public class CalendarController {
         return "calendar/list";
     }
 
-    @PostMapping
+    @PostMapping("/calendars")
     public String addEvent(@ModelAttribute Calendar calendar) {
         calendarService.saveCalendar(calendar);
         return "redirect:/calendar/list";
     }
 
     @GetMapping("/events")
-    @ResponseBody
     public List<Calendar> getEvents() {
         return calendarService.getAllCalendars();
+    }
+
+    @GetMapping("/week")
+    public String viewWeeklyCalendar(@RequestParam(name = "date", required = false) String date, Model model) {
+        LocalDate startOfWeek;
+        if (date != null) {
+            startOfWeek = LocalDate.parse(date).with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
+        } else {
+            startOfWeek = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
+        }
+        LocalDate endOfWeek = startOfWeek.plusDays(6);
+        LocalDateTime startDateTime = startOfWeek.atStartOfDay();
+        LocalDateTime endDateTime = endOfWeek.atTime(LocalTime.MAX);
+
+        List<Calendar> weeklyCalendars = calendarService.getCalendarsBetween(startDateTime, endDateTime);
+
+        List<LocalDate> weekDates = startOfWeek.datesUntil(endOfWeek.plusDays(1)).collect(Collectors.toList());
+
+        model.addAttribute("weekStart", startOfWeek);
+        model.addAttribute("weekEnd", endOfWeek);
+        model.addAttribute("weekDates", weekDates);
+        model.addAttribute("weeklyCalendars", weeklyCalendars);
+        return "calendar/weekCalendar";
     }
 }

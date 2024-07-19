@@ -41,4 +41,9 @@ public class Food {
     private String thumbnailImg;
 
 
+    private String businessHours;
+    private String phoneNumber;
+    private String websiteUrl;
+    private String hashtags;
+
 }

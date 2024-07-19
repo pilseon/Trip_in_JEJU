@@ -51,6 +51,8 @@ public class DessertService {
         }
 
 
+
+
         Dessert p = Dessert.builder()
                 .title(title)
                 .businessHours(businessHours)
@@ -58,6 +60,9 @@ public class DessertService {
                 .place(place)
                 .thumbnailImg(thumbnailRelPath)
                 .closedDay(closedDay)
+                .websiteUrl(websiteUrl)
+                .phoneNumber(phoneNumber)
+                .hashtags(hashtags)
                 .websiteUrl(websiteUrl)
                 .phoneNumber(phoneNumber)
                 .hashtags(hashtags)

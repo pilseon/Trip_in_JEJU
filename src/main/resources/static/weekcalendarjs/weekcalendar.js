@@ -1,11 +1,16 @@
-function previousWeekDate() {
-            let date = new Date(document.querySelector('h1').innerText.split(' ~ ')[0]);
-            date.setDate(date.getDate() - 7);
-            return date.toISOString().split('T')[0];
-        }
+  function toggleDatePicker() {
+        const datePicker = document.getElementById('datePicker');
+        datePicker.classList.toggle('hidden');
+    }
 
-        function nextWeekDate() {
-            let date = new Date(document.querySelector('h1').innerText.split(' ~ ')[0]);
-            date.setDate(date.getDate() + 7);
-            return date.toISOString().split('T')[0];
-        }
+    function navigateWeek(offset) {
+        const currentDate = new Date(document.querySelector('input[type="date"]').value);
+        currentDate.setDate(currentDate.getDate() + offset * 7);
+        const newDate = currentDate.toISOString().split('T')[0];
+        window.location.href = `/calendar/week?date=${newDate}`;
+    }
+
+    function navigateToDate() {
+        const selectedDate = document.getElementById('datePicker').value;
+        window.location.href = `/calendar/week?date=${selectedDate}`;
+    }

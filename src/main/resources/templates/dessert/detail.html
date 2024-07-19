@@ -4,52 +4,59 @@
     <body>
     <section class="container mt-1">
         <!-- 이미지 -->
-        <li class="list-group-item">
-            <img class="w-full" style="width: 100%; max-width: 100%;" th:src="@{|/gen/${dessert.thumbnailImg}|}" alt="상품이미지">
-        </li>
-        <!-- 내용  -->
+        <ul class="list-group">
+            <li class="list-group-item">
+                <img class="w-full" style="width: 100%; max-width: 100%;" th:src="@{|/gen/${dessert.thumbnailImg}|}" alt="상품이미지">
+            </li>
+        </ul>
+        <!-- 내용 -->
         <div class="card">
             <div class="card-body">
-                <span class="font-bold" style="font-size: 1.5rem;" th:text="${dessert.title}"></span>
-                <ul class="list-group list-group-flush">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h1 class="font-bold" style="font-size: 1.5rem;" th:text="${dessert.title}"></h1>
+                </div>
+
+                <ul class="list-group list-group-flush mb-4">
                     <li class="list-group-item">
-                        <span style="font-weight: bold;">시간: </span>
-                        <span th:text="${dessert.businessHours}"></span>
+                        <strong>시간:</strong> <span th:text="${dessert.businessHours}"></span>
                     </li>
                     <li class="list-group-item">
-                        <span style="font-weight: bold;">휴무: </span>
-                        <span th:text="${dessert.closedDay}"></span>
+                        <strong>휴무:</strong> <span th:text="${dessert.closedDay}"></span>
                     </li>
                     <li class="list-group-item">
-                        <span style="font-weight: bold;">위치: </span>
-                        <span th:text="${dessert.place}"></span>
+                        <strong>위치:</strong> <span th:text="${dessert.place}"></span>
                     </li>
                     <li class="list-group-item">
-                        <span style="font-weight: bold;">정보: </span>
-                        <a th:href="${dessert.websiteUrl}" target="_blank" style="color: blue;">홈페이지</a>
+                        <strong>정보:</strong> <a th:href="${dessert.websiteUrl}" target="_blank" style="color: blue;">홈페이지</a>
                     </li>
                     <li class="list-group-item">
-                        <span style="font-weight: bold;">번호: </span>
-                        <span th:text="${dessert.phoneNumber}"></span>
+                        <strong>번호:</strong> <span th:text="${dessert.phoneNumber}"></span>
                     </li>
                 </ul>
-                <!--                <div class="mt-4" th:if="${dessert.hashtags != null and not #strings.isEmpty(dessert.hashtags)}">-->
-                <!--                    <span class="badge bg-primary" th:each="tag : ${#strings.split(dessert.hashtags, ' ')}" th:text="${tag}"></span>-->
-                <!--                </div>-->
+                <!-- 해시태그 -->
                 <div class="mt-4">
-                    <span class="badge bg-primary">#제주도</span>
-                    <span class="badge bg-primary">#해시태그</span>
+                    <span th:text="${dessert.hashtags}"></span>
                 </div>
+
+                <!-- 좋아요 -->
                 <div class="mt-4">
-                    <span class="me-2">❤️ 좋아요 (999+)</span>
+                    <span class="me-2">
+                        <form th:action="@{/dessert/like/{id}(id=${dessert.id})}" method="post" style="display:inline;">
+                            <button type="submit" style="background: none; border: none; font-size: 1.5rem; color: #e83e8c;">❤️</button>
+                        </form>
+                        <span th:text="${dessert.likes}">0</span>
+                    </span>
                     <span>⭐ 4.9 리뷰 (999+)</span>
                 </div>
+
+                <!-- 내용 -->
                 <div class="mt-4">
                     <span th:text="${dessert.content}"></span>
                 </div>
             </div>
         </div>
-        <!-- 지도  -->
+
+        <!-- 지도 -->
         <div class="mt-4">
             <img src="#" class="img-fluid w-100" alt="지도 이미지">
         </div>

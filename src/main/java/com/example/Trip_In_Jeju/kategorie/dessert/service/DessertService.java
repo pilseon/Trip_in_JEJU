@@ -51,8 +51,6 @@ public class DessertService {
         }
 
 
-
-
         Dessert p = Dessert.builder()
                 .title(title)
                 .businessHours(businessHours)
@@ -63,10 +61,12 @@ public class DessertService {
                 .websiteUrl(websiteUrl)
                 .phoneNumber(phoneNumber)
                 .hashtags(hashtags)
+                .likes(0)
                 .build();
 
         dessertRepository.save(p);
     }
+
 
     public Dessert getDessert(Long id) {
         Optional<Dessert> dessert = dessertRepository.findById(id);
@@ -82,4 +82,9 @@ public class DessertService {
         return dessertRepository.findAll();
     }
 
+    public void incrementLikes(Long id) {
+        Dessert dessert = getDessert(id);
+        dessert.setLikes(dessert.getLikes() + 1);
+        dessertRepository.save(dessert);
+    }
 }

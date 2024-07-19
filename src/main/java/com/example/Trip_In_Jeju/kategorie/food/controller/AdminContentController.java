@@ -55,15 +55,5 @@ public class AdminContentController {
     }
 
 
-//    @PostMapping("/createFood")
-//    public String createFoodContent(@RequestParam("title") String title, @RequestParam("content") String content, @RequestParam("place") String place, @RequestParam("closedDay") String closedDay, @RequestParam("thumbnail") MultipartFile thumbnail) {
-//        foodService.create(title, content, place, closedDay, thumbnail);
-//        return "redirect:/adm/food/create";
-//    }
-//
-//    @PostMapping("/createDessert")
-//    public String createDessertContent(@RequestParam("title") String title, @RequestParam("content") String content, @RequestParam("place") String place, @RequestParam("closedDay") String closedDay,  @RequestParam("thumbnail") MultipartFile thumbnail) {
-//        dessertService.create(title, content, place, closedDay, thumbnail);
-//        return "redirect:/adm/food/create";
-//    }
+
 }

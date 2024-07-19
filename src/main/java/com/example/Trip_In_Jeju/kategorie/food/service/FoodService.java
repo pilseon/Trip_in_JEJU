@@ -34,7 +34,9 @@ public class FoodService {
 
         return foodRepository.findAll(pageable);
     }
-    public void create(String title, String content, String place, String closedDay, MultipartFile thumbnail) {
+
+    public void create(String title, String businessHours, String content, String place, String closedDay,
+                       String websiteUrl, String phoneNumber, String hashtags, MultipartFile thumbnail) {
 
         String thumbnailRelPath = "food/" + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
@@ -47,12 +49,17 @@ public class FoodService {
             throw new RuntimeException(e);
         }
 
+
         Food p = Food.builder()
                 .title(title)
+                .businessHours(businessHours)
                 .content(content)
                 .place(place)
-                .closedDay(closedDay)
                 .thumbnailImg(thumbnailRelPath)
+                .closedDay(closedDay)
+                .websiteUrl(websiteUrl)
+                .phoneNumber(phoneNumber)
+                .hashtags(hashtags)
                 .build();
 
         foodRepository.save(p);

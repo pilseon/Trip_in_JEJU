@@ -10,11 +10,15 @@
 <h1>컨텐츠 생성 페이지</h1>
 <div class="container">
     <form th:action="@{/adm/content/create}" method="POST" enctype="multipart/form-data">
-        제목: <input type="text" name="title"><br>
-        내용: <input type="text" name="content"><br>
-        위치: <input type="text" name="place"><br>
-        휴뮤일: <input type="text" name="closedDay"><br>
         썸네일: <input type="file" name="thumbnail" accept="image/png, image/gif, image/jpeg"><br>
+        제목: <input type="text" name="title"><br>
+        시간: <input type="text" name="businessHours"><br>
+        휴뮤일: <input type="text" name="closedDay"><br>
+        위치: <input type="text" name="place"><br>
+        홈페이지 링크: <input type="text" name="websiteUrl"><br>
+        전화번호: <input type="text" name="phoneNumber"><br>
+        해시태그: <input type="text" name="hashtags" placeholder="#해시태그1 #해시태그2"><br>
+        내용: <input type="text" name="content"><br>
         카테고리:
         <select name="category">
             <option value="food">음식점</option>

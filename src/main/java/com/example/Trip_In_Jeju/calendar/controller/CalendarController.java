@@ -3,6 +3,7 @@ package com.example.Trip_In_Jeju.calendar.controller;
 import com.example.Trip_In_Jeju.calendar.entity.Calendar;
 import com.example.Trip_In_Jeju.calendar.service.CalendarService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -42,13 +43,12 @@ public class CalendarController {
     }
 
     @GetMapping("/week")
-    public String viewWeeklyCalendar(@RequestParam(name = "date", required = false) String date, Model model) {
-        LocalDate startOfWeek;
-        if (date != null) {
-            startOfWeek = LocalDate.parse(date).with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
-        } else {
-            startOfWeek = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
+    public String viewWeeklyCalendar(@RequestParam(name = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, Model model) {
+        if (date == null) {
+            date = LocalDate.now();
         }
+
+        LocalDate startOfWeek = date.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
         LocalDate endOfWeek = startOfWeek.plusDays(6);
         LocalDateTime startDateTime = startOfWeek.atStartOfDay();
         LocalDateTime endDateTime = endOfWeek.atTime(LocalTime.MAX);
@@ -61,6 +61,8 @@ public class CalendarController {
         model.addAttribute("weekEnd", endOfWeek);
         model.addAttribute("weekDates", weekDates);
         model.addAttribute("weeklyCalendars", weeklyCalendars);
+        model.addAttribute("currentDate", date);
+
         return "calendar/weekCalendar";
     }
 }

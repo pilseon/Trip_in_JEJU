@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html layout:decorate="~{/layout/layout}">
+<section layout:fragment="content" class="section-prod-list ">
+<head>
+    <meta charset="utf-8">
+    <title>Map</title>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f9dcf56996812998b5d0646b348d4e5f&libraries=services"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="/resource/css/map.css" rel="stylesheet" type="text/css" />
+</head>
+    <body>
+    <div id="search-container">
+        <div class="relative">
+            <input type="text" id="keyword" placeholder="검색어 입력" class=" p-2 rounded-2xl w-full">
+            <button id="searchButton" class="absolute right-2 top-2 bg-transparent text-gray-500"><i class="fa-solid fa-magnifying-glass"></i></button>
+            <div id="autocomplete-list" class="absolute w-full bg-white border border-gray-300 rounded shadow-md z-20"></div>
+        </div>
+    </div>
+    <div id="map"></div>
+
+    <script th:src="@{/mapjs/map.js}"></script>
+</body>
+</section>
+</html>

@@ -63,9 +63,6 @@ public class DessertService {
                 .websiteUrl(websiteUrl)
                 .phoneNumber(phoneNumber)
                 .hashtags(hashtags)
-                .websiteUrl(websiteUrl)
-                .phoneNumber(phoneNumber)
-                .hashtags(hashtags)
                 .likes(0)
                 .build();
 

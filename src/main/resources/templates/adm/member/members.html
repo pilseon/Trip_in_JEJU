@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html layout:decorate="~{/layout/layout}">
+<section layout:fragment="content" class="section-prod-list">
+    <head>
+        <meta charset="UTF-8">
+        <title>회원 목록</title>
+
+        <!-- 부트스트랩 -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+
+        <!-- 테일윈드 -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+    </head>
+    <body >
+    <div class="container my-5">
+
+        <div class="bg-white p-5 shadow rounded">
+            <section>
+                <h1 th:text="${pageName}" class="text-center mb-4">회원 목록</h1>
+                <hr/>
+                <h2 class="text-center">관리자 페이지</h2>
+                <h3 class="text-center mb-4">모든 회원 정보</h3>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>유저번호</th>
+                        <th>아이디</th>
+                        <th>닉네임</th>
+                        <th>이메일</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="member : ${members}">
+                        <td th:text="${member.id}"></td>
+                        <td th:text="${member.username}"></td>
+                        <td th:text="${member.nickname}"></td>
+                        <td th:text="${member.email}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </div>
+    <!-- 부트스트랩 스크립트 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
+    </body>
+</section>
+</html>

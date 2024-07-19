@@ -35,16 +35,20 @@ public class AdminContentController {
     @PostMapping("/create")
     public String createContent(
             @RequestParam("title") String title,
+            @RequestParam("businessHours") String businessHours,
             @RequestParam("content") String content,
             @RequestParam("place") String place,
             @RequestParam("closedDay") String closedDay,
             @RequestParam("thumbnail") MultipartFile thumbnail,
+            @RequestParam("websiteUrl") String websiteUrl,
+            @RequestParam("phoneNumber") String phoneNumber,
+            @RequestParam("hashtags") String hashtags,
             @RequestParam("category") String category) {
 
         if (category.equals("food")) {
-            foodService.create(title, content, place, closedDay,  thumbnail);
+            foodService.create(title, businessHours, content, place, closedDay, websiteUrl, phoneNumber, hashtags,thumbnail);
         } else if (category.equals("dessert")) {
-            dessertService.create(title, content, place, closedDay, thumbnail);
+            dessertService.create(title, businessHours, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail);
         }
 
         return "redirect:/adm/content/create";

@@ -36,7 +36,8 @@ public class DessertService {
 
         return dessertRepository.findAll(pageable);
     }
-    public void create(String title, String content, String place, String closedDay, MultipartFile thumbnail) {
+    public void create(String title, String businessHours, String content, String place, String closedDay,
+                       String websiteUrl, String phoneNumber, String hashtags, MultipartFile thumbnail) {
 
         String thumbnailRelPath = "dessert/" + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
@@ -54,11 +55,14 @@ public class DessertService {
 
         Dessert p = Dessert.builder()
                 .title(title)
+                .businessHours(businessHours)
                 .content(content)
                 .place(place)
                 .thumbnailImg(thumbnailRelPath)
                 .closedDay(closedDay)
-                .createDate(LocalDateTime.now())
+                .websiteUrl(websiteUrl)
+                .phoneNumber(phoneNumber)
+                .hashtags(hashtags)
                 .build();
 
         dessertRepository.save(p);

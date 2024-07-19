@@ -46,5 +46,7 @@ public class Dessert {
     private String websiteUrl;
     private String hashtags;
 
+    private int likes;
+
 
 }

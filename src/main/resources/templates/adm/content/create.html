@@ -1,30 +1,119 @@
 <!DOCTYPE html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>컨텐츠 생성 페이지</title>
-</head>
-<body>
-<h1>컨텐츠 생성 페이지</h1>
-<div class="container">
-    <form th:action="@{/adm/content/create}" method="POST" enctype="multipart/form-data">
-        썸네일: <input type="file" name="thumbnail" accept="image/png, image/gif, image/jpeg"><br>
-        제목: <input type="text" name="title"><br>
-        시간: <input type="text" name="businessHours"><br>
-        휴뮤일: <input type="text" name="closedDay"><br>
-        위치: <input type="text" name="place"><br>
-        홈페이지 링크: <input type="text" name="websiteUrl"><br>
-        전화번호: <input type="text" name="phoneNumber"><br>
-        해시태그: <input type="text" name="hashtags" placeholder="#해시태그1 #해시태그2"><br>
-        내용: <input type="text" name="content"><br>
-        카테고리:
-        <select name="category">
-            <option value="food">음식점</option>
-            <option value="dessert">디저트</option>
-        </select><br>
-        <button type="submit">전송</button>
-    </form>
-</div>
-</body>
+<html layout:decorate="~{/layout/layout}">
+<section layout:fragment="content" class="section-prod-list">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>컨텐츠 생성 페이지</title>
+
+        <style>
+
+
+
+        </style>
+    </head>
+    <body>
+    <div class="container">
+        <h1 class="text-center">게시물 작성</h1>
+        <form th:action="@{/adm/content/create}" method="POST" enctype="multipart/form-data" class="space-y-6 p-6 bg-white rounded-lg shadow-md">
+            <!-- 썸네일 업로드 -->
+            <div class="form-group">
+                <label for="thumbnail" class="block text-lg font-semibold text-teal-700">썸네일:</label>
+                <input type="file" id="thumbnail" name="thumbnail" accept="image/png, image/gif, image/jpeg" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
+            </div>
+
+            <!-- 제목 입력 -->
+            <div class="form-group">
+                <label for="title" class="block text-lg font-semibold text-teal-700">제목:</label>
+                <input type="text" id="title" name="title" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
+            </div>
+
+            <!-- 시간 입력 -->
+            <div class="form-group">
+                <label for="businessHours" class="block text-lg font-semibold text-teal-700">시간:</label>
+                <input type="text" id="businessHours" name="businessHours" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
+            </div>
+
+            <!-- 휴무일 입력 -->
+            <div class="form-group">
+                <label for="closedDay" class="block text-lg font-semibold text-teal-700">휴무일:</label>
+                <input type="text" id="closedDay" name="closedDay" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
+            </div>
+
+            <!-- 위치 입력 -->
+            <div class="form-group">
+                <label for="place" class="block text-lg font-semibold text-teal-700">위치:</label>
+                <input type="text" id="place" name="place" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
+            </div>
+
+            <!-- 홈페이지 링크 입력 -->
+            <div class="form-group">
+                <label for="websiteUrl" class="block text-lg font-semibold text-teal-700">홈페이지 링크:</label>
+                <input type="text" id="websiteUrl" name="websiteUrl" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
+            </div>
+
+            <!-- 전화번호 입력 -->
+            <div class="form-group">
+                <label for="phoneNumber" class="block text-lg font-semibold text-teal-700">전화번호:</label>
+                <input type="text" id="phoneNumber" name="phoneNumber" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
+            </div>
+
+            <!-- 해시태그 입력 -->
+            <div class="form-group">
+                <label for="hashtags" class="block text-lg font-semibold text-teal-700">해시태그:</label>
+                <input type="text" id="hashtags" name="hashtags" placeholder="#해시태그1 #해시태그2" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
+            </div>
+
+            <!-- 내용 입력 -->
+            <div class="form-group">
+                <label for="content" class="block text-lg font-semibold text-teal-700">내용:</label>
+                <input type="text" id="content" name="content" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
+            </div>
+
+            <!-- 카테고리 버튼 -->
+            <div class="text-center mb-4">
+                <button type="button" id="foodButton" class="btn-category text-lg font-semibold bg-teal-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-teal-600" data-value="food">음식점</button>
+                <button type="button" id="dessertButton" class="btn-category text-lg font-semibold bg-teal-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-teal-600" data-value="dessert">디저트</button>
+            </div>
+            <input type="hidden" name="category" id="category" value="food"> <!-- 기본값 설정 -->
+
+            <!-- 제출 버튼 -->
+            <div class="text-center">
+                <button type="submit" class="bg-teal-600 text-white px-5 py-2 rounded-lg shadow-md hover:bg-teal-700 text-lg font-semibold">등록</button>
+            </div>
+            <br>
+        </form>
+
+    </div>
+
+    <script>
+        document.getElementById('foodButton').addEventListener('click', () => {
+            document.getElementById('category').value = 'food';
+            updateButtonStyles('food');
+        });
+
+        document.getElementById('dessertButton').addEventListener('click', () => {
+            document.getElementById('category').value = 'dessert';
+            updateButtonStyles('dessert');
+        });
+
+        function updateButtonStyles(selectedCategory) {
+            const foodButton = document.getElementById('foodButton');
+            const dessertButton = document.getElementById('dessertButton');
+
+            if (selectedCategory === 'food') {
+                foodButton.classList.add('selected');
+                dessertButton.classList.remove('selected');
+            } else {
+                dessertButton.classList.add('selected');
+                foodButton.classList.remove('selected');
+            }
+        }
+
+        // 기본 선택된 버튼 스타일 추가
+        updateButtonStyles(document.getElementById('category').value);
+    </script>
+    </body>
+</section>
+</html>

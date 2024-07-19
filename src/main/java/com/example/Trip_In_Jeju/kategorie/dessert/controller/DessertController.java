@@ -2,16 +2,12 @@ package com.example.Trip_In_Jeju.kategorie.dessert.controller;
 
 import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
 import com.example.Trip_In_Jeju.kategorie.dessert.service.DessertService;
-import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
-import com.example.Trip_In_Jeju.kategorie.food.service.FoodService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -41,5 +37,11 @@ public class DessertController {
         System.out.println(dessert.toString());
 
         return "dessert/detail";
+    }
+
+    @PostMapping("/like/{id}")
+    public String like(@PathVariable("id") Long id) {
+        dessertService.incrementLikes(id);
+        return "redirect:/dessert/detail/" + id;
     }
 }

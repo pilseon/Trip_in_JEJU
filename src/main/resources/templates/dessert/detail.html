@@ -3,11 +3,14 @@
 <section layout:fragment="content" class="section-prod-list">
     <body>
     <section class="container mt-1">
-        <!-- 이미지 -->
-        <li class="list-group-item">
-            <img class="w-full" style="width: 100%; max-width: 100%;" th:src="@{|/gen/${dessert.thumbnailImg}|}" alt="상품이미지">
-        </li>
         <!-- 내용  -->
+        <!-- 이미지 -->
+        <ul class="list-group">
+            <li class="list-group-item">
+                <img class="w-full" style="width: 100%; max-width: 100%;" th:src="@{|/gen/${dessert.thumbnailImg}|}" alt="상품이미지">
+            </li>
+        </ul>
+        <!-- 내용 -->
         <div class="card">
             <div class="card-body">
                 <span class="font-bold" style="font-size: 1.5rem;" th:text="${dessert.title}"></span>
@@ -33,17 +36,23 @@
                         <span th:text="${dessert.phoneNumber}"></span>
                     </li>
                 </ul>
-                <!--                <div class="mt-4" th:if="${dessert.hashtags != null and not #strings.isEmpty(dessert.hashtags)}">-->
-                <!--                    <span class="badge bg-primary" th:each="tag : ${#strings.split(dessert.hashtags, ' ')}" th:text="${tag}"></span>-->
-                <!--                </div>-->
+                <!-- 해시태그 -->
                 <div class="mt-4">
-                    <span class="badge bg-primary">#제주도</span>
-                    <span class="badge bg-primary">#해시태그</span>
+                    <span th:text="${dessert.hashtags}"></span>
                 </div>
+
+                <!-- 좋아요 -->
                 <div class="mt-4">
-                    <span class="me-2">❤️ 좋아요 (999+)</span>
+                    <span class="me-2">
+                        <form th:action="@{/dessert/like/{id}(id=${dessert.id})}" method="post" style="display:inline;">
+                            <button type="submit" style="background: none; border: none; font-size: 1.5rem; color: #e83e8c;">❤️</button>
+                        </form>
+                        <span th:text="${dessert.likes}">0</span>
+                    </span>
                     <span>⭐ 4.9 리뷰 (999+)</span>
                 </div>
+
+                <!-- 내용 -->
                 <div class="mt-4">
                     <span th:text="${dessert.content}"></span>
                 </div>

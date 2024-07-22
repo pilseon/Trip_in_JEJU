@@ -28,13 +28,13 @@
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js'></script>
 </head>
 
-<body class="flex flex-col min-h-screen pt-[56px] md:w-1/2">
+<body class="flex flex-col min-h-screen md:w-1/2">
 <!-- common.css -->
 <link href="/resource/css/common.css" rel="stylesheet" type="text/css" />
 <link href="/resource/css/click.css" rel="stylesheet" type="text/css" />
 <header>
     <!-- Fixed navbar -->
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top md:w-1/2 ml-auto mr-auto bg-gray-100 rounded-bl-3xl rounded-br-3xl">
+    <nav class="navbar navbar-expand-md navbar-dark w-full ml-auto mr-auto bg-gray-100 rounded-bl-3xl rounded-br-3xl">
         <div class="flex container-fluid p-0 h-24 content-center">
             <div class="flex-grow">
                 <a class="inline-block w-20" href="/"><img src="https://github.com/user-attachments/assets/49643242-fdac-4917-ba06-fdc50eafaa2b" alt="mainlogo" class="w-20"></a>
@@ -53,7 +53,7 @@
         </div>
     </nav>
 </header>
-<section class="flex-1 py-[20px] flex flex-col">
+<section class="flex-1 pt-[20px] pb-[50px] flex flex-col">
     <!-- Content Start -->
     <th:block layout:fragment="content"></th:block>
     <!-- Content End -->

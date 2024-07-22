@@ -43,12 +43,14 @@ public class AdminContentController {
             @RequestParam("websiteUrl") String websiteUrl,
             @RequestParam("phoneNumber") String phoneNumber,
             @RequestParam("hashtags") String hashtags,
-            @RequestParam("category") String category) {
+            @RequestParam("category") String category,
+            @RequestParam("latitude") double latitude,
+            @RequestParam("longitude") double longitude) {
 
         if (category.equals("food")) {
-            foodService.create(title, businessHours, content, place, closedDay, websiteUrl, phoneNumber, hashtags,thumbnail);
+            foodService.create(title, businessHours, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude);
         } else if (category.equals("dessert")) {
-            dessertService.create(title, businessHours, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail);
+            dessertService.create(title, businessHours, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude);
         }
 
         return "redirect:/adm/content/create";

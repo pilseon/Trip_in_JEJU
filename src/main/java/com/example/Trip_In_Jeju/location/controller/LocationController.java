@@ -3,7 +3,11 @@ package com.example.Trip_In_Jeju.location.controller;
 import com.example.Trip_In_Jeju.location.entity.Location;
 import com.example.Trip_In_Jeju.location.service.LocationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -19,8 +23,15 @@ public class LocationController {
         return locationService.getAllLocations();
     }
 
-    @PostMapping
-    public Location addLocation(@RequestBody Location location) {
-        return locationService.addLocation(location);
+    @GetMapping("/create")
+    public String createForm(Model model) {
+        model.addAttribute("location", new Location());
+        return "locationForm";
+    }
+
+    @PostMapping("/save")
+    public String saveLocation(Location location) {
+        locationService.saveLocation(location);
+        return "redirect:/locations";
     }
 }

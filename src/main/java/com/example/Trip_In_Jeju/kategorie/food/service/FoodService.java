@@ -2,6 +2,8 @@ package com.example.Trip_In_Jeju.kategorie.food.service;
 
 import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
 import com.example.Trip_In_Jeju.kategorie.food.repository.FoodRepository;
+import com.example.Trip_In_Jeju.location.entity.Location;
+import com.example.Trip_In_Jeju.location.repository.LocationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -23,6 +25,10 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class FoodService {
     private final FoodRepository foodRepository;
+    private final LocationRepository locationRepository;
+
+    @Value("${kakao.api.key}")
+    private String apiKey;
 
     @Value("${custom.genFileDirPath}")
     public String genFileDirPath;
@@ -36,7 +42,8 @@ public class FoodService {
     }
 
     public void create(String title, String businessHours, String content, String place, String closedDay,
-                       String websiteUrl, String phoneNumber, String hashtags, MultipartFile thumbnail) {
+                       String websiteUrl, String phoneNumber, String hashtags, MultipartFile thumbnail,
+                       double latitude, double longitude) {
 
         String thumbnailRelPath = "food/" + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
@@ -49,12 +56,18 @@ public class FoodService {
             throw new RuntimeException(e);
         }
 
+        // Location 엔티티 생성 및 저장
+        Location location = new Location();
+        location.setName(place);
+        location.setLatitude(latitude);
+        location.setLongitude(longitude);
+        location = locationRepository.save(location);
 
         Food p = Food.builder()
                 .title(title)
                 .businessHours(businessHours)
                 .content(content)
-                .place(place)
+                .location(location) // location 설정
                 .thumbnailImg(thumbnailRelPath)
                 .closedDay(closedDay)
                 .websiteUrl(websiteUrl)
@@ -64,6 +77,7 @@ public class FoodService {
 
         foodRepository.save(p);
     }
+
 
     public Food getFood(Long id) {
         Optional<Food> food = foodRepository.findById(id);

@@ -1,8 +1,7 @@
 package com.example.Trip_In_Jeju.kategorie.dessert.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.example.Trip_In_Jeju.location.entity.Location;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,7 +28,7 @@ public class Dessert {
     private String content;
     private int category;
     private Long hit;
-    private String place;
+
     private String thumbnail;
     private String closedDay;
 
@@ -38,6 +37,10 @@ public class Dessert {
 
     @LastModifiedDate
     private LocalDateTime modifyDate;
+
+    @ManyToOne
+    @JoinColumn(name = "location_id")
+    private Location location;
 
     private String thumbnailImg;
 

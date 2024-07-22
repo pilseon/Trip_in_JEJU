@@ -2,6 +2,8 @@ package com.example.Trip_In_Jeju.kategorie.dessert.service;
 
 import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
 import com.example.Trip_In_Jeju.kategorie.dessert.repository.DessertRepository;
+import com.example.Trip_In_Jeju.location.entity.Location;
+import com.example.Trip_In_Jeju.location.repository.LocationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -22,6 +24,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class DessertService {
     private final DessertRepository dessertRepository;
+    private final LocationRepository locationRepository;
+
+
+    @Value("${kakao.api.key}")
+    private String apiKey;
 
     @Value("${custom.genFileDirPath}")
     public String genFileDirPath;
@@ -47,6 +54,13 @@ public class DessertService {
             throw new RuntimeException(e);
         }
 
+        // Location 엔티티 생성 및 저장
+        Location location = new Location();
+        location.setName(place);
+        location.setLatitude(latitude);
+        location.setLongitude(longitude);
+        location = locationRepository.save(location);
+
 
 
 
@@ -54,7 +68,7 @@ public class DessertService {
                 .title(title)
                 .businessHours(businessHours)
                 .content(content)
-                .place(place)
+                .location(location)
                 .thumbnailImg(thumbnailRelPath)
                 .closedDay(closedDay)
                 .websiteUrl(websiteUrl)

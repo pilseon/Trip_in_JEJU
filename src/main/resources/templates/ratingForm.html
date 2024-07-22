@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{/layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Rating Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .rating {
+            display: flex;
+            flex-direction: row; /* 1부터 5까지 왼쪽에서 오른쪽으로 표시 */
+            font-size: 2rem;
+            cursor: pointer;
+            gap: 0.1rem; /* 간격 조정 */
+        }
+        .rating input {
+            position: absolute;
+            top: -9999px;
+        }
+        .rating label {
+            position: relative;
+            display: block;
+            color: #ccc;
+        }
+        .rating label:before {
+            content: '\f005'; /* Font Awesome star icon */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+        }
+        .rating input:checked ~ label {
+            color: #ffc107; /* Yellow color for checked stars */
+        }
+        .rating input:checked ~ label:before {
+            content: '\f005';
+        }
+    </style>
+</head>
+<body>
+<section layout:fragment="content" class="section-prod-list">
+    <div class="container mt-5">
+        <!-- 평가 양식을 카드로 표현 -->
+        <div class="card">
+            <div class="card-header">
+                <h1>리뷰 남기기</h1>
+            </div>
+            <div class="card-body">
+                <strong>평균 별점: <span th:text="${averageScore}">0</span></strong>
+
+                <form th:action="@{/rating/ratings}" th:object="${rating}" method="post">
+                    <div class="form-group mb-3">
+                        <label for="rating">별점:</label>
+                        <div class="rating">
+                            <input type="radio" id="star5" name="rating" value="5" />
+                            <label for="star5"></label>
+                            <input type="radio" id="star4" name="rating" value="4" />
+                            <label for="star4"></label>
+                            <input type="radio" id="star3" name="rating" value="3" />
+                            <label for="star3"></label>
+                            <input type="radio" id="star2" name="rating" value="2" />
+                            <label for="star2"></label>
+                            <input type="radio" id="star1" name="rating" value="1" />
+                            <label for="star1"></label>
+                        </div>
+                        <input type="hidden" id="score" name="score" />
+                        <div th:if="${#fields.hasErrors('score')}" th:errors="*{score}" class="alert alert-danger mt-2"></div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="comment">리뷰:</label>
+                        <textarea id="comment" th:field="*{comment}" class="form-control"></textarea>
+                    </div>
+                    <a sec:authorize="isAnonymous()"  href="/member/login">
+                        로그인 후 이용해주세요.
+                    </a>
+                    <button sec:authorize="isAuthenticated()" type="submit" class="btn btn-primary">리뷰 등록</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 평가 목록 카드로 표현 -->
+        <div class="mt-4">
+            <h3>All Ratings:</h3>
+            <div th:each="rating : ${allRatings}" class="mb-3">
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <div class="rating">
+                            <!-- 별점 아이콘 표시 -->
+                            <i class="fa fa-star" th:each="i : ${#numbers.sequence(1, 5)}"
+                               th:classappend="${rating.score >= i ? 'text-warning' : 'text-secondary'}"></i>
+                        </div>
+                        <p>리뷰: <span th:text="${rating.comment}">No Comment</span></p>
+                        <p>작성자: <span th:text="${rating.nickname}">Unknown</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.rating input').forEach(input => {
+            input.addEventListener('change', function() {
+                document.getElementById('score').value = this.value;
+            });
+        });
+    </script>
+</section>
+</body>
+</html>

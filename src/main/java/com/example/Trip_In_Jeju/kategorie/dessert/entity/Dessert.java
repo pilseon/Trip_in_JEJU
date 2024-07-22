@@ -24,6 +24,7 @@ public class Dessert {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private long id;
+
     private String title;
     private String content;
     private int category;
@@ -43,7 +44,6 @@ public class Dessert {
     private Location location;
 
     private String thumbnailImg;
-
     private String businessHours;
     private String phoneNumber;
     private String websiteUrl;
@@ -51,5 +51,5 @@ public class Dessert {
 
     private int likes;
 
-
+    private double averageRating;  // 평균 별점 추가
 }

@@ -4,6 +4,7 @@ import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
 import com.example.Trip_In_Jeju.kategorie.dessert.repository.DessertRepository;
 import com.example.Trip_In_Jeju.location.entity.Location;
 import com.example.Trip_In_Jeju.location.repository.LocationRepository;
+import com.example.Trip_In_Jeju.rating.service.RatingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -25,6 +26,8 @@ import java.util.UUID;
 public class DessertService {
     private final DessertRepository dessertRepository;
     private final LocationRepository locationRepository;
+    private final RatingService ratingService;
+
 
 
     @Value("${kakao.api.key}")
@@ -99,5 +102,23 @@ public class DessertService {
         Dessert dessert = getDessert(id);
         dessert.setLikes(dessert.getLikes() + 1);
         dessertRepository.save(dessert);
+    }
+    public Dessert findByIdWithAverageRating(Long id) {
+        Dessert dessert = findById(id);
+        double averageRating = ratingService.calculateAverageRating(id);
+        dessert.setAverageRating(averageRating);
+        return dessert;
+    }
+
+    public Dessert findById(Long id) {
+        Optional<Dessert> optionalDessert = dessertRepository.findById(id);
+        return optionalDessert.orElseThrow(() -> new RuntimeException("Dessert not found with id: " + id));
+    }
+
+    public void save(Dessert dessert) {
+        dessertRepository.save(dessert);
+    }
+    public Dessert getDessertById(Long id) {
+        return dessertRepository.findById(id).orElse(null);
     }
 }

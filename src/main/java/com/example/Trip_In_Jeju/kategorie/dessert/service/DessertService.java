@@ -2,8 +2,6 @@ package com.example.Trip_In_Jeju.kategorie.dessert.service;
 
 import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
 import com.example.Trip_In_Jeju.kategorie.dessert.repository.DessertRepository;
-import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
-import com.example.Trip_In_Jeju.kategorie.food.repository.FoodRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -15,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +34,7 @@ public class DessertService {
         return dessertRepository.findAll(pageable);
     }
     public void create(String title, String businessHours, String content, String place, String closedDay,
-                       String websiteUrl, String phoneNumber, String hashtags, MultipartFile thumbnail) {
+                       String websiteUrl, String phoneNumber, String hashtags, MultipartFile thumbnail, double latitude, double longitude) {
 
         String thumbnailRelPath = "dessert/" + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);

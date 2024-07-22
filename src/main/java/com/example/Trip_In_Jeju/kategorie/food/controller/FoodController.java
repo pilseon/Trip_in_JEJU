@@ -21,9 +21,9 @@ public class FoodController {
     private final FoodService foodService;
 
     @GetMapping("/list")
-    public String list(
-            Model model,
-            @RequestParam(value = "page", defaultValue = "0") int page
+                    public String list(
+                    Model model,
+                    @RequestParam(value = "page", defaultValue = "0") int page
     ) {
         Page<Food> paging = foodService.getList(page);
 

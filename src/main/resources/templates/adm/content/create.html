@@ -7,16 +7,12 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>컨텐츠 생성 페이지</title>
 
-        <style>
-
-
-
-        </style>
+        <link href="/resource/css/admCreate.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
     <div class="container">
         <h1 class="text-center">게시물 작성</h1>
-        <form th:action="@{/adm/content/create}" method="POST" enctype="multipart/form-data" class="space-y-6 p-6 bg-white rounded-lg shadow-md">
+        <form th:action="@{/adm/content/create}" method="POST" enctype="multipart/form-data" class="space-y-6 p-6  rounded-lg shadow-md">
             <!-- 썸네일 업로드 -->
             <div class="form-group">
                 <label for="thumbnail" class="block text-lg font-semibold text-teal-700">썸네일:</label>
@@ -45,7 +41,13 @@
             <div class="form-group">
                 <label for="place" class="block text-lg font-semibold text-teal-700">위치:</label>
                 <input type="text" id="place" name="place" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
+                <div id="autocomplete-list" class="relative z-10"></div>
+                <button type="button" onclick="searchPlace()" class="mt-2 bg-teal-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-teal-600">주소 검색</button>
             </div>
+            <div id="map"></div>
+            <!-- 숨겨진 좌표 필드 -->
+            <input type="hidden" id="latitude" name="latitude">
+            <input type="hidden" id="longitude" name="longitude">
 
             <!-- 홈페이지 링크 입력 -->
             <div class="form-group">
@@ -87,33 +89,7 @@
 
     </div>
 
-    <script>
-        document.getElementById('foodButton').addEventListener('click', () => {
-            document.getElementById('category').value = 'food';
-            updateButtonStyles('food');
-        });
-
-        document.getElementById('dessertButton').addEventListener('click', () => {
-            document.getElementById('category').value = 'dessert';
-            updateButtonStyles('dessert');
-        });
-
-        function updateButtonStyles(selectedCategory) {
-            const foodButton = document.getElementById('foodButton');
-            const dessertButton = document.getElementById('dessertButton');
-
-            if (selectedCategory === 'food') {
-                foodButton.classList.add('selected');
-                dessertButton.classList.remove('selected');
-            } else {
-                dessertButton.classList.add('selected');
-                foodButton.classList.remove('selected');
-            }
-        }
-
-        // 기본 선택된 버튼 스타일 추가
-        updateButtonStyles(document.getElementById('category').value);
-    </script>
+    <script th:src="@{/admCreatejs/admCreate.js}"></script>
     </body>
 </section>
 </html>

@@ -1,8 +1,7 @@
 package com.example.Trip_In_Jeju.kategorie.food.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.example.Trip_In_Jeju.location.entity.Location;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,7 +28,6 @@ public class Food {
     private String content;
     private int category;
     private Long hit;
-    private String place;
     private String thumbnail;
     private String closedDay;
 
@@ -37,13 +35,14 @@ public class Food {
     private LocalDateTime createDate;
     @LastModifiedDate
     private LocalDateTime modifyDate;
+    @ManyToOne
+    @JoinColumn(name = "location_id")
+    private Location location;
 
     private String thumbnailImg;
-
 
     private String businessHours;
     private String phoneNumber;
     private String websiteUrl;
     private String hashtags;
-
 }

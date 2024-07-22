@@ -18,3 +18,6 @@ spring:
       ddl-auto: create
 custom:
   genFileDirPath: C:\work\genFile
+kakao:
+  api:
+    key: f9dcf56996812998b5d0646b348d4e5f

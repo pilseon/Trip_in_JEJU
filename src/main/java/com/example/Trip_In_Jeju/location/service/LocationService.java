@@ -17,7 +17,7 @@ public class LocationService {
         return locationRepository.findAll();
     }
 
-    public Location addLocation(Location location) {
+    public Location saveLocation(Location location) {
         return locationRepository.save(location);
     }
 }

@@ -23,6 +23,9 @@
 
     <!-- 폰트 어썸-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- 카카오 맵 API -->
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f9dcf56996812998b5d0646b348d4e5f&libraries=services,clusterer,drawing"></script>
 </head>
 
 <body class="flex flex-col min-h-screen md:w-1/2">
@@ -50,7 +53,7 @@
         </div>
     </nav>
 </header>
-<section class="flex-1 py-[20px] flex flex-col">
+<section class="flex-1 pt-[20px] pb-[50px] flex flex-col">
     <!-- Content Start -->
     <th:block layout:fragment="content"></th:block>
     <!-- Content End -->

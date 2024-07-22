@@ -20,4 +20,5 @@ public class Location {
     private String name;
     private double latitude; // 위치의 위도 값을 저장
     private double longitude; // 위치의 경도 값을 저장
+    private String mapImageUrl; // 지도 이미지 URL을 저장
 }

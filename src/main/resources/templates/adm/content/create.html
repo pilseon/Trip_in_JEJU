@@ -6,13 +6,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>컨텐츠 생성 페이지</title>
-
         <link href="/resource/css/admCreate.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
     <div class="container">
         <h1 class="text-center">게시물 작성</h1>
-        <form th:action="@{/adm/content/create}" method="POST" enctype="multipart/form-data" class="space-y-6 p-6  rounded-lg shadow-md">
+        <form th:action="@{/adm/content/create}" method="POST" enctype="multipart/form-data" class="space-y-6 p-6 rounded-lg shadow-md">
             <!-- 썸네일 업로드 -->
             <div class="form-group">
                 <label for="thumbnail" class="block text-lg font-semibold text-teal-700">썸네일:</label>
@@ -73,12 +72,22 @@
                 <input type="text" id="content" name="content" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
             </div>
 
-            <!-- 카테고리 버튼 -->
-            <div class="text-center mb-4">
-                <button type="button" id="foodButton" class="btn-category text-lg font-semibold bg-teal-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-teal-600" data-value="food">음식점</button>
-                <button type="button" id="dessertButton" class="btn-category text-lg font-semibold bg-teal-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-teal-600" data-value="dessert">디저트</button>
+            <!-- 카테고리 선택 -->
+            <div class="form-group">
+                <label for="category" class="block text-lg font-semibold text-teal-700">카테고리:</label>
+                <select id="category" name="category" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50" onchange="updateSubCategoryOptions()">
+                    <option value="food">음식점</option>
+                    <option value="dessert">디저트</option>
+                </select>
             </div>
-            <input type="hidden" name="category" id="category" value="food"> <!-- 기본값 설정 -->
+
+            <!-- 하위 카테고리 선택 -->
+            <div class="form-group" id="subCategoryContainer" style="display: none;">
+                <label for="subCategory" class="block text-lg font-semibold text-teal-700">하위 카테고리:</label>
+                <select id="subCategory" name="subCategory" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
+                    <!-- 하위 카테고리 옵션은 자바스크립트로 동적으로 추가됨 -->
+                </select>
+            </div>
 
             <!-- 제출 버튼 -->
             <div class="text-center">
@@ -86,10 +95,34 @@
             </div>
             <br>
         </form>
-
     </div>
 
     <script th:src="@{/admCreatejs/admCreate.js}"></script>
+    <script>
+        // JavaScript to handle category and sub-category changes
+        function updateSubCategoryOptions() {
+            const category = document.getElementById('category').value;
+            const subCategoryContainer = document.getElementById('subCategoryContainer');
+            const subCategorySelect = document.getElementById('subCategory');
+
+            if (category === 'dessert') {
+                subCategoryContainer.style.display = 'block';
+                subCategorySelect.innerHTML = `
+                    <option value="coffee">커피</option>
+                    <option value="bread">빵</option>
+                    <option value="bingsu">빙수</option>
+                `;
+            } else {
+                subCategoryContainer.style.display = 'none';
+                subCategorySelect.innerHTML = '';
+            }
+        }
+
+        // Initialize the form with the correct sub-category options based on the default category
+        document.addEventListener('DOMContentLoaded', function() {
+            updateSubCategoryOptions();
+        });
+    </script>
     </body>
 </section>
 </html>

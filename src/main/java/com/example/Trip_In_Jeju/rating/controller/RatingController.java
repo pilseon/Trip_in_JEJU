@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequiredArgsConstructor
@@ -24,13 +25,13 @@ public class RatingController {
     }
 
     @PostMapping("/review/save")
-    public String saveRating(@RequestParam Long dessertId, @RequestParam Integer score, @RequestParam String comment, Authentication authentication) {
+    public String saveRating(@RequestParam Long dessertId, @RequestParam Integer score, @RequestParam String comment, Authentication authentication, @RequestParam("thumbnail") MultipartFile thumbnail) {
         if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails)) {
             return "redirect:/dessert/detail/" + dessertId;
         }
         String nickname = ((UserDetails) authentication.getPrincipal()).getUsername();
         // 수정된 부분: dessertId를 전달하여 새로운 리뷰를 저장
-        ratingService.saveRating(dessertId, score, comment, nickname);
+        ratingService.saveRating(dessertId, score, comment, nickname, thumbnail);
         return "redirect:/dessert/detail/" + dessertId;
     }
 }

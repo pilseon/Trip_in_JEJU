@@ -1,7 +1,8 @@
-package com.example.Trip_In_Jeju.kategorie.food.controller;
+package com.example.Trip_In_Jeju.kategorie.shopping.controller;
 
-import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
-import com.example.Trip_In_Jeju.kategorie.food.service.FoodService;
+
+import com.example.Trip_In_Jeju.kategorie.shopping.entity.Shopping;
+import com.example.Trip_In_Jeju.kategorie.shopping.service.ShoppingService;
 import com.example.Trip_In_Jeju.rating.entity.Rating;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
 import lombok.RequiredArgsConstructor;
@@ -17,9 +18,9 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/food")
-public class FoodController {
-    private final FoodService foodService;
+@RequestMapping("/shopping")
+public class ShoppingController {
+    private final ShoppingService shoppingService;
     private final RatingService ratingService;
 
     @GetMapping("/list")
@@ -28,17 +29,17 @@ public class FoodController {
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "subCategory", defaultValue = "all") String subCategory
     ) {
-        Page<Food> paging = foodService.getList(page, subCategory);
+        Page<Shopping> paging = shoppingService.getList(page, subCategory);
         model.addAttribute("paging", paging);
         model.addAttribute("subCategory", subCategory);
-        return "food/list";
+        return "shopping/list";
     }
 
     @GetMapping("/detail/{id}")
-    public String getFoodDetail(@PathVariable("id") Long id, Model model, Authentication authentication) {
-        Food food = foodService.getFoodById(id);
-        List<Rating> ratings = ratingService.getRatings(id, "food");
-        double averageScore = ratingService.calculateAverageScore(id, "food");
+    public String getShoppingDetail(@PathVariable("id") Long id, Model model, Authentication authentication) {
+        Shopping shopping = shoppingService.getShoppingById(id);
+        List<Rating> ratings = ratingService.getRatings(id, "shopping");
+        double averageScore = ratingService.calculateAverageScore(id, "shopping");
         String nickname = null;
         if (authentication != null) {
             Object principal = authentication.getPrincipal();
@@ -48,23 +49,23 @@ public class FoodController {
                 nickname = principal.toString();
             }
         }
-        model.addAttribute("food", food);
+        model.addAttribute("shopping", shopping);
         model.addAttribute("ratings", ratings);
         model.addAttribute("averageScore", averageScore);
         model.addAttribute("nickname", nickname);
-        return "food/detail";
+        return "shopping/detail";
     }
 
     @GetMapping("/review/{id}")
     public String getReviewPage(@PathVariable("id") Long id, Model model) {
-        Food food = foodService.getFoodById(id);
-        List<Rating> ratings = ratingService.getRatings(id, "food");
-        double averageScore = ratingService.calculateAverageScore(id, "food");
+        Shopping shopping = shoppingService.getShoppingById(id);
+        List<Rating> ratings = ratingService.getRatings(id, "shopping");
+        double averageScore = ratingService.calculateAverageScore(id, "shopping");
 
-        model.addAttribute("food", food);
+        model.addAttribute("shopping", shopping);
         model.addAttribute("ratings", ratings);
         model.addAttribute("averageScore", averageScore);
-        return "food/review";
+        return "shopping/review";
     }
 
     @PostMapping("/review/{id}")
@@ -76,11 +77,11 @@ public class FoodController {
             @RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail
     ) {
         if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails)) {
-            return "redirect:/food/detail/" + id;
+            return "redirect:/shopping/detail/" + id;
         }
         String nickname = ((UserDetails) authentication.getPrincipal()).getUsername();
-        ratingService.saveRating(id, score, comment, nickname, thumbnail, "food");
-        return "redirect:/food/detail/" + id;
+        ratingService.saveRating(id, score, comment, nickname, thumbnail, "shopping");
+        return "redirect:/shopping/detail/" + id;
     }
 
     @PostMapping("/review/edit/{id}")
@@ -91,18 +92,18 @@ public class FoodController {
             @RequestParam("comment") String comment
     ) {
         ratingService.updateRating(ratingId, score, comment);
-        return "redirect:/food/detail/" + id;
+        return "redirect:/shopping/detail/" + id;
     }
 
     @GetMapping("/review/delete/{id}")
     public String deleteRating(@PathVariable("id") Long id, @RequestParam("ratingId") Long ratingId) {
         ratingService.deleteRating(ratingId);
-        return "redirect:/food/detail/" + id;
+        return "redirect:/shopping/detail/" + id;
     }
 
     @PostMapping("/like/{id}")
     public String like(@PathVariable("id") Long id) {
-        foodService.incrementLikes(id);
-        return "redirect:/food/detail/" + id;
+        shoppingService.incrementLikes(id);
+        return "redirect:/shopping/detail/" + id;
     }
 }

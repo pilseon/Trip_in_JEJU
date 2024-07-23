@@ -6,6 +6,7 @@ import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
 import com.example.Trip_In_Jeju.kategorie.food.repository.FoodRepository;
 import com.example.Trip_In_Jeju.location.entity.Location;
 import com.example.Trip_In_Jeju.location.repository.LocationRepository;
+import com.example.Trip_In_Jeju.rating.service.RatingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -23,19 +24,31 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-
 @Service
 @RequiredArgsConstructor
 public class FoodService {
     private final FoodRepository foodRepository;
     private final LocationRepository locationRepository;
     private final CalendarRepository calendarRepository;
+    private final RatingService ratingService;
 
     @Value("${kakao.api.key}")
     private String apiKey;
 
     @Value("${custom.genFileDirPath}")
     public String genFileDirPath;
+
+    public Page<Food> getList(int page, String subCategory) {
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createDate"));
+        Pageable pageable = PageRequest.of(page, 8, Sort.by(sorts));
+
+        if ("all".equalsIgnoreCase(subCategory)) {
+            return foodRepository.findAll(pageable);
+        } else {
+            return foodRepository.findBySubCategory(subCategory, pageable);
+        }
+    }
 
     public Page<Food> getList(int page) {
         List<Sort.Order> sorts = new ArrayList<>();
@@ -44,10 +57,8 @@ public class FoodService {
 
         return foodRepository.findAll(pageable);
     }
-
-    public void create(String title, String content, String place, String closedDay,
-                       String websiteUrl, String phoneNumber, String hashtags, MultipartFile thumbnail,
-                       double latitude, double longitude, String periodStart, String periodEnd) {
+    public void create(String title, String businessHoursStart, String businessHoursEnd, String content, String place, String closedDay,
+                       String websiteUrl, String phoneNumber, String hashtags, MultipartFile thumbnail, double latitude, double longitude, String subCategory) {
 
         String thumbnailRelPath = "food/" + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
@@ -68,27 +79,28 @@ public class FoodService {
         location = locationRepository.save(location);
 
         Calendar calendar = new Calendar();
-        calendar.setTitle("Period");
-        calendar.setPeriodStart(LocalDateTime.parse(periodStart));
-        calendar.setPeriodEnd(LocalDateTime.parse(periodEnd));
+        calendar.setTitle("Business Hours");
+        calendar.setStart(LocalDateTime.parse(businessHoursStart));
+        calendar.setEnd(LocalDateTime.parse(businessHoursEnd));
         calendarRepository.save(calendar);
 
         Food p = Food.builder()
                 .title(title)
-                .calendar(calendar)
+                .calendar(calendar)  // Calendar 엔티티 참조
                 .content(content)
+                .location(location)
                 .place(place)
-                .location(location) // location 설정
                 .thumbnailImg(thumbnailRelPath)
                 .closedDay(closedDay)
                 .websiteUrl(websiteUrl)
                 .phoneNumber(phoneNumber)
                 .hashtags(hashtags)
+                .likes(0)
+                .subCategory(subCategory) // Ensure subCategory is used if provided
                 .build();
 
         foodRepository.save(p);
     }
-
 
     public Food getFood(Long id) {
         Optional<Food> food = foodRepository.findById(id);
@@ -102,5 +114,31 @@ public class FoodService {
 
     public List<Food> getList() {
         return foodRepository.findAll();
+    }
+
+    public void incrementLikes(Long id) {
+        Food food = getFood(id);
+        food.setLikes(food.getLikes() + 1);
+        foodRepository.save(food);
+    }
+
+    public Food findByIdWithAverageRating(Long id) {
+        Food food = findById(id);
+        double averageRating = ratingService.calculateAverageRating(id);
+        food.setAverageRating(averageRating);
+        return food;
+    }
+
+    public Food findById(Long id) {
+        Optional<Food> optionalFood = foodRepository.findById(id);
+        return optionalFood.orElseThrow(() -> new RuntimeException("Food not found with id: " + id));
+    }
+
+    public void save(Food food) {
+        foodRepository.save(food);
+    }
+
+    public Food getFoodById(Long id) {
+        return foodRepository.findById(id).orElse(null);
     }
 }

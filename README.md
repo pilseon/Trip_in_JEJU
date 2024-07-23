@@ -8,9 +8,9 @@
 * 여행 일정을 기록하고, 캘린더를 통한 여행 날짜 확인
 
 ## 🧑‍🤝‍🧑 맴버구성
-* 유필선 -
-* 어근혁 -
-* 송현지 -
+* 유필선 - GPS , CALENDAR , AI 작업
+* 어근혁 - MEMBER, LIST, REVIEW 작업
+* 송현지 - LIST CATEGORY, PPT 작업
 
 ## 🕰️개발 기간
 

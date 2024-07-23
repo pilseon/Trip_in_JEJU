@@ -24,16 +24,33 @@
                 <input type="text" id="title" name="title" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
             </div>
 
-            <!-- 시간 입력 -->
+            <!-- 시작 시간 입력 -->
             <div class="form-group">
-                <label for="businessHours" class="block text-lg font-semibold text-teal-700">시간:</label>
-                <input type="text" id="businessHours" name="businessHours" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
+                <label for="businessHoursStart" class="block text-lg font-semibold text-teal-700">시작시간:</label>
+                <select id="businessHoursStart" name="businessHoursStart" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
+                </select>
+            </div>
+
+            <!-- 종료 시간 입력 -->
+            <div class="form-group">
+                <label for="businessHoursEnd" class="block text-lg font-semibold text-teal-700">종료시간:</label>
+                <select id="businessHoursEnd" name="businessHoursEnd" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
+                </select>
             </div>
 
             <!-- 휴무일 입력 -->
             <div class="form-group">
                 <label for="closedDay" class="block text-lg font-semibold text-teal-700">휴무일:</label>
                 <input type="text" id="closedDay" name="closedDay" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
+            </div>
+
+            <!-- 기간 입력 -->
+            <div class="form-group">
+                <label for="period" class="block text-lg font-semibold text-teal-700">기간:</label>
+                <div class="flex space-x-4">
+                    <input type="date" id="periodStart" name="periodStart" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
+                    <input type="date" id="periodEnd" name="periodEnd" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
+                </div>
             </div>
 
             <!-- 위치 입력 -->

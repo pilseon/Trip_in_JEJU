@@ -37,8 +37,8 @@ public class DessertController {
     @GetMapping("/detail/{id}")
     public String getDessertDetail(@PathVariable("id") Long id, Model model, Authentication authentication) {
         Dessert dessert = dessertService.getDessertById(id);
-        List<Rating> ratings = ratingService.getRatings(id);
-        double averageScore = ratingService.calculateAverageScore(id);
+        List<Rating> ratings = ratingService.getRatings(id, "dessert");
+        double averageScore = ratingService.calculateAverageScore(id, "dessert");
         String nickname = null;
         if (authentication != null) {
             Object principal = authentication.getPrincipal();
@@ -58,8 +58,8 @@ public class DessertController {
     @GetMapping("/review/{id}")
     public String getReviewPage(@PathVariable("id") Long id, Model model) {
         Dessert dessert = dessertService.getDessertById(id);
-        List<Rating> ratings = ratingService.getRatings(id);
-        double averageScore = ratingService.calculateAverageScore(id);
+        List<Rating> ratings = ratingService.getRatings(id, "dessert");
+        double averageScore = ratingService.calculateAverageScore(id, "dessert");
 
         model.addAttribute("dessert", dessert);
         model.addAttribute("ratings", ratings);
@@ -79,7 +79,7 @@ public class DessertController {
             return "redirect:/dessert/detail/" + id;
         }
         String nickname = ((UserDetails) authentication.getPrincipal()).getUsername();
-        ratingService.saveRating(id, score, comment, nickname, thumbnail);
+        ratingService.saveRating(id, score, comment, nickname, thumbnail, "dessert");
         return "redirect:/dessert/detail/" + id;
     }
 

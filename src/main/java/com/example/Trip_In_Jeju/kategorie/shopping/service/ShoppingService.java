@@ -1,9 +1,9 @@
-package com.example.Trip_In_Jeju.kategorie.dessert.service;
+package com.example.Trip_In_Jeju.kategorie.shopping.service;
 
 import com.example.Trip_In_Jeju.calendar.entity.Calendar;
 import com.example.Trip_In_Jeju.calendar.repository.CalendarRepository;
-import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
-import com.example.Trip_In_Jeju.kategorie.dessert.repository.DessertRepository;
+import com.example.Trip_In_Jeju.kategorie.shopping.entity.Shopping;
+import com.example.Trip_In_Jeju.kategorie.shopping.repository.ShoppingRepository;
 import com.example.Trip_In_Jeju.location.entity.Location;
 import com.example.Trip_In_Jeju.location.repository.LocationRepository;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
@@ -26,8 +26,8 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class DessertService {
-    private final DessertRepository dessertRepository;
+public class ShoppingService {
+    private final ShoppingRepository shoppingRepository;
     private final LocationRepository locationRepository;
     private final CalendarRepository calendarRepository;
     private final RatingService ratingService;
@@ -38,29 +38,29 @@ public class DessertService {
     @Value("${custom.genFileDirPath}")
     public String genFileDirPath;
 
-    public Page<Dessert> getList(int page, String subCategory) {
+    public Page<Shopping> getList(int page, String subCategory) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
         Pageable pageable = PageRequest.of(page, 8, Sort.by(sorts));
 
         if ("all".equalsIgnoreCase(subCategory)) {
-            return dessertRepository.findAll(pageable);
+            return shoppingRepository.findAll(pageable);
         } else {
-            return dessertRepository.findBySubCategory(subCategory, pageable);
+            return shoppingRepository.findBySubCategory(subCategory, pageable);
         }
     }
 
-    public Page<Dessert> getList(int page) {
+    public Page<Shopping> getList(int page) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
         Pageable pageable = PageRequest.of(page, 8, Sort.by(sorts));
 
-        return dessertRepository.findAll(pageable);
+        return shoppingRepository.findAll(pageable);
     }
     public void create(String title, String businessHoursStart, String businessHoursEnd, String content, String place, String closedDay,
                        String websiteUrl, String phoneNumber, String hashtags, MultipartFile thumbnail, double latitude, double longitude, String subCategory) {
 
-        String thumbnailRelPath = "dessert/" + UUID.randomUUID().toString() + ".jpg";
+        String thumbnailRelPath = "shopping/" + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
 
         thumbnailFile.mkdirs();
@@ -85,7 +85,7 @@ public class DessertService {
         calendar.setClosedDay(closedDay); // 휴무일 설정
         calendarRepository.save(calendar);
 
-        Dessert p = Dessert.builder()
+        Shopping p = Shopping.builder()
                 .title(title)
                 .calendar(calendar)  // Calendar 엔티티 참조
                 .content(content)
@@ -99,46 +99,46 @@ public class DessertService {
                 .subCategory(subCategory) // Ensure subCategory is used if provided
                 .build();
 
-        dessertRepository.save(p);
+        shoppingRepository.save(p);
     }
 
-    public Dessert getDessert(Long id) {
-        Optional<Dessert> dessert = dessertRepository.findById(id);
+    public Shopping getShopping(Long id) {
+        Optional<Shopping> shopping = shoppingRepository.findById(id);
 
-        if (dessert.isPresent()) {
-            return dessert.get();
+        if (shopping.isPresent()) {
+            return shopping.get();
         } else {
-            throw new RuntimeException("dessert not found");
+            throw new RuntimeException("shopping not found");
         }
     }
 
-    public List<Dessert> getList() {
-        return dessertRepository.findAll();
+    public List<Shopping> getList() {
+        return shoppingRepository.findAll();
     }
 
     public void incrementLikes(Long id) {
-        Dessert dessert = getDessert(id);
-        dessert.setLikes(dessert.getLikes() + 1);
-        dessertRepository.save(dessert);
+        Shopping shopping = getShopping(id);
+        shopping.setLikes(shopping.getLikes() + 1);
+        shoppingRepository.save(shopping);
     }
 
-    public Dessert findByIdWithAverageRating(Long id, String category) {
-        Dessert dessert = findById(id);
+    public Shopping findByIdWithAverageRating(Long id, String category) {
+        Shopping shopping = findById(id);
         double averageRating = ratingService.calculateAverageScore(id,category);
-        dessert.setAverageRating(averageRating);
-        return dessert;
+        shopping.setAverageRating(averageRating);
+        return shopping;
     }
 
-    public Dessert findById(Long id) {
-        Optional<Dessert> optionalDessert = dessertRepository.findById(id);
-        return optionalDessert.orElseThrow(() -> new RuntimeException("Dessert not found with id: " + id));
+    public Shopping findById(Long id) {
+        Optional<Shopping> optionalShopping = shoppingRepository.findById(id);
+        return optionalShopping.orElseThrow(() -> new RuntimeException("Shopping not found with id: " + id));
     }
 
-    public void save(Dessert dessert) {
-        dessertRepository.save(dessert);
+    public void save(Shopping Shopping) {
+        shoppingRepository.save(Shopping);
     }
 
-    public Dessert getDessertById(Long id) {
-        return dessertRepository.findById(id).orElse(null);
+    public Shopping getShoppingById(Long id) {
+        return shoppingRepository.findById(id).orElse(null);
     }
 }

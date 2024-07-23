@@ -5,25 +5,25 @@
         <!-- 카테고리 버튼 -->
         <div class="mb-5 flex justify-center gap-4">
             <a href="#" data-category="all" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">전체</a>
-            <a href="#" data-category="cafe" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">카페</a>
-            <a href="#" data-category="bakery" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">베이커리</a>
-            <a href="#" data-category="iceCream" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">아이스크림</a>
+            <a href="#" data-category="traditionalMarkets" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">전통시장</a>
+            <a href="#" data-category="duty-FreeShops" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">면세점</a>
+            <a href="#" data-category="souvenirs" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">기념품</a>
             <a href="#" data-category="other" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">기타</a>
 
         </div>
         <ul class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-3">
-            <li th:each="dessert, loop : ${paging.content}" class="flex flex-col group w-full">
-                <a th:href="@{|/dessert/detail/${dessert.id}|}"
+            <li th:each="shopping, loop : ${paging.content}" class="flex flex-col group w-full">
+                <a th:href="@{|/shopping/detail/${shopping.id}|}"
                    class="border border-black h-[200px] transition duration-300 rounded-lg hover:rounded-lg hover:-translate-y-1.5 hover:transition hover:duration-300 hover:shadow-md"
                 >
-                    <img class="object-cover object-center block w-full h-full rounded-lg" th:src="@{|/gen/${dessert.thumbnailImg}|}" alt="thumbnailImg">
+                    <img class="object-cover object-center block w-full h-full rounded-lg" th:src="@{|/gen/${shopping.thumbnailImg}|}" alt="thumbnailImg">
                 </a>
-                <a th:href="@{|/dessert/detail/${dessert.id}|}" th:text="${dessert.title}" class="text-center md:!text-left mt-2"></a>
+                <a th:href="@{|/shopping/detail/${shopping.id}|}" th:text="${shopping.title}" class="text-center md:!text-left mt-2"></a>
             </li>
         </ul>
 
         <!-- 페이징 처리 시작 -->
-        <form id="searchForm" th:action="@{/dessert/list}" method="get">
+        <form id="searchForm" th:action="@{/shopping/list}" method="get">
             <input type="hidden" id="page" name="page" value="${paging.number}"/>
             <input type="hidden" id="subCategory" name="subCategory" value="${subCategory}"/> <!-- Add subCategory field -->
         </form>

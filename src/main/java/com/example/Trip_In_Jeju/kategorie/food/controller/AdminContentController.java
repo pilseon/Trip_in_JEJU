@@ -4,6 +4,8 @@ import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
 import com.example.Trip_In_Jeju.kategorie.food.service.FoodService;
 import com.example.Trip_In_Jeju.kategorie.dessert.service.DessertService;
 import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
+import com.example.Trip_In_Jeju.kategorie.shopping.entity.Shopping;
+import com.example.Trip_In_Jeju.kategorie.shopping.service.ShoppingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,14 +23,17 @@ import java.util.List;
 public class AdminContentController {
     private final FoodService foodService;
     private final DessertService dessertService;
+    private final ShoppingService shoppingService;
 
     @GetMapping("/create")
     public String create(Model model) {
         List<Food> foodList = foodService.getList();
         List<Dessert> dessertList = dessertService.getList();
+        List<Shopping> shoppingList = shoppingService.getList();
 
         model.addAttribute("foodList", foodList);
         model.addAttribute("dessertList", dessertList);
+        model.addAttribute("shoppingList", shoppingList);
 
         return "adm/content/create";
     }
@@ -55,6 +60,9 @@ public class AdminContentController {
             foodService.create(title, periodStart, periodEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, subCategory);
         } else if (category.equals("dessert")) {
             dessertService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, subCategory);
+        }
+        else if (category.equals("shopping")) {
+            shoppingService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, subCategory);
         }
 
         return "redirect:/adm/content/create";

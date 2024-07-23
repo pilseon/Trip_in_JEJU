@@ -35,8 +35,10 @@ public class Food {
 
     @CreatedDate
     private LocalDateTime createDate;
+
     @LastModifiedDate
     private LocalDateTime modifyDate;
+
     @ManyToOne
     @JoinColumn(name = "location_id")
     private Location location;
@@ -45,7 +47,14 @@ public class Food {
     private Calendar calendar; // Calendar 엔티티를 참조
 
     private String thumbnailImg;
+
     private String phoneNumber;
     private String websiteUrl;
     private String hashtags;
+
+    private int likes;
+
+    private double averageRating;  // 평균 별점 추가
+
+    private String subCategory;
 }

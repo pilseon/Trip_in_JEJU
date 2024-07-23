@@ -28,23 +28,33 @@ public class DessertService {
     private final LocationRepository locationRepository;
     private final RatingService ratingService;
 
-
-
     @Value("${kakao.api.key}")
     private String apiKey;
 
     @Value("${custom.genFileDirPath}")
     public String genFileDirPath;
 
-    public Page<Dessert> getList(int page) {
+    public Page<Dessert> getList(int page, String subCategory) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
         Pageable pageable = PageRequest.of(page, 8, Sort.by(sorts));
 
+        if ("all".equalsIgnoreCase(subCategory)) {
+            return dessertRepository.findAll(pageable);
+        } else {
+            return dessertRepository.findBySubCategory(subCategory, pageable);
+        }
+    }
+
+    public Page<Dessert> getList(int page) {
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createDate"));
+        Pageable pageable = PageRequest.of(page, 8, Sort.by(sorts));
         return dessertRepository.findAll(pageable);
     }
+
     public void create(String title, String businessHours, String content, String place, String closedDay,
-                       String websiteUrl, String phoneNumber, String hashtags, MultipartFile thumbnail, double latitude, double longitude) {
+                       String websiteUrl, String phoneNumber, String hashtags, MultipartFile thumbnail, double latitude, double longitude, String subCategory) {
 
         String thumbnailRelPath = "dessert/" + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
@@ -64,9 +74,6 @@ public class DessertService {
         location.setLongitude(longitude);
         location = locationRepository.save(location);
 
-
-
-
         Dessert p = Dessert.builder()
                 .title(title)
                 .businessHours(businessHours)
@@ -78,11 +85,11 @@ public class DessertService {
                 .phoneNumber(phoneNumber)
                 .hashtags(hashtags)
                 .likes(0)
+                .subCategory(subCategory) // Ensure subCategory is used if provided
                 .build();
 
         dessertRepository.save(p);
     }
-
 
     public Dessert getDessert(Long id) {
         Optional<Dessert> dessert = dessertRepository.findById(id);
@@ -103,6 +110,7 @@ public class DessertService {
         dessert.setLikes(dessert.getLikes() + 1);
         dessertRepository.save(dessert);
     }
+
     public Dessert findByIdWithAverageRating(Long id) {
         Dessert dessert = findById(id);
         double averageRating = ratingService.calculateAverageRating(id);
@@ -118,6 +126,7 @@ public class DessertService {
     public void save(Dessert dessert) {
         dessertRepository.save(dessert);
     }
+
     public Dessert getDessertById(Long id) {
         return dessertRepository.findById(id).orElse(null);
     }

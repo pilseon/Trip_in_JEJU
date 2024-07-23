@@ -3,6 +3,7 @@ package com.example.Trip_In_Jeju.rating.entity;
 import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 @Getter
@@ -28,4 +29,8 @@ public class Rating {
     private Integer score;
 
     private String nickname;
+
+    private String thumbnailImg;
+
+
 }

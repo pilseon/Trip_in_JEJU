@@ -141,19 +141,19 @@ public class MemberService {
         return memberRepository.findByNickname(nickname).orElse(null);
     }
 
-//    // 썸네일 저장
-//    private String saveThumbnail(MultipartFile thumbnail) {
-//        String thumbnailRelPath = "post/" + UUID.randomUUID().toString() + ".jpg";
-//        File thumbnailFile = new File(fileDirPath + "/" + thumbnailRelPath);
-//
-//        try {
-//            thumbnail.transferTo(thumbnailFile);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        return thumbnailRelPath;
-//    }
+    // 썸네일 저장
+   private String saveThumbnail(MultipartFile thumbnail) {
+        String thumbnailRelPath = "post/" + UUID.randomUUID().toString() + ".jpg";
+        File thumbnailFile = new File(fileDirPath + "/" + thumbnailRelPath);
+
+       try {
+           thumbnail.transferTo(thumbnailFile);
+       } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
+
+        return thumbnailRelPath;
+   }
 
 
 //    public boolean isAdmin(Member member) {

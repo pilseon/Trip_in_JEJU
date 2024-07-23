@@ -52,7 +52,7 @@ public class AdminContentController {
             @RequestParam(value = "periodEnd", required = false) String periodEnd) {
 
         if (category.equals("food")) {
-            foodService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, subCategory);
+            foodService.create(title, periodStart, periodEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, subCategory);
         } else if (category.equals("dessert")) {
             dessertService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, subCategory);
         }

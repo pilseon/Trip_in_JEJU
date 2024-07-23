@@ -3,30 +3,19 @@ package com.example.Trip_In_Jeju.member.servcie;
 import com.example.Trip_In_Jeju.DataNotFoundException;
 import com.example.Trip_In_Jeju.email.service.EmailService;
 import com.example.Trip_In_Jeju.email.service.VerificationCodeService;
-import com.example.Trip_In_Jeju.member.controller.MemberController;
 import com.example.Trip_In_Jeju.member.dto.JoinRequest;
 import com.example.Trip_In_Jeju.member.entity.Member;
-import com.example.Trip_In_Jeju.member.entity.MemberRole;
 import com.example.Trip_In_Jeju.member.repository.MemberRepository;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -130,9 +119,17 @@ public class MemberService {
     }
 
     public Member getCurrentMember() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return memberRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("회원을 찾을 수 없습니다."));
+        // 현재 Authentication 객체를 가져옵니다.
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            String username = authentication.getName();
+            // username이 null 또는 빈 문자열이 아닌지 확인합니다.
+            if (username != null && !username.isEmpty()) {
+                return memberRepository.findByUsername(username).orElse(null);
+            }
+        }
+        return null;
     }
 
 

@@ -57,7 +57,7 @@ public class FoodService {
 
         return foodRepository.findAll(pageable);
     }
-    public void create(String title, String businessHoursStart, String businessHoursEnd, String content, String place, String closedDay,
+    public void create(String title, String periodStart, String periodEnd, String content, String place, String closedDay,
                        String websiteUrl, String phoneNumber, String hashtags, MultipartFile thumbnail, double latitude, double longitude, String subCategory) {
 
         String thumbnailRelPath = "food/" + UUID.randomUUID().toString() + ".jpg";

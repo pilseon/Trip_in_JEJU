@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -79,9 +79,11 @@ public class FoodService {
         location = locationRepository.save(location);
 
         Calendar calendar = new Calendar();
-        calendar.setTitle("Business Hours");
-        calendar.setStart(LocalDateTime.parse(businessHoursStart));
-        calendar.setEnd(LocalDateTime.parse(businessHoursEnd));
+        calendar.setTitle("Period");
+        if (periodStart != null && periodEnd != null) {
+            calendar.setPeriodStart(LocalDate.parse(periodStart));
+            calendar.setPeriodEnd(LocalDate.parse(periodEnd));
+        }
         calendarRepository.save(calendar);
 
         Food p = Food.builder()

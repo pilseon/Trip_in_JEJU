@@ -26,6 +26,10 @@ public class CalendarService {
     }
 
     public List<Calendar> getCalendarsBetween(LocalDateTime start, LocalDateTime end) {
-        return calendarRepository.findByStartBetween(start, end);
+        return calendarRepository.findByPeriodStartBetween(start, end);
+    }
+
+    public List<Calendar> findCalendarsBetween(LocalDateTime start, LocalDateTime end) {
+        return calendarRepository.findByPeriodStartBetween(start, end);
     }
 }

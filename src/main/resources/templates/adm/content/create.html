@@ -42,29 +42,19 @@
                 <input type="text" id="title" name="title" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
             </div>
 
-
-            <!-- 시작 시간 입력 -->
-            <div class="form-group">
+            <!-- 카테고리별 시간/기간 입력 -->
+            <div id="timeInputs" class="form-group" style="display:none;">
                 <label for="businessHoursStart" class="block text-lg font-semibold text-teal-700">시작시간:</label>
                 <select id="businessHoursStart" name="businessHoursStart" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
                 </select>
-            </div>
-
-            <!-- 종료 시간 입력 -->
-            <div class="form-group">
                 <label for="businessHoursEnd" class="block text-lg font-semibold text-teal-700">종료시간:</label>
                 <select id="businessHoursEnd" name="businessHoursEnd" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
                 </select>
-            </div>
-
-            <!-- 휴무일 입력 -->
-            <div class="form-group">
                 <label for="closedDay" class="block text-lg font-semibold text-teal-700">휴무일:</label>
                 <input type="text" id="closedDay" name="closedDay" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
             </div>
 
-            <!-- 기간 입력 -->
-            <div class="form-group">
+            <div id="periodInputs" class="form-group" style="display:none;">
                 <label for="period" class="block text-lg font-semibold text-teal-700">기간:</label>
                 <div class="flex space-x-4">
                     <input type="date" id="periodStart" name="periodStart" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
@@ -129,7 +119,7 @@
                     <option value="coffee">커피</option>
                     <option value="bread">빵</option>
                     <option value="bingsu">빙수</option>
-                `;
+                ;
             } else if (category === 'food') {
                 subCategoryContainer.style.display = 'block';
                 subCategorySelect.innerHTML = `
@@ -142,7 +132,6 @@
                 subCategoryContainer.style.display = 'none';
                 subCategorySelect.innerHTML = '';
             }
-
         }
 
         document.addEventListener('DOMContentLoaded', function() {

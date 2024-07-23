@@ -16,12 +16,14 @@
                 <span class="font-bold" style="font-size: 1.5rem;" th:text="${dessert.title}"></span>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
-                        <span style="font-weight: bold;">시간: </span>
-                        <span th:text="${dessert.businessHours}"></span>
+                        <span style="font-weight: bold;">영업시간: </span>
+                        <span th:text="${#temporals.format(dessert.calendar.businessHoursStart, 'HH:mm')}"></span>
+                        <span> ~ </span>
+                        <span th:text="${#temporals.format(dessert.calendar.businessHoursEnd, 'HH:mm')}"></span>
                     </li>
                     <li class="list-group-item">
-                        <span style="font-weight: bold;">휴무: </span>
-                        <span th:text="${dessert.closedDay}"></span>
+                        <span style="font-weight: bold;">휴무일: </span>
+                        <span th:text="${dessert.calendar.closedDay}"></span>
                     </li>
                     <li class="list-group-item">
                         <span style="font-weight: bold;">위치 : </span>

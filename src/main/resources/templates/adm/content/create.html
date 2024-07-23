@@ -119,7 +119,7 @@
                     <option value="coffee">커피</option>
                     <option value="bread">빵</option>
                     <option value="bingsu">빙수</option>
-                ;
+                `;
             } else if (category === 'food') {
                 subCategoryContainer.style.display = 'block';
                 subCategorySelect.innerHTML = `
@@ -132,11 +132,13 @@
                 subCategoryContainer.style.display = 'none';
                 subCategorySelect.innerHTML = '';
             }
+
         }
 
         document.addEventListener('DOMContentLoaded', function() {
             updateSubCategoryOptions();
         });
+
     </script>
     </body>
 </section>

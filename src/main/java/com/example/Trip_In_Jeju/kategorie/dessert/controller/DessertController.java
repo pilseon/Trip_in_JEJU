@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -22,9 +23,14 @@ public class DessertController {
     private final RatingService ratingService;
 
     @GetMapping("/list")
-    public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page) {
-        Page<Dessert> paging = dessertService.getList(page);
+    public String list(
+            Model model,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "subCategory", defaultValue = "all") String subCategory
+    ) {
+        Page<Dessert> paging = dessertService.getList(page, subCategory);
         model.addAttribute("paging", paging);
+        model.addAttribute("subCategory", subCategory);
         return "dessert/list";
     }
 
@@ -62,17 +68,28 @@ public class DessertController {
     }
 
     @PostMapping("/review/{id}")
-    public String submitRating(@PathVariable Long id, @RequestParam Integer score, @RequestParam String comment, Authentication authentication) {
+    public String submitRating(
+            @PathVariable Long id,
+            @RequestParam Integer score,
+            @RequestParam String comment,
+            Authentication authentication,
+            @RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail
+    ) {
         if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails)) {
             return "redirect:/dessert/detail/" + id;
         }
         String nickname = ((UserDetails) authentication.getPrincipal()).getUsername();
-        ratingService.saveRating(id, score, comment, nickname);
+        ratingService.saveRating(id, score, comment, nickname, thumbnail);
         return "redirect:/dessert/detail/" + id;
     }
 
     @PostMapping("/review/edit/{id}")
-    public String updateRating(@PathVariable Long id, @RequestParam Long ratingId, @RequestParam Integer score, @RequestParam String comment) {
+    public String updateRating(
+            @PathVariable Long id,
+            @RequestParam Long ratingId,
+            @RequestParam Integer score,
+            @RequestParam String comment
+    ) {
         ratingService.updateRating(ratingId, score, comment);
         return "redirect:/dessert/detail/" + id;
     }

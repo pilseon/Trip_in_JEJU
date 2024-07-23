@@ -31,14 +31,22 @@
         .rating > label:hover ~ label {
             color: #ffeb3b;
         }
+        .rating > .fa {
+            color: #d3d3d3; /* 빈 별 색상 (회색) */
+            font-size: 1.5rem;
+            display: inline-block;
+        }
+        .rating > .fa.fa-star {
+            color: #ffc107; /* 채워진 별 색상 (노란색) */
+        }
     </style>
 </head>
+<body>
 <section layout:fragment="content" class="section-prod-list">
-    <body>
-    <section class="container mt-1">
+    <div class="container mt-1">
         <!-- 리뷰 작성 폼 -->
         <h3 class="mt-4">리뷰 작성</h3>
-        <form th:action="@{/dessert/review/{id}(id=${dessert.id})}" method="post">
+        <form th:action="@{/rating/review/save}" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="score">점수</label>
                 <div class="rating">
@@ -58,6 +66,11 @@
                 <label for="comment">댓글</label>
                 <textarea id="comment" name="comment" class="form-control" rows="3" required></textarea>
             </div>
+            <div class="form-group">
+                <label for="thumbnail">사진 업로드</label>
+                <input type="file" id="thumbnail" name="thumbnail" accept="image/png, image/gif, image/jpeg">
+            </div>
+            <input type="hidden" name="dessertId" th:value="${dessert.id}">
             <button type="submit" class="btn btn-primary">리뷰 제출</button>
         </form>
 
@@ -72,11 +85,14 @@
                 </p>
                 <p>댓글: <span th:text="${rating.comment}"></span></p>
                 <p>작성자: <span th:text="${rating.nickname}"></span></p>
+                <div th:if="${rating.thumbnailImg != null}">
+                    <img th:src="@{|/file/${rating.thumbnailImg}|}" alt="리뷰 이미지" style="max-width: 200px;">
+                </div>
                 <a href="#" th:href="@{/dessert/review/delete/{id}(id=${rating.id})}" class="btn btn-danger btn-sm">삭제</a>
                 <a href="#" th:href="@{/dessert/review/edit/{id}(id=${rating.id})}" class="btn btn-warning btn-sm">수정</a>
             </li>
         </ul>
-    </section>
-    </body>
+    </div>
 </section>
+</body>
 </html>

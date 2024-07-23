@@ -18,42 +18,41 @@ import java.util.UUID;
 public class RatingService {
     private final RatingRepository ratingRepository;
 
-    public double calculateAverageScore(Long dessertId) {
-        List<Rating> ratings = ratingRepository.findByDessertId(dessertId);
+    public double calculateAverageScore(Long itemId, String category) {
+        List<Rating> ratings = ratingRepository.findByItemIdAndCategory(itemId, category);
         return ratings.stream().mapToDouble(rating -> rating.getScore().doubleValue()).average().orElse(0.0);
     }
 
-    public List<Rating> getAllRatings(Long dessertId) {
-        return ratingRepository.findByDessertId(dessertId);
-    }
-    public double calculateAverageRating(Long dessertId) {
-        return calculateAverageScore(dessertId);
+    public List<Rating> getAllRatings(Long itemId, String category) {
+        return ratingRepository.findByItemIdAndCategory(itemId, category);
     }
 
+    @Value("${custom.genFileDirPath}")
+    public String genFileDirPath;
 
-    @Value("${custom.fileDirPath}")
-    private String fileDirPath;
     @Transactional
-    public void saveRating(Long dessertId, Integer score, String comment, String nickname, MultipartFile thumbnail) {
-        String thumbnailRelPath = "post/" + UUID.randomUUID().toString() + ".jpg";
-        File thumbnailFile = new File(fileDirPath + "/" + thumbnailRelPath);
+    public void saveRating(Long itemId, Integer score, String comment, String nickname, MultipartFile thumbnail, String category) {
+        String thumbnailRelPath = "rating/" + UUID.randomUUID().toString() + ".jpg";
+        File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
+
+        thumbnailFile.mkdirs();
 
         try {
             thumbnail.transferTo(thumbnailFile);
-        } catch ( IOException e ) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         Rating rating = Rating.builder()
-                .dessertId(dessertId)
+                .itemId(itemId)
                 .score(score)
                 .comment(comment)
                 .nickname(nickname)
-                .thumbnailImg(thumbnailRelPath)  // 파일 경로 저장
+                .thumbnailImg(thumbnailRelPath)
+                .category(category)
                 .build();
         ratingRepository.save(rating);
     }
-
 
     @Transactional
     public void updateRating(Long ratingId, Integer score, String comment) {
@@ -68,11 +67,13 @@ public class RatingService {
         ratingRepository.deleteById(ratingId);
     }
 
-    public List<Rating> getRatings(Long dessertId) {
-        return ratingRepository.findByDessertId(dessertId);
+    public List<Rating> getRatings(Long itemId, String category) {
+        return ratingRepository.findByItemIdAndCategory(itemId, category);
     }
 
     public Rating getRatingById(Long ratingId) {
         return ratingRepository.findById(ratingId).orElse(null);
     }
+
+
 }

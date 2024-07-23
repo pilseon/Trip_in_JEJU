@@ -124,9 +124,9 @@ public class FoodService {
         foodRepository.save(food);
     }
 
-    public Food findByIdWithAverageRating(Long id) {
+    public Food findByIdWithAverageRating(Long id, String category) {
         Food food = findById(id);
-        double averageRating = ratingService.calculateAverageRating(id);
+        double averageRating = ratingService.calculateAverageScore(id,category);
         food.setAverageRating(averageRating);
         return food;
     }

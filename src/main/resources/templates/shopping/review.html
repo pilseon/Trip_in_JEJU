@@ -46,7 +46,7 @@
     <div class="container mt-1">
         <!-- 리뷰 작성 폼 -->
         <h3 class="mt-4">리뷰 작성</h3>
-        <form th:action="@{/dessert/review/{id}(id=${dessert.id})}" method="post" enctype="multipart/form-data">
+        <form th:action="@{/shopping/review/{id}(id=${shopping.id})}" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="score">점수</label>
                 <div class="rating">
@@ -70,8 +70,8 @@
                 <label for="thumbnail">사진 업로드</label>
                 <input type="file" id="thumbnail" name="thumbnail" accept="image/png, image/gif, image/jpeg" >
             </div>
-            <input type="hidden" name="itemId" th:value="${dessert.id}"> <!-- itemId 추가 -->
-            <input type="hidden" name="category" value="dessert"> <!-- category 추가 -->
+            <input type="hidden" name="itemId" th:value="${shopping.id}"> <!-- itemId 추가 -->
+            <input type="hidden" name="category" value="shopping"> <!-- category 추가 -->
             <button type="submit" class="btn btn-primary">리뷰 제출</button>
         </form>
 
@@ -89,8 +89,8 @@
                 <div th:if="${rating.thumbnailImg != null}">
                     <img th:src="@{|/gen/${rating.thumbnailImg}|}" alt="리뷰 이미지" style="max-width: 200px;">
                 </div>
-                <a href="#" th:href="@{/dessert/review/delete/{ratingId}(ratingId=${rating.id})}" class="btn btn-danger btn-sm">삭제</a>
-                <a href="#" th:href="@{/dessert/review/edit/{ratingId}(ratingId=${rating.id})}" class="btn btn-warning btn-sm">수정</a>
+                <a href="#" th:href="@{/shopping/review/delete/{ratingId}(ratingId=${rating.id})}" class="btn btn-danger btn-sm">삭제</a>
+                <a href="#" th:href="@{/shopping/review/edit/{ratingId}(ratingId=${rating.id})}" class="btn btn-warning btn-sm">수정</a>
             </li>
         </ul>
     </div>

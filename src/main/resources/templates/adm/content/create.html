@@ -12,6 +12,24 @@
     <div class="container">
         <h1 class="text-center">게시물 작성</h1>
         <form th:action="@{/adm/content/create}" method="POST" enctype="multipart/form-data" class="space-y-6 p-6 rounded-lg shadow-md">
+
+            <!-- 카테고리 선택 -->
+            <div class="form-group">
+                <label for="category" class="block text-lg font-semibold text-teal-700">카테고리:</label>
+                <select id="category" name="category" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50" onchange="updateSubCategoryOptions()">
+                    <option value="food">음식점</option>
+                    <option value="dessert">디저트</option>
+                </select>
+            </div>
+
+            <!-- 하위 카테고리 선택 -->
+            <div class="form-group" id="subCategoryContainer" style="display: none;">
+                <label for="subCategory" class="block text-lg font-semibold text-teal-700">하위 카테고리:</label>
+                <select id="subCategory" name="subCategory" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
+                    <!-- 하위 카테고리 옵션은 자바스크립트로 동적으로 추가됨 -->
+                </select>
+            </div>
+
             <!-- 썸네일 업로드 -->
             <div class="form-group">
                 <label for="thumbnail" class="block text-lg font-semibold text-teal-700">썸네일:</label>
@@ -23,6 +41,7 @@
                 <label for="title" class="block text-lg font-semibold text-teal-700">제목:</label>
                 <input type="text" id="title" name="title" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
             </div>
+
 
             <!-- 시작 시간 입력 -->
             <div class="form-group">
@@ -89,23 +108,6 @@
                 <input type="text" id="content" name="content" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
             </div>
 
-            <!-- 카테고리 선택 -->
-            <div class="form-group">
-                <label for="category" class="block text-lg font-semibold text-teal-700">카테고리:</label>
-                <select id="category" name="category" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50" onchange="updateSubCategoryOptions()">
-                    <option value="food">음식점</option>
-                    <option value="dessert">디저트</option>
-                </select>
-            </div>
-
-            <!-- 하위 카테고리 선택 -->
-            <div class="form-group" id="subCategoryContainer" style="display: none;">
-                <label for="subCategory" class="block text-lg font-semibold text-teal-700">하위 카테고리:</label>
-                <select id="subCategory" name="subCategory" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
-                    <!-- 하위 카테고리 옵션은 자바스크립트로 동적으로 추가됨 -->
-                </select>
-            </div>
-
             <!-- 제출 버튼 -->
             <div class="text-center">
                 <button type="submit" class="bg-teal-600 text-white px-5 py-2 rounded-lg shadow-md hover:bg-teal-700 text-lg font-semibold">등록</button>
@@ -116,7 +118,6 @@
 
     <script th:src="@{/admCreatejs/admCreate.js}"></script>
     <script>
-        // JavaScript to handle category and sub-category changes
         function updateSubCategoryOptions() {
             const category = document.getElementById('category').value;
             const subCategoryContainer = document.getElementById('subCategoryContainer');
@@ -129,13 +130,21 @@
                     <option value="bread">빵</option>
                     <option value="bingsu">빙수</option>
                 `;
+            } else if (category === 'food') {
+                subCategoryContainer.style.display = 'block';
+                subCategorySelect.innerHTML = `
+                    <option value="korean">한식</option>
+                    <option value="western">양식</option>
+                    <option value="japanese">일식</option>
+                    <option value="chinese">중식</option>
+                `;
             } else {
                 subCategoryContainer.style.display = 'none';
                 subCategorySelect.innerHTML = '';
             }
+
         }
 
-        // Initialize the form with the correct sub-category options based on the default category
         document.addEventListener('DOMContentLoaded', function() {
             updateSubCategoryOptions();
         });

@@ -32,14 +32,12 @@ public class CalendarController {
     }
 
     @PostMapping("/calendars")
-    @ResponseBody
-    public String addEvent(@RequestBody Calendar calendar) {
+    public String addEvent(@ModelAttribute Calendar calendar) {
         calendarService.saveCalendar(calendar);
         return "redirect:/calendar/list";
     }
 
     @GetMapping("/events")
-    @ResponseBody
     public List<Calendar> getEvents() {
         return calendarService.getAllCalendars();
     }
@@ -66,5 +64,10 @@ public class CalendarController {
         model.addAttribute("currentDate", date);
 
         return "calendar/weekCalendar";
+    }
+    @GetMapping("/between")
+    public List<Calendar> getCalendarsBetween(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
+                                              @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
+        return calendarService.findCalendarsBetween(start, end);
     }
 }

@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -79,9 +79,10 @@ public class DessertService {
         location = locationRepository.save(location);
 
         Calendar calendar = new Calendar();
-        calendar.setTitle("Business Hours");
-        calendar.setStart(LocalDateTime.parse(businessHoursStart));
-        calendar.setEnd(LocalDateTime.parse(businessHoursEnd));
+        calendar.setTitle(title);
+        calendar.setBusinessHoursStart(LocalTime.parse(businessHoursStart));
+        calendar.setBusinessHoursEnd(LocalTime.parse(businessHoursEnd));
+        calendar.setClosedDay(closedDay); // 휴무일 설정
         calendarRepository.save(calendar);
 
         Dessert p = Dessert.builder()
@@ -91,7 +92,6 @@ public class DessertService {
                 .location(location)
                 .place(place)
                 .thumbnailImg(thumbnailRelPath)
-                .closedDay(closedDay)
                 .websiteUrl(websiteUrl)
                 .phoneNumber(phoneNumber)
                 .hashtags(hashtags)

@@ -43,13 +43,13 @@ public class AdminContentController {
             @RequestParam("thumbnail") MultipartFile thumbnail,
             @RequestParam("websiteUrl") String websiteUrl,
             @RequestParam("phoneNumber") String phoneNumber,
+            @RequestParam(value = "subCategory", required = false) String subCategory,
             @RequestParam("hashtags") String hashtags,
             @RequestParam("category") String category,
-            @RequestParam(value = "subCategory", required = false) String subCategory,
             @RequestParam("latitude") double latitude,
             @RequestParam("longitude") double longitude,
-            @RequestParam("periodStart") String periodStart,
-            @RequestParam("periodEnd") String periodEnd) {
+            @RequestParam(value = "periodStart", required = false) String periodStart,
+            @RequestParam(value = "periodEnd", required = false) String periodEnd) {
 
         if (category.equals("food")) {
             foodService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, subCategory);

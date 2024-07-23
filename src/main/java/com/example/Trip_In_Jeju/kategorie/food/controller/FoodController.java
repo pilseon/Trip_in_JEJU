@@ -36,7 +36,7 @@ public class FoodController {
     }
 
     @GetMapping("/detail/{id}")
-    public String getFoodDetail(@PathVariable Long id, Model model, Authentication authentication) {
+    public String getFoodDetail(@PathVariable("id") Long id, Model model, Authentication authentication) {
         Food food = foodService.getFoodById(id);
         List<Rating> ratings = ratingService.getRatings(id);
         double averageScore = ratingService.calculateAverageScore(id);
@@ -57,7 +57,7 @@ public class FoodController {
     }
 
     @GetMapping("/review/{id}")
-    public String getReviewPage(@PathVariable Long id, Model model) {
+    public String getReviewPage(@PathVariable("id") Long id, Model model) {
         Food food = foodService.getFoodById(id);
         List<Rating> ratings = ratingService.getRatings(id);
         double averageScore = ratingService.calculateAverageScore(id);
@@ -70,9 +70,9 @@ public class FoodController {
 
     @PostMapping("/review/{id}")
     public String submitRating(
-            @PathVariable Long id,
-            @RequestParam Integer score,
-            @RequestParam String comment,
+            @PathVariable("id") Long id,
+            @RequestParam("score") Integer score,
+            @RequestParam("comment") String comment,
             Authentication authentication,
             @RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail
     ) {
@@ -86,17 +86,17 @@ public class FoodController {
 
     @PostMapping("/review/edit/{id}")
     public String updateRating(
-            @PathVariable Long id,
-            @RequestParam Long ratingId,
-            @RequestParam Integer score,
-            @RequestParam String comment
+            @PathVariable("id") Long id,
+            @RequestParam("ratingId") Long ratingId,
+            @RequestParam("score") Integer score,
+            @RequestParam("comment") String comment
     ) {
         ratingService.updateRating(ratingId, score, comment);
         return "redirect:/food/detail/" + id;
     }
 
     @GetMapping("/review/delete/{id}")
-    public String deleteRating(@PathVariable Long id, @RequestParam Long ratingId) {
+    public String deleteRating(@PathVariable("id") Long id, @RequestParam("ratingId") Long ratingId) {
         ratingService.deleteRating(ratingId);
         return "redirect:/food/detail/" + id;
     }

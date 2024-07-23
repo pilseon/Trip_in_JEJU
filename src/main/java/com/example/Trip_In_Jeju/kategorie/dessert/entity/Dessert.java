@@ -1,5 +1,6 @@
 package com.example.Trip_In_Jeju.kategorie.dessert.entity;
 
+import com.example.Trip_In_Jeju.calendar.entity.Calendar;
 import com.example.Trip_In_Jeju.location.entity.Location;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,12 +25,11 @@ public class Dessert {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private long id;
-
     private String title;
     private String content;
     private int category;
     private Long hit;
-
+    private String place; // 장소를 나타내는 단순 문자열 필드
     private String thumbnail;
     private String closedDay;
 
@@ -43,8 +43,11 @@ public class Dessert {
     @JoinColumn(name = "location_id")
     private Location location;
 
+    @OneToOne
+    private Calendar calendar; // Calendar 엔티티를 참조
+
     private String thumbnailImg;
-    private String businessHours;
+
     private String phoneNumber;
     private String websiteUrl;
     private String hashtags;

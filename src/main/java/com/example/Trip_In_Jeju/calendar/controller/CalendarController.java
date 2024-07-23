@@ -32,12 +32,14 @@ public class CalendarController {
     }
 
     @PostMapping("/calendars")
-    public String addEvent(@ModelAttribute Calendar calendar) {
+    @ResponseBody
+    public String addEvent(@RequestBody Calendar calendar) {
         calendarService.saveCalendar(calendar);
         return "redirect:/calendar/list";
     }
 
     @GetMapping("/events")
+    @ResponseBody
     public List<Calendar> getEvents() {
         return calendarService.getAllCalendars();
     }

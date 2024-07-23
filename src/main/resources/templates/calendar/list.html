@@ -1,39 +1,24 @@
 <html layout:decorate="~{/layout/layout}">
-<section layout:fragment="content" class="section-prod-list ">
+<section layout:fragment="content" class="section-prod-list">
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>캘린더</title>
+
+        <link href="/resource/css/admCreate.css" rel="stylesheet" type="text/css" />
         <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css' rel='stylesheet' />
         <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js'></script>
-        <title>Weekly Calendar</title>
-        <style>
-       .calendar-container .sunday {
-           color: red;
-       }
-
-       .calendar-container .saturday {
-           color: blue;
-       }
-
-       @media (max-width: 600px) {
-           .calendar-container {
-               width: 340px;
-           }
-       }
-        </style>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     </head>
     <body>
-    <div class="container w-10/12">
-        <h1 class="text-center text-[1.5rem] font-bold pb-3">Calendar</h1>
-        <form class="flex gap-2 flex-wrap justify-between" th:action="@{/calendar}" th:object="${calendar}" method="post">
-            <input class="ring-2 p-1 w-full" type="text" th:field="*{title}" placeholder="행사 제목"/>
-            <input class="ring-2 p-1 w-5/12" type="date" th:field="*{start}" placeholder="행사 시작날짜"/>~
-            <input class="ring-2 p-1 w-5/12" type="date" th:field="*{end}" placeholder="행사 종료 날짜"/>
-            <button class="btn btn-primary w-32" type="submit">등록하기</button>
-        </form>
-
-        <!-- FullCalendar를 위한 div -->
-        <div class="w-10/12 ml-auto mr-auto" id="calendar" style="margin-top: 10px;"></div>
+    <div class="container">
+        <h1 class="text-center">캘린더</h1>
+        <div class="calendar-container">
+            <div id="calendar"></div>
+        </div>
     </div>
-    </body>
     <script th:src="@{/calendarjs/calendar.js}"></script>
+    </body>
 </section>
 </html>

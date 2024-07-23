@@ -1,5 +1,7 @@
 package com.example.Trip_In_Jeju.kategorie.food.service;
 
+import com.example.Trip_In_Jeju.calendar.entity.Calendar;
+import com.example.Trip_In_Jeju.calendar.repository.CalendarRepository;
 import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
 import com.example.Trip_In_Jeju.kategorie.food.repository.FoodRepository;
 import com.example.Trip_In_Jeju.location.entity.Location;
@@ -15,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +29,7 @@ import java.util.UUID;
 public class FoodService {
     private final FoodRepository foodRepository;
     private final LocationRepository locationRepository;
+    private final CalendarRepository calendarRepository;
 
     @Value("${kakao.api.key}")
     private String apiKey;
@@ -41,9 +45,9 @@ public class FoodService {
         return foodRepository.findAll(pageable);
     }
 
-    public void create(String title, String businessHours, String content, String place, String closedDay,
+    public void create(String title, String content, String place, String closedDay,
                        String websiteUrl, String phoneNumber, String hashtags, MultipartFile thumbnail,
-                       double latitude, double longitude) {
+                       double latitude, double longitude, String periodStart, String periodEnd) {
 
         String thumbnailRelPath = "food/" + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
@@ -63,10 +67,17 @@ public class FoodService {
         location.setLongitude(longitude);
         location = locationRepository.save(location);
 
+        Calendar calendar = new Calendar();
+        calendar.setTitle("Period");
+        calendar.setPeriodStart(LocalDateTime.parse(periodStart));
+        calendar.setPeriodEnd(LocalDateTime.parse(periodEnd));
+        calendarRepository.save(calendar);
+
         Food p = Food.builder()
                 .title(title)
-                .businessHours(businessHours)
+                .calendar(calendar)
                 .content(content)
+                .place(place)
                 .location(location) // location 설정
                 .thumbnailImg(thumbnailRelPath)
                 .closedDay(closedDay)

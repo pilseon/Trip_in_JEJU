@@ -1,5 +1,7 @@
 package com.example.Trip_In_Jeju.kategorie.dessert.service;
 
+import com.example.Trip_In_Jeju.calendar.entity.Calendar;
+import com.example.Trip_In_Jeju.calendar.repository.CalendarRepository;
 import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
 import com.example.Trip_In_Jeju.kategorie.dessert.repository.DessertRepository;
 import com.example.Trip_In_Jeju.location.entity.Location;
@@ -16,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +29,7 @@ import java.util.UUID;
 public class DessertService {
     private final DessertRepository dessertRepository;
     private final LocationRepository locationRepository;
+    private final CalendarRepository calendarRepository;
     private final RatingService ratingService;
 
     @Value("${kakao.api.key}")
@@ -50,10 +54,10 @@ public class DessertService {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
         Pageable pageable = PageRequest.of(page, 8, Sort.by(sorts));
+
         return dessertRepository.findAll(pageable);
     }
-
-    public void create(String title, String businessHours, String content, String place, String closedDay,
+    public void create(String title, String businessHoursStart, String businessHoursEnd, String content, String place, String closedDay,
                        String websiteUrl, String phoneNumber, String hashtags, MultipartFile thumbnail, double latitude, double longitude, String subCategory) {
 
         String thumbnailRelPath = "dessert/" + UUID.randomUUID().toString() + ".jpg";
@@ -74,11 +78,18 @@ public class DessertService {
         location.setLongitude(longitude);
         location = locationRepository.save(location);
 
+        Calendar calendar = new Calendar();
+        calendar.setTitle("Business Hours");
+        calendar.setStart(LocalDateTime.parse(businessHoursStart));
+        calendar.setEnd(LocalDateTime.parse(businessHoursEnd));
+        calendarRepository.save(calendar);
+
         Dessert p = Dessert.builder()
                 .title(title)
-                .businessHours(businessHours)
+                .calendar(calendar)  // Calendar 엔티티 참조
                 .content(content)
                 .location(location)
+                .place(place)
                 .thumbnailImg(thumbnailRelPath)
                 .closedDay(closedDay)
                 .websiteUrl(websiteUrl)

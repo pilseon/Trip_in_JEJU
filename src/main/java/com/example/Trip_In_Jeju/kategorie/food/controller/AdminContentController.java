@@ -35,7 +35,8 @@ public class AdminContentController {
     @PostMapping("/create")
     public String createContent(
             @RequestParam("title") String title,
-            @RequestParam("businessHours") String businessHours,
+            @RequestParam("businessHoursStart") String businessHoursStart,
+            @RequestParam("businessHoursEnd") String businessHoursEnd,
             @RequestParam("content") String content,
             @RequestParam("place") String place,
             @RequestParam("closedDay") String closedDay,
@@ -46,17 +47,19 @@ public class AdminContentController {
             @RequestParam("category") String category,
             @RequestParam(value = "subCategory", required = false) String subCategory,
             @RequestParam("latitude") double latitude,
-            @RequestParam("longitude") double longitude) {
+            @RequestParam("longitude") double longitude,
+            @RequestParam("periodStart") String periodStart,
+            @RequestParam("periodEnd") String periodEnd) {
 
         if (category.equals("food")) {
-            foodService.create(title, businessHours, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude);
+            foodService.create(title, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, periodStart, periodEnd);
         } else if (category.equals("dessert")) {
-            dessertService.create(title, businessHours, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, subCategory);
+            dessertService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, subCategory);
         }
 
         return "redirect:/adm/content/create";
     }
-
+}
 
 //    @PostMapping("/createFood")
 //    public String createFoodContent(@RequestParam("title") String title, @RequestParam("content") String content, @RequestParam("place") String place, @RequestParam("closedDay") String closedDay, @RequestParam("thumbnail") MultipartFile thumbnail) {
@@ -69,4 +72,3 @@ public class AdminContentController {
 //        dessertService.create(title, content, place, closedDay, thumbnail);
 //        return "redirect:/adm/food/create";
 //    }
-}

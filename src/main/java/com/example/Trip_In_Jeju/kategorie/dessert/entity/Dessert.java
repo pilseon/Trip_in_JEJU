@@ -31,7 +31,6 @@ public class Dessert {
     private Long hit;
     private String place; // 장소를 나타내는 단순 문자열 필드
     private String thumbnail;
-    private String closedDay;
 
     @CreatedDate
     private LocalDateTime createDate;

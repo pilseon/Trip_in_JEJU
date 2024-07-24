@@ -20,6 +20,7 @@
                     <option value="food">음식점</option>
                     <option value="dessert">디저트</option>
                     <option value="shopping">쇼핑</option>
+                    <option value="activity">액티비티</option>
                 </select>
             </div>
 
@@ -122,6 +123,7 @@
                     <option value="iceCream">아이스크림</option>
                     <option value="other">기타</option>
                 `;
+
             } else if (category === 'food') {
                 subCategoryContainer.style.display = 'block';
                 subCategorySelect.innerHTML = `
@@ -137,6 +139,15 @@
                     <option value="traditionalMarkets">전통시장</option>
                     <option value="duty-FreeShops">면세점</option>
                     <option value="souvenirs">기념품</option>
+                    <option value="other">기타</option>
+                `;
+
+            } else if (category === 'activity') {
+                subCategoryContainer.style.display = 'block';
+                subCategorySelect.innerHTML = `
+                    <option value="sports">스포츠</option>
+                    <option value="experienceActivities">체험활동</option>
+                    <option value="leisure-entertainment">레저/오락</option>
                     <option value="other">기타</option>
                 `;
             } else {

@@ -1,5 +1,7 @@
 package com.example.Trip_In_Jeju.kategorie.food.controller;
 
+import com.example.Trip_In_Jeju.kategorie.activity.entity.Activity;
+import com.example.Trip_In_Jeju.kategorie.activity.service.ActivityService;
 import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
 import com.example.Trip_In_Jeju.kategorie.food.service.FoodService;
 import com.example.Trip_In_Jeju.kategorie.dessert.service.DessertService;
@@ -24,16 +26,20 @@ public class AdminContentController {
     private final FoodService foodService;
     private final DessertService dessertService;
     private final ShoppingService shoppingService;
+    private final ActivityService activityService;
 
     @GetMapping("/create")
     public String create(Model model) {
         List<Food> foodList = foodService.getList();
         List<Dessert> dessertList = dessertService.getList();
         List<Shopping> shoppingList = shoppingService.getList();
+        List<Activity> activityList = activityService.getList();
+
 
         model.addAttribute("foodList", foodList);
         model.addAttribute("dessertList", dessertList);
         model.addAttribute("shoppingList", shoppingList);
+        model.addAttribute("activityList", activityList);
 
         return "adm/content/create";
     }
@@ -63,6 +69,9 @@ public class AdminContentController {
         }
         else if (category.equals("shopping")) {
             shoppingService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, subCategory);
+        }
+        else if (category.equals("activity")) {
+            activityService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, subCategory);
         }
 
         return "redirect:/adm/content/create";

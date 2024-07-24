@@ -35,7 +35,7 @@ public class ActivityService {
     @Value("${kakao.api.key}")
     private String apiKey;
 
-    @Value("${custom.genFileDirPath}")
+    @Value("${custom.fileDirPath}")
     public String genFileDirPath;
 
     public Page<Activity> getList(int page, String subCategory) {

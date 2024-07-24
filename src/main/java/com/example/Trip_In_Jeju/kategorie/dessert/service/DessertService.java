@@ -35,7 +35,7 @@ public class DessertService {
     @Value("${kakao.api.key}")
     private String apiKey;
 
-    @Value("${custom.genFileDirPath}")
+    @Value("${custom.fileDirPath}")
     public String genFileDirPath;
 
     public Page<Dessert> getList(int page, String subCategory) {

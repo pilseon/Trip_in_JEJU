@@ -24,8 +24,8 @@
 
         <!-- 페이징 처리 시작 -->
         <form id="searchForm" th:action="@{/shopping/list}" method="get">
-            <input type="hidden" id="page" name="page" value="${paging.number}"/>
-            <input type="hidden" id="subCategory" name="subCategory" value="${subCategory}"/> <!-- Add subCategory field -->
+            <input type="hidden" id="page" name="page" value="0"/>
+            <input type="hidden" id="subCategory" name="subCategory" value=""/>
         </form>
 
         <ul th:if="${!paging.isEmpty()}" class="pagination flex justify-center mt-5">

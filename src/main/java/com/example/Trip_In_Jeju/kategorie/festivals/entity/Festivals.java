@@ -1,4 +1,4 @@
-package com.example.Trip_In_Jeju.kategorie.food.entity;
+package com.example.Trip_In_Jeju.kategorie.festivals.entity;
 
 import com.example.Trip_In_Jeju.calendar.entity.Calendar;
 import com.example.Trip_In_Jeju.location.entity.Location;
@@ -21,7 +21,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Food {
+public class Festivals {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private long id;
@@ -31,6 +31,7 @@ public class Food {
     private Long hit;
     private String place; // 장소를 나타내는 단순 문자열 필드
     private String thumbnail;
+    private String closedDay;
 
     @CreatedDate
     private LocalDateTime createDate;

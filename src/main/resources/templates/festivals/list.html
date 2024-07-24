@@ -1,29 +1,31 @@
 <!DOCTYPE html>
-<html layout:decorate="~{/layout/layout}" >
-<body>
+<html layout:decorate="~{/layout/layout}">
 <section layout:fragment="content" class="section-prod-list">
     <div class="container">
         <!-- 카테고리 버튼 -->
         <div class="mb-5 flex justify-center gap-4">
             <a href="#" data-category="all" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">전체</a>
-            <a href="#" data-category="sports" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">스포츠</a>
-            <a href="#" data-category="experienceActivities" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">체험활동</a>
-            <a href="#" data-category="leisure-entertainment" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">레저/오락</a>
+            <a href="#" data-category="seasonal" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">계절</a>
+            <a href="#" data-category="musicArt" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">음악/예술</a>
+            <a href="#" data-category="traditional" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">전통</a>
+            <a href="#" data-category="food" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">음식</a>
             <a href="#" data-category="other" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">기타</a>
+
+
         </div>
         <ul class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-3">
-            <li th:each="activity, loop : ${paging.content}" class="flex flex-col group w-full">
-                <a th:href="@{|/activity/detail/${activity.id}|}"
+            <li th:each="festivals, loop : ${paging.content}" class="flex flex-col group w-full">
+                <a th:href="@{|/festivals/detail/${festivals.id}|}"
                    class="border border-black h-[200px] transition duration-300 rounded-lg hover:rounded-lg hover:-translate-y-1.5 hover:transition hover:duration-300 hover:shadow-md"
                 >
-                    <img class="object-cover object-center block w-full h-full rounded-lg" th:src="@{|/gen/${activity.thumbnailImg}|}" alt="thumbnailImg">
+                    <img class="object-cover object-center block w-full h-full rounded-lg" th:src="@{|/gen/${festivals.thumbnailImg}|}" alt="thumbnailImg">
                 </a>
-                <a th:href="@{|/activity/detail/${activity.id}|}" th:text="${activity.title}" class="text-center md:!text-left mt-2"></a>
+                <a th:href="@{|/festivals/detail/${festivals.id}|}" th:text="${festivals.title}" class="text-center md:!text-left mt-2"></a>
             </li>
         </ul>
 
         <!-- 페이징 처리 시작 -->
-        <form id="searchForm" th:action="@{/activity/list}" method="get">
+        <form id="searchForm" th:action="@{/festivals/list}" method="get">
             <input type="hidden" id="page" name="page" value="0"/>
             <input type="hidden" id="subCategory" name="subCategory" value=""/>
         </form>
@@ -51,9 +53,6 @@
         </ul>
     </div>
 
-    <!-- jQuery가 포함되었는지 확인 -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <script layout:fragment="script" type="text/javascript">
         $(document).ready(function () {
             $(".page-link").on("click", function () {
@@ -65,11 +64,10 @@
                 event.preventDefault();
                 var category = $(this).data("category");
                 $("#subCategory").val(category);
-                $("#page").val(0); // 카테고리 변경 시 페이지 번호를 0으로 초기화
+                $("#page").val(0); // Reset page number to 0 on category change
                 $("#searchForm").submit();
             });
         });
     </script>
 </section>
-</body>
 </html>

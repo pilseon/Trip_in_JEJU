@@ -4,6 +4,8 @@ import com.example.Trip_In_Jeju.kategorie.activity.entity.Activity;
 import com.example.Trip_In_Jeju.kategorie.activity.service.ActivityService;
 import com.example.Trip_In_Jeju.kategorie.attractions.entity.Attractions;
 import com.example.Trip_In_Jeju.kategorie.attractions.service.AttractionsService;
+import com.example.Trip_In_Jeju.kategorie.festivals.entity.Festivals;
+import com.example.Trip_In_Jeju.kategorie.festivals.service.FestivalsService;
 import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
 import com.example.Trip_In_Jeju.kategorie.food.service.FoodService;
 import com.example.Trip_In_Jeju.kategorie.dessert.service.DessertService;
@@ -30,6 +32,8 @@ public class AdminContentController {
     private final ShoppingService shoppingService;
     private final ActivityService activityService;
     private final AttractionsService attractionsService;
+    private final FestivalsService festivalsService;
+
 
     @GetMapping("/create")
     public String create(Model model) {
@@ -38,6 +42,8 @@ public class AdminContentController {
         List<Shopping> shoppingList = shoppingService.getList();
         List<Activity> activityList = activityService.getList();
         List<Attractions> attractionsList = attractionsService.getList();
+        List<Festivals> festivalsList = festivalsService.getList();
+
 
 
         model.addAttribute("foodList", foodList);
@@ -45,6 +51,8 @@ public class AdminContentController {
         model.addAttribute("shoppingList", shoppingList);
         model.addAttribute("activityList", activityList);
         model.addAttribute("attractionsList", attractionsList);
+        model.addAttribute("festivalsList", festivalsList);
+
 
 
         return "adm/content/create";
@@ -69,7 +77,7 @@ public class AdminContentController {
             @RequestParam(value = "periodEnd", required = false) String periodEnd) {
 
         if (category.equals("food")) {
-            foodService.create(title, periodStart, periodEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, subCategory);
+            festivalsService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, subCategory);
         } else if (category.equals("dessert")) {
             dessertService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, subCategory);
         }
@@ -81,6 +89,9 @@ public class AdminContentController {
         }
         else if (category.equals("attractions")) {
             attractionsService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, subCategory);
+        }
+        else if (category.equals("festivals")) {
+            festivalsService.create(title, periodStart, periodEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, subCategory);
         }
 
         return "redirect:/adm/content/create";

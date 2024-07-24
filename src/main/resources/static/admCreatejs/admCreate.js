@@ -13,14 +13,19 @@ var map, marker, infowindow, ps;
             const timeInputs = document.getElementById('timeInputs');
             const periodInputs = document.getElementById('periodInputs');
 
-            if (selectedCategory === 'food') {
+            if (selectedCategory === 'festivals') {
                 timeInputs.style.display = 'none';
                 periodInputs.style.display = 'block';
-            } else {
+            }
+
+
+            else {
                 timeInputs.style.display = 'block';
                 periodInputs.style.display = 'none';
             }
         }
+
+
 
         // 기본 선택된 버튼 스타일 추가
         updateButtonStyles(document.getElementById('category').value);

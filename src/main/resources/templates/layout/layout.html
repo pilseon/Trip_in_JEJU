@@ -78,8 +78,8 @@
                 <a class="inline-block w-7 h-7 rounded-full bg-white content-center" sec:authorize="isAnonymous()" href="/member/login">
                     <i class="fa-solid fa-user fa-lg"></i>
                 </a>
-                <a class="inline-block w-7 h-7 rounded-full bg-orange-500 content-center" sec:authorize="isAuthenticated()" href="/member/myPage">
-                    <img th:src="${member != null && member.thumbnailImg != null ? '/file/' + member.thumbnailImg : 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'}" alt="프로필 사진" class="profile-img w-8 h-8 rounded-full"/>
+                <a class="inline-block w-7 h-7 rounded-full bg-white content-center" sec:authorize="isAuthenticated()" href="/member/myPage">
+                    <img th:src="${member != null && member.thumbnailImg != null ? '/gen/' + member.thumbnailImg : 'https://i.ibb.co/mJYXKqb/images.jpg'}" alt="프로필 사진" class="profile-img w-8 h-8 rounded-full"/>
                 </a>
             </li>
 
@@ -101,7 +101,7 @@
                         <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="/attractions/list">관광지</a></li>
                         <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">숙박</a></li>
                         <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="/shopping/list">쇼핑</a></li>
-                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">축제</a></li>
+                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="/festivals/list">축제</a></li>
                         <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="/activity/list">액티비티</a></li>
                         <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">기타</a></li>
                     </ul>

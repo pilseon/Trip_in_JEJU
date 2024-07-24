@@ -7,53 +7,49 @@
         <!-- 이미지 -->
         <ul class="list-group">
             <li class="list-group-item">
-                <img class="w-full" style="width: 100%; max-width: 100%;" th:src="@{|/gen/${food.thumbnailImg}|}" alt="상품이미지">
+                <img class="w-full" style="width: 100%; max-width: 100%;" th:src="@{|/gen/${festivals.thumbnailImg}|}" alt="상품이미지">
             </li>
         </ul>
         <!-- 내용 -->
         <div class="card">
             <div class="card-body">
-                <span class="font-bold" style="font-size: 1.5rem;" th:text="${food.title}"></span>
+                <span class="font-bold" style="font-size: 1.5rem;" th:text="${festivals.title}"></span>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
-                        <span style="font-weight: bold;">영업시간: </span>
-                        <span th:text="${#temporals.format(food.calendar.businessHoursStart, 'HH:mm')}"></span>
+                        <span>기간 : </span>
+                        <span th:text="${#temporals.format(festivals.calendar.periodStart, 'yyyy년 MM월 dd일')}"></span>
                         <span> ~ </span>
-                        <span th:text="${#temporals.format(food.calendar.businessHoursEnd, 'HH:mm')}"></span>
-                    </li>
-                    <li class="list-group-item">
-                        <span style="font-weight: bold;">휴무일: </span>
-                        <span th:text="${food.calendar.closedDay}"></span>
+                        <span th:text="${#temporals.format(festivals.calendar.periodEnd, 'yyyy년 MM월 dd일')}"></span>
                     </li>
                     <li class="list-group-item">
                         <span style="font-weight: bold;">위치 : </span>
-                        <span th:text="${food.location.name}"></span>
+                        <span th:text="${festivals.location.name}"></span>
                         <br>
                     </li>
                     <li class="list-group-item">
                         <span style="font-weight: bold;">정보: </span>
-                        <a th:href="${food.websiteUrl}" target="_blank" style="color: blue;">홈페이지</a>
+                        <a th:href="${festivals.websiteUrl}" target="_blank" style="color: blue;">홈페이지</a>
                     </li>
                     <li class="list-group-item">
                         <span style="font-weight: bold;">번호: </span>
-                        <span th:text="${food.phoneNumber}"></span>
+                        <span th:text="${festivals.phoneNumber}"></span>
                     </li>
                 </ul>
                 <!-- 해시태그 -->
                 <div class="mt-4">
-                    <span th:text="${food.hashtags}"></span>
+                    <span th:text="${festivals.hashtags}"></span>
                 </div>
 
                 <!-- 좋아요 -->
                 <div class="mt-4">
                     <span class="me-2">
-                        <form th:action="@{/food/like/{id}(id=${food.id})}" method="post" style="display:inline;">
+                        <form th:action="@{/festivals/like/{id}(id=${festivals.id})}" method="post" style="display:inline;">
                             <button type="submit" style="background: none; border: none; font-size: 1.5rem; color: #e83e8c;">❤️</button>
                         </form>
-                        <span th:text="${food.likes}">0</span>
+                        <span th:text="${festivals.likes}">0</span>
                     </span>
                     <span>
-                        <a th:href="@{/food/review/{id}(id=${food.id})}" style="font-size: 1.5rem;">
+                        <a th:href="@{/festivals/review/{id}(id=${festivals.id})}" style="font-size: 1.5rem;">
                             ⭐ <span th:text="${averageScore}">4.9</span> 리뷰 (<span th:text="${ratings.size()}">999+</span>)
                         </a>
                     </span>
@@ -61,12 +57,12 @@
 
                 <!-- 내용 -->
                 <div class="mt-4">
-                    <span th:text="${food.content}"></span>
+                    <span th:text="${festivals.content}"></span>
                 </div>
                 <!-- 지도  -->
                 <div class="mt-4">
                     <span span class="font-bold" style="font-size: 1.5rem;">지도 </span>
-                    <div id="map" th:data-latitude="${food.location.latitude}" th:data-longitude="${food.location.longitude}" style="width:100%;height:400px;"></div>
+                    <div id="map" th:data-latitude="${festivals.location.latitude}" th:data-longitude="${festivals.location.longitude}" style="width:100%;height:400px;"></div>
                 </div>
             </div>
         </div>

@@ -76,6 +76,6 @@ dependencies {
 	testImplementation 'org.springframework:spring-test'
 }
 
-tasks.named('test') {
+tasks.named('Trip_In_Jeju') {
 	useJUnitPlatform()
 }

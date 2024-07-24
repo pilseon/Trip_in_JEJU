@@ -102,6 +102,42 @@ public class DessertService {
         dessertRepository.save(p);
     }
 
+    public void create2(String title, String businessHoursStart, String businessHoursEnd, String content, String place, String closedDay,
+                        String websiteUrl, String phoneNumber, String hashtags, double latitude, double longitude, String subCategory) {
+
+
+
+        // Location 엔티티 생성 및 저장
+        Location location = new Location();
+        location.setName(place);
+        location.setLatitude(latitude);
+        location.setLongitude(longitude);
+        location = locationRepository.save(location);
+
+        Calendar calendar = new Calendar();
+        calendar.setTitle(title);
+        calendar.setBusinessHoursStart(LocalTime.parse(businessHoursStart));
+        calendar.setBusinessHoursEnd(LocalTime.parse(businessHoursEnd));
+        calendar.setClosedDay(closedDay); // 휴무일 설정
+        calendarRepository.save(calendar);
+
+        Dessert p = Dessert.builder()
+                .title(title)
+                .calendar(calendar)  // Calendar 엔티티 참조
+                .content(content)
+                .location(location)
+                .place(place)
+                .websiteUrl(websiteUrl)
+                .phoneNumber(phoneNumber)
+                .hashtags(hashtags)
+                .likes(0)
+                .subCategory(subCategory) // Ensure subCategory is used if provided
+                .build();
+
+        dessertRepository.save(p);
+    }
+
+
     public Dessert getDessert(Long id) {
         Optional<Dessert> dessert = dessertRepository.findById(id);
 

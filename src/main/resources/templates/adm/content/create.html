@@ -22,6 +22,7 @@
                     <option value="shopping">쇼핑</option>
                     <option value="activity">액티비티</option>
                     <option value="attractions">관광지</option>
+                    <option value="festivals">축제</option>
                 </select>
             </div>
 
@@ -132,6 +133,7 @@
                     <option value="western">양식</option>
                     <option value="japanese">일식</option>
                     <option value="chinese">중식</option>
+                    <option value="other">기타</option>
                 `;
 
             } else if (category === 'shopping') {
@@ -160,11 +162,21 @@
                     <option value="themeParks">레저/테마파크</option>
                     <option value="other">기타</option>
                 `;
+
+            } else if (category === 'festivals') {
+                subCategoryContainer.style.display = 'block';
+                subCategorySelect.innerHTML = `
+                    <option value="seasonal">계절</option>
+                    <option value="musicArt">음악/예술</option>
+                    <option value="traditional">전통</option>
+                    <option value="food">음식</option>
+                    <option value="other">기타</option>
+                `;
+
             } else {
                 subCategoryContainer.style.display = 'none';
                 subCategorySelect.innerHTML = '';
             }
-
         }
 
         document.addEventListener('DOMContentLoaded', function() {

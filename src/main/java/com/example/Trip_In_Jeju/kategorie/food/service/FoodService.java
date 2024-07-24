@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -57,7 +57,7 @@ public class FoodService {
 
         return foodRepository.findAll(pageable);
     }
-    public void create(String title, String periodStart, String periodEnd, String content, String place, String closedDay,
+    public void create(String title, String businessHoursStart, String businessHoursEnd, String content, String place, String closedDay,
                        String websiteUrl, String phoneNumber, String hashtags, MultipartFile thumbnail, double latitude, double longitude, String subCategory) {
 
         String thumbnailRelPath = "food/" + UUID.randomUUID().toString() + ".jpg";
@@ -79,11 +79,10 @@ public class FoodService {
         location = locationRepository.save(location);
 
         Calendar calendar = new Calendar();
-        calendar.setTitle("Period");
-        if (periodStart != null && periodEnd != null) {
-            calendar.setPeriodStart(LocalDate.parse(periodStart));
-            calendar.setPeriodEnd(LocalDate.parse(periodEnd));
-        }
+        calendar.setTitle(title);
+        calendar.setBusinessHoursStart(LocalTime.parse(businessHoursStart));
+        calendar.setBusinessHoursEnd(LocalTime.parse(businessHoursEnd));
+        calendar.setClosedDay(closedDay); // 휴무일 설정
         calendarRepository.save(calendar);
 
         Food p = Food.builder()
@@ -93,7 +92,6 @@ public class FoodService {
                 .location(location)
                 .place(place)
                 .thumbnailImg(thumbnailRelPath)
-                .closedDay(closedDay)
                 .websiteUrl(websiteUrl)
                 .phoneNumber(phoneNumber)
                 .hashtags(hashtags)
@@ -103,6 +101,42 @@ public class FoodService {
 
         foodRepository.save(p);
     }
+
+    public void create2(String title, String businessHoursStart, String businessHoursEnd, String content, String place, String closedDay,
+                        String websiteUrl, String phoneNumber, String hashtags, double latitude, double longitude, String subCategory) {
+
+
+
+        // Location 엔티티 생성 및 저장
+        Location location = new Location();
+        location.setName(place);
+        location.setLatitude(latitude);
+        location.setLongitude(longitude);
+        location = locationRepository.save(location);
+
+        Calendar calendar = new Calendar();
+        calendar.setTitle(title);
+        calendar.setBusinessHoursStart(LocalTime.parse(businessHoursStart));
+        calendar.setBusinessHoursEnd(LocalTime.parse(businessHoursEnd));
+        calendar.setClosedDay(closedDay); // 휴무일 설정
+        calendarRepository.save(calendar);
+
+        Food p = Food.builder()
+                .title(title)
+                .calendar(calendar)  // Calendar 엔티티 참조
+                .content(content)
+                .location(location)
+                .place(place)
+                .websiteUrl(websiteUrl)
+                .phoneNumber(phoneNumber)
+                .hashtags(hashtags)
+                .likes(0)
+                .subCategory(subCategory) // Ensure subCategory is used if provided
+                .build();
+
+        foodRepository.save(p);
+    }
+
 
     public Food getFood(Long id) {
         Optional<Food> food = foodRepository.findById(id);

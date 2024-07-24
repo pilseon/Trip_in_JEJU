@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,15 +68,19 @@ public class MemberService {
 
     }
 
+    @Value("${custom.fileDirPath}")
+    public String genFileDirPath;
     @Transactional
     public Member signup(String username, String nickname, String password,
                          String email, String thema , MultipartFile thumbnail) {
-        String thumbnailRelPath = "post/" + UUID.randomUUID().toString() + ".jpg";
-        File thumbnailFile = new File(fileDirPath + "/" + thumbnailRelPath);
+        String thumbnailRelPath = "member/" + UUID.randomUUID().toString() + ".jpg";
+        File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
+
+        thumbnailFile.mkdirs();
 
         try {
             thumbnail.transferTo(thumbnailFile);
-        } catch ( IOException e ) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
@@ -91,10 +96,6 @@ public class MemberService {
 
         return memberRepository.save(member);
     }
-
-    @Value("${custom.fileDirPath}")
-    private String fileDirPath;
-
 
     @Transactional
     public Member signup2(String username, String nickname, String password,
@@ -119,19 +120,19 @@ public class MemberService {
     }
 
     public Member getCurrentMember() {
-        // 현재 Authentication 객체를 가져옵니다.
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication != null && authentication.isAuthenticated()) {
-            String username = authentication.getName();
-            // username이 null 또는 빈 문자열이 아닌지 확인합니다.
-            if (username != null && !username.isEmpty()) {
+        if (authentication != null && authentication.isAuthenticated() && !(authentication.getPrincipal() instanceof String)) {
+            Object principal = authentication.getPrincipal();
+
+            if (principal instanceof UserDetails) {
+                String username = ((UserDetails) principal).getUsername();
                 return memberRepository.findByUsername(username).orElse(null);
             }
         }
+
         return null;
     }
-
 
 
     public Member findByNickname(String nickname) {
@@ -139,18 +140,18 @@ public class MemberService {
     }
 
     // 썸네일 저장
-   private String saveThumbnail(MultipartFile thumbnail) {
+    private String saveThumbnail(MultipartFile thumbnail) {
         String thumbnailRelPath = "post/" + UUID.randomUUID().toString() + ".jpg";
-        File thumbnailFile = new File(fileDirPath + "/" + thumbnailRelPath);
+        File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
 
-       try {
-           thumbnail.transferTo(thumbnailFile);
-       } catch (IOException e) {
-          throw new RuntimeException(e);
+        try {
+            thumbnail.transferTo(thumbnailFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         return thumbnailRelPath;
-   }
+    }
 
 
 //    public boolean isAdmin(Member member) {

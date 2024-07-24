@@ -2,6 +2,8 @@ package com.example.Trip_In_Jeju.kategorie.food.controller;
 
 import com.example.Trip_In_Jeju.kategorie.activity.entity.Activity;
 import com.example.Trip_In_Jeju.kategorie.activity.service.ActivityService;
+import com.example.Trip_In_Jeju.kategorie.attractions.entity.Attractions;
+import com.example.Trip_In_Jeju.kategorie.attractions.service.AttractionsService;
 import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
 import com.example.Trip_In_Jeju.kategorie.food.service.FoodService;
 import com.example.Trip_In_Jeju.kategorie.dessert.service.DessertService;
@@ -27,6 +29,7 @@ public class AdminContentController {
     private final DessertService dessertService;
     private final ShoppingService shoppingService;
     private final ActivityService activityService;
+    private final AttractionsService attractionsService;
 
     @GetMapping("/create")
     public String create(Model model) {
@@ -34,12 +37,15 @@ public class AdminContentController {
         List<Dessert> dessertList = dessertService.getList();
         List<Shopping> shoppingList = shoppingService.getList();
         List<Activity> activityList = activityService.getList();
+        List<Attractions> attractionsList = attractionsService.getList();
 
 
         model.addAttribute("foodList", foodList);
         model.addAttribute("dessertList", dessertList);
         model.addAttribute("shoppingList", shoppingList);
         model.addAttribute("activityList", activityList);
+        model.addAttribute("attractionsList", attractionsList);
+
 
         return "adm/content/create";
     }
@@ -72,6 +78,9 @@ public class AdminContentController {
         }
         else if (category.equals("activity")) {
             activityService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, subCategory);
+        }
+        else if (category.equals("attractions")) {
+            attractionsService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, subCategory);
         }
 
         return "redirect:/adm/content/create";

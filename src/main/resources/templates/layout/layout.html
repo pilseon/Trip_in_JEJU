@@ -98,11 +98,11 @@
                     <ul class="flex w-80 justify-around ml-auto mr-auto flex-wrap gap-2 sub-menu hidden mt-2">
                         <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="/food/list">음식</a></li>
                         <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="/dessert/list">디저트</a></li>
-                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">관광지</a></li>
+                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="/attractions/list">관광지</a></li>
                         <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">숙박</a></li>
-                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">쇼핑</a></li>
+                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="/shopping/list">쇼핑</a></li>
                         <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">축제</a></li>
-                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">액티비티</a></li>
+                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="/activity/list">액티비티</a></li>
                         <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">기타</a></li>
                     </ul>
                 </li>
@@ -119,14 +119,14 @@
                     <a class="option cursor-pointer inline-block w-100 h-100 text-left hover:text-green-300">환경설정</a>
                 </li>
                 <li sec:authorize="isAnonymous()" class="flex-grow py-1 border-b-2">
-                    <a   href="/member/login"class="option cursor-pointer inline-block w-100 h-100 text-left hover:text-green-300">로그인</a>
+                    <a   href="/member/login" class="option cursor-pointer inline-block w-100 h-100 text-left hover:text-green-300">로그인</a>
                 </li>
                 <li sec:authorize="isAuthenticated()" class="flex-grow py-1 border-b-2">
-                    <a href="/member/logout"class="option cursor-pointer inline-block w-100 h-100 text-left hover:text-green-300">로그아웃</a>
+                    <a href="/member/logout" class="option cursor-pointer inline-block w-100 h-100 text-left hover:text-green-300">로그아웃</a>
                 </li>
 
                 <li sec:authorize="hasAuthority('ADMIN')" class="flex-grow py-1 border-b-2">
-                    <a  href="/adm/home/main"class="option cursor-pointer inline-block w-100 h-100 text-left hover:text-green-300">관리자 페이지</a>
+                    <a  href="/adm/home/main" class="option cursor-pointer inline-block w-100 h-100 text-left hover:text-green-300">관리자 페이지</a>
                 </li>
             </ul>
         </div>

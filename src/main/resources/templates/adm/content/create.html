@@ -21,6 +21,7 @@
                     <option value="dessert">디저트</option>
                     <option value="shopping">쇼핑</option>
                     <option value="activity">액티비티</option>
+                    <option value="attractions">관광지</option>
                 </select>
             </div>
 
@@ -148,6 +149,15 @@
                     <option value="sports">스포츠</option>
                     <option value="experienceActivities">체험활동</option>
                     <option value="leisure-entertainment">레저/오락</option>
+                    <option value="other">기타</option>
+                `;
+
+            } else if (category === 'attractions') {
+                subCategoryContainer.style.display = 'block';
+                subCategorySelect.innerHTML = `
+                    <option value="naturalScenery">자연경관</option>
+                    <option value="museums">박물관/유적지</option>
+                    <option value="themeParks">레저/테마파크</option>
                     <option value="other">기타</option>
                 `;
             } else {

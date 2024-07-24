@@ -27,7 +27,7 @@ public class RatingService {
         return ratingRepository.findByItemIdAndCategory(itemId, category);
     }
 
-    @Value("${custom.genFileDirPath}")
+    @Value("${custom.fileDirPath}")
     public String genFileDirPath;
 
     @Transactional

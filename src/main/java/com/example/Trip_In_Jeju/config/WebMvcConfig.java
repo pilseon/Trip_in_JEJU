@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
-    @Value("${custom.genFileDirPath}")
+    @Value("${custom.fileDirPath}")
     private String genFileDirPath;
 
     @Override

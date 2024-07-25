@@ -10,6 +10,8 @@ import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
 import com.example.Trip_In_Jeju.kategorie.food.service.FoodService;
 import com.example.Trip_In_Jeju.kategorie.dessert.service.DessertService;
 import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
+import com.example.Trip_In_Jeju.kategorie.other.entity.Other;
+import com.example.Trip_In_Jeju.kategorie.other.service.OtherService;
 import com.example.Trip_In_Jeju.kategorie.shopping.entity.Shopping;
 import com.example.Trip_In_Jeju.kategorie.shopping.service.ShoppingService;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +35,8 @@ public class AdminContentController {
     private final ActivityService activityService;
     private final AttractionsService attractionsService;
     private final FestivalsService festivalsService;
+    private final OtherService otherService;
+
 
 
     @GetMapping("/create")
@@ -43,6 +47,7 @@ public class AdminContentController {
         List<Activity> activityList = activityService.getList();
         List<Attractions> attractionsList = attractionsService.getList();
         List<Festivals> festivalsList = festivalsService.getList();
+        List<Other> otherList = otherService.getList();
 
 
 
@@ -52,6 +57,8 @@ public class AdminContentController {
         model.addAttribute("activityList", activityList);
         model.addAttribute("attractionsList", attractionsList);
         model.addAttribute("festivalsList", festivalsList);
+        model.addAttribute("otherList", otherList);
+
 
 
 
@@ -77,7 +84,7 @@ public class AdminContentController {
             @RequestParam(value = "periodEnd", required = false) String periodEnd) {
 
         if (category.equals("food")) {
-            festivalsService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, subCategory);
+            foodService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, subCategory);
         } else if (category.equals("dessert")) {
             dessertService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, subCategory);
         }
@@ -92,6 +99,9 @@ public class AdminContentController {
         }
         else if (category.equals("festivals")) {
             festivalsService.create(title, periodStart, periodEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, subCategory);
+        }
+        else if (category.equals("other")) {
+            otherService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, subCategory);
         }
 
         return "redirect:/adm/content/create";

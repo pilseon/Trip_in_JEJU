@@ -5,26 +5,24 @@
         <!-- 카테고리 버튼 -->
         <div class="mb-5 flex justify-center gap-4">
             <a href="#" data-category="all" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">전체</a>
-            <a href="#" data-category="korean" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">한식</a>
-            <a href="#" data-category="western" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">양식</a>
-            <a href="#" data-category="japanese" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">일식</a>
-            <a href="#" data-category="chinese" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">중식</a>
+            <a href="#" data-category="fitness" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">피트니스</a>
+            <a href="#" data-category="pet" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">반려동물</a>
+            <a href="#" data-category="children" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">어린이</a>
             <a href="#" data-category="other" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">기타</a>
         </div>
         <ul class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-3">
-            <li th:each="food, loop : ${paging.content}" class="flex flex-col group w-full">
-                <a th:href="@{|/food/detail/${food.id}|}"
+            <li th:each="other, loop : ${paging.content}" class="flex flex-col group w-full">
+                <a th:href="@{|/other/detail/${other.id}|}"
                    class="border border-black h-[200px] transition duration-300 rounded-lg hover:rounded-lg hover:-translate-y-1.5 hover:transition hover:duration-300 hover:shadow-md"
                 >
-                    <img class="object-cover object-center block w-full h-full rounded-lg" th:src="@{|/gen/${food.thumbnailImg}|}" alt="thumbnailImg">
+                    <img class="object-cover object-center block w-full h-full rounded-lg" th:src="@{|/gen/${other.thumbnailImg}|}" alt="thumbnailImg">
                 </a>
-                <a th:href="@{|/food/detail/${food.id}|}" th:text="${food.title}" class="text-center md:!text-left mt-2"></a>
+                <a th:href="@{|/other/detail/${other.id}|}" th:text="${other.title}" class="text-center md:!text-left mt-2"></a>
             </li>
         </ul>
 
-
         <!-- 페이징 처리 시작 -->
-        <form id="searchForm" th:action="@{/food/list}" method="get">
+        <form id="searchForm" th:action="@{/other/list}" method="get">
             <input type="hidden" id="page" name="page" value="0"/>
             <input type="hidden" id="subCategory" name="subCategory" value=""/>
         </form>

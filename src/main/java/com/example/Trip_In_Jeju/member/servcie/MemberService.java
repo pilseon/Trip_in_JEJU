@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -64,7 +65,7 @@ public class MemberService {
     @Transactional
     public Member signupSocialUser(String username, String nickname, String email) {
         // 소셜 로그인한 회원 저장
-        return signup(username,  nickname, "", email, "", null );
+        return signup2(username,  nickname, "", email,"");
 
     }
 
@@ -92,6 +93,7 @@ public class MemberService {
                 .email(email)
                 .thema(thema)
                 .thumbnailImg(thumbnailRelPath)
+                .createDate(LocalDateTime.now())
                 .build();
 
         return memberRepository.save(member);
@@ -106,6 +108,7 @@ public class MemberService {
                 .nickname(nickname)
                 .password(passwordEncoder.encode(password))
                 .email(email)
+                .createDate(LocalDateTime.now())
                 .thema(thema)
 
                 .build();

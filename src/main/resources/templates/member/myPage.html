@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html layout:decorate="~{/layout/layout}" xmlns:th="http://www.thymeleaf.org">
+<section layout:fragment="content" class="section-prod-list">
+    <head>
+        <meta charset="UTF-8">
+        <title>My Page</title>
+        <link rel="stylesheet" th:href="@{/css/style.css}">
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+
+            .container {
+                width: 100%;
+                max-width: 600px;
+                margin: 0 auto;
+            }
+
+            header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px;
+                background-color: #f8f8f8;
+            }
+
+            .logo img {
+                height: 40px;
+            }
+
+            .settings {
+                display: flex;
+                align-items: center;
+            }
+
+            .settings-link {
+                margin-right: 10px;
+                text-decoration: none;
+                color: #333;
+            }
+
+            .notification-icon {
+                height: 24px;
+            }
+
+            .profile {
+                display: flex;
+                align-items: center;
+                padding: 20px;
+                background-color: #f0f0f0;
+            }
+
+            .profile-pic img {
+                border-radius: 50%;
+                height: 80px;
+                width: 80px;
+                margin-right: 20px;
+            }
+
+            .profile-info {
+                flex: 1;
+            }
+
+            .username {
+                font-size: 18px;
+                font-weight: bold;
+            }
+
+            .email {
+                color: #666;
+            }
+
+            .membership-info {
+                color: #999;
+            }
+
+            .navigation {
+                display: flex;
+                justify-content: space-around;
+                background-color: #ddd;
+            }
+
+            .nav-button {
+                flex: 1;
+                padding: 10px;
+                background: none;
+                border: none;
+                font-size: 16px;
+                cursor: pointer;
+            }
+
+            .nav-button:hover {
+                background-color: #ccc;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .tab-content {
+                display: none;
+            }
+
+            #tab-schedule {
+                display: block;
+            }
+
+            .schedule-list h2,
+            .history-list h2,
+            .discount-list h2 {
+                margin-top: 0;
+            }
+        </style>
+    </head>
+    <body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <img th:src="@{/images/logo.png}" alt="Logo">
+            </div>
+            <div class="settings">
+                <a href="#" class="settings-link">계정 설정</a>
+                <img th:src="@{/images/bell.png}" alt="알림" class="notification-icon">
+            </div>
+        </header>
+
+        <section class="profile">
+            <div class="profile-pic">
+                <img th:src="@{|/gen/${member.thumbnailImg}|}" alt="프로필 사진" class="profile-img"/>
+            </div>
+            <div class="profile-info">
+                <p th:text="${member.nickname}">사용자</p>
+                <p th:text="${member.email}">mail@mail.com</p>
+                <span th:text="${#temporals.format(member.createDate, 'yyyy-MM-dd HH:mm')}"></span>
+            </div>
+        </section>
+
+        <section class="navigation">
+            <button class="nav-button" id="schedule">일정</button>
+            <button class="nav-button" id="history">히스토리</button>
+            <button class="nav-button" id="discount">할인/혜택</button>
+        </section>
+
+        <section class="content">
+            <div class="tab-content" id="tab-schedule">
+                <div class="calendar">
+                    <!-- 날짜 선택 UI -->
+                    캘린더
+                </div>
+                <div class="schedule-list">
+                    <h2>내 일정</h2>
+                    <!-- 일정 리스트 UI -->
+                </div>
+            </div>
+
+            <div class="tab-content" id="tab-history" style="display:none;">
+                <div class="history-list">
+                    <h2>히스토리</h2>
+                    <!-- 히스토리 리스트 UI -->
+                    히스토링
+                </div>
+            </div>
+
+            <div class="tab-content" id="tab-discount" style="display:none;">
+                <div class="discount-list">
+                    <h2>할인/혜택</h2>
+                    <!-- 할인/혜택 리스트 UI -->
+                    할인?
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script th:src="@{/js/main.js}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const buttons = document.querySelectorAll(".nav-button");
+            const tabContents = document.querySelectorAll(".tab-content");
+
+            buttons.forEach(button => {
+                button.addEventListener("click", () => {
+                    const target = button.id.replace("nav-", "tab-");
+                    tabContents.forEach(tabContent => {
+                        if (tabContent.id === target) {
+                            tabContent.style.display = "block";
+                        } else {
+                            tabContent.style.display = "none";
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+    </body>
+</section>
+</html>

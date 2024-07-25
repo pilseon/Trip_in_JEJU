@@ -23,6 +23,7 @@
                     <option value="activity">액티비티</option>
                     <option value="attractions">관광지</option>
                     <option value="festivals">축제</option>
+                    <option value="other">기타</option>
                 </select>
             </div>
 
@@ -170,6 +171,15 @@
                     <option value="musicArt">음악/예술</option>
                     <option value="traditional">전통</option>
                     <option value="food">음식</option>
+                    <option value="other">기타</option>
+                `;
+
+            } else if (category === 'other') {
+                subCategoryContainer.style.display = 'block';
+                subCategorySelect.innerHTML = `
+                    <option value="fitness">피트니스</option>
+                    <option value="pet">반려동물</option>
+                    <option value="children">어린이</option>
                     <option value="other">기타</option>
                 `;
 

@@ -1,5 +1,6 @@
 package com.example.Trip_In_Jeju.kategorie.other.controller;
 
+import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
 import com.example.Trip_In_Jeju.kategorie.other.entity.Other;
 import com.example.Trip_In_Jeju.kategorie.other.service.OtherService;
 import com.example.Trip_In_Jeju.rating.entity.Rating;
@@ -64,13 +65,14 @@ public class OtherController {
         model.addAttribute("other", other);
         model.addAttribute("ratings", ratings);
         model.addAttribute("averageScore", averageScore);
-        return "other/review";
+        return "dessert/review";
     }
 
     @PostMapping("/review/{id}")
     public String submitRating(
             @PathVariable("id") Long id,
             @RequestParam("score") Integer score,
+            @RequestParam(value = "ratingId", required = false) Long ratingId, // ratingId는 optional로 설정
             @RequestParam("comment") String comment,
             Authentication authentication,
             @RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail
@@ -79,7 +81,7 @@ public class OtherController {
             return "redirect:/other/detail/" + id;
         }
         String nickname = ((UserDetails) authentication.getPrincipal()).getUsername();
-        ratingService.saveRating(id, score, comment, nickname, thumbnail, "other");
+        ratingService.saveRating(id, score, ratingId, comment, nickname, thumbnail, "other");
         return "redirect:/other/detail/" + id;
     }
 

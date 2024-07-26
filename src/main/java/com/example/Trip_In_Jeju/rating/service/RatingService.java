@@ -1,9 +1,15 @@
 package com.example.Trip_In_Jeju.rating.service;
 
+import com.example.Trip_In_Jeju.member.entity.Member;
+import com.example.Trip_In_Jeju.member.repository.MemberRepository;
+
+import com.example.Trip_In_Jeju.rating.entity.Likey;
 import com.example.Trip_In_Jeju.rating.entity.Rating;
+import com.example.Trip_In_Jeju.rating.repository.LikeyRepository;
 import com.example.Trip_In_Jeju.rating.repository.RatingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,12 +17,15 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class RatingService {
     private final RatingRepository ratingRepository;
+    private final MemberRepository memberRepository;
+    private final LikeyRepository likeyRepository;
 
     public double calculateAverageScore(Long itemId, String category) {
         List<Rating> ratings = ratingRepository.findByItemIdAndCategory(itemId, category);
@@ -31,7 +40,7 @@ public class RatingService {
     public String genFileDirPath;
 
     @Transactional
-    public void saveRating(Long itemId, Integer score, String comment, String nickname, MultipartFile thumbnail, String category) {
+    public void saveRating(Long itemId, Integer score, Long ratingId ,String comment, String nickname, MultipartFile thumbnail, String category) {
         String thumbnailRelPath = "rating/" + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
 
@@ -46,6 +55,7 @@ public class RatingService {
         Rating rating = Rating.builder()
                 .itemId(itemId)
                 .score(score)
+                .ratingId(ratingId)
                 .comment(comment)
                 .nickname(nickname)
                 .thumbnailImg(thumbnailRelPath)
@@ -76,4 +86,29 @@ public class RatingService {
     }
 
 
+    public Member findMemberByUsername(String username) {
+        return memberRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Member not found"));
+    }
+
+    public void likeReview(Long ratingId, Member member) {
+        Rating rating = ratingRepository.findById(ratingId)
+                .orElseThrow(() -> new RuntimeException("Rating not found"));
+
+        if (!likeyRepository.existsByRatingAndMember(rating, member)) {
+            Likey likey = Likey.builder()
+                    .rating(rating)
+                    .member(member)
+                    .build();
+            likeyRepository.save(likey);
+        }
+    }
+
+    public void unlikeReview(Long ratingId, Member member) {
+        Rating rating = ratingRepository.findById(ratingId)
+                .orElseThrow(() -> new RuntimeException("Rating not found"));
+
+        Optional<Likey> like = likeyRepository.findByRatingAndMember(rating, member);
+        like.ifPresent(likeyRepository::delete);
+    }
 }

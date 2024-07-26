@@ -2,6 +2,7 @@ package com.example.Trip_In_Jeju.kategorie.activity.controller;
 
 import com.example.Trip_In_Jeju.kategorie.activity.entity.Activity;
 import com.example.Trip_In_Jeju.kategorie.activity.service.ActivityService;
+import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
 import com.example.Trip_In_Jeju.rating.entity.Rating;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
 import lombok.RequiredArgsConstructor;
@@ -71,6 +72,7 @@ public class ActivityController {
     public String submitRating(
             @PathVariable("id") Long id,
             @RequestParam("score") Integer score,
+            @RequestParam(value = "ratingId", required = false) Long ratingId, // ratingId는 optional로 설정
             @RequestParam("comment") String comment,
             Authentication authentication,
             @RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail
@@ -79,7 +81,7 @@ public class ActivityController {
             return "redirect:/activity/detail/" + id;
         }
         String nickname = ((UserDetails) authentication.getPrincipal()).getUsername();
-        ratingService.saveRating(id, score, comment, nickname, thumbnail, "activity");
+        ratingService.saveRating(id, score, ratingId, comment, nickname, thumbnail, "activity");
         return "redirect:/activity/detail/" + id;
     }
 
@@ -97,7 +99,7 @@ public class ActivityController {
     @GetMapping("/review/delete/{id}")
     public String deleteRating(@PathVariable("id") Long id, @RequestParam("ratingId") Long ratingId) {
         ratingService.deleteRating(ratingId);
-        return "redirect:/activity/detail/" + id;
+        return "redirect:/dessert/detail/" + id;
     }
 
     @PostMapping("/like/{id}")

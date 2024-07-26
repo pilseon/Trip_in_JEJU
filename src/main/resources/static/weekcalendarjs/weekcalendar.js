@@ -1,16 +1,18 @@
-  function toggleDatePicker() {
-        const datePicker = document.getElementById('datePicker');
-        datePicker.classList.toggle('hidden');
-    }
+function toggleDatePicker() {
+    const datePicker = document.getElementById('datePicker');
+    datePicker.classList.toggle('hidden');
+}
 
-    function navigateWeek(offset) {
-        const currentDate = new Date(document.querySelector('input[type="date"]').value);
-        currentDate.setDate(currentDate.getDate() + offset * 7);
-        const newDate = currentDate.toISOString().split('T')[0];
-        window.location.href = `/calendar/week?date=${newDate}`;
+function navigateToDate() {
+    const date = document.getElementById('datePicker').value;
+    if (date) {
+        window.location.href = `/calendar/week?date=${date}`;
     }
+}
 
-    function navigateToDate() {
-        const selectedDate = document.getElementById('datePicker').value;
-        window.location.href = `/calendar/week?date=${selectedDate}`;
+function navigateToDateWithClick(element) {
+    const date = element.getAttribute('data-date');
+    if (date) {
+        window.location.href = `/calendar/week?date=${date}`;
     }
+}

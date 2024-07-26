@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Travel Recommendations</title>
+</head>
+<body>
+<h1>제주 여행 추천</h1>
+<form action="#" th:action="@{/AI/recommendations}" method="post">
+    질문을 입력하세요:
+    <input type="text" name="question" />
+    <input type="submit" value="전송" />
+</form>
+<p>질문: <span th:text="${question}"></span></p>
+<p>추천 여행지: <span th:text="${response}"></span></p>
+</body>
+</html>

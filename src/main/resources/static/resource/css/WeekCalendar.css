@@ -1,11 +1,30 @@
- .hidden {
-            display: none;
-        }
-        .selected-date {
-            background-color: orange;
-            border-radius: 50%;
-        }
-        .date-cell {
-            padding: 10px;
-            text-align: center;
-        }
+.hidden {
+    display: none;
+}
+
+.selected-date {
+    background-color: orange;
+    border-radius: 50%;
+}
+
+.date-cell {
+    padding: 10px;
+    text-align: center;
+}
+
+.date-cell:hover {
+    border-radius: 50%;
+    background-color: #f0f0f0; /* 원하는 배경색으로 변경 */
+    cursor: pointer; /* 포인터 커서로 변경 */
+}
+
+.event-item {
+    margin: 5px 0;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
+.date-cell:hover .selected-date {
+    background-color: #ffe0b2;
+}

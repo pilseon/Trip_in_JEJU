@@ -1,5 +1,6 @@
 package com.example.Trip_In_Jeju.kategorie.festivals.controller;
 
+import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
 import com.example.Trip_In_Jeju.kategorie.festivals.entity.Festivals;
 import com.example.Trip_In_Jeju.kategorie.festivals.service.FestivalsService;
 import com.example.Trip_In_Jeju.rating.entity.Rating;
@@ -71,6 +72,7 @@ public class FestivalsController {
     public String submitRating(
             @PathVariable("id") Long id,
             @RequestParam("score") Integer score,
+            @RequestParam(value = "ratingId", required = false) Long ratingId, // ratingId는 optional로 설정
             @RequestParam("comment") String comment,
             Authentication authentication,
             @RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail
@@ -79,7 +81,7 @@ public class FestivalsController {
             return "redirect:/festivals/detail/" + id;
         }
         String nickname = ((UserDetails) authentication.getPrincipal()).getUsername();
-        ratingService.saveRating(id, score, comment, nickname, thumbnail, "festivals");
+        ratingService.saveRating(id, score, ratingId, comment, nickname, thumbnail, "festivals");
         return "redirect:/festivals/detail/" + id;
     }
 

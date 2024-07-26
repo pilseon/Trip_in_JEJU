@@ -25,14 +25,6 @@ public class CalendarService {
         calendarRepository.save(calendar);
     }
 
-    public List<Calendar> getCalendarsBetween(LocalDate start, LocalDate end) {
-        return calendarRepository.findByPeriodStartBetween(start, end);
-    }
-
-    public List<Calendar> findCalendarsBetween(LocalDate start, LocalDate end) {
-        return calendarRepository.findByPeriodStartBetween(start, end);
-    }
-
     public List<Calendar> findCalendarsWithFoodsBetween(LocalDate start, LocalDate end) {
         return calendarRepository.findCalendarsWithFoodsBetween(start, end);
     }

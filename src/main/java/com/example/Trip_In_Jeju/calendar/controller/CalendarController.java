@@ -50,7 +50,7 @@ public class CalendarController {
         LocalDate startOfWeek = date.with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 1);
         LocalDate endOfWeek = date.with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 7);
 
-        List<Calendar> weeklyCalendars = calendarService.getCalendarsBetween(startOfWeek, endOfWeek);
+        List<Calendar> weeklyCalendars = calendarService.findCalendarsWithFoodsBetween(startOfWeek, endOfWeek);
 
         // 디버그 로그 추가
         System.out.println("Start of Week: " + startOfWeek);
@@ -58,14 +58,12 @@ public class CalendarController {
         weeklyCalendars.forEach(event -> System.out.println("Event: " + event));
 
         Map<LocalDate, List<Calendar>> eventsByDate = new HashMap<>();
-        LocalDate currentDate = startOfWeek;
-        while (!currentDate.isAfter(endOfWeek)) {
-            LocalDate finalDate = currentDate;
+        for (LocalDate d = startOfWeek; !d.isAfter(endOfWeek); d = d.plusDays(1)) {
+            LocalDate finalD = d;
             List<Calendar> eventsForDate = weeklyCalendars.stream()
-                    .filter(event -> !event.getPeriodStart().isAfter(finalDate) && !event.getPeriodEnd().isBefore(finalDate))
+                    .filter(event -> !event.getPeriodStart().isAfter(finalD) && !event.getPeriodEnd().isBefore(finalD))
                     .collect(Collectors.toList());
-            eventsByDate.put(currentDate, eventsForDate);
-            currentDate = currentDate.plusDays(1);
+            eventsByDate.put(d, eventsForDate);
         }
 
         model.addAttribute("weekStart", startOfWeek);
@@ -74,12 +72,6 @@ public class CalendarController {
         model.addAttribute("currentDate", date);
         model.addAttribute("eventsByDate", eventsByDate);
 
-        return "calendar/weekCalendar";
-    }
-
-    @GetMapping("/between")
-    public List<Calendar> getCalendarsBetween(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate start,
-                                              @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate end) {
-        return calendarService.findCalendarsBetween(start, end);
+        return "calendar/weekCalendar";  // 뷰 이름 확인
     }
 }

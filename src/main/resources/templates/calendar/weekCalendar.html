@@ -25,14 +25,22 @@
                 <div class="events" th:each="event : ${eventsByDate[date]}">
                     <div class="event-item">
                         <span th:text="${event.title}"></span>
+                        <div th:each="festival : ${event.festivals}">
+                            <div class="festival-item">
+                                <img th:src="@{${festival.thumbnailImg}}" alt="Festival Thumbnail" class="thumbnail">
+                                <div>
+                                    <h3 th:text="${festival.title}"></h3>
+                                    <p th:text="${festival.subCategory}"></p>
+                                    <p th:text="${festival.place}"></p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     <script th:src="@{/weekcalendarjs/weekcalendar.js}"></script>
     </body>
-
 </section>
 </html>

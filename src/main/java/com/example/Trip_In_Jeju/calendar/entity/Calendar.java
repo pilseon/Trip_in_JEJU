@@ -1,6 +1,6 @@
 package com.example.Trip_In_Jeju.calendar.entity;
 
-import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
+import com.example.Trip_In_Jeju.kategorie.festivals.entity.Festivals;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,14 +21,14 @@ public class Calendar {
 
     private String title;
 
-    private LocalTime businessHoursStart; // 영업시간 시작
-    private LocalTime businessHoursEnd;   // 영업시간 종료
+    private LocalTime businessHoursStart;
+    private LocalTime businessHoursEnd;
 
-    private LocalDate periodStart; // 기간 시작
-    private LocalDate periodEnd; // 기간 종료
+    private LocalDate periodStart;
+    private LocalDate periodEnd;
 
-    private String closedDay; // 휴무일
+    private String closedDay;
 
     @OneToMany(mappedBy = "calendar", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Food> foods; // Food 엔티티를 참조
+    private List<Festivals> festivals;
 }

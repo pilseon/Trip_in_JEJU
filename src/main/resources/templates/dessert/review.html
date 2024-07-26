@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html layout:decorate="~{/layout/layout}">
 <head>
@@ -68,7 +69,7 @@
             </div>
             <div class="form-group">
                 <label for="thumbnail">사진 업로드</label>
-                <input type="file" id="thumbnail" name="thumbnail" accept="image/png, image/gif, image/jpeg" >
+                <input type="file" id="thumbnail" name="thumbnail" accept="image/png, image/gif, image/jpeg">
             </div>
             <input type="hidden" name="itemId" th:value="${dessert.id}"> <!-- itemId 추가 -->
             <input type="hidden" name="category" value="dessert"> <!-- category 추가 -->
@@ -89,8 +90,9 @@
                 <div th:if="${rating.thumbnailImg != null}">
                     <img th:src="@{|/gen/${rating.thumbnailImg}|}" alt="리뷰 이미지" style="max-width: 200px;">
                 </div>
-                <a href="#" th:href="@{/dessert/review/delete/{ratingId}(ratingId=${rating.id})}" class="btn btn-danger btn-sm">삭제</a>
-                <a href="#" th:href="@{/dessert/review/edit/{ratingId}(ratingId=${rating.id})}" class="btn btn-warning btn-sm">수정</a>
+                <!-- 삭제 및 수정 링크 -->
+                <a href="#" th:href="@{/dessert/review/delete/{id}(id=${dessert.id}, ratingId=${rating.id})}" class="btn btn-danger btn-sm">삭제</a>
+                <a href="#" th:href="@{/dessert/review/edit/{id}(id=${dessert.id}, ratingId=${rating.id})}" class="btn btn-warning btn-sm">수정</a>
             </li>
         </ul>
     </div>

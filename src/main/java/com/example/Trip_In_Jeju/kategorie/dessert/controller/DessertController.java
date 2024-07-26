@@ -71,6 +71,7 @@ public class DessertController {
     public String submitRating(
             @PathVariable("id") Long id,
             @RequestParam("score") Integer score,
+            @RequestParam(value = "ratingId", required = false) Long ratingId, // ratingId는 optional로 설정
             @RequestParam("comment") String comment,
             Authentication authentication,
             @RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail
@@ -79,7 +80,7 @@ public class DessertController {
             return "redirect:/dessert/detail/" + id;
         }
         String nickname = ((UserDetails) authentication.getPrincipal()).getUsername();
-        ratingService.saveRating(id, score, comment, nickname, thumbnail, "dessert");
+        ratingService.saveRating(id, score, ratingId, comment, nickname, thumbnail, "dessert");
         return "redirect:/dessert/detail/" + id;
     }
 

@@ -1,6 +1,7 @@
 package com.example.Trip_In_Jeju.kategorie.shopping.controller;
 
 
+import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
 import com.example.Trip_In_Jeju.kategorie.shopping.entity.Shopping;
 import com.example.Trip_In_Jeju.kategorie.shopping.service.ShoppingService;
 import com.example.Trip_In_Jeju.rating.entity.Rating;
@@ -72,6 +73,7 @@ public class ShoppingController {
     public String submitRating(
             @PathVariable("id") Long id,
             @RequestParam("score") Integer score,
+            @RequestParam(value = "ratingId", required = false) Long ratingId, // ratingId는 optional로 설정
             @RequestParam("comment") String comment,
             Authentication authentication,
             @RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail
@@ -80,7 +82,7 @@ public class ShoppingController {
             return "redirect:/shopping/detail/" + id;
         }
         String nickname = ((UserDetails) authentication.getPrincipal()).getUsername();
-        ratingService.saveRating(id, score, comment, nickname, thumbnail, "shopping");
+        ratingService.saveRating(id, score, ratingId, comment, nickname, thumbnail, "shopping");
         return "redirect:/shopping/detail/" + id;
     }
 

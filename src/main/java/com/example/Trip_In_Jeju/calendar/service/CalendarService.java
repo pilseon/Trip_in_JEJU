@@ -4,7 +4,7 @@ import com.example.Trip_In_Jeju.calendar.entity.Calendar;
 import com.example.Trip_In_Jeju.calendar.repository.CalendarRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -25,11 +25,15 @@ public class CalendarService {
         calendarRepository.save(calendar);
     }
 
-    public List<Calendar> getCalendarsBetween(LocalDateTime start, LocalDateTime end) {
+    public List<Calendar> getCalendarsBetween(LocalDate start, LocalDate end) {
         return calendarRepository.findByPeriodStartBetween(start, end);
     }
 
-    public List<Calendar> findCalendarsBetween(LocalDateTime start, LocalDateTime end) {
+    public List<Calendar> findCalendarsBetween(LocalDate start, LocalDate end) {
         return calendarRepository.findByPeriodStartBetween(start, end);
+    }
+
+    public List<Calendar> findCalendarsWithFoodsBetween(LocalDate start, LocalDate end) {
+        return calendarRepository.findCalendarsWithFoodsBetween(start, end);
     }
 }

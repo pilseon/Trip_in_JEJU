@@ -12,9 +12,6 @@ import java.util.List;
 
 @Repository
 public interface CalendarRepository extends JpaRepository<Calendar, Long> {
-    @Query("SELECT c FROM Calendar c WHERE (c.periodStart <= :end AND c.periodEnd >= :start)")
-    List<Calendar> findByPeriodStartBetween(@Param("start") LocalDate start, @Param("end") LocalDate end);
-
-    @Query("SELECT c FROM Calendar c LEFT JOIN FETCH c.foods WHERE (c.periodStart <= :end AND c.periodEnd >= :start)")
+    @Query("SELECT c FROM Calendar c LEFT JOIN FETCH c.festivals WHERE (c.periodStart <= :end AND c.periodEnd >= :start)")
     List<Calendar> findCalendarsWithFoodsBetween(@Param("start") LocalDate start, @Param("end") LocalDate end);
 }

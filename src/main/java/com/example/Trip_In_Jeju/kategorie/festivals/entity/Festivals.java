@@ -43,8 +43,9 @@ public class Festivals {
     @JoinColumn(name = "location_id")
     private Location location;
 
-    @OneToOne
-    private Calendar calendar; // Calendar 엔티티를 참조
+    @ManyToOne
+    @JoinColumn(name = "calendar_id")
+    private Calendar calendar;
 
     private String thumbnailImg;
 

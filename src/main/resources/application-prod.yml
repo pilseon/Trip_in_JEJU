@@ -13,5 +13,10 @@ spring:
         format_sql: false
         use_sql_comments: false
 
+kakao:
+  api:
+    key: f9dcf56996812998b5d0646b348d4e5f
+
 custom:
   fileDirPath: /temp/thumbnail
+

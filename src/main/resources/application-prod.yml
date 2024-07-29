@@ -13,7 +13,6 @@ spring:
         format_sql: false
         use_sql_comments: false
 
-
 custom:
   fileDirPath: /temp/thumbnail
 

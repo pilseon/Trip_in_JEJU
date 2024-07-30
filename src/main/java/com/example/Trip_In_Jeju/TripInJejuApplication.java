@@ -11,5 +11,4 @@ public class TripInJejuApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TripInJejuApplication.class, args);
 	}
-
 }

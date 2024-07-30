@@ -104,6 +104,43 @@ public class FestivalsService {
         festivalsRepository.save(p);
     }
 
+    public void create2(String title, String periodStart, String periodEnd, String content, String place, String closedDay,
+                       String websiteUrl, String phoneNumber, String hashtags,  double latitude, double longitude, String subCategory) {
+
+
+
+        // Location 엔티티 생성 및 저장
+        Location location = new Location();
+        location.setName(place);
+        location.setLatitude(latitude);
+        location.setLongitude(longitude);
+        location = locationRepository.save(location);
+
+        Calendar calendar = new Calendar();
+        calendar.setTitle("Period");
+        if (periodStart != null && periodEnd != null) {
+            calendar.setPeriodStart(LocalDate.parse(periodStart));
+            calendar.setPeriodEnd(LocalDate.parse(periodEnd));
+        }
+        calendarRepository.save(calendar);
+
+        Festivals p = Festivals.builder()
+                .title(title)
+                .calendar(calendar)  // Calendar 엔티티 참조
+                .content(content)
+                .location(location)
+                .place(place)
+                .closedDay(closedDay)
+                .websiteUrl(websiteUrl)
+                .phoneNumber(phoneNumber)
+                .hashtags(hashtags)
+                .likes(0)
+                .subCategory(subCategory) // Ensure subCategory is used if provided
+                .build();
+
+        festivalsRepository.save(p);
+    }
+
     public Festivals getFestivals(Long id) {
         Optional<Festivals> festivals = festivalsRepository.findById(id);
 

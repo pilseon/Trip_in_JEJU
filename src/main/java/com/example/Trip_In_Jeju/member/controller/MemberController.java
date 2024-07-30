@@ -4,20 +4,18 @@ import com.example.Trip_In_Jeju.DataNotFoundException;
 import com.example.Trip_In_Jeju.email.service.EmailService;
 import com.example.Trip_In_Jeju.email.service.VerificationCodeService;
 import com.example.Trip_In_Jeju.member.entity.Member;
-import com.example.Trip_In_Jeju.member.entity.MemberRole;
 import com.example.Trip_In_Jeju.member.servcie.MemberService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -64,18 +62,16 @@ public class MemberController {
                          @RequestParam("password") String password,
                          @RequestParam("email") String email,
                          @RequestParam("thema") String thema,
-                         @RequestParam("thumbnail") MultipartFile thumbnail,
-
+                         @RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail,
                          HttpSession session) {
 
         String verificationCode = verificationCodeService.generateVerificationCode(email);
         String subject = "Trip_In_JEJU";
-        String body = "회원님의 가입을 축하드리며 저희 Trip_In_JEJU 에서 좋은 추억 남기셨으면 좋겠습니다! " ;
+        String body = "회원님의 가입을 축하드리며 저희 Trip_In_JEJU 에서 좋은 추억 남기셨으면 좋겠습니다!";
         emailService.send(email, subject, body);
 
         session.setAttribute("verificationCode", verificationCode);
-        memberService.signup(username, nickname, password,  email, thema, thumbnail );
-
+        memberService.signup(username, nickname, password, email, thema, thumbnail);
 
         return "redirect:/member/login";
     }
@@ -207,5 +203,38 @@ public class MemberController {
         model.addAttribute("username", username);
         model.addAttribute("email", email);
         return "member/verify-reset";
+    }
+
+    @GetMapping("/modify")
+    public String modifyForm(Model model) {
+        Member member = memberService.getCurrentMember();
+        if (member == null) {
+            logger.warn("No current member found in modifyForm method");
+            return "redirect:/member/login";
+        }
+        model.addAttribute("member", member);
+        return "member/modify";
+    }
+
+    @PostMapping("/modify")
+    public String modify(@RequestParam("username") String username,
+                         @RequestParam("nickname") String nickname,
+                         @RequestParam("password") String password,
+                         @RequestParam("email") String email,
+                         @RequestParam("thema") String thema,
+                         @RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail) {
+
+        // 현재 로그인된 회원 정보를 가져옵니다.
+        Member member = memberService.getCurrentMember();
+        if (member == null) {
+            // 사용자 정보가 없는 경우 로그인 페이지로 리다이렉트
+            return "redirect:/member/login";
+        }
+
+        // 회원 정보를 수정합니다.
+        memberService.modify(member, nickname, password, email, thema, thumbnail);
+
+        // 수정 완료 후 마이페이지로 리다이렉트
+        return "redirect:/member/myPage";
     }
 }

@@ -14,4 +14,5 @@ import java.util.List;
 public interface CalendarRepository extends JpaRepository<Calendar, Long> {
     @Query("SELECT c FROM Calendar c LEFT JOIN FETCH c.festivals WHERE (c.periodStart <= :end AND c.periodEnd >= :start)")
     List<Calendar> findCalendarsWithFoodsBetween(@Param("start") LocalDate start, @Param("end") LocalDate end);
+    List<Calendar> findAllByPeriodStartBetweenOrPeriodEndBetween(LocalDate startDate, LocalDate endDate, LocalDate startDate2, LocalDate endDate2);
 }

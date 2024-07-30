@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 <html layout:decorate="~{/layout/layout}">
+<head>
+    <link rel="stylesheet" href="/resource/css/like.css"> <!-- CSS 파일 경로 조정 -->
+</head>
 <section layout:fragment="content" class="section-prod-list">
     <body>
     <section class="container mt-1">
         <!-- 내용  -->
-        <!-- 이미지 -->
-        <ul class="list-group">
-            <li class="list-group-item">
-                <img class="w-full" style="width: 100%; max-width: 100%;" th:src="@{|/gen/${food.thumbnailImg}|}" alt="상품이미지">
-            </li>
-        </ul>
+        <!-- 이미지와 좋아요 버튼을 감싸는 컨테이너 추가 -->
+        <div class="image-container">
+            <img class="w-full" style="width: 100%; max-width: 100%;" th:src="@{|/gen/${food.thumbnailImg}|}" alt="상품이미지">
+            <div class="like-button-container" id="likeButtonContainer">
+                <form id="likeForm" th:action="@{/food/like/{id}(id=${food.id})}" method="post" style="display: inline;">
+                    <button type="submit" th:disabled="${alreadyLiked}">❤️</button>
+                </form>
+                <span class="likes" th:text="'(' + ${food.likes} + ')'"> (0) </span>
+            </div>
+        </div>
         <!-- 내용 -->
         <div class="card">
             <div class="card-body">
@@ -46,12 +53,6 @@
 
                 <!-- 좋아요 -->
                 <div class="mt-4">
-                    <span class="me-2">
-                        <form th:action="@{/food/like/{id}(id=${food.id})}" method="post" style="display:inline;">
-                            <button type="submit" style="background: none; border: none; font-size: 1.5rem; color: #e83e8c;">❤️</button>
-                        </form>
-                        <span th:text="${food.likes}">0</span>
-                    </span>
                     <span>
                         <a th:href="@{/food/review/{id}(id=${food.id})}" style="font-size: 1.5rem;">
                             ⭐ <span th:text="${averageScore}">4.9</span> 리뷰 (<span th:text="${ratings.size()}">999+</span>)
@@ -65,7 +66,7 @@
                 </div>
                 <!-- 지도  -->
                 <div class="mt-4">
-                    <span span class="font-bold" style="font-size: 1.5rem;">지도 </span>
+                    <span class="font-bold" style="font-size: 1.5rem;">지도 </span>
                     <div id="map" th:data-latitude="${food.location.latitude}" th:data-longitude="${food.location.longitude}" style="width:100%;height:400px;"></div>
                 </div>
             </div>
@@ -73,6 +74,36 @@
     </section>
 
     <script th:inline="javascript" th:src="@{/detailjs/detail.js}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const likeButtonContainer = document.getElementById('likeButtonContainer');
+            const likeForm = document.getElementById('likeForm');
+            const likeButton = likeForm.querySelector('button');
+            const likesSpan = document.querySelector('.likes');
+
+            likeButtonContainer.addEventListener('click', function () {
+                // 하트 버튼의 현재 상태를 체크하고 상태를 토글합니다.
+                const isLiked = likeButton.classList.contains('liked');
+
+                // 폼을 제출하여 서버에서 좋아요 상태를 업데이트합니다.
+                likeForm.submit();
+
+                // 좋아요 상태에 따라 하트의 색상을 변경합니다.
+                if (isLiked) {
+                    likeButton.classList.remove('liked');
+                    likeButton.classList.add('not-liked');
+                } else {
+                    likeButton.classList.remove('not-liked');
+                    likeButton.classList.add('liked');
+                }
+
+                // 좋아요 숫자를 업데이트합니다. 이 부분은 서버에서 반환된 데이터를 사용하여 동적으로 업데이트해야 합니다.
+                // 현재는 하드코딩된 값을 사용하고 있으니, 서버 응답에 맞게 조정해야 합니다.
+                let currentLikes = parseInt(likesSpan.textContent.replace(/[^\d]/g, ''));
+                likesSpan.textContent = `(${isLiked ? currentLikes - 1 : currentLikes + 1})`;
+            });
+        });
+    </script>
     </body>
 </section>
 </html>

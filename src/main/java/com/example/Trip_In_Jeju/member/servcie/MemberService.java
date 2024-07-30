@@ -89,6 +89,7 @@ public class MemberService {
             }
         }
 
+
         Member member = Member.builder()
                 .username(username)
                 .nickname(nickname)
@@ -142,13 +143,6 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
-
-
-
-
-    private Optional<Member> findByUsername(String username) {
-        return memberRepository.findByUsername(username);
-    }
 
     public Member getCurrentMember() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -251,6 +245,8 @@ public class MemberService {
         memberRepository.save(member);
     }
 
-
+    public Optional<Member> findByUsername(String username) {
+        return memberRepository.findByUsername(username);
+    }
 
 }

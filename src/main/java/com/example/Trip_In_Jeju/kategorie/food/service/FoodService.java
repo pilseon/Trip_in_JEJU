@@ -4,8 +4,11 @@ import com.example.Trip_In_Jeju.calendar.entity.Calendar;
 import com.example.Trip_In_Jeju.calendar.repository.CalendarRepository;
 import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
 import com.example.Trip_In_Jeju.kategorie.food.repository.FoodRepository;
+import com.example.Trip_In_Jeju.like.entity.Like;
+import com.example.Trip_In_Jeju.like.repository.LikeRepository;
 import com.example.Trip_In_Jeju.location.entity.Location;
 import com.example.Trip_In_Jeju.location.repository.LocationRepository;
+import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -29,6 +33,7 @@ import java.util.UUID;
 public class FoodService {
     private final FoodRepository foodRepository;
     private final LocationRepository locationRepository;
+    private final LikeRepository likeRepository;
     private final CalendarRepository calendarRepository;
     private final RatingService ratingService;
 
@@ -152,6 +157,31 @@ public class FoodService {
         return foodRepository.findAll();
     }
 
+    @Transactional
+    public boolean toggleLike(Long id, Member member) {
+        Food food = foodRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Food not found"));
+
+        boolean alreadyLiked = likeRepository.existsByFoodAndMember(food, member);
+        if (alreadyLiked) {
+            // 이미 좋아요를 눌렀다면 좋아요 취소
+            likeRepository.deleteByFoodAndMember(food, member);
+            food.setLikes(food.getLikes() - 1);
+            foodRepository.save(food);
+            return false; // 좋아요 취소됨
+        } else {
+            // 좋아요 추가
+            Like like = new Like();
+            like.setFood(food);
+            like.setMember(member);
+            likeRepository.save(like);
+            food.setLikes(food.getLikes() + 1);
+            foodRepository.save(food);
+            return true; // 좋아요 추가됨
+        }
+    }
+
+
     public void incrementLikes(Long id) {
         Food food = getFood(id);
         food.setLikes(food.getLikes() + 1);
@@ -177,4 +207,6 @@ public class FoodService {
     public Food getFoodById(Long id) {
         return foodRepository.findById(id).orElse(null);
     }
+
+
 }

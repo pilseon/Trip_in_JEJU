@@ -174,7 +174,7 @@
                 <p class="email" th:text="${member.email}">mail@mail.com</p>
                 <p class="membership-info" th:text="${#temporals.format(member.createDate, 'yyyy-MM-dd HH:mm')}">2024-07-25</p>
             </div>
-            <a href="#" class="settings-link">프로필 수정</a>
+            <a href="/member/modify" class="settings-link">프로필 수정</a>
         </section>
 
         <section class="navigation">

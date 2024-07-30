@@ -1,12 +1,12 @@
-<html layout:decorate="~{/layout/layout}">
-<section layout:fragment="content" class="section-prod-list ">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{/layout/layout}">
 <head>
     <meta charset="UTF-8">
+    <title>Weekly Calendar</title>
     <link href="/resource/css/WeekCalendar.css" rel="stylesheet" type="text/css" />
-
 </head>
-
-    <body>
+<body>
+<section layout:fragment="content" class="section-prod-list">
     <div class="flex justify-between p-4">
         <div class="relative">
             <div class="flex items-center">
@@ -22,25 +22,56 @@
                  th:attr="data-date=${date}" onclick="navigateToDateWithClick(this)">
                 <span th:text="${date.dayOfWeek.toString().substring(0, 3)}"></span><br>
                 <span th:text="${date.format(T(java.time.format.DateTimeFormatter).ofPattern('dd'))}"></span>
-                <div class="events" th:each="event : ${eventsByDate[date]}">
+                <div class="events" th:if="${eventsByDate[date] != null}" th:each="event : ${eventsByDate[date]}">
                     <div class="event-item">
                         <span th:text="${event.title}"></span>
-                        <div th:each="festival : ${event.festivals}">
-                            <div class="festival-item">
-                                <img th:src="@{${festival.thumbnailImg}}" alt="Festival Thumbnail" class="thumbnail">
+                        <div class="festivals" th:if="${event.festivals != null and !#lists.isEmpty(event.festivals)}">
+                            <div class="festival-item" th:each="festivals : ${event.festivals}">
+                                <img th:src="@{${festivals.thumbnailImg}}" alt="Festival Thumbnail" class="thumbnail" th:if="${festivals.thumbnailImg != null}">
                                 <div>
-                                    <h3 th:text="${festival.title}"></h3>
-                                    <p th:text="${festival.subCategory}"></p>
-                                    <p th:text="${festival.place}"></p>
+                                    <h3 th:text="${festivals.title}"></h3>
+                                    <p th:text="${festivals.subCategory}"></p>
+                                    <p th:text="${festivals.place}"></p>
                                 </div>
                             </div>
                         </div>
+                        <p th:if="${event.festivals == null or #lists.isEmpty(event.festivals)}">No festivals available</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="center-box">
+        <h2>주간 축제 일정 (번호는 게시글 번호) </h2>
+        <div th:each="entry : ${eventsByDate}">
+            <h3 th:text="${entry.key}"></h3>
+            <ul>
+                <li th:each="event : ${entry.value}">
+                    <span th:text="${event.Id}"></span> |
+                    <span th:text="${event.periodStart}"></span> -
+                    <span th:text="${event.periodEnd}"></span>
+
+                </li>
+            </ul>
+        </div>
+    </div>
     <script th:src="@{/weekcalendarjs/weekcalendar.js}"></script>
-    </body>
+    <script>
+        function toggleDatePicker() {
+            var datePicker = document.getElementById('datePicker');
+            datePicker.classList.toggle('hidden');
+        }
+
+        function navigateToDate() {
+            var selectedDate = document.getElementById('datePicker').value;
+            window.location.href = '/calendar/week?date=' + selectedDate;
+        }
+
+        function navigateToDateWithClick(element) {
+            var selectedDate = element.getAttribute('data-date');
+            window.location.href = '/calendar/week?date=' + selectedDate;
+        }
+    </script>
 </section>
+</body>
 </html>

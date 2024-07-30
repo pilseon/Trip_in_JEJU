@@ -50,7 +50,7 @@ public class CalendarController {
         LocalDate startOfWeek = date.with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 1);
         LocalDate endOfWeek = date.with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 7);
 
-        List<Calendar> weeklyCalendars = calendarService.findCalendarsWithFoodsBetween(startOfWeek, endOfWeek);
+        List<Calendar> weeklyCalendars = calendarService.findCalendarsWithFoodsBetween2(startOfWeek, endOfWeek);
 
         // 디버그 로그 추가
         System.out.println("Start of Week: " + startOfWeek);

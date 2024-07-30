@@ -73,18 +73,21 @@ public class MemberService {
     public String genFileDirPath;
     @Transactional
     public Member signup(String username, String nickname, String password,
-                         String email, String thema , MultipartFile thumbnail) {
-        String thumbnailRelPath = "member/" + UUID.randomUUID().toString() + ".jpg";
-        File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
+                         String email, String thema, MultipartFile thumbnail) {
+        String thumbnailRelPath = null;
 
-        thumbnailFile.mkdirs();
+        if (thumbnail != null && !thumbnail.isEmpty()) {
+            thumbnailRelPath = "member/" + UUID.randomUUID().toString() + ".jpg";
+            File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
 
-        try {
-            thumbnail.transferTo(thumbnailFile);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            thumbnailFile.mkdirs();
+
+            try {
+                thumbnail.transferTo(thumbnailFile);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
-
 
         Member member = Member.builder()
                 .username(username)
@@ -98,6 +101,29 @@ public class MemberService {
 
         return memberRepository.save(member);
     }
+
+    public Member modify(Member member, String nickname, String password,
+                         String email, String thema, MultipartFile thumbnail) {
+        String thumbnailRelPath = "member/" + UUID.randomUUID().toString() + ".jpg";
+        File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
+
+        try {
+            thumbnail.transferTo(thumbnailFile);
+        } catch ( IOException e ) {
+            throw new RuntimeException(e);
+        }
+        // 기존 회원 정보를 수정합니다.
+        member.setNickname(nickname);
+        member.setPassword(passwordEncoder.encode(password));
+        member.setEmail(email);
+        member.setThema(thema);
+        member.setModifyDate(LocalDateTime.now());
+        member.setThumbnailImg(thumbnailRelPath);
+
+        // 수정된 회원 정보를 저장하고 반환합니다.
+        return memberRepository.save(member);
+    }
+
 
     @Transactional
     public Member signup2(String username, String nickname, String password,
@@ -115,6 +141,8 @@ public class MemberService {
 
         return memberRepository.save(member);
     }
+
+
 
 
 

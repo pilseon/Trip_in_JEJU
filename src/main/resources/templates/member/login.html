@@ -1,63 +1,280 @@
 <!DOCTYPE html>
-<html>
-<section layout:fragment="content" class="flex-1 flex justify-center items-center">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title th:text="|${pageName}|">로그인</title>
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="/resource/css/signup.css" rel="stylesheet" type="text/css"/>
     <link href="/resource/css/login.css" rel="stylesheet" type="text/css"/>
     <link href="/resource/css/click.css" rel="stylesheet" type="text/css"/>
-    <title>test</title>
+
+    <title>Trip_In_Jeju</title>
+    <style>
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: auto; /* 스크롤 가능하도록 설정 */
+        }
+        .form-wrapper {
+            position: relative;
+            width: 90%;
+            max-width: 400px;
+            height: 90%;
+
+            display: flex;
+            flex-direction: column;
+        }
+        .form-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.6s ease-in-out;
+            transform-style: preserve-3d;
+        }
+        .form-container.login.active {
+            transform: translateX(0) rotateX(0deg);
+        }
+        .form-container.login.hidden {
+            transform: translateX(-100%) rotateX(-90deg);
+        }
+        .form-container.signup.active {
+            transform: translateX(0) rotateX(0deg);
+        }
+        .form-container.signup.hidden {
+            transform: translateX(100%) rotateX(90deg);
+        }
+        .toggle-btn {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            width: 50px;
+            height: 50px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+            transform: translateX(-50%);
+            animation: moveButton 1s infinite alternate;
+        }
+        .toggle-btn i {
+            font-size: 24px;
+            transform: rotate(45deg);
+        }
+        @keyframes moveButton {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(-40%); }
+        }
+        .wave {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation: wave-animation 6s infinite;
+        }
+        .wave.layer_1 {
+            animation-duration: 8s;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        @keyframes wave-animation {
+            0% { transform: scale(0.8); opacity: 0.4; }
+            50% { transform: scale(1.2); opacity: 0.1; }
+            100% { transform: scale(0.8); opacity: 0.4; }
+        }
+        .orange {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-image: url('https://i.ibb.co/PGhNNqQ/removebg-preview.png'); /* 귤 아이콘 이미지 URL */
+            background-size: cover;
+            border-radius: 50%;
+            opacity: 0;
+            animation: fall 10s forwards;
+        }
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+    </style>
+    <!-- Font Awesome CDN for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-
 <body>
-
 <div class="wrap">
-    <div class="wave layer_1"></div>
     <div class="wave"></div>
+    <div class="wave layer_1"></div>
 </div>
+
 <div class="container">
-    <h1>
-        <a href="/">
-            <img src="https://i.ibb.co/s3RSNmC/sdfa-removebg-preview.png" alt="트립인 제주" width="300" height="300">
-        </a>
-        <nav>로그인</nav>
-    </h1>
+    <div class="form-wrapper">
+        <div class="form-container login active">
+            <div class="content">
+                <br><br><br><br><br><br><br><br><br>
+                <h1>
+                    <a href="/">
+                        <img src="https://i.ibb.co/s3RSNmC/sdfa-removebg-preview.png" alt="트립인 제주" width="300" height="300">
+                    </a>
+                    <nav>로그인</nav>
+                </h1>
+                <form th:action="@{/member/login}" method="post">
+                    <div>
+                        <input type="text" name="username" placeholder="아이디"><br>
+                    </div>
+                    <div>
+                        <input type="password" name="password" placeholder="비밀번호"><br><br>
+                    </div>
+                    <button type="submit" class="btn">로그인</button>
+                    <p th:if="${param.error}" class="error-message">[아이디] 혹은 [비밀번호]를 확인해주세요.</p>
+                    <div class="link-container">
+                        <a th:href="@{/member/find-username}">아이디 찾기</a> |
+                        <a th:href="@{/member/request-reset}">비밀번호 찾기</a>
+                    </div>
+                </form>
+                <div class="login">
+                    <a href="/oauth2/authorization/google" class="oauth-btn google">
+                        <div class="logo"><img src="https://github.com/Junsu-Ahn/cookers/assets/156152342/b210eae2-e515-4cdf-93ce-3c445e44b727" alt="구글" style="width: 20px; height: 20px;"></div>
+                        <div class="name">&nbsp; 구글 로그인</div>
+                    </a>
+                    <a href="/oauth2/authorization/kakao" class="oauth-btn kakao">
+                        <div class="logo" style="width: 20px; height: 20px;"><img src="https://github.com/Junsu-Ahn/cookers/assets/156152342/6183c7c2-d209-4d1a-8276-9232162d1226" alt="카카오" style="width: 20px; height: 20px;"></div>
+                        <div class="name">&nbsp; 카카오 로그인</div>
+                    </a>
+                    <a href="/oauth2/authorization/naver" class="oauth-btn naver">
+                        <div class="logo"><img src="https://github.com/Junsu-Ahn/cookers/assets/156152342/3fd07912-a828-4c37-878c-ece4a5feffb4" alt="네이버" style="width: 20px; height: 20px;"></div>
+                        <div class="name">&nbsp; 네이버 로그인</div>
+                    </a>
+                    <br>
+                    <br>
+                    <a > 아래 비행기를 눌러 회원가입으로 전환!</a>
+                    <br> <br> <br> <br> <br> <br>
+                    <br>
+                </div>
 
-    <form th:action="@{/member/login}" method="post">
-        <div>
-            <input type="text" name="username" placeholder="아이디"><br>
+            </div>
         </div>
-        <div>
-            <input type="password" name="password" placeholder="비밀번호"><br><br>
+        <div class="form-container signup hidden">
+            <div class="content">
+                <br><br><br><br><br><br><br><br><br><br><br><br>
+                <h1>
+                    <a href="/">
+                        <img src="https://i.ibb.co/s3RSNmC/sdfa-removebg-preview.png" alt="트립인 제주" width="300" height="300">
+                    </a>
+                </h1>
+                <div class="row">
+                    <div class="col-sm-6 offset-sm-3">
+                        <div class="card">
+                            <div class="card-header">회원가입</div>
+                            <div class="card-body">
+                                <form th:action="@{/member/signup}" th:object="${memberForm}" method="POST" enctype="multipart/form-data">
+                                    <div class="mb-3">
+                                        <label for="username" class="form-label">아이디</label>
+                                        <input type="text" name="username" id="username" class="form-control" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="nickname" class="form-label">닉네임</label>
+                                        <input type="text" name="nickname" id="nickname" class="form-control" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">비밀번호</label>
+                                        <input type="password" name="password" id="password" class="form-control" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">이메일</label>
+                                        <input type="email" name="email" id="email" class="form-control" required>
+                                    </div>
+                                    <label for="thema"><i class="fas fa-map-marker-alt"></i> 선호하는 여행 테마 (필수) </label><br>
+                                    <select id="thema" name="thema">
+                                        <option value="--">선호하시는 테마를 선택해 주세요!</option>
+                                        <option value="음식">음식</option>
+                                        <option value="디저트">디저트</option>
+                                        <option value="관광지">관광지</option>
+                                        <option value="축제">축제</option>
+                                        <option value="엑티비티">엑티비티</option>
+                                        <option value="쇼핑">쇼핑</option>
+                                        <option value="기타">기타</option>
+                                    </select>
+                                    <br><br>
+                                    <label for="thumbnail"><i class="fas fa-image"></i> 프로필 사진)</label>
+                                    <input type="file" id="thumbnail" name="thumbnail" accept="image/png, image/gif, image/jpeg" >
+                                    <br><br>
+                                    <button type="submit" class="btn btn-primary">회원가입</button>
+                                    <br><br><br>
+                                </form>
+                            </div>
+                            <a > 아래 비행기를 눌러 로그인으로 전환!</a>
+                            <br> <br> <br> <br> <br> <br>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <button type="submit" class="btn">로그인</button>
-        <p th:if="${param.error}" class="error-message">[아이디] 혹은 [비밀번호]를 확인해주세요.</p>
-        <div class="link-container">
-            <a th:href="@{/member/find-username}">아이디 찾기</a> |
-            <a th:href="@{/member/request-reset}">비밀번호 찾기</a> |
-            <a th:href="@{/member/signup}">회원가입</a>
-        </div>
-    </form>
-
-    <div class="login">
-        <a href="/oauth2/authorization/google" class="oauth-btn google">
-            <div class="logo"><img src="https://github.com/Junsu-Ahn/cookers/assets/156152342/b210eae2-e515-4cdf-93ce-3c445e44b727" alt="구글" style="width: 20px; height: 20px;"></div>
-            <div class="name">&nbsp; 구글 로그인</div>
-        </a>
-        <a href="/oauth2/authorization/kakao" class="oauth-btn kakao">
-            <div class="logo" style="width: 20px; height: 20px;"><img src="https://github.com/Junsu-Ahn/cookers/assets/156152342/6183c7c2-d209-4d1a-8276-9232162d1226" alt="카카오" style="width: 20px; height: 20px;"></div>
-            <div class="name">&nbsp; 카카오 로그인</div>
-        </a>
-        <a href="/oauth2/authorization/naver" class="oauth-btn naver">
-            <div class="logo"><img src="https://github.com/Junsu-Ahn/cookers/assets/156152342/3fd07912-a828-4c37-878c-ece4a5feffb4" alt="네이버" style="width: 20px; height: 20px;"></div>
-            <div class="name">&nbsp; 네이버 로그인</div>
-        </a>
     </div>
+    <br><br><br><br><br>
 </div>
-<script th:src="@{/clickjs/click.js}"></script>
+<button class="toggle-btn" onclick="toggleForm()">
+    <i class="fas fa-plane"></i>
+</button>
+
+<script>
+    function toggleForm() {
+        const loginForm = document.querySelector('.form-container.login');
+        const signupForm = document.querySelector('.form-container.signup');
+
+        if (loginForm.classList.contains('active')) {
+            loginForm.classList.remove('active');
+            loginForm.classList.add('hidden');
+            signupForm.classList.remove('hidden');
+            signupForm.classList.add('active');
+        } else {
+            signupForm.classList.remove('active');
+            signupForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+            loginForm.classList.add('active');
+        }
+    }
+
+    function dropOranges(selector) {
+        const container = document.querySelector(selector);
+        for (let i = 0; i < 3; i++) {
+            const orange = document.createElement('div');
+            orange.classList.add('orange');
+            orange.style.left = Math.random() * 100 + 'vw'; // 랜덤한 위치 설정
+            container.appendChild(orange);
+
+            // 애니메이션이 끝난 후 아이콘 제거
+            orange.addEventListener('animationend', () => {
+                orange.remove();
+            });
+        }
+    }
+
+    // 페이지 로드 시 귤 아이콘 떨어뜨리기
+    document.addEventListener('DOMContentLoaded', () => {
+        dropOranges('.wrap');
+        setInterval(() => {
+            dropOranges('.wrap');
+        }, 1000); // 1초마다 귤 아이콘 떨어뜨리기
+    });
+</script>
 </body>
-</section>
 </html>

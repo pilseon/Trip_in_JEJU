@@ -55,7 +55,10 @@ public class Festivals {
 
     private int likes;
 
+
     private double averageRating;  // 평균 별점 추가
 
     private String subCategory;
+
+
 }

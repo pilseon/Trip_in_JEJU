@@ -6,20 +6,20 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
-public class Message {
-
+@ToString
+public class ChatMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String sender;
-    private String content;
-    private LocalDateTime timestamp;
 
-    // Getters and setters
+    private String sender;
+    private String message;
+    private LocalDateTime timestamp;
 }

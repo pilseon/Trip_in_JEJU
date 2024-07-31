@@ -1,0 +1,8 @@
+.message.user {
+            background-color: #DCF8C6; /* 연한 초록색 */
+            align-self: flex-end; /* 오른쪽 정렬 */
+        }
+        .message.bot {
+            background-color: #F1F0F0; /* 연한 회색 */
+            align-self: flex-start; /* 왼쪽 정렬 */
+        }

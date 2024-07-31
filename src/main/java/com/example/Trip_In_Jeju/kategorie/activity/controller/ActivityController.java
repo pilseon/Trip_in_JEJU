@@ -3,6 +3,8 @@ package com.example.Trip_In_Jeju.kategorie.activity.controller;
 import com.example.Trip_In_Jeju.kategorie.activity.entity.Activity;
 import com.example.Trip_In_Jeju.kategorie.activity.service.ActivityService;
 import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
+import com.example.Trip_In_Jeju.member.entity.Member;
+import com.example.Trip_In_Jeju.member.servcie.MemberService;
 import com.example.Trip_In_Jeju.rating.entity.Rating;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,6 +25,7 @@ import java.util.List;
 public class ActivityController {
     private final ActivityService activityService;
     private final RatingService ratingService;
+    private final MemberService memberService;
 
     @GetMapping("/list")
     public String list(
@@ -103,8 +107,25 @@ public class ActivityController {
     }
 
     @PostMapping("/like/{id}")
-    public String like(@PathVariable("id") Long id) {
-        activityService.incrementLikes(id);
+    public String like(@PathVariable("id") Long id, Authentication authentication) {
+        if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails)) {
+            return "redirect:/activity/detail/" + id;
+        }
+
+        String username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        Optional<Member> memberOptional = memberService.findByUsername(username);
+
+        if (!memberOptional.isPresent()) {
+            return "redirect:/activity/detail/" + id + "?error=memberNotFound";
+        }
+
+        Member member = memberOptional.get();
+        boolean liked = activityService.toggleLike(id, member);
+
+        if (!liked) {
+            return "redirect:/activity/detail/" + id + "?error=alreadyLiked";
+        }
+
         return "redirect:/activity/detail/" + id;
     }
 }

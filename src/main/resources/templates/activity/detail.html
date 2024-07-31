@@ -1,15 +1,28 @@
 <!DOCTYPE html>
 <html layout:decorate="~{/layout/layout}">
 <section layout:fragment="content" class="section-prod-list">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link href="/resource/css/like.css" rel="stylesheet" type="text/css"/>
+        <link href="/resource/css/click.css" rel="stylesheet" type="text/css"/>
+        <title>test</title>
+    </head>
     <body>
     <section class="container mt-1">
         <!-- 내용  -->
         <!-- 이미지 -->
-        <ul class="list-group">
-            <li class="list-group-item">
-                <img class="w-full" style="width: 100%; max-width: 100%;" th:src="@{|/gen/${activity.thumbnailImg}|}" alt="상품이미지">
-            </li>
-        </ul>
+        <div class="image-container">
+            <img class="w-full" style="width: 100%; max-width: 100%;" th:src="@{|/gen/${activity.thumbnailImg}|}" alt="상품이미지">
+            <div class="like-button-container" id="likeButtonContainer">
+                <form id="likeForm" th:action="@{/activity/like/{id}(id=${activity.id})}" method="post" style="display: inline;">
+                    <button type="submit" th:disabled="${alreadyLiked}">❤️</button>
+                </form>
+                <span class="likes" th:text="'(' + ${activity.likes} + ')'"> (0) </span>
+            </div>
+        </div>
         <!-- 내용 -->
         <div class="card">
             <div class="card-body">
@@ -44,14 +57,7 @@
                     <span th:text="${activity.hashtags}"></span>
                 </div>
 
-                <!-- 좋아요 -->
                 <div class="mt-4">
-                    <span class="me-2">
-                        <form th:action="@{/activity/like/{id}(id=${activity.id})}" method="post" style="display:inline;">
-                            <button type="submit" style="background: none; border: none; font-size: 1.5rem; color: #e83e8c;">❤️</button>
-                        </form>
-                        <span th:text="${activity.likes}">0</span>
-                    </span>
                     <span>
                         <a th:href="@{/activity/review/{id}(id=${activity.id})}" style="font-size: 1.5rem;">
                             ⭐ <span th:text="${averageScore}">4.9</span> 리뷰 (<span th:text="${ratings.size()}">999+</span>)
@@ -73,6 +79,16 @@
     </section>
 
     <script th:inline="javascript" th:src="@{/detailjs/detail.js}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const likeButtonContainer = document.getElementById('likeButtonContainer');
+            const likeForm = document.getElementById('likeForm');
+
+            likeButtonContainer.addEventListener('click', function () {
+                likeForm.submit();
+            });
+        });
+    </script>
     </body>
 </section>
 </html>

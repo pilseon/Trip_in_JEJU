@@ -1,6 +1,9 @@
 package com.example.Trip_In_Jeju.like.entity;
 
 
+import com.example.Trip_In_Jeju.kategorie.activity.entity.Activity;
+import com.example.Trip_In_Jeju.kategorie.attractions.entity.Attractions;
+import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
 import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import jakarta.persistence.*;
@@ -21,6 +24,18 @@ public class Like {
     @ManyToOne
     @JoinColumn(name = "food_id")
     private Food food;
+
+    @ManyToOne
+    @JoinColumn(name = "activity_id")
+    private Activity activity;
+
+    @ManyToOne
+    @JoinColumn(name = "attractions_id")
+    private Attractions attractions;
+
+    @ManyToOne
+    @JoinColumn(name = "dessert_id")
+    private Dessert dessert;
 
     @ManyToOne
     @JoinColumn(name = "member_id")

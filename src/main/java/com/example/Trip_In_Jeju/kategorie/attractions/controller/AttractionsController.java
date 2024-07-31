@@ -3,7 +3,8 @@ package com.example.Trip_In_Jeju.kategorie.attractions.controller;
 
 import com.example.Trip_In_Jeju.kategorie.attractions.entity.Attractions;
 import com.example.Trip_In_Jeju.kategorie.attractions.service.AttractionsService;
-import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
+import com.example.Trip_In_Jeju.member.entity.Member;
+import com.example.Trip_In_Jeju.member.servcie.MemberService;
 import com.example.Trip_In_Jeju.rating.entity.Rating;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -23,6 +25,7 @@ import java.util.List;
 public class AttractionsController {
     private final AttractionsService attractionsService;
     private final RatingService ratingService;
+    private final MemberService memberService;
 
     @GetMapping("/list")
     public String list(
@@ -104,8 +107,25 @@ public class AttractionsController {
     }
 
     @PostMapping("/like/{id}")
-    public String like(@PathVariable("id") Long id) {
-        attractionsService.incrementLikes(id);
+    public String like(@PathVariable("id") Long id, Authentication authentication) {
+        if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails)) {
+            return "redirect:/attractions/detail/" + id;
+        }
+
+        String username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        Optional<Member> memberOptional = memberService.findByUsername(username);
+
+        if (!memberOptional.isPresent()) {
+            return "redirect:/attractions/detail/" + id + "?error=memberNotFound";
+        }
+
+        Member member = memberOptional.get();
+        boolean liked = attractionsService.toggleLike(id, member);
+
+        if (!liked) {
+            return "redirect:/attractions/detail/" + id + "?error=alreadyLiked";
+        }
+
         return "redirect:/attractions/detail/" + id;
     }
 }

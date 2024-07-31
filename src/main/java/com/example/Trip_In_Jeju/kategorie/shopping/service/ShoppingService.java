@@ -4,8 +4,11 @@ import com.example.Trip_In_Jeju.calendar.entity.Calendar;
 import com.example.Trip_In_Jeju.calendar.repository.CalendarRepository;
 import com.example.Trip_In_Jeju.kategorie.shopping.entity.Shopping;
 import com.example.Trip_In_Jeju.kategorie.shopping.repository.ShoppingRepository;
+import com.example.Trip_In_Jeju.like.entity.Like;
+import com.example.Trip_In_Jeju.like.repository.LikeRepository;
 import com.example.Trip_In_Jeju.location.entity.Location;
 import com.example.Trip_In_Jeju.location.repository.LocationRepository;
+import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -30,6 +34,7 @@ public class ShoppingService {
     private final ShoppingRepository shoppingRepository;
     private final LocationRepository locationRepository;
     private final CalendarRepository calendarRepository;
+    private final LikeRepository likeRepository;
     private final RatingService ratingService;
 
     @Value("${kakao.api.key}")
@@ -115,6 +120,31 @@ public class ShoppingService {
     public List<Shopping> getList() {
         return shoppingRepository.findAll();
     }
+
+    @Transactional
+    public boolean toggleLike(Long id, Member member) {
+        Shopping shopping = shoppingRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Shopping not found"));
+
+        boolean alreadyLiked = likeRepository.existsByShoppingAndMember(shopping, member);
+        if (alreadyLiked) {
+            // 이미 좋아요를 눌렀다면 좋아요 취소
+            likeRepository.deleteByShoppingAndMember(shopping, member);
+            shopping.setLikes(shopping.getLikes() - 1);
+            shoppingRepository.save(shopping);
+            return false; // 좋아요 취소됨
+        } else {
+            // 좋아요 추가
+            Like like = new Like();
+            like.setShopping(shopping);
+            like.setMember(member);
+            likeRepository.save(like);
+            shopping.setLikes(shopping.getLikes() + 1);
+            shoppingRepository.save(shopping);
+            return true; // 좋아요 추가됨
+        }
+    }
+
 
     public void incrementLikes(Long id) {
         Shopping shopping = getShopping(id);

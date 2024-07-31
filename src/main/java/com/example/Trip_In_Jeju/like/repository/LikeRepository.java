@@ -3,8 +3,11 @@ package com.example.Trip_In_Jeju.like.repository;
 import com.example.Trip_In_Jeju.kategorie.activity.entity.Activity;
 import com.example.Trip_In_Jeju.kategorie.attractions.entity.Attractions;
 import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
+import com.example.Trip_In_Jeju.kategorie.festivals.entity.Festivals;
 import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
 
+import com.example.Trip_In_Jeju.kategorie.other.entity.Other;
+import com.example.Trip_In_Jeju.kategorie.shopping.entity.Shopping;
 import com.example.Trip_In_Jeju.like.entity.Like;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -44,6 +47,25 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
     @Query("DELETE FROM Like l WHERE l.dessert = :dessert AND l.member = :member")
     void deleteByDessertAndMember(@Param("dessert") Dessert dessert, @Param("member") Member member);
 
+    @Query("SELECT CASE WHEN COUNT(l) > 0 THEN true ELSE false END FROM Like l WHERE l.other = :other AND l.member = :member")
+    boolean existsByOtherAndMember(@Param("other") Other other, @Param("member") Member member);
 
+    @Modifying
+    @Query("DELETE FROM Like l WHERE l.other = :other AND l.member = :member")
+    void deleteByOtherAndMember(@Param("other") Other other, @Param("member") Member member);
+
+    @Query("SELECT CASE WHEN COUNT(l) > 0 THEN true ELSE false END FROM Like l WHERE l.shopping = :shopping AND l.member = :member")
+    boolean existsByShoppingAndMember(@Param("shopping") Shopping shopping, @Param("member") Member member);
+
+    @Modifying
+    @Query("DELETE FROM Like l WHERE l.shopping = :shopping AND l.member = :member")
+    void deleteByShoppingAndMember(@Param("shopping") Shopping shopping, @Param("member") Member member);
+
+    @Query("SELECT CASE WHEN COUNT(l) > 0 THEN true ELSE false END FROM Like l WHERE l.festivals = :festivals AND l.member = :member")
+    boolean existsByFestivalsAndMember(@Param("festivals") Festivals festivals, @Param("member") Member member);
+
+    @Modifying
+    @Query("DELETE FROM Like l WHERE l.festivals = :festivals AND l.member = :member")
+    void deleteByFestivalsAndMember(@Param("festivals") Festivals festivals, @Param("member") Member member);
 
 }

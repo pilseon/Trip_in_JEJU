@@ -1,8 +1,9 @@
 package com.example.Trip_In_Jeju.kategorie.festivals.controller;
 
-import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
 import com.example.Trip_In_Jeju.kategorie.festivals.entity.Festivals;
 import com.example.Trip_In_Jeju.kategorie.festivals.service.FestivalsService;
+import com.example.Trip_In_Jeju.member.entity.Member;
+import com.example.Trip_In_Jeju.member.servcie.MemberService;
 import com.example.Trip_In_Jeju.rating.entity.Rating;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,6 +24,7 @@ import java.util.List;
 public class FestivalsController {
     private final FestivalsService festivalsService;
     private final RatingService ratingService;
+    private final MemberService memberService;
 
     @GetMapping("/list")
     public String list(
@@ -103,8 +106,28 @@ public class FestivalsController {
     }
 
     @PostMapping("/like/{id}")
-    public String like(@PathVariable("id") Long id) {
-        festivalsService.incrementLikes(id);
+    public String like(@PathVariable("id") Long id, Authentication authentication) {
+        if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails)) {
+            return "redirect:/festivals/detail/" + id;
+        }
+
+        String username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        Optional<Member> memberOptional = memberService.findByUsername(username);
+
+        if (!memberOptional.isPresent()) {
+            return "redirect:/festivals/detail/" + id + "?error=memberNotFound";
+        }
+
+        Member member = memberOptional.get();
+        boolean liked = festivalsService.toggleLike(id, member);
+
+        if (!liked) {
+            return "redirect:/festivals/detail/" + id + "?error=alreadyLiked";
+        }
+
         return "redirect:/festivals/detail/" + id;
     }
+
+
+
 }

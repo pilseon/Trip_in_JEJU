@@ -4,6 +4,8 @@ package com.example.Trip_In_Jeju.kategorie.shopping.controller;
 import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
 import com.example.Trip_In_Jeju.kategorie.shopping.entity.Shopping;
 import com.example.Trip_In_Jeju.kategorie.shopping.service.ShoppingService;
+import com.example.Trip_In_Jeju.member.entity.Member;
+import com.example.Trip_In_Jeju.member.servcie.MemberService;
 import com.example.Trip_In_Jeju.rating.entity.Rating;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -23,6 +26,7 @@ import java.util.List;
 public class ShoppingController {
     private final ShoppingService shoppingService;
     private final RatingService ratingService;
+    private final MemberService memberService;
 
     @GetMapping("/list")
     public String list(
@@ -104,8 +108,28 @@ public class ShoppingController {
     }
 
     @PostMapping("/like/{id}")
-    public String like(@PathVariable("id") Long id) {
-        shoppingService.incrementLikes(id);
+    public String like(@PathVariable("id") Long id, Authentication authentication) {
+        if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails)) {
+            return "redirect:/shopping/detail/" + id;
+        }
+
+        String username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        Optional<Member> memberOptional = memberService.findByUsername(username);
+
+        if (!memberOptional.isPresent()) {
+            return "redirect:/shopping/detail/" + id + "?error=memberNotFound";
+        }
+
+        Member member = memberOptional.get();
+        boolean liked = shoppingService.toggleLike(id, member);
+
+        if (!liked) {
+            return "redirect:/shopping/detail/" + id + "?error=alreadyLiked";
+        }
+
         return "redirect:/shopping/detail/" + id;
     }
+
+
+
 }

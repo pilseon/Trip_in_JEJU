@@ -4,8 +4,11 @@ import com.example.Trip_In_Jeju.calendar.entity.Calendar;
 import com.example.Trip_In_Jeju.calendar.repository.CalendarRepository;
 import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
 import com.example.Trip_In_Jeju.kategorie.dessert.repository.DessertRepository;
+import com.example.Trip_In_Jeju.like.entity.Like;
+import com.example.Trip_In_Jeju.like.repository.LikeRepository;
 import com.example.Trip_In_Jeju.location.entity.Location;
 import com.example.Trip_In_Jeju.location.repository.LocationRepository;
+import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -30,6 +34,7 @@ public class DessertService {
     private final DessertRepository dessertRepository;
     private final LocationRepository locationRepository;
     private final CalendarRepository calendarRepository;
+    private final LikeRepository likeRepository;
     private final RatingService ratingService;
 
     @Value("${kakao.api.key}")
@@ -151,6 +156,31 @@ public class DessertService {
     public List<Dessert> getList() {
         return dessertRepository.findAll();
     }
+
+    @Transactional
+    public boolean toggleLike(Long id, Member member) {
+        Dessert dessert = dessertRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Dessert not found"));
+
+        boolean alreadyLiked = likeRepository.existsByDessertAndMember(dessert, member);
+        if (alreadyLiked) {
+            // 이미 좋아요를 눌렀다면 좋아요 취소
+            likeRepository.deleteByDessertAndMember(dessert, member);
+            dessert.setLikes(dessert.getLikes() - 1);
+            dessertRepository.save(dessert);
+            return false; // 좋아요 취소됨
+        } else {
+            // 좋아요 추가
+            Like like = new Like();
+            like.setDessert(dessert);
+            like.setMember(member);
+            likeRepository.save(like);
+            dessert.setLikes(dessert.getLikes() + 1);
+            dessertRepository.save(dessert);
+            return true; // 좋아요 추가됨
+        }
+    }
+
 
     public void incrementLikes(Long id) {
         Dessert dessert = getDessert(id);

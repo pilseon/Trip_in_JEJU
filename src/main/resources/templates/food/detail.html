@@ -1,9 +1,15 @@
 <!DOCTYPE html>
 <html layout:decorate="~{/layout/layout}">
-<head>
-    <link rel="stylesheet" href="/resource/css/like.css"> <!-- CSS 파일 경로 조정 -->
-</head>
 <section layout:fragment="content" class="section-prod-list">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link href="/resource/css/like.css" rel="stylesheet" type="text/css"/>
+        <link href="/resource/css/click.css" rel="stylesheet" type="text/css"/>
+        <title>test</title>
+    </head>
     <body>
     <section class="container mt-1">
         <!-- 내용  -->
@@ -51,7 +57,6 @@
                     <span th:text="${food.hashtags}"></span>
                 </div>
 
-                <!-- 좋아요 -->
                 <div class="mt-4">
                     <span>
                         <a th:href="@{/food/review/{id}(id=${food.id})}" style="font-size: 1.5rem;">
@@ -78,29 +83,9 @@
         document.addEventListener('DOMContentLoaded', function () {
             const likeButtonContainer = document.getElementById('likeButtonContainer');
             const likeForm = document.getElementById('likeForm');
-            const likeButton = likeForm.querySelector('button');
-            const likesSpan = document.querySelector('.likes');
 
             likeButtonContainer.addEventListener('click', function () {
-                // 하트 버튼의 현재 상태를 체크하고 상태를 토글합니다.
-                const isLiked = likeButton.classList.contains('liked');
-
-                // 폼을 제출하여 서버에서 좋아요 상태를 업데이트합니다.
                 likeForm.submit();
-
-                // 좋아요 상태에 따라 하트의 색상을 변경합니다.
-                if (isLiked) {
-                    likeButton.classList.remove('liked');
-                    likeButton.classList.add('not-liked');
-                } else {
-                    likeButton.classList.remove('not-liked');
-                    likeButton.classList.add('liked');
-                }
-
-                // 좋아요 숫자를 업데이트합니다. 이 부분은 서버에서 반환된 데이터를 사용하여 동적으로 업데이트해야 합니다.
-                // 현재는 하드코딩된 값을 사용하고 있으니, 서버 응답에 맞게 조정해야 합니다.
-                let currentLikes = parseInt(likesSpan.textContent.replace(/[^\d]/g, ''));
-                likesSpan.textContent = `(${isLiked ? currentLikes - 1 : currentLikes + 1})`;
             });
         });
     </script>

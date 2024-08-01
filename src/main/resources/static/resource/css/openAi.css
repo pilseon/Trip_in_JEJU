@@ -1,8 +1,41 @@
+.message-container {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.message-container.user {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end; /* 사용자 메시지를 오른쪽 정렬 */
+}
+
+.message-container.bot {
+    justify-content: flex-start;
+}
+
+.message-container img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
 .message.user {
-            background-color: #DCF8C6; /* 연한 초록색 */
-            align-self: flex-end; /* 오른쪽 정렬 */
-        }
-        .message.bot {
-            background-color: #F1F0F0; /* 연한 회색 */
-            align-self: flex-start; /* 왼쪽 정렬 */
-        }
+    background-color: #E3FECE;
+    align-self: flex-end;
+}
+
+.message.bot {
+    background-color: #F1F0F0;
+    align-self: flex-start;
+}
+
+.message-container.user .message {
+    order: 0; /* 텍스트가 이미지보다 앞에 오도록 설정 */
+}
+
+.message-container.user .thumbnail {
+    order: 1; /* 이미지가 텍스트보다 뒤에 오도록 설정 */
+    margin-left: 10px;
+}

@@ -7,7 +7,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>test</title>
+    <title>제주도 여행은 Trip_In_Jeju !</title>
 
     <!-- 제이쿼리 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
@@ -35,6 +35,12 @@
 <header>
     <!-- Fixed navbar -->
     <nav class="navbar navbar-expand-md navbar-dark w-full ml-auto mr-auto bg-gray-100 rounded-bl-3xl rounded-br-3xl">
+        <div id="chat-container" class="fixed bottom-16 sm:right-96 right-4 rounded-full shadow-lg">
+            <div id="chat-icon" class="relative">
+                <img class="rounded-full cursor-pointer" src="https://github.com/user-attachments/assets/ee76bf64-f914-4c75-98d4-f2fab0db8b5e" alt="ai서비스">
+                <button id="close-icon" class="absolute top-0 right-0 text-white bg-black w-5 h-5 text-xs rounded-full">x</button>
+            </div>
+        </div>
         <div class="flex container-fluid p-0 h-24 content-center">
             <div class="flex-grow">
                 <a class="inline-block w-20" href="/"><img src="https://github.com/user-attachments/assets/49643242-fdac-4917-ba06-fdc50eafaa2b" alt="mainlogo" class="w-20"></a>
@@ -153,7 +159,7 @@
                     <a class="option cursor-pointer inline-block w-100 h-100 text-left hover:text-green-300">문의하기</a>
                 </li>
                 <li class="flex-grow py-1 border-b-2">
-                    <a class="option cursor-pointer inline-block w-100 h-100 text-left hover:text-green-300">환경설정</a>
+                    <a href="/api/chat/openai" class="option cursor-pointer inline-block w-100 h-100 text-left hover:text-green-300">챗 봇</a>
                 </li>
                 <li sec:authorize="isAnonymous()" class="flex-grow py-1 border-b-2">
                     <a   href="/member/login"class="option cursor-pointer inline-block w-100 h-100 text-left hover:text-green-300">로그인</a>

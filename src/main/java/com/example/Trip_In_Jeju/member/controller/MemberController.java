@@ -4,6 +4,7 @@ import com.example.Trip_In_Jeju.DataNotFoundException;
 import com.example.Trip_In_Jeju.email.service.EmailService;
 import com.example.Trip_In_Jeju.email.service.VerificationCodeService;
 import com.example.Trip_In_Jeju.member.entity.Member;
+import com.example.Trip_In_Jeju.member.entity.MemberRole;
 import com.example.Trip_In_Jeju.member.servcie.MemberService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -71,7 +72,7 @@ public class MemberController {
         emailService.send(email, subject, body);
 
         session.setAttribute("verificationCode", verificationCode);
-        memberService.signup(username, nickname, password, email, thema, thumbnail);
+        memberService.signup(username, nickname, password, email, thema, thumbnail, MemberRole.MEMBER);
 
         return "redirect:/member/login";
     }

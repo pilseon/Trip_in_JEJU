@@ -2,14 +2,12 @@ package com.example.Trip_In_Jeju.rating.service;
 
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.member.repository.MemberRepository;
-
 import com.example.Trip_In_Jeju.rating.entity.Likey;
 import com.example.Trip_In_Jeju.rating.entity.Rating;
 import com.example.Trip_In_Jeju.rating.repository.LikeyRepository;
 import com.example.Trip_In_Jeju.rating.repository.RatingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -64,12 +62,50 @@ public class RatingService {
         ratingRepository.save(rating);
     }
 
+
     @Transactional
     public void updateRating(Long ratingId, Integer score, String comment) {
         Rating rating = ratingRepository.findById(ratingId).orElseThrow(() -> new RuntimeException("Rating not found"));
         rating.setScore(score);
         rating.setComment(comment);
         ratingRepository.save(rating);
+    }
+
+    public void updateRating2(Long ratingId, Integer score, String comment, MultipartFile thumbnail) {
+        Rating rating = getRatingById(ratingId);
+        if (rating == null) {
+            throw new RuntimeException("Rating not found");
+        }
+
+        rating.setScore(score);
+        rating.setComment(comment);
+
+        // 썸네일 파일 처리
+        if (thumbnail != null && !thumbnail.isEmpty()) {
+            String thumbnailRelPath = "rating/" + UUID.randomUUID().toString() + ".jpg";
+            File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
+
+            thumbnailFile.mkdirs();
+
+            try {
+                thumbnail.transferTo(thumbnailFile);
+                rating.setThumbnailImg(thumbnailRelPath);  // 새 썸네일 경로 설정
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to save thumbnail", e);
+            }
+        }
+
+        ratingRepository.save(rating);
+    }
+
+
+    private String saveThumbnail(MultipartFile thumbnail) throws IOException {
+        // 썸네일 파일을 저장하는 로직을 구현
+        // 예를 들어, 파일 시스템에 저장하고 그 경로를 반환
+        // 여기서 파일 시스템에 저장하는 로직을 구현하세요
+        String fileName = thumbnail.getOriginalFilename();
+        // 파일 저장 로직 ...
+        return "thumbnail/" + fileName; // 예시 경로
     }
 
     @Transactional

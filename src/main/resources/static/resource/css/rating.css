@@ -1,0 +1,36 @@
+   .rating {
+            direction: rtl;
+            display: inline-block;
+        }
+        .rating > input {
+            display: none;
+        }
+        .rating > label {
+            color: #d3d3d3;
+            font-size: 1.5rem;
+            display: inline-block;
+            cursor: pointer;
+        }
+        .rating > label:before {
+            content: "\f005";
+            font-family: FontAwesome;
+        }
+        .rating > input:checked ~ label {
+            color: #ffc107;
+        }
+        .rating > input:checked ~ label:hover,
+        .rating > input:checked ~ label:hover ~ label {
+            color: #ffeb3b;
+        }
+        .rating > label:hover,
+        .rating > label:hover ~ label {
+            color: #ffeb3b;
+        }
+        .rating > .fa {
+            color: #d3d3d3;
+            font-size: 1.5rem;
+            display: inline-block;
+        }
+        .rating > .fa.fa-star {
+            color: #ffc107;
+        }

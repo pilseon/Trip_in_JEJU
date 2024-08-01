@@ -5,6 +5,7 @@ import com.example.Trip_In_Jeju.email.service.EmailService;
 import com.example.Trip_In_Jeju.email.service.VerificationCodeService;
 import com.example.Trip_In_Jeju.member.dto.JoinRequest;
 import com.example.Trip_In_Jeju.member.entity.Member;
+import com.example.Trip_In_Jeju.member.entity.MemberRole;
 import com.example.Trip_In_Jeju.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -65,7 +66,7 @@ public class MemberService {
     @Transactional
     public Member signupSocialUser(String username, String nickname, String email) {
         // 소셜 로그인한 회원 저장
-        return signup2(username,  nickname, "", email,"");
+        return signup2(username,  nickname, "1234", email,"",MemberRole.MEMBER);
 
     }
 
@@ -73,7 +74,7 @@ public class MemberService {
     public String genFileDirPath;
     @Transactional
     public Member signup(String username, String nickname, String password,
-                         String email, String thema, MultipartFile thumbnail) {
+                         String email, String thema, MultipartFile thumbnail, MemberRole role) {
         String thumbnailRelPath = null;
 
         if (thumbnail != null && !thumbnail.isEmpty()) {
@@ -97,6 +98,7 @@ public class MemberService {
                 .email(email)
                 .thema(thema)
                 .thumbnailImg(thumbnailRelPath)
+                .role(MemberRole.MEMBER)
                 .createDate(LocalDateTime.now())
                 .build();
 
@@ -128,7 +130,7 @@ public class MemberService {
 
     @Transactional
     public Member signup2(String username, String nickname, String password,
-                          String email, String thema ) {
+                          String email, String thema, MemberRole role ) {
 
         Member member = Member.builder()
                 .username(username)
@@ -137,7 +139,7 @@ public class MemberService {
                 .email(email)
                 .createDate(LocalDateTime.now())
                 .thema(thema)
-
+                .role(role)
                 .build();
 
         return memberRepository.save(member);
@@ -249,4 +251,36 @@ public class MemberService {
         return memberRepository.findByUsername(username);
     }
 
+    @Transactional
+    public void deleteMemberByAdmin(String username) {
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("해당 회원을 찾을 수 없습니다. ID: " + username));
+        deleteRelatedFiles(member.getThumbnailImg());
+        memberRepository.delete(member);
+    }
+
+    @Transactional
+    public void deleteMember(String username) {
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("해당 회원을 찾을 수 없습니다. ID: " + username));
+
+
+        deleteRelatedFiles(member.getThumbnailImg());
+
+
+        memberRepository.delete(member);
+    }
+
+    private void deleteRelatedFiles(String filePath) {
+        if (filePath != null && !filePath.isEmpty()) {
+            File file = new File(genFileDirPath + "/" + filePath);
+            if (file.exists()) {
+                if (file.delete()) {
+                    System.out.println("파일 삭제 성공: " + filePath);
+                } else {
+                    System.out.println("파일 삭제 실패: " + filePath);
+                }
+            }
+        }
+    }
 }

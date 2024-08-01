@@ -53,3 +53,19 @@ function toggleSubMenu(event) {
     }, 300); // transition 시간과 일치하도록 지연 시간을 줍니다.
   }
 }
+document.getElementById('chat-icon').addEventListener('click', function(event) {
+    event.preventDefault();
+    // 필요한 경우 링크로 이동하는 코드
+     window.location.href = "/api/chat/openai";
+});
+
+document.getElementById('close-icon').addEventListener('click', function(event) {
+    event.stopPropagation(); // 부모의 클릭 이벤트 전파를 막음
+    var chatIcon = document.getElementById('chat-icon');
+    chatIcon.classList.add('slide-down');
+
+    // 아이콘이 사라진 후에 DOM에서 완전히 제거
+    setTimeout(function() {
+        chatIcon.style.display = 'none';
+    }, 500); // 0.5초 후에 제거 (애니메이션 시간과 맞춤)
+});

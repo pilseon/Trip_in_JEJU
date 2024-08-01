@@ -8,10 +8,14 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class OpenAIConfig {
 
-    @Value("${openai.api-key}")
+    @Value("${OPENAI_API_KEY}")
     private String apiKey;
 
+    @Bean
     public String getApiKey() {
+        if (apiKey == null || apiKey.isEmpty()) {
+            throw new IllegalStateException("API key not found in environment variables");
+        }
         return apiKey;
     }
 

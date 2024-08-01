@@ -76,10 +76,8 @@ dependencies {
 	testImplementation 'org.springframework:spring-test'
 
 	// AI
-//	implementation 'com.squareup.okhttp3:okhttp:4.9.3'
-//	implementation 'com.openai:openai-java:1.0.0'
-//	implementation 'com.theokanning.openai-gpt3-java:api-client:0.11.0'
-//	implementation 'com.theokanning.openai-gpt3-java:client:0.11.0'
+	implementation 'com.theokanning.openai-gpt3-java:api-client:0.11.0'
+	implementation 'com.squareup.okhttp3:okhttp:4.9.3'
 }
 
 tasks.named('test') {

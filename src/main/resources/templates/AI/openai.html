@@ -7,21 +7,16 @@
 </head>
 <section layout:fragment="content" class="section-prod-list">
 <body>
-<div id="chat-container" class="bg-white shadow-lg rounded-lg w-full max-w-md overflow-hidden">
-    <div id="chat-messages" class="p-4 h-96 overflow-y-auto flex flex-col space-y-2">
-        <div class="message user p-2 rounded-md bg-green-100 max-w-xs self-end">
-            <p th:text="'나: ' + ${prompt}"></p>
-        </div>
-        <div class="message bot p-2 rounded-md bg-gray-200 max-w-xs self-start">
-            <p th:text="'챗봇: ' + ${response}"></p>
-        </div>
-    </div>
+
+<t1 class="block text-center mb-4 text-lg ">JET! GPT </t1>
+<div id="chat-container" class="shadow-lg rounded-lg w-full overflow-hidden" style="background-color: #E0E2EC;">
+    <div id="chat-messages" class="p-4 h-96 overflow-y-auto flex flex-col space-y-2"></div>
     <form id="user-input" class="p-4 flex border-t" action="/api/chat/send" method="post">
         <input type="text" name="prompt" placeholder="메시지를 입력하세요..." class="flex-1 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:border-blue-300" />
         <button type="submit" class="ml-2 bg-blue-500 text-white rounded-md px-4 py-2 hover:bg-blue-600 focus:outline-none focus:ring focus:bg-blue-600">전송</button>
     </form>
 </div>
-    <script th:src="@{/openAijs/openAi.js}"></script>
+<script th:src="@{/openAijs/openAi.js}"></script>
 </body>
 </section>
 </html>

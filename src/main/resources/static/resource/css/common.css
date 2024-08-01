@@ -124,3 +124,13 @@ div.clickEffect {
 .sub-menu.visible {
   max-height: 200px; /* 적당한 값으로 변경 */
 }
+
+ #chat-icon {
+      transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+      transform-origin: bottom;
+  }
+
+  .slide-down {
+      transform: translateY(100px);
+      opacity: 0;
+  }

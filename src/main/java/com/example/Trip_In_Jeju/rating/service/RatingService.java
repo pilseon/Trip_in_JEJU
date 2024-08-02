@@ -147,4 +147,32 @@ public class RatingService {
         Optional<Likey> like = likeyRepository.findByRatingAndMember(rating, member);
         like.ifPresent(likeyRepository::delete);
     }
+
+    public boolean toggleLikey(Long ratingId, Member member) {
+        Optional<Rating> ratingOptional = ratingRepository.findById(ratingId);
+        if (!ratingOptional.isPresent()) {
+            return false;
+        }
+
+        Rating rating = ratingOptional.get();
+
+        // 이미 좋아요가 눌려있는지 확인
+        if (rating.getLikedMembers().contains(member)) {
+            rating.getLikedMembers().remove(member); // 이미 눌려있으면 삭제
+            rating.setLikeCount(rating.getLikeCount() - 1);
+            ratingRepository.save(rating);
+            return false;
+        } else {
+            rating.getLikedMembers().add(member); // 좋아요 추가
+            rating.setLikeCount(rating.getLikeCount() + 1);
+            ratingRepository.save(rating);
+            return true;
+        }
+    }
+
+    public int getLikeCount(Long ratingId) {
+        Rating rating = ratingRepository.findById(ratingId)
+                .orElseThrow(() -> new RuntimeException("Rating not found"));
+        return rating.getLikeCount();
+    }
 }

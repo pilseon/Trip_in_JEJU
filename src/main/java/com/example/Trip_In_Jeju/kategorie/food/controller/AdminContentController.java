@@ -14,6 +14,8 @@ import com.example.Trip_In_Jeju.kategorie.other.entity.Other;
 import com.example.Trip_In_Jeju.kategorie.other.service.OtherService;
 import com.example.Trip_In_Jeju.kategorie.shopping.entity.Shopping;
 import com.example.Trip_In_Jeju.kategorie.shopping.service.ShoppingService;
+import com.example.Trip_In_Jeju.member.entity.Member;
+import com.example.Trip_In_Jeju.member.servcie.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +38,7 @@ public class AdminContentController {
     private final AttractionsService attractionsService;
     private final FestivalsService festivalsService;
     private final OtherService otherService;
+    private final MemberService memberService;
 
 
 
@@ -51,6 +54,8 @@ public class AdminContentController {
 
 
 
+        Member currentMember = memberService.getCurrentMember();
+        model.addAttribute("member", currentMember);
         model.addAttribute("foodList", foodList);
         model.addAttribute("dessertList", dessertList);
         model.addAttribute("shoppingList", shoppingList);

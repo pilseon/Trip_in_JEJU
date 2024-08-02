@@ -35,6 +35,8 @@ public class FestivalsController {
         Page<Festivals> paging = festivalsService.getList(page, subCategory);
         model.addAttribute("paging", paging);
         model.addAttribute("subCategory", subCategory);
+        Member currentMember = memberService.getCurrentMember();
+        model.addAttribute("member", currentMember);
         return "festivals/list";
     }
 
@@ -43,6 +45,8 @@ public class FestivalsController {
         Festivals festivals = festivalsService.getFestivalsById(id);
         List<Rating> ratings = ratingService.getRatings(id, "festivals");
         double averageScore = ratingService.calculateAverageScore(id, "festivals");
+        Member currentMember = memberService.getCurrentMember();
+        model.addAttribute("member", currentMember);
         String nickname = null;
         if (authentication != null) {
             Object principal = authentication.getPrincipal();
@@ -64,6 +68,8 @@ public class FestivalsController {
         Festivals festivals = festivalsService.getFestivalsById(id);
         List<Rating> ratings = ratingService.getRatings(id, "festivals");
         double averageScore = ratingService.calculateAverageScore(id, "festivals");
+        Member currentMember = memberService.getCurrentMember();
+        model.addAttribute("member", currentMember);
 
         model.addAttribute("festivals", festivals);
         model.addAttribute("ratings", ratings);

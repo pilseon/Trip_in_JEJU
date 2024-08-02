@@ -21,11 +21,15 @@ public class AdmHomeController {
     @GetMapping("")
     @PreAuthorize("hasAuthority('ADMIN')") // admin 이라는 권한을 가지고 있는가?
     public String index(){
+
+
         return "redirect:/adm/home/main";
     }
     @GetMapping("/home/main")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public String showMain(){
+    public String showMain(Model model){
+        Member currentMember = memberService.getCurrentMember();
+        model.addAttribute("member", currentMember);
         return "adm/home/main";
     }
     @GetMapping("/members")

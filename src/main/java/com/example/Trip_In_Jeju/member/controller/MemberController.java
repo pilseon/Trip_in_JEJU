@@ -77,6 +77,8 @@ public class MemberController {
         return "redirect:/member/login";
     }
 
+
+
     @GetMapping("/verifyCode")
     public String verifyCodeForm(Model model) {
         return "member/login"; // verifyCode.html을 반환

@@ -145,7 +145,7 @@ function moveToPlace(place) {
         map: map,
         position: latLng
     });
-    infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>');
+    infowindow.setContent('<div style="padding:5pxont-size:12px;">' + place.place_name + '</div>');
     infowindow.open(map, marker);
 }
 

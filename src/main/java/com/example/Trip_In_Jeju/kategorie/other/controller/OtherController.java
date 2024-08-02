@@ -35,6 +35,8 @@ public class OtherController {
         Page<Other> paging = otherService.getList(page, subCategory);
         model.addAttribute("paging", paging);
         model.addAttribute("subCategory", subCategory);
+        Member currentMember = memberService.getCurrentMember();
+        model.addAttribute("member", currentMember);
         return "other/list";
     }
 
@@ -43,6 +45,8 @@ public class OtherController {
         Other other = otherService.getOtherById(id);
         List<Rating> ratings = ratingService.getRatings(id, "other");
         double averageScore = ratingService.calculateAverageScore(id, "other");
+        Member currentMember = memberService.getCurrentMember();
+        model.addAttribute("member", currentMember);
         String nickname = null;
         if (authentication != null) {
             Object principal = authentication.getPrincipal();
@@ -64,6 +68,8 @@ public class OtherController {
         Other other = otherService.getOtherById(id);
         List<Rating> ratings = ratingService.getRatings(id, "other");
         double averageScore = ratingService.calculateAverageScore(id, "other");
+        Member currentMember = memberService.getCurrentMember();
+        model.addAttribute("member", currentMember);
 
         model.addAttribute("other", other);
         model.addAttribute("ratings", ratings);

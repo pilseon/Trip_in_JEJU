@@ -37,6 +37,8 @@ public class DessertController {
         Page<Dessert> paging = dessertService.getList(page, subCategory);
         model.addAttribute("paging", paging);
         model.addAttribute("subCategory", subCategory);
+        Member currentMember = memberService.getCurrentMember();
+        model.addAttribute("member", currentMember);
         return "dessert/list";
     }
 
@@ -45,6 +47,8 @@ public class DessertController {
         Dessert dessert = dessertService.getDessertById(id);
         List<Rating> ratings = ratingService.getRatings(id, "dessert");
         double averageScore = ratingService.calculateAverageScore(id, "dessert");
+        Member currentMember = memberService.getCurrentMember();
+        model.addAttribute("member", currentMember);
 
         String nickname = null;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -71,6 +75,8 @@ public class DessertController {
         Dessert dessert = dessertService.getDessertById(id);
         List<Rating> ratings = ratingService.getRatings(id, "dessert");
         double averageScore = ratingService.calculateAverageScore(id, "dessert");
+        Member currentMember = memberService.getCurrentMember();
+        model.addAttribute("member", currentMember);
 
         model.addAttribute("dessert", dessert);
         model.addAttribute("ratings", ratings);
@@ -113,6 +119,8 @@ public class DessertController {
             throw new RuntimeException("Rating not found");
         }
         model.addAttribute("rating", rating);
+        Member currentMember = memberService.getCurrentMember();
+        model.addAttribute("member", currentMember);
         return "rating/edit";
     }
 
@@ -157,7 +165,28 @@ public class DessertController {
 
         return "redirect:/dessert/detail/" + id;
     }
+    @PostMapping("review/like/{id}")
+    public String like2(@PathVariable("id") Long id, Authentication authentication) {
+        if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails)) {
+            return "redirect:/dessert/detail/" + id;
+        }
 
+        String username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        Optional<Member> memberOptional = memberService.findByUsername(username);
+
+        if (!memberOptional.isPresent()) {
+            return "redirect:/dessert/detail/" + id + "?error=memberNotFound";
+        }
+
+        Member member = memberOptional.get();
+        boolean liked = dessertService.toggleLike2(id, member);
+
+        if (!liked) {
+            return "redirect:/dessert/detail/" + id + "?error=alreadyLiked";
+        }
+
+        return "redirect:/dessert/detail/" + id;
+    }
 
 
 }

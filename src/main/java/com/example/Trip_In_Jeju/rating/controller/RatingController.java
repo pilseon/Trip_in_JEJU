@@ -1,6 +1,7 @@
 package com.example.Trip_In_Jeju.rating.controller;
 
 import com.example.Trip_In_Jeju.member.entity.Member;
+import com.example.Trip_In_Jeju.member.servcie.MemberService;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -15,9 +16,12 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/rating")
 public class RatingController {
     private final RatingService ratingService;
+    private final MemberService memberService;
     @GetMapping("/review/{category}/{itemId}")
     public String getReviewPage(@PathVariable String category, @PathVariable Long itemId, Model model) {
         // 수정된 부분: category와 itemId를 전달하여 모든 리뷰와 평균 점수를 가져옴
+        Member currentMember = memberService.getCurrentMember();
+        model.addAttribute("member", currentMember);
         model.addAttribute("allRatings", ratingService.getAllRatings(itemId, category));
         model.addAttribute("averageScore", ratingService.calculateAverageScore(itemId, category));
         return "rating/review";
@@ -33,26 +37,26 @@ public class RatingController {
         ratingService.saveRating(itemId, score, ratingId,comment, nickname, thumbnail, category);
         return "redirect:/" + category + "/detail/" + itemId;
     }
-    @PostMapping("/review/like")
-    public String likeReview(@RequestParam Long ratingId, Authentication authentication) {
+    private Member getAuthenticatedMember(Authentication authentication) {
         if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails)) {
-            return "redirect:/rating/review";
+            throw new RuntimeException("User not authenticated");
         }
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        Member member = ratingService.findMemberByUsername(userDetails.getUsername()); // 새로 추가된 메서드 호출
+        String username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        return ratingService.findMemberByUsername(username);
+    }
+
+    @PostMapping("/review/like")
+    public String likeReview(@RequestParam Long ratingId, Authentication authentication, @RequestHeader("Referer") String referer) {
+        Member member = getAuthenticatedMember(authentication);
         ratingService.likeReview(ratingId, member);
-        return "redirect:/rating/review";
+        return "redirect:" + referer; // 이전 페이지로 리다이렉트
     }
 
     @PostMapping("/review/unlike")
-    public String unlikeReview(@RequestParam Long ratingId, Authentication authentication) {
-        if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails)) {
-            return "redirect:/rating/review";
-        }
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        Member member = ratingService.findMemberByUsername(userDetails.getUsername()); // 새로 추가된 메서드 호출
+    public String unlikeReview(@RequestParam Long ratingId, Authentication authentication, @RequestHeader("Referer") String referer) {
+        Member member = getAuthenticatedMember(authentication);
         ratingService.unlikeReview(ratingId, member);
-        return "redirect:/rating/review";
+        return "redirect:" + referer; // 이전 페이지로 리다이렉트
     }
 }
 

@@ -52,6 +52,7 @@ public class Dessert {
     private String hashtags;
 
     private int likes;
+    private int likey;
 
     private double averageRating;  // 평균 별점 추가
 

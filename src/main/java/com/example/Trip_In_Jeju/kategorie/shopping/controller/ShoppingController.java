@@ -1,7 +1,6 @@
 package com.example.Trip_In_Jeju.kategorie.shopping.controller;
 
 
-import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
 import com.example.Trip_In_Jeju.kategorie.shopping.entity.Shopping;
 import com.example.Trip_In_Jeju.kategorie.shopping.service.ShoppingService;
 import com.example.Trip_In_Jeju.member.entity.Member;
@@ -37,6 +36,8 @@ public class ShoppingController {
         Page<Shopping> paging = shoppingService.getList(page, subCategory);
         model.addAttribute("paging", paging);
         model.addAttribute("subCategory", subCategory);
+        Member currentMember = memberService.getCurrentMember();
+        model.addAttribute("member", currentMember);
         return "shopping/list";
     }
 
@@ -45,6 +46,8 @@ public class ShoppingController {
         Shopping shopping = shoppingService.getShoppingById(id);
         List<Rating> ratings = ratingService.getRatings(id, "shopping");
         double averageScore = ratingService.calculateAverageScore(id, "shopping");
+        Member currentMember = memberService.getCurrentMember();
+        model.addAttribute("member", currentMember);
         String nickname = null;
         if (authentication != null) {
             Object principal = authentication.getPrincipal();
@@ -66,6 +69,8 @@ public class ShoppingController {
         Shopping shopping = shoppingService.getShoppingById(id);
         List<Rating> ratings = ratingService.getRatings(id, "shopping");
         double averageScore = ratingService.calculateAverageScore(id, "shopping");
+        Member currentMember = memberService.getCurrentMember();
+        model.addAttribute("member", currentMember);
 
         model.addAttribute("shopping", shopping);
         model.addAttribute("ratings", ratings);

@@ -1,6 +1,5 @@
 package com.example.Trip_In_Jeju.kategorie.food.controller;
 
-import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
 import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
 import com.example.Trip_In_Jeju.kategorie.food.service.FoodService;
 import com.example.Trip_In_Jeju.member.entity.Member;
@@ -36,6 +35,8 @@ public class FoodController {
         Page<Food> paging = foodService.getList(page, subCategory);
         model.addAttribute("paging", paging);
         model.addAttribute("subCategory", subCategory);
+        Member currentMember = memberService.getCurrentMember();
+        model.addAttribute("member", currentMember);
         return "food/list";
     }
 
@@ -44,6 +45,8 @@ public class FoodController {
         Food food = foodService.getFoodById(id);
         List<Rating> ratings = ratingService.getRatings(id, "food");
         double averageScore = ratingService.calculateAverageScore(id, "food");
+        Member currentMember = memberService.getCurrentMember();
+        model.addAttribute("member", currentMember);
         String nickname = null;
         if (authentication != null) {
             Object principal = authentication.getPrincipal();
@@ -65,6 +68,8 @@ public class FoodController {
         Food food = foodService.getFoodById(id);
         List<Rating> ratings = ratingService.getRatings(id, "food");
         double averageScore = ratingService.calculateAverageScore(id, "food");
+        Member currentMember = memberService.getCurrentMember();
+        model.addAttribute("member", currentMember);
 
         model.addAttribute("food", food);
         model.addAttribute("ratings", ratings);

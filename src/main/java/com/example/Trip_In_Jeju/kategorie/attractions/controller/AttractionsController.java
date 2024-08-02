@@ -36,6 +36,8 @@ public class AttractionsController {
         Page<Attractions> paging = attractionsService.getList(page, subCategory);
         model.addAttribute("paging", paging);
         model.addAttribute("subCategory", subCategory);
+        Member currentMember = memberService.getCurrentMember();
+        model.addAttribute("member", currentMember);
         return "attractions/list";
     }
 
@@ -44,6 +46,8 @@ public class AttractionsController {
         Attractions attractions = attractionsService.getAttractionsById(id);
         List<Rating> ratings = ratingService.getRatings(id, "attractions");
         double averageScore = ratingService.calculateAverageScore(id, "attractions");
+        Member currentMember = memberService.getCurrentMember();
+        model.addAttribute("member", currentMember);
         String nickname = null;
         if (authentication != null) {
             Object principal = authentication.getPrincipal();
@@ -65,6 +69,8 @@ public class AttractionsController {
         Attractions attractions = attractionsService.getAttractionsById(id);
         List<Rating> ratings = ratingService.getRatings(id, "attractions");
         double averageScore = ratingService.calculateAverageScore(id, "attractions");
+        Member currentMember = memberService.getCurrentMember();
+        model.addAttribute("member", currentMember);
 
         model.addAttribute("attractions", attractions);
         model.addAttribute("ratings", ratings);

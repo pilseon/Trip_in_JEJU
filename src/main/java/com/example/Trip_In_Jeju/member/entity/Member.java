@@ -47,27 +47,14 @@ public class Member {
     @LastModifiedDate
     private LocalDateTime modifyDate;
 
-    // provider : google이 들어감
     private String provider;
 
-    // providerId : 구글 로그인 한 유저의 고유 ID가 들어감
     private String providerId;
-
 
     private String thema;
 
-
-    @Comment("성별")
-    private String gender;
-
-    @Comment("나이")
-    private int age;
-
     @Comment("사진")
     private String thumbnailImg;
-
-    @Comment("sns")
-    private String sns;
 
     private String email;
 
@@ -100,27 +87,6 @@ public class Member {
         this.thumbnailImg = thumbnailImg;
     }
 
-
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-
-
-
     public void getUsername(String username) {
         this.username = username;
     }
@@ -128,17 +94,8 @@ public class Member {
     public void setResetToken(String resetToken) { // 이 부분을 추가합니다.
         this.resetToken = resetToken;
     }
+
     private String resetToken;
-
-
-
-    public String getSns() {
-        return sns;
-    }
-
-    public void setSns(String sns) {
-        this.sns = sns;
-    }
 
 
 }

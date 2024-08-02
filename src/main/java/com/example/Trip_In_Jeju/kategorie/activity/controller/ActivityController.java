@@ -2,7 +2,6 @@ package com.example.Trip_In_Jeju.kategorie.activity.controller;
 
 import com.example.Trip_In_Jeju.kategorie.activity.entity.Activity;
 import com.example.Trip_In_Jeju.kategorie.activity.service.ActivityService;
-import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.member.servcie.MemberService;
 import com.example.Trip_In_Jeju.rating.entity.Rating;
@@ -36,6 +35,8 @@ public class ActivityController {
         Page<Activity> paging = activityService.getList(page, subCategory);
         model.addAttribute("paging", paging);
         model.addAttribute("subCategory", subCategory);
+        Member currentMember = memberService.getCurrentMember();
+        model.addAttribute("member", currentMember);
         return "activity/list";
     }
 
@@ -44,6 +45,8 @@ public class ActivityController {
         Activity activity = activityService.getActivityById(id);
         List<Rating> ratings = ratingService.getRatings(id, "activity");
         double averageScore = ratingService.calculateAverageScore(id, "activity");
+        Member currentMember = memberService.getCurrentMember();
+        model.addAttribute("member", currentMember);
         String nickname = null;
         if (authentication != null) {
             Object principal = authentication.getPrincipal();
@@ -65,6 +68,8 @@ public class ActivityController {
         Activity activity = activityService.getActivityById(id);
         List<Rating> ratings = ratingService.getRatings(id, "activity");
         double averageScore = ratingService.calculateAverageScore(id, "activity");
+        Member currentMember = memberService.getCurrentMember();
+        model.addAttribute("member", currentMember);
 
         model.addAttribute("activity", activity);
         model.addAttribute("ratings", ratings);

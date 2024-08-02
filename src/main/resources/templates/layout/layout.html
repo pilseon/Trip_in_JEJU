@@ -35,12 +35,6 @@
 <header>
     <!-- Fixed navbar -->
     <nav class="navbar navbar-expand-md navbar-dark w-full ml-auto mr-auto bg-gray-100 rounded-bl-3xl rounded-br-3xl">
-        <div id="chat-container" class="fixed bottom-16 sm:right-96 right-4 rounded-full shadow-lg">
-            <div id="chat-icon" class="relative">
-                <img class="rounded-full cursor-pointer" src="https://github.com/user-attachments/assets/ee76bf64-f914-4c75-98d4-f2fab0db8b5e" alt="ai서비스">
-                <button id="close-icon" class="absolute top-0 right-0 text-white bg-black w-5 h-5 text-xs rounded-full">x</button>
-            </div>
-        </div>
         <div class="flex container-fluid p-0 h-24 content-center">
             <div class="flex-grow">
                 <button class="inline-block" onclick="history.back()"><i class="fa-solid fa-arrow-left fa-xl ml-5" ></i></button>
@@ -66,6 +60,12 @@
 </section>
 
 <footer class="footer py-2 bg-black rounded-tl-3xl rounded-tr-3xl fixed bottom-0 md:w-1/2 w-full z-50">
+    <div id="chat-container" class="absolute bottom-12 right-1 rounded-full shadow-lg">
+        <div id="chat-icon" class="relative">
+            <img class="rounded-full cursor-pointer" src="https://github.com/user-attachments/assets/ee76bf64-f914-4c75-98d4-f2fab0db8b5e" alt="ai서비스">
+            <button id="close-icon" class="absolute top-0 right-0 text-white bg-black w-5 h-5 text-xs rounded-full">x</button>
+        </div>
+    </div>
     <div class="container text-center">
         <ul class="flex navbar-nav flex-row h-100 items-center">
             <li class="nav-item flex-grow">

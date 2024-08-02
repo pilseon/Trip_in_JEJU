@@ -35,12 +35,6 @@
 <header>
     <!-- Fixed navbar -->
     <nav class="navbar navbar-expand-md navbar-dark w-full ml-auto mr-auto bg-gray-100 rounded-bl-3xl rounded-br-3xl">
-        <div id="chat-container" class="fixed bottom-16 sm:right-96 right-4 rounded-full shadow-lg">
-            <div id="chat-icon" class="relative">
-                <img class="rounded-full cursor-pointer" src="https://github.com/user-attachments/assets/ee76bf64-f914-4c75-98d4-f2fab0db8b5e" alt="ai서비스">
-                <button id="close-icon" class="absolute top-0 right-0 text-white bg-black w-5 h-5 text-xs rounded-full">x</button>
-            </div>
-        </div>
         <div class="flex container-fluid p-0 h-24 content-center">
             <div class="flex-grow">
                 <a class="inline-block w-20" href="/"><img src="https://github.com/user-attachments/assets/49643242-fdac-4917-ba06-fdc50eafaa2b" alt="mainlogo" class="w-20"></a>
@@ -60,49 +54,55 @@
     </nav>
 </header>
 
-<!-- OO님을 위한 추천 리뷰 Section -->
-<div class="mb-6">
-        <h2 th:text="${member != null && member.nickname != null ? member.nickname : 'Guest'} + '님을 위한 추천 여행'" class="inline-block text-xl font-bold mr-1"></h2><span class="text-gray-500 font-bold text-sm">#제주 드라이브</span>
-    <div class="flex space-x-4 overflow-x-auto mt-4">
-        <div class="w-48 h-32 bg-red-200 flex items-center justify-center">HOT</div>
-        <div class="w-48 h-32 bg-gray-200 flex items-center justify-center">제주힙합클래스</div>
-        <div class="w-48 h-32 bg-gray-200 flex items-center justify-center">신세계반얀스토어</div>
-        <div class="w-48 h-32 bg-gray-200 flex items-center justify-center">도산동카페골목</div>
-        <div class="w-48 h-32 bg-gray-200 flex items-center justify-center">추천 컨텐츠</div>
-    </div>
-    <div class="text-right mt-4">
-        <a href="#" class="text-gray-500">더보기 ></a>
-    </div>
-</div>
-
-<!-- 오늘의 픽 Section -->
-<div class="width-full mt-4">
+<section class="pb-[50px]">
+    <!-- OO님을 위한 추천 리뷰 Section -->
     <div class="mb-6">
-        <h2 class="text-xl font-bold">오늘의 픽 <span class="text-gray-500 text-sm">#제주힙합클래스 #돌하르방 #제주에어</span></h2>
+            <h2 th:text="${member != null && member.nickname != null ? member.nickname : 'Guest'} + '님을 위한 추천 여행'" class="inline-block text-xl font-bold mr-1"></h2><span class="text-gray-500 font-bold text-sm">#제주 드라이브</span>
         <div class="flex space-x-4 overflow-x-auto mt-4">
-            <div class="w-48 h-32 bg-gray-200 flex items-center justify-center">유저 취향맞춤 추천 컨텐츠!</div>
-            <div class="w-48 h-32 bg-gray-200 flex items-center justify-center">유저 취향맞춤 추천 컨텐츠</div>
-            <div class="w-48 h-32 bg-gray-200 flex items-center justify-center">유저 취향맞춤 추천 컨텐츠</div>
+            <div class="w-48 h-32 bg-red-200 flex items-center justify-center">HOT</div>
+            <div class="w-48 h-32 bg-gray-200 flex items-center justify-center">제주힙합클래스</div>
+            <div class="w-48 h-32 bg-gray-200 flex items-center justify-center">신세계반얀스토어</div>
+            <div class="w-48 h-32 bg-gray-200 flex items-center justify-center">도산동카페골목</div>
+            <div class="w-48 h-32 bg-gray-200 flex items-center justify-center">추천 컨텐츠</div>
         </div>
         <div class="text-right mt-4">
-            <a href="#" class="text-gray-500">전체보기 ></a>
+            <a href="#" class="text-gray-500">더보기 ></a>
         </div>
     </div>
 
-    <!-- 이벤트 Section -->
-    <div class="mb-6">
-        <h2 class="text-xl font-bold">이벤트</h2>
-        <div class="w-full h-32 bg-gray-200 flex items-center justify-center mt-4">
-            프로모션 / 광고
+    <!-- 오늘의 픽 Section -->
+    <div class="width-full mt-4">
+        <div class="mb-6">
+            <h2 class="text-xl font-bold">오늘의 픽 <span class="text-gray-500 text-sm">#제주힙합클래스 #돌하르방 #제주에어</span></h2>
+            <div class="flex space-x-4 overflow-x-auto mt-4">
+                <div class="w-48 h-32 bg-gray-200 flex items-center justify-center">유저 취향맞춤 추천 컨텐츠!</div>
+                <div class="w-48 h-32 bg-gray-200 flex items-center justify-center">유저 취향맞춤 추천 컨텐츠</div>
+                <div class="w-48 h-32 bg-gray-200 flex items-center justify-center">유저 취향맞춤 추천 컨텐츠</div>
+            </div>
+            <div class="text-right mt-4">
+                <a href="#" class="text-gray-500">전체보기 ></a>
+            </div>
         </div>
-        <div class="text-right mt-4">
-            <a href="#" class="text-gray-500">전체보기 ></a>
+
+        <!-- 이벤트 Section -->
+        <div class="mb-6">
+            <h2 class="text-xl font-bold">이벤트</h2>
+            <div class="w-full h-32 bg-gray-200 flex items-center justify-center mt-4">
+                프로모션 / 광고
+            </div>
+            <div class="text-right mt-4">
+                <a href="#" class="text-gray-500">전체보기 ></a>
+            </div>
         </div>
     </div>
-</div>
-
-
+</section>
 <footer class="footer py-2 bg-black rounded-tl-3xl rounded-tr-3xl fixed bottom-0 md:w-1/2 w-full z-50">
+    <div id="chat-container" class="absolute bottom-12 right-1 rounded-full shadow-lg">
+        <div id="chat-icon" class="relative">
+            <img class="rounded-full cursor-pointer" src="https://github.com/user-attachments/assets/ee76bf64-f914-4c75-98d4-f2fab0db8b5e" alt="ai서비스">
+            <button id="close-icon" class="absolute top-0 right-0 text-white bg-black w-5 h-5 text-xs rounded-full">x</button>
+        </div>
+    </div>
     <div class="container text-center">
         <ul class="flex navbar-nav flex-row h-100 items-center">
             <li class="nav-item flex-grow">

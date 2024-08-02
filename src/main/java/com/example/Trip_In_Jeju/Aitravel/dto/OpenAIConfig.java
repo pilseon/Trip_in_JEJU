@@ -8,7 +8,7 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class OpenAIConfig {
 
-    @Value("${OPENAI_API_KEY}")
+    @Value("${openai.api-key}")
     private String apiKey;
 
     @Bean

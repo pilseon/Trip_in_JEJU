@@ -38,6 +38,8 @@ public class SecurityConfig {
                                 .logoutSuccessUrl("/")
                                 .invalidateHttpSession(true)
                 )
+                .cors() // CORS 설정 활성화
+                .and()
                 .csrf().disable(); // CSRF 보안 기능 비활성화
 
         return http.build();

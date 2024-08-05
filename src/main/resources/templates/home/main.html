@@ -28,52 +28,51 @@
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js'></script>
 </head>
 
-<body class="flex flex-col min-h-screen md:w-1/2">
+<body class="flex flex-col min-h-screen ">
 <!-- common.css -->
 <link href="/resource/css/common.css" rel="stylesheet" type="text/css" />
 <link href="/resource/css/click.css" rel="stylesheet" type="text/css" />
-<header>
-    <img src="https://github.com/user-attachments/assets/fa0fb81f-2ce9-4b66-8b3b-2fbe15321d62" alt="배경" class="absolute z-[-1] left-0 md:h-1/2 sm:h-1/4 w-full object-cover">
-    <!-- Fixed navbar -->
-    <nav class="navbar navbar-expand-md navbar-dark w-full ml-auto mr-auto rounded-bl-3xl rounded-br-3xl md:mb-[280px] mb-[60px]" >
-        <div class="flex container-fluid p-0 h-24 content-center">
-            <div class="flex-grow" style="flex-basis: 0">
 
+<header class="h-full mb-4">
+    <div class="bg-[url('https://github.com/user-attachments/assets/49436bc7-f7e1-4200-82f1-1970ee059374')] bg-no-repeat bg-cover bg-top md:h-[50vh] w-full h-1/2">
+        <!-- 고정된 네비게이션 바 -->
+        <nav class="navbar navbar-expand-md navbar-dark md:w-1/2 ml-auto mr-auto rounded-bl-3xl rounded-br-3xl">
+            <div class="flex container-fluid p-0 h-24 content-center">
+                <div class="flex-grow" style="flex-basis: 0"></div>
+                <div class="text-center flex-grow" style="flex-basis: 0">
+                    <a class="inline-block w-28" href="/"><img src="https://github.com/user-attachments/assets/e0055092-5d06-426f-ab4e-3626388002b5" alt="textlogo" class="w-28"></a>
+                </div>
+                <ul class="flex navbar-nav me-auto mb-2 mb-md-0 justify-end flex-row gap-4 h-100 items-center flex-grow" style="flex-basis: 0">
+                    <li class="nav-item">
+                        <a href="#"><i class="fa-solid fa-bell fa-xl text-white"></i></a>
+                    </li>
+                    <li class="nav-item mr-5">
+                        <a href="#"><i class="fa-solid fa-magnifying-glass fa-xl text-white"></i></a>
+                    </li>
+                </ul>
             </div>
-            <div class="text-center flex-grow" style="flex-basis: 0">
-                <a class="inline-block w-28" href="/"><img src="https://github.com/user-attachments/assets/e0055092-5d06-426f-ab4e-3626388002b5" alt="textlogo" class="w-28"></a>
-            </div>
-            <ul class="flex navbar-nav me-auto mb-2 mb-md-0 justify-end flex-row gap-4 h-100 items-center flex-grow" style="flex-basis: 0">
-                <li class="nav-item">
-                    <a href="#"><i class="fa-solid fa-bell fa-xl text-white"></i></a>
-                </li>
-                <li class="nav-item mr-5">
-                    <a href="#"><i class="fa-solid fa-magnifying-glass fa-xl text-white"></i></a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+        </nav>
+    </div>
 </header>
 
 <section class="pb-[50px]">
+
     <!-- OO님을 위한 추천 리뷰 Section -->
-    <div class="mb-6 text-center">
+    <div class="md:w-1/2 ml-auto mr-auto">
+        <div class="mb-6 text-center">
             <h2 th:text="${member != null && member.nickname != null ? member.nickname : 'Guest'} + '님을 위한 추천 여행'" class="inline-block text-xl font-bold mr-1"></h2>
-        <div class="text-right mb-2">
-            <a href="#" class="text-gray-500">더보기 ></a>
+            <div class="text-right mb-2">
+                <a href="#" class="text-gray-500">더보기 ></a>
+            </div>
+            <div class="flex space-x-4 overflow-x-auto">
+                <div class="w-48 h-32 bg-red-200 flex items-center justify-center rounded-3xl">HOT</div>
+                <div class="w-48 h-32 bg-gray-200 flex items-center justify-center rounded-3xl">제주힙합클래스</div>
+                <div class="w-48 h-32 bg-gray-200 flex items-center justify-center rounded-3xl">신세계반얀스토어</div>
+                <div class="w-48 h-32 bg-gray-200 flex items-center justify-center rounded-3xl">도산동카페골목</div>
+                <div class="w-48 h-32 bg-gray-200 flex items-center justify-center rounded-3xl">추천 컨텐츠</div>
+            </div>
         </div>
-        <div class="flex space-x-4 overflow-x-auto">
-            <div class="w-48 h-32 bg-red-200 flex items-center justify-center rounded-3xl">HOT</div>
-            <div class="w-48 h-32 bg-gray-200 flex items-center justify-center rounded-3xl">제주힙합클래스</div>
-            <div class="w-48 h-32 bg-gray-200 flex items-center justify-center rounded-3xl">신세계반얀스토어</div>
-            <div class="w-48 h-32 bg-gray-200 flex items-center justify-center rounded-3xl">도산동카페골목</div>
-            <div class="w-48 h-32 bg-gray-200 flex items-center justify-center rounded-3xl">추천 컨텐츠</div>
-        </div>
-
-    </div>
-
     <!-- 오늘의 픽 Section -->
-    <div class="width-full mt-4">
         <div class="mb-6 text-center">
             <h2 class="text-xl font-bold">오늘의 Pick</h2>
             <div class="text-right mb-2">
@@ -100,7 +99,7 @@
         </div>
     </div>
 </section>
-<footer class="footer py-2 bg-black rounded-tl-3xl rounded-tr-3xl fixed bottom-0 md:w-1/2 w-full z-50">
+<footer class="footer py-2 bg-black rounded-tl-3xl rounded-tr-3xl fixed bottom-0 md:w-1/2 w-full z-50 md:right-1/4">
     <div id="chat-container" class="absolute bottom-12 right-1 rounded-full shadow-lg">
         <div id="chat-icon" class="relative">
             <img class="rounded-full cursor-pointer" src="https://github.com/user-attachments/assets/ee76bf64-f914-4c75-98d4-f2fab0db8b5e" alt="ai서비스">

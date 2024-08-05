@@ -1,8 +1,11 @@
 package com.example.Trip_In_Jeju.member.controller;
 
 import com.example.Trip_In_Jeju.DataNotFoundException;
+import com.example.Trip_In_Jeju.calendar.service.CalendarService;
 import com.example.Trip_In_Jeju.email.service.EmailService;
 import com.example.Trip_In_Jeju.email.service.VerificationCodeService;
+import com.example.Trip_In_Jeju.kategorie.festivals.entity.Festivals;
+import com.example.Trip_In_Jeju.kategorie.festivals.service.FestivalsService;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.member.entity.MemberRole;
 import com.example.Trip_In_Jeju.member.servcie.MemberService;
@@ -10,6 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +28,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.time.temporal.WeekFields;
+import java.util.*;
 
 @Controller
 @RequestMapping("/member")
@@ -35,7 +41,8 @@ public class MemberController {
     private final EmailService emailService;
     private final MemberService memberService;
     private final VerificationCodeService verificationCodeService;
-
+    private final CalendarService calendarService;
+    private final FestivalsService festivalsService;
     @PreAuthorize("isAnonymous()")
     @GetMapping("/login")
     public String loginPage() {
@@ -43,15 +50,74 @@ public class MemberController {
     }
 
     @GetMapping("/myPage")
-    public String myPage(Model model) {
+    public String myPage(
+            @RequestParam(name = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+            @RequestParam(name = "id", required = false) Long id,
+            Model model) {
+
+        // 현재 회원 정보 가져오기
         Member currentMember = memberService.getCurrentMember();
         if (currentMember == null) {
             logger.warn("No current member found in myPage method");
             return "redirect:/member/login";
         }
         model.addAttribute("member", currentMember);
+
+        // 날짜 및 주간 범위 설정
+        if (date == null) {
+            date = LocalDate.now();
+        }
+        LocalDate startOfWeek = date.with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 1);
+        LocalDate endOfWeek = date.with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 7);
+
+        // 기본 Festival ID 설정
+        if (id == null) {
+            id = getDefaultFestivalId();
+            if (id == null) {
+                throw new IllegalArgumentException("Festival ID is required but not provided");
+            }
+        }
+
+        // Festival 데이터 가져오기
+        Festivals festivals = festivalsService.getFestivalsById(id);
+        if (festivals == null) {
+            throw new IllegalArgumentException("No festival found for ID: " + id);
+        }
+
+        // 캘린더 데이터 가져오기
+        List<com.example.Trip_In_Jeju.calendar.entity.Calendar> dailyCalendars = calendarService.findCalendarsWithFoodsBetween2(date, date);
+
+        // 중복된 Calendar 객체 제거
+        Set<com.example.Trip_In_Jeju.calendar.entity.Calendar> uniqueCalendars = new HashSet<>(dailyCalendars);
+
+        // 디버그 로그 추가
+        System.out.println("Selected Date: " + date);
+        uniqueCalendars.forEach(event -> System.out.println("Event: " + event));
+
+        // 날짜별 일정 데이터
+        Map<LocalDate, List<com.example.Trip_In_Jeju.calendar.entity.Calendar>> eventsByDate = new HashMap<>();
+        eventsByDate.put(date, new ArrayList<>(uniqueCalendars));
+
+        // 모델에 데이터 추가
+        model.addAttribute("weekStart", startOfWeek);
+        model.addAttribute("weekEnd", endOfWeek);
+        model.addAttribute("weekDates", List.of(startOfWeek, startOfWeek.plusDays(1), startOfWeek.plusDays(2), startOfWeek.plusDays(3), startOfWeek.plusDays(4), startOfWeek.plusDays(5), startOfWeek.plusDays(6)));
+        model.addAttribute("currentDate", date);
+        model.addAttribute("eventsByDate", eventsByDate);
+        model.addAttribute("festivals", festivals);
+
+        // 뷰 반환
         return "member/myPage";
     }
+
+
+    private Long getDefaultFestivalId() {
+        // 기본값으로 설정할 ID를 결정하는 로직 작성
+        // 예를 들어, 최근 등록된 축제의 ID를 반환할 수 있습니다.
+        List<Festivals> festivalsList = festivalsService.getAllFestivals();
+        return festivalsList.isEmpty() ? null : festivalsList.get(0).getId();
+    }
+
 
 
     @GetMapping("/admin")

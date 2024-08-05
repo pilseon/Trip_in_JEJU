@@ -15,6 +15,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/gen/**")
                 .addResourceLocations("file:///" + genFileDirPath + "/");
+        registry.addResourceHandler("/map/**")
+                .addResourceLocations("classpath:/static/map/");
     }
 
     @Override

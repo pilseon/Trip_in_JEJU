@@ -13,7 +13,7 @@ public class MapController {
 
     private final LocationService locationService; // MyService를 주입받음
 
-    @GetMapping
+    @GetMapping("/map")
     public String showMap() {
         return "map/map"; // map.html 파일을 반환
     }

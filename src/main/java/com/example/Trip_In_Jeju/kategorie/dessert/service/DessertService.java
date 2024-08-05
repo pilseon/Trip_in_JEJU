@@ -43,6 +43,9 @@ public class DessertService {
     @Value("${custom.fileDirPath}")
     public String genFileDirPath;
 
+    // 디렉토리 경로를 변경합니다.
+    private static final String DESSERT_IMAGE_DIR = "images/dessert/";
+
     public Page<Dessert> getList(int page, String subCategory) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
@@ -62,15 +65,19 @@ public class DessertService {
 
         return dessertRepository.findAll(pageable);
     }
+
     public void create(String title, String businessHoursStart, String businessHoursEnd, String content, String place, String closedDay,
                        String websiteUrl, String phoneNumber, String hashtags, MultipartFile thumbnail, double latitude, double longitude, String subCategory) {
 
-        String thumbnailRelPath = "dessert/" + UUID.randomUUID().toString() + ".jpg";
+        // 이미지를 저장할 디렉토리의 전체 경로를 생성합니다.
+        String thumbnailRelPath = DESSERT_IMAGE_DIR + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
 
-        thumbnailFile.mkdirs();
+        // 디렉토리가 없으면 생성합니다.
+        thumbnailFile.getParentFile().mkdirs();
 
         try {
+            // 업로드된 파일을 저장합니다.
             thumbnail.transferTo(thumbnailFile);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -109,8 +116,6 @@ public class DessertService {
 
     public void create2(String title, String businessHoursStart, String businessHoursEnd, String content, String place, String closedDay,
                         String websiteUrl, String phoneNumber, String hashtags, double latitude, double longitude, String subCategory) {
-
-
 
         // Location 엔티티 생성 및 저장
         Location location = new Location();

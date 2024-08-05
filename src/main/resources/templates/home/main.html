@@ -2,6 +2,7 @@
 <html>
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -171,9 +172,7 @@
                     <a href="/member/logout"class="option cursor-pointer inline-block w-100 h-100 text-left hover:text-green-300">로그아웃</a>
                 </li>
 
-                <li sec:authorize="hasAuthority('ADMIN')" class="flex-grow py-1 border-b-2">
-                    <a  href="/adm/home/main"class="option cursor-pointer inline-block w-100 h-100 text-left hover:text-green-300">관리자 페이지</a>
-                </li>
+
             </ul>
         </div>
     </div>

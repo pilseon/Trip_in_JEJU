@@ -19,6 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.UUID;
+
 @Controller
 @RequestMapping("/member")
 @RequiredArgsConstructor
@@ -66,15 +73,62 @@ public class MemberController {
                          @RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail,
                          HttpSession session) {
 
+        // 인증 코드 생성 및 이메일 전송
         String verificationCode = verificationCodeService.generateVerificationCode(email);
-        String subject = "Trip_In_JEJU";
-        String body = "회원님의 가입을 축하드리며 저희 Trip_In_JEJU 에서 좋은 추억 남기셨으면 좋겠습니다!";
+        String subject = "Trip_In_JEJU 회원 가입 인증";
+        String body = String.format(
+                "회원님의 가입을 축하드립니다!<br><br>" +
+                        "아래 코드를 입력하여 이메일 인증을 완료해주세요.<br><br>" +
+                        "인증 코드: <b>%s</b><br><br>" +
+                        "감사합니다.<br><br>" +
+                        "Trip_In_JEJU 팀",
+                verificationCode
+        );
         emailService.send(email, subject, body);
 
+        // 인증 코드 세션에 저장
         session.setAttribute("verificationCode", verificationCode);
+
+        // 프로필 사진 저장 및 회원가입
+        String imageFileName = null;
+        if (thumbnail != null && !thumbnail.isEmpty()) {
+            imageFileName = storeProfilePicture(thumbnail);
+        }
+
         memberService.signup(username, nickname, password, email, thema, thumbnail, MemberRole.MEMBER);
 
         return "redirect:/member/login";
+    }
+
+
+    public String storeProfilePicture(MultipartFile profilePicture) {
+        // 이미지 저장 디렉토리 경로
+        String uploadDir = "C:\\work\\Trip_In_Jeju\\src\\main\\resources\\static\\images\\profile";
+
+        // 디렉토리가 존재하지 않으면 생성
+        Path uploadPath = Paths.get(uploadDir);
+        if (!Files.exists(uploadPath)) {
+            try {
+                Files.createDirectories(uploadPath);
+            } catch (IOException e) {
+                throw new IllegalStateException("Could not create upload directory", e);
+            }
+        }
+
+
+        String fileName = UUID.randomUUID().toString();
+        String imageFileName = fileName + ".jpg";
+
+
+        try {
+            Path filePath = uploadPath.resolve(imageFileName);
+            Files.copy(profilePicture.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            throw new IllegalStateException("Could not store image file", e);
+        }
+
+        // 저장된 파일의 상대 경로를 반환합니다.
+        return "/images/profile/" + imageFileName;
     }
 
 

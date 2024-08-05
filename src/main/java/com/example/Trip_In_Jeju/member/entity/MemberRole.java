@@ -6,7 +6,6 @@ import lombok.Getter;
 @Getter
 public enum MemberRole {
 
-    // admin user 역할 설정
 
     ADMIN("ADMIN"),
     MEMBER("MEMBER");

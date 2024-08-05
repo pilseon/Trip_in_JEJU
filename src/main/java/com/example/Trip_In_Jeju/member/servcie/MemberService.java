@@ -66,30 +66,33 @@ public class MemberService {
     @Transactional
     public Member signupSocialUser(String username, String nickname, String email) {
         // 소셜 로그인한 회원 저장
-        return signup2(username,  nickname, "1234", email,"",MemberRole.MEMBER);
+        return signup(username, nickname, "", email,null,null,MemberRole.ADMIN);
 
     }
 
     @Value("${custom.fileDirPath}")
-    public String genFileDirPath;
+    private String genFileDirPath;
+
     @Transactional
     public Member signup(String username, String nickname, String password,
                          String email, String thema, MultipartFile thumbnail, MemberRole role) {
         String thumbnailRelPath = null;
 
         if (thumbnail != null && !thumbnail.isEmpty()) {
-            thumbnailRelPath = "member/" + UUID.randomUUID().toString() + ".jpg";
-            File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
+            // 저장할 파일의 경로 및 이름 설정
+            String fileName = UUID.randomUUID().toString() + ".jpg";
+            File thumbnailFile = new File(genFileDirPath + File.separator + "member" + File.separator + fileName);
 
-            thumbnailFile.mkdirs();
+            // 디렉토리가 존재하지 않으면 생성
+            thumbnailFile.getParentFile().mkdirs();
 
             try {
                 thumbnail.transferTo(thumbnailFile);
+                thumbnailRelPath = "/images/member/" + fileName;
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("Failed to store file", e);
             }
         }
-
 
         Member member = Member.builder()
                 .username(username)
@@ -140,6 +143,23 @@ public class MemberService {
                 .createDate(LocalDateTime.now())
                 .thema(thema)
                 .role(role)
+                .build();
+
+        return memberRepository.save(member);
+    }
+
+    @Transactional
+    public Member signup3(String username, String nickname, String password,
+                          String email, String thema ) {
+
+        Member member = Member.builder()
+                .username(username)
+                .nickname(nickname)
+                .password(passwordEncoder.encode(password))
+                .email(email)
+                .createDate(LocalDateTime.now())
+                .thema(thema)
+
                 .build();
 
         return memberRepository.save(member);

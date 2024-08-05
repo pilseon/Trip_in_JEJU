@@ -18,17 +18,18 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: auto; /* 스크롤 가능하도록 설정 */
+            overflow: auto;
         }
+
         .form-wrapper {
             position: relative;
             width: 90%;
             max-width: 400px;
             height: 90%;
-
             display: flex;
             flex-direction: column;
         }
+
         .form-container {
             position: absolute;
             width: 100%;
@@ -39,22 +40,27 @@
             transition: transform 0.6s ease-in-out;
             transform-style: preserve-3d;
         }
+
         .form-container.login.active {
             transform: translateX(0) rotateX(0deg);
         }
+
         .form-container.login.hidden {
             transform: translateX(-100%) rotateX(-90deg);
         }
+
         .form-container.signup.active {
             transform: translateX(0) rotateX(0deg);
         }
+
         .form-container.signup.hidden {
             transform: translateX(100%) rotateX(90deg);
         }
+
         .toggle-btn {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
+            position: fixed; /* Fixed position */
+            bottom: 20px; /* Distance from bottom */
+            left: 20px; /* Distance from left */
             width: 50px;
             height: 50px;
             background-color: #007bff;
@@ -66,17 +72,18 @@
             align-items: center;
             cursor: pointer;
             z-index: 10;
-            transform: translateX(-50%);
-            animation: moveButton 1s infinite alternate;
+            transition: left 0.6s ease-in-out; /* Smooth transition for horizontal movement */
         }
+
+        .toggle-btn.move-right {
+            left: calc(100% - 70px); /* Adjusted for fixed positioning */
+        }
+
         .toggle-btn i {
             font-size: 24px;
             transform: rotate(45deg);
         }
-        @keyframes moveButton {
-            0% { transform: translateX(-50%); }
-            100% { transform: translateX(-40%); }
-        }
+
         .wave {
             position: absolute;
             width: 100%;
@@ -85,15 +92,18 @@
             border-radius: 50%;
             animation: wave-animation 6s infinite;
         }
+
         .wave.layer_1 {
             animation-duration: 8s;
             background: rgba(255, 255, 255, 0.1);
         }
+
         @keyframes wave-animation {
             0% { transform: scale(0.8); opacity: 0.4; }
             50% { transform: scale(1.2); opacity: 0.1; }
             100% { transform: scale(0.8); opacity: 0.4; }
         }
+
         .orange {
             position: absolute;
             width: 50px;
@@ -104,6 +114,7 @@
             opacity: 0;
             animation: fall 10s forwards;
         }
+
         @keyframes fall {
             0% {
                 transform: translateY(-100px);
@@ -118,6 +129,7 @@
     <!-- Font Awesome CDN for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
+
 <body>
 <div class="wrap">
     <div class="wave"></div>
@@ -164,7 +176,7 @@
                     </a>
                     <br>
                     <br>
-                    <a > 아래 비행기를 눌러 회원가입으로 전환!</a>
+                    <a>아래 비행기를 눌러 회원가입으로 전환!</a>
                     <br> <br> <br> <br> <br> <br>
                     <br>
                 </div>
@@ -220,7 +232,7 @@
                                     <br><br><br>
                                 </form>
                             </div>
-                            <a > 아래 비행기를 눌러 로그인으로 전환!</a>
+                            <a>아래 비행기를 눌러 로그인으로 전환!</a>
                             <br> <br> <br> <br> <br> <br>
                             <br>
                         </div>
@@ -228,28 +240,31 @@
                 </div>
             </div>
         </div>
+        <button class="toggle-btn" onclick="toggleForm()">
+            <i class="fas fa-plane"></i>
+        </button>
     </div>
-    <br><br><br><br><br>
 </div>
-<button class="toggle-btn" onclick="toggleForm()">
-    <i class="fas fa-plane"></i>
-</button>
+
 
 <script>
     function toggleForm() {
         const loginForm = document.querySelector('.form-container.login');
         const signupForm = document.querySelector('.form-container.signup');
+        const toggleBtn = document.querySelector('.toggle-btn');
 
         if (loginForm.classList.contains('active')) {
             loginForm.classList.remove('active');
             loginForm.classList.add('hidden');
             signupForm.classList.remove('hidden');
             signupForm.classList.add('active');
+            toggleBtn.classList.add('move-right');
         } else {
             signupForm.classList.remove('active');
             signupForm.classList.add('hidden');
             loginForm.classList.remove('hidden');
             loginForm.classList.add('active');
+            toggleBtn.classList.remove('move-right');
         }
     }
 

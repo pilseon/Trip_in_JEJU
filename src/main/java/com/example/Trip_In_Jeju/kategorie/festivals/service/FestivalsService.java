@@ -210,4 +210,8 @@ public class FestivalsService {
     public Festivals getFestivalsById(Long id) {
         return festivalsRepository.findById(id).orElse(null);
     }
+
+    public List<Festivals> getAllFestivals() {
+        return festivalsRepository.findAll();
+    }
 }

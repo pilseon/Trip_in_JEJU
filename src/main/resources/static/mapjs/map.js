@@ -39,7 +39,7 @@ function initMap() {
 // 현재 위치를 찾고 지도에 표시하는 함수
 function locateAndDisplayCurrentPosition() {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
+        navigator.geolocation.watchPosition(function(position) {
             var lat = position.coords.latitude;
             var lon = position.coords.longitude;
 
@@ -52,6 +52,10 @@ function locateAndDisplayCurrentPosition() {
             map.setCenter(locPosition);
         }, function(error) {
             console.error("Error occurred. Error code: " + error.code);
+        }, {
+            enableHighAccuracy: true, // 높은 정확도 사용
+            maximumAge: 0, // 위치 정보 캐시 사용 안함
+            timeout: 60000 // 60초 동안 위치 정보 가져오기를 시도
         });
     } else {
         alert("Geolocation is not supported by this browser.");

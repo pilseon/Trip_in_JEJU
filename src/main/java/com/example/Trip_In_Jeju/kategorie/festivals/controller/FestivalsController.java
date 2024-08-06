@@ -2,6 +2,7 @@ package com.example.Trip_In_Jeju.kategorie.festivals.controller;
 
 import com.example.Trip_In_Jeju.kategorie.festivals.entity.Festivals;
 import com.example.Trip_In_Jeju.kategorie.festivals.service.FestivalsService;
+import com.example.Trip_In_Jeju.member.CustomUserDetails;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.member.servcie.MemberService;
 import com.example.Trip_In_Jeju.rating.entity.Rating;
@@ -89,21 +90,46 @@ public class FestivalsController {
         if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails)) {
             return "redirect:/festivals/detail/" + id;
         }
-        String nickname = ((UserDetails) authentication.getPrincipal()).getUsername();
+
+        String nickname;
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof CustomUserDetails) {
+            nickname = ((CustomUserDetails) principal).getNickname();
+        } else if (principal instanceof UserDetails) {
+            nickname = ((UserDetails) principal).getUsername();
+        } else {
+            nickname = principal.toString();
+        }
+
         ratingService.saveRating(id, score, ratingId, comment, nickname, thumbnail, "festivals");
         return "redirect:/festivals/detail/" + id;
     }
 
-    @PostMapping("/review/edit/{id}")
-    public String updateRating(
-            @PathVariable("id") Long id,
-            @RequestParam("ratingId") Long ratingId,
-            @RequestParam("score") Integer score,
-            @RequestParam("comment") String comment
-    ) {
-        ratingService.updateRating(ratingId, score, comment);
-        return "redirect:/festivals/detail/" + id;
+
+    @GetMapping("/review/edit/{ratingId}")
+    public String getEditPage(@PathVariable("ratingId") Long ratingId, Model model) {
+        Rating rating = ratingService.getRatingById(ratingId);
+        if (rating == null) {
+            throw new RuntimeException("Rating not found");
+        }
+        model.addAttribute("rating", rating);
+        Member currentMember = memberService.getCurrentMember();
+        model.addAttribute("member", currentMember);
+        return "rating/edit";
     }
+
+    @PostMapping("/review/edit/{ratingId}")
+    public String updateRating(
+            @PathVariable("ratingId") Long ratingId,
+            @RequestParam("score") Integer score,
+            @RequestParam("comment") String comment,
+            @RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail
+    ) {
+        ratingService.updateRating2(ratingId, score, comment, thumbnail);
+        Rating rating = ratingService.getRatingById(ratingId);
+        return "redirect:/festivals/detail/" + rating.getItemId();
+    }
+
 
     @GetMapping("/review/delete/{id}")
     public String deleteRating(@PathVariable("id") Long id, @RequestParam("ratingId") Long ratingId) {

@@ -1,45 +1,8 @@
 <!DOCTYPE html>
-<html layout:decorate="~{layout/layout}">
+<html layout:decorate="~{/layout/layout}">
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        .rating {
-            direction: rtl;
-            display: inline-block;
-        }
-        .rating > input {
-            display: none;
-        }
-        .rating > label {
-            color: #d3d3d3;
-            font-size: 1.5rem;
-            display: inline-block;
-            cursor: pointer;
-        }
-        .rating > label:before {
-            content: "\f005";
-            font-family: FontAwesome;
-        }
-        .rating > input:checked ~ label {
-            color: #ffc107;
-        }
-        .rating > input:checked ~ label:hover,
-        .rating > input:checked ~ label:hover ~ label {
-            color: #ffeb3b;
-        }
-        .rating > label:hover,
-        .rating > label:hover ~ label {
-            color: #ffeb3b;
-        }
-        .rating > .fa {
-            color: #d3d3d3; /* 빈 별 색상 (회색) */
-            font-size: 1.5rem;
-            display: inline-block;
-        }
-        .rating > .fa.fa-star {
-            color: #ffc107; /* 채워진 별 색상 (노란색) */
-        }
-    </style>
+    <link href="/resource/css/rating.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <section layout:fragment="content" class="section-prod-list">
@@ -84,17 +47,58 @@
                         <span th:each="i : ${#numbers.sequence(1,5)}" th:classappend="${i <= rating.score ? 'fa-star' : 'fa-star-o'}" class="fa"></span>
                     </span>
                 </p>
-                <p>댓글: <span th:text="${rating.comment}"></span></p>
-                <p>작성자: <span th:text="${rating.nickname}"></span></p>
+                <p>내용: &nbsp;<span th:text="${rating.comment}"></span></p>
+                <p>작성자: &nbsp;<span th:text="${rating.nickname}"></span></p>
                 <div th:if="${rating.thumbnailImg != null}">
                     <img th:src="@{|/gen/${rating.thumbnailImg}|}" alt="리뷰 이미지" style="max-width: 200px;">
                 </div>
-                <!-- 삭제 및 수정 링크 -->
-                <a href="#" th:href="@{/other/review/delete/{id}(id=${other.id}, ratingId=${rating.id})}" class="btn btn-danger btn-sm">삭제</a>
-                <a href="#" th:href="@{/other/review/edit/{id}(id=${other.id}, ratingId=${rating.id})}" class="btn btn-warning btn-sm">수정</a>
+                <div>
+                    <a th:if="${#authentication.getPrincipal().getUsername() == rating.nickname or #authentication.getPrincipal().getUsername() == 'admin'}"
+                       th:href="@{/other/review/delete/{id}(id=${other.id}, ratingId=${rating.id})}"
+                       class="btn btn-danger btn-sm">삭제</a>
+                    <a th:if="${#authentication.getPrincipal().getUsername() == rating.nickname or #authentication.getPrincipal().getUsername() == 'admin'}"
+                       th:href="@{/other/review/edit/{ratingId}(ratingId=${rating.id})}"
+                       class="btn btn-warning btn-sm">수정</a>
+                </div>
+
+                <div class="like-button-container" id="likeButtonContainer">
+                    <form id="likeForm" th:action="@{/other/like/{id}(id=${other.id})}" method="post" style="display: inline;">
+                        <button type="submit" th:disabled="${alreadyLiked}">❤️</button>
+                    </form>
+                    <span class="likes" th:text="'(' + ${other.likes} + ')'"> (0) </span>
+                </div>
+
+                <form class="like-form" data-rating-id="${rating.id}">
+                    <button type="button" class="btn btn-success btn-sm like-btn">
+                        <i class="fa fa-thumbs-up"></i> 좋아요
+                        <span class="like-count" th:text="${rating.likeCount}">0</span>
+                    </button>
+                </form>
             </li>
         </ul>
+        <li th:if="${#lists.isEmpty(ratings)}" class="list-group-item">아직 리뷰가 없습니다.</li>
     </div>
+    <script>
+        $(document).ready(function() {
+            $('.like-btn').click(function() {
+                var $button = $(this);
+                var ratingId = $button.closest('form').data('rating-id');
+
+                $.ajax({
+                    url: '/other/review/likey/' + ratingId,
+                    type: 'POST',
+                    success: function(data) {
+                        if (data.likeCount !== undefined) {
+                            $button.find('.like-count').text(data.likeCount);
+                        }
+                    },
+                    error: function(xhr) {
+                        alert('Error: ' + (xhr.responseJSON.error || 'Something went wrong'));
+                    }
+                });
+            });
+        });
+    </script>
 </section>
 </body>
 </html>

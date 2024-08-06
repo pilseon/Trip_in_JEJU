@@ -7,33 +7,46 @@
 </head>
 <section layout:fragment="content" class="section-prod-list">
     <body>
-    <div class="relative mb-4">
+    <form action="/search/searchForm" method="GET" class="relative mb-4">
         <div class="flex items-center w-full bg-white border border-gray-300 rounded-full shadow-md">
-            <input type="text" placeholder="장소 검색" class="w-full p-3 text-gray-700 rounded-full focus:outline-none" id="search-input" autocomplete="off" oninput="fetchSuggestions()" />
-            <button class="p-3 focus:outline-none">
+            <input type="text" name="query" placeholder="검색어를 입력해주세요." class="w-full p-3 text-gray-700 rounded-full focus:outline-none" id="search-input" autocomplete="off" oninput="fetchSuggestions()" required />
+            <button type="submit" class="p-3 focus:outline-none">
                 <i class="fa-solid fa-magnifying-glass fa-xl"></i>
             </button>
         </div>
         <ul id="suggestions" class="suggestions absolute left-0 right-0 bg-white border border-gray-300 rounded-md shadow-md hidden"></ul>
+    </form>
+
+    <div th:if="${results != null}">
+        <div th:if="${#lists.isEmpty(results)}" class="mt-4">
+            <p class="text-center">"<span class="font-bold" th:text="${query}"></span>" 해당 검색어는 검색결과가 존재하지 않습니다.</p>
+        </div>
+        <div th:if="${!#lists.isEmpty(results)}" class="mt-4">
+            <ul>
+                <li th:each="result : ${results}" class="mb-4">
+                    <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:bg-gray-100">
+                        <div class="flex items-center flex-grow">
+                            <img th:src="@{|/gen/${result.thumbnailImg}|}" alt="Image" class="w-24 h-24 object-cover rounded-md mr-4">
+                            <div class="flex flex-col w-1/2">
+                                <span th:text="${result.title}" class="text-lg font-semibold text-gray-900">Title</span>
+                                <span th:text="${result.place}" class="text-sm text-gray-600">Place</span>
+                                <span th:text="${result.content}" class="mt-2 text-gray-700">Content</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2 flex-shrink-0">
+                            <a th:href="@{|/${result.category}/detail/${result.id}|}" class="text-gray-500 hover:text-gray-700 flex items-center">
+                                <span>상세보기</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
 
-    <div class="flex flex-wrap mb-4">
-        <span class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full mr-2 mb-2 cursor-pointer hover:bg-gray-300">#스시</span>
-        <span class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full mr-2 mb-2 cursor-pointer hover:bg-gray-300">#칼국수</span>
-        <span class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full mr-2 mb-2 cursor-pointer hover:bg-gray-300">#디저트</span>
-        <span class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full mr-2 mb-2 cursor-pointer hover:bg-gray-300">#전시</span>
-    </div>
-
-    <div class="mt-6">
-        <h2 class="text-xl font-bold mb-2">BEST</h2>
-        <ol class="list-decimal pl-5 space-y-1">
-            <li>크리스마스 명소</li>
-            <li>전시</li>
-            <li>데이트 장소</li>
-            <li>카페</li>
-            <li>초밥</li>
-        </ol>
-    </div>
     <script th:src="@{/searchjs/search.js}"></script>
     </body>
 </section>

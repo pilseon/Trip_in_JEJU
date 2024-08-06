@@ -4,25 +4,23 @@ import com.example.Trip_In_Jeju.kategorie.activity.entity.Activity;
 import com.example.Trip_In_Jeju.kategorie.activity.service.ActivityService;
 import com.example.Trip_In_Jeju.kategorie.attractions.entity.Attractions;
 import com.example.Trip_In_Jeju.kategorie.attractions.service.AttractionsService;
+import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
+import com.example.Trip_In_Jeju.kategorie.dessert.service.DessertService;
 import com.example.Trip_In_Jeju.kategorie.festivals.entity.Festivals;
 import com.example.Trip_In_Jeju.kategorie.festivals.service.FestivalsService;
 import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
 import com.example.Trip_In_Jeju.kategorie.food.service.FoodService;
-import com.example.Trip_In_Jeju.kategorie.dessert.service.DessertService;
-import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
 import com.example.Trip_In_Jeju.kategorie.other.entity.Other;
 import com.example.Trip_In_Jeju.kategorie.other.service.OtherService;
 import com.example.Trip_In_Jeju.kategorie.shopping.entity.Shopping;
 import com.example.Trip_In_Jeju.kategorie.shopping.service.ShoppingService;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.member.servcie.MemberService;
+import com.example.Trip_In_Jeju.search.dto.Result;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -40,8 +38,6 @@ public class AdminContentController {
     private final OtherService otherService;
     private final MemberService memberService;
 
-
-
     @GetMapping("/create")
     public String create(Model model) {
         List<Food> foodList = foodService.getList();
@@ -52,8 +48,6 @@ public class AdminContentController {
         List<Festivals> festivalsList = festivalsService.getList();
         List<Other> otherList = otherService.getList();
 
-
-
         Member currentMember = memberService.getCurrentMember();
         model.addAttribute("member", currentMember);
         model.addAttribute("foodList", foodList);
@@ -63,9 +57,6 @@ public class AdminContentController {
         model.addAttribute("attractionsList", attractionsList);
         model.addAttribute("festivalsList", festivalsList);
         model.addAttribute("otherList", otherList);
-
-
-
 
         return "adm/content/create";
     }
@@ -111,7 +102,42 @@ public class AdminContentController {
 
         return "redirect:/adm/content/create";
     }
+
+    @GetMapping("/{category}/detail/{id}")
+    public String getDetail(@PathVariable String category, @PathVariable Long id, Model model) {
+        Result result;
+        switch (category) {
+            case "food":
+                result = foodService.findResultById(id);
+                break;
+            case "activity":
+                result = activityService.findResultById(id);
+                break;
+            case "attractions":
+                result = attractionsService.findResultById(id);
+                break;
+            case "dessert":
+                result = dessertService.findResultById(id);
+                break;
+            case "festivals":
+                result = festivalsService.findResultById(id);
+                break;
+            case "other":
+                result = otherService.findResultById(id);
+                break;
+            case "shopping":
+                result = shoppingService.findResultById(id);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid category: " + category);
+        }
+
+        model.addAttribute("result", result);
+        return "detail";
+    }
 }
+
+
 
 //    @PostMapping("/createFood")
 //    public String createFoodContent(@RequestParam("title") String title, @RequestParam("content") String content, @RequestParam("place") String place, @RequestParam("closedDay") String closedDay, @RequestParam("thumbnail") MultipartFile thumbnail) {

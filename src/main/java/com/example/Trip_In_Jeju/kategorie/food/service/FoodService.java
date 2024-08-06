@@ -10,6 +10,7 @@ import com.example.Trip_In_Jeju.location.entity.Location;
 import com.example.Trip_In_Jeju.location.repository.LocationRepository;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
+import com.example.Trip_In_Jeju.search.dto.Result;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -200,6 +201,11 @@ public class FoodService {
         return optionalFood.orElseThrow(() -> new RuntimeException("Food not found with id: " + id));
     }
 
+    public Result findResultById(Long id) {
+        Food food = findById(id); // 기존의 findById 메서드를 사용
+        return new Result(food.getId(), food.getTitle(), food.getPlace(), food.getThumbnailImg(), food.getContent());
+    }
+
     public void save(Food food) {
         foodRepository.save(food);
     }
@@ -207,6 +213,5 @@ public class FoodService {
     public Food getFoodById(Long id) {
         return foodRepository.findById(id).orElse(null);
     }
-
 
 }

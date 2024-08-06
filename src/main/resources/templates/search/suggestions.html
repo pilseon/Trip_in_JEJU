@@ -7,8 +7,10 @@
 <body>
 <ul>
     <li th:each="suggestion : ${suggestions}">
-        <strong th:text="${suggestion['title']}"></strong><br>
-        <span th:text="${suggestion['place']}"></span>
+        <a href="">
+            <strong th:text="${suggestion['title']}"></strong><br>
+            <span th:text="${suggestion['place']}"></span>
+        </a>
     </li>
 </ul>
 </body>

@@ -18,6 +18,6 @@ public interface DessertRepository extends JpaRepository<Dessert, Long> {
     @Query("SELECT f FROM Dessert f WHERE (f.calendar.periodStart <= :end AND f.calendar.periodEnd >= :start)")
     List<Dessert> findByCalendarPeriod(@Param("start") LocalDate start, @Param("end") LocalDate end);
 
-    @Query("SELECT a.title, a.place FROM Dessert a WHERE a.title LIKE %:query% OR a.place LIKE %:query%")
+    @Query("SELECT a.id, a.title, a.place, a.thumbnailImg, a.content FROM Dessert a WHERE a.title LIKE %:query% OR a.place LIKE %:query%")
     List<Object[]> findByTitleAndPlaceContaining(@Param("query") String query);
 }

@@ -115,7 +115,7 @@ public class FestivalsController {
         model.addAttribute("rating", rating);
         Member currentMember = memberService.getCurrentMember();
         model.addAttribute("member", currentMember);
-        return "rating/edit";
+        return "festivals/edit";
     }
 
     @PostMapping("/review/edit/{ratingId}")

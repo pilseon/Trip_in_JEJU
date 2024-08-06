@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html layout:decorate="~{/layout/layout}" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .rating {
+            direction: rtl;
+            display: inline-block;
+        }
+        .rating > input {
+            display: none;
+        }
+        .rating > label {
+            color: #d3d3d3;
+            font-size: 1.5rem;
+            display: inline-block;
+            cursor: pointer;
+        }
+        .rating > label:before {
+            content: "\f005";
+            font-family: FontAwesome;
+        }
+        .rating > input:checked ~ label {
+            color: #ffc107;
+        }
+        .rating > input:checked ~ label:hover,
+        .rating > input:checked ~ label:hover ~ label {
+            color: #ffeb3b;
+        }
+        .rating > label:hover,
+        .rating > label:hover ~ label {
+            color: #ffeb3b;
+        }
+        .rating > .fa {
+            color: #d3d3d3; /* 빈 별 색상 (회색) */
+            font-size: 1.5rem;
+            display: inline-block;
+        }
+        .rating > .fa.fa-star {
+            color: #ffc107; /* 채워진 별 색상 (노란색) */
+        }
+    </style>
+</head>
+<body>
+<section layout:fragment="content" class="section-prod-list">
+    <div class="container mt-1">
+        <h3 class="mt-4">리뷰 수정</h3>
+        <form th:action="@{/attractions/review/edit/{ratingId}(ratingId=${rating.id})}" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="score">점수</label>
+                <div class="rating" required>
+                    <input type="radio" id="star5" name="score" th:value="5" th:checked="${rating.score == 5}">
+                    <label for="star5"></label>
+                    <input type="radio" id="star4" name="score" th:value="4" th:checked="${rating.score == 4}">
+                    <label for="star4"></label>
+                    <input type="radio" id="star3" name="score" th:value="3" th:checked="${rating.score == 3}">
+                    <label for="star3"></label>
+                    <input type="radio" id="star2" name="score" th:value="2" th:checked="${rating.score == 2}">
+                    <label for="star2"></label>
+                    <input type="radio" id="star1" name="score" th:value="1" th:checked="${rating.score == 1}">
+                    <label for="star1"></label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="comment">댓글</label>
+                <textarea id="comment" name="comment" class="form-control" rows="3" th:text="${rating.comment}" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="thumbnail">사진 수정</label>
+                <input type="file" id="thumbnail" name="thumbnail" accept="image/png, image/gif, image/jpeg">
+            </div>
+                <img id="thumbnailPreview" th:src="@{/gen/{thumbnailImg}(thumbnailImg=${rating.thumbnailImg})}" alt="Thumbnail Preview" style="max-width: 200px; max-height: 200px;"/>
+            <button type="submit" class="btn btn-primary">리뷰 수정</button>
+        </form>
+    </div>
+</section>
+</body>
+<script>
+    function previewThumbnail(input) {
+        const preview = document.getElementById('thumbnailPreview');
+        const file = input.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+        } else {
+            preview.src = "";
+        }
+    }
+</script>
+</html>

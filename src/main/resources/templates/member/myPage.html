@@ -5,162 +5,7 @@
     <title>My Page</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link href="/resource/css/WeekCalendar.css" rel="stylesheet" type="text/css" />
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            background-color: #f8f8f8;
-        }
-
-        .logo img {
-            height: 40px;
-        }
-
-        .settings {
-            display: flex;
-            align-items: center;
-            position: relative; /* Ensure the link is positioned relative to this container */
-        }
-
-        .settings-link {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            text-decoration: underline;
-            color: #333;
-        }
-
-        .notification-icon {
-            height: 24px;
-        }
-
-        .profile {
-            display: flex;
-            align-items: center;
-            padding: 20px;
-            background-color: #f0f0f0;
-            position: relative;
-        }
-
-        .profile-pic img {
-            border-radius: 50%;
-            height: 80px;
-            width: 80px;
-            margin-right: 20px;
-        }
-
-        .profile-info {
-            flex: 1;
-        }
-
-        .username {
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .email {
-            color: #666;
-        }
-
-        .membership-info {
-            color: #999;
-        }
-
-        .navigation {
-            display: flex;
-            justify-content: space-around;
-            background-color: #ddd;
-        }
-
-        .nav-button {
-            flex: 1;
-            padding: 10px;
-            background: none;
-            border: none;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .nav-button:hover {
-            background-color: #ccc;
-        }
-
-        .content {
-            padding: 20px;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        #tab-schedule {
-            display: block;
-        }
-
-        .calendar {
-            padding: 10px;
-            background-color: #f9f9f9;
-            margin-bottom: 20px;
-        }
-
-        .schedule-list,
-        .history-list {
-            background-color: #fff;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .schedule-list h2,
-        .history-list h2,
-        .discount-list h2 {
-            margin-top: 0;
-        }
-
-        .schedule-item,
-        .history-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .schedule-item img,
-        .history-item img {
-            height: 50px;
-            width: 50px;
-            margin-right: 10px;
-            border-radius: 5px;
-        }
-
-        .item-info {
-            flex: 1;
-        }
-
-        .item-actions {
-            display: flex;
-            align-items: center;
-        }
-
-        .item-actions button {
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-    </style>
+    <link href="/resource/css/myPage.css" rel="stylesheet" type="text/css" />
 </head>
 <section layout:fragment="content" class="section-prod-list">
     <body>
@@ -173,7 +18,7 @@
             <div class="profile-info">
                 <p class="username" th:text="${member.nickname}">사용자</p>
                 <p class="email" th:text="${member.email}">mail@mail.com</p>
-                <p class="membership-info" th:text="${#temporals.format(member.createDate, 'yyyy-MM-dd HH:mm')}">2024-07-25</p>
+                <p>가입일: &nbsp; <p class="membership-info" th:text="${#temporals.format(member.createDate, 'yyyy-MM-dd HH:mm')}">2024-07-25</p></p>
             </div>
             <a href="/member/modify" class="settings-link">프로필 수정</a>
         </section>
@@ -210,31 +55,35 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div th:each="entry : ${eventsByDate}" th:if="${entry.value.size() > 0}">
                         <div th:each="event : ${entry.value}" class="event-card">
-                            <div class="event-date">
-                                <span th:text="${currentDate}"></span>
-                            </div>
-                            <div class="event-content">
-                                <h4 th:text="${event.title}"></h4>
-                                <span th:text="${event.periodStart} + ' - ' + ${event.periodEnd}"></span>
-                                <div class="festivals" th:if="${event.festivals != null and !#lists.isEmpty(event.festivals)}">
-                                    <div th:each="festival : ${event.festivals}" class="festival-info">
-                                        <img th:src="@{|/gen/${festival.thumbnailImg}|}" alt="Festival Thumbnail" class="festival-thumbnail">
-                                        <div>
-                                            <h5 th:text="${festival.title}"></h5>
-                                            <p th:text="${festival.subCategory}"></p>
-                                            <p th:text="${festival.place}"></p>
+                            <!-- 카드 전체를 링크로 만들기 위해 <a> 태그로 감쌌습니다. -->
+                            <a th:each="festival : ${event.festivals}"
+                               th:href="@{/festivals/detail/{id}(id=${festival.id})}"
+                               class="festival-link">
+                                <div class="event-date">
+                                    <span th:text="${currentDate}"></span>
+                                </div>
+                                <div class="event-content">
+                                    <h4 th:text="${event.title}"></h4>
+                                    <span th:text="${event.periodStart} + ' - ' + ${event.periodEnd}"></span>
+                                    <div class="festivals" th:if="${event.festivals != null and !#lists.isEmpty(event.festivals)}">
+                                        <div class="festival-info">
+                                            <img th:src="@{|/gen/${festival.thumbnailImg}|}" alt="Festival Thumbnail" class="festival-thumbnail">
+                                            <div>
+                                                <h5 th:text="${festival.title}"></h5>
+                                                <p th:text="${festival.subCategory}"></p>
+                                                <p th:text="${festival.place}"></p>
+                                            </div>
                                         </div>
                                     </div>
+                                    <p th:if="${event.festivals == null or #lists.isEmpty(event.festivals)}">진행중인 축제가 없습니다.</p>
                                 </div>
-                                <p th:if="${event.festivals == null or #lists.isEmpty(event.festivals)}">진행중인 축제가 없습니다.</p>
-                            </div>
+                            </a>
                         </div>
                     </div>
                 </div>
 
-            </div>
 
-            <div class="tab-content" id="tab-history">
+                <div class="tab-content" id="tab-history">
                 <div class="history-list">
                     <h2>히스토리</h2>
                     <div class="history-item">
@@ -244,48 +93,14 @@
                             <p>09:00 - 18:00<br>서구 둔산대로117번길 155</p>
                         </div>
                     </div>
-                    <!-- More history items -->
+
                 </div>
             </div>
         </section>
     </div>
-
     <script th:src="@{/js/main.js}"></script>
     <script th:src="@{/weekcalendarjs/weekcalendar.js}"></script>
-    <script>
-        function toggleDatePicker() {
-          var datePicker = document.getElementById('datePicker');
-          datePicker.classList.toggle('hidden');
-      }
-
-      function navigateToDate() {
-          var selectedDate = document.getElementById('datePicker').value;
-          window.location.href = '/member/myPage?date=' + selectedDate;
-      }
-
-      function navigateToDateWithClick(element) {
-          var selectedDate = element.getAttribute('data-date');
-          window.location.href = '/member/myPage?date=' + selectedDate;
-      }
-
-      document.addEventListener("DOMContentLoaded", function() {
-          const buttons = document.querySelectorAll(".nav-button");
-          const tabContents = document.querySelectorAll(".tab-content");
-
-          buttons.forEach(button => {
-              button.addEventListener("click", () => {
-                  const target = 'tab-' + button.id;
-                  tabContents.forEach(tabContent => {
-                      if (tabContent.id === target) {
-                          tabContent.style.display = "block";
-                      } else {
-                          tabContent.style.display = "none";
-                      }
-                  });
-              });
-          });
-      });
-    </script>
+    <script th:src="@{/myPagejs/myPage.js}"></script>
     </body>
 </section>
 </html>

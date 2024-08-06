@@ -17,4 +17,7 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
 
     @Query("SELECT f FROM Activity f WHERE (f.calendar.periodStart <= :end AND f.calendar.periodEnd >= :start)")
     List<Activity> findByCalendarPeriod(@Param("start") LocalDate start, @Param("end") LocalDate end);
+
+    @Query("SELECT a.title, a.place FROM Activity a WHERE a.title LIKE %:query% OR a.place LIKE %:query%")
+    List<Object[]> findByTitleAndPlaceContaining(@Param("query") String query);
 }

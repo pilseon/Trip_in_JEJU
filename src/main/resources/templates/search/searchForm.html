@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/resource/css/search.css"> <!-- CSS 파일 경로 조정 -->
+</head>
+<section layout:fragment="content" class="section-prod-list">
+    <body>
+    <div class="relative mb-4">
+        <div class="flex items-center w-full bg-white border border-gray-300 rounded-full shadow-md">
+            <input type="text" placeholder="장소 검색" class="w-full p-3 text-gray-700 rounded-full focus:outline-none" id="search-input" autocomplete="off" oninput="fetchSuggestions()" />
+            <button class="p-3 focus:outline-none">
+                <i class="fa-solid fa-magnifying-glass fa-xl"></i>
+            </button>
+        </div>
+        <ul id="suggestions" class="suggestions absolute left-0 right-0 bg-white border border-gray-300 rounded-md shadow-md hidden"></ul>
+    </div>
+
+    <div class="flex flex-wrap mb-4">
+        <span class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full mr-2 mb-2 cursor-pointer hover:bg-gray-300">#스시</span>
+        <span class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full mr-2 mb-2 cursor-pointer hover:bg-gray-300">#칼국수</span>
+        <span class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full mr-2 mb-2 cursor-pointer hover:bg-gray-300">#디저트</span>
+        <span class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full mr-2 mb-2 cursor-pointer hover:bg-gray-300">#전시</span>
+    </div>
+
+    <div class="mt-6">
+        <h2 class="text-xl font-bold mb-2">BEST</h2>
+        <ol class="list-decimal pl-5 space-y-1">
+            <li>크리스마스 명소</li>
+            <li>전시</li>
+            <li>데이트 장소</li>
+            <li>카페</li>
+            <li>초밥</li>
+        </ol>
+    </div>
+    <script th:src="@{/searchjs/search.js}"></script>
+    </body>
+</section>
+</html>

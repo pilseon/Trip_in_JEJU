@@ -17,4 +17,7 @@ public interface FoodRepository extends JpaRepository<Food, Long> {
 
     @Query("SELECT f FROM Food f WHERE (f.calendar.periodStart <= :end AND f.calendar.periodEnd >= :start)")
     List<Food> findByCalendarPeriod(@Param("start") LocalDate start, @Param("end") LocalDate end);
+
+    @Query("SELECT a.title, a.place FROM Food a WHERE a.title LIKE %:query% OR a.place LIKE %:query%")
+    List<Object[]> findByTitleAndPlaceContaining(@Param("query") String query);
 }

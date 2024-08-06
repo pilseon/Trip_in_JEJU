@@ -116,7 +116,7 @@ public class AttractionsController {
         model.addAttribute("rating", rating);
         Member currentMember = memberService.getCurrentMember();
         model.addAttribute("member", currentMember);
-        return "rating/edit";
+        return "attractions/edit";
     }
 
     @PostMapping("/review/edit/{ratingId}")
@@ -128,7 +128,7 @@ public class AttractionsController {
     ) {
         ratingService.updateRating2(ratingId, score, comment, thumbnail);
         Rating rating = ratingService.getRatingById(ratingId);
-        return "redirect:/attractions/detail/" + rating.getItemId();
+        return "redirect:/activity/detail/" + rating.getItemId();
     }
 
 

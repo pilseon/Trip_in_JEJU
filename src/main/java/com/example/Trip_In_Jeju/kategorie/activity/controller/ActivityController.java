@@ -115,7 +115,7 @@ public class ActivityController {
         model.addAttribute("rating", rating);
         Member currentMember = memberService.getCurrentMember();
         model.addAttribute("member", currentMember);
-        return "rating/edit";
+        return "activity/edit";
     }
 
     @PostMapping("/review/edit/{ratingId}")

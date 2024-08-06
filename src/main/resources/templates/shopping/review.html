@@ -61,44 +61,11 @@
                        class="btn btn-warning btn-sm">수정</a>
                 </div>
 
-                <div class="like-button-container" id="likeButtonContainer">
-                    <form id="likeForm" th:action="@{/shopping/like/{id}(id=${shopping.id})}" method="post" style="display: inline;">
-                        <button type="submit" th:disabled="${alreadyLiked}">❤️</button>
-                    </form>
-                    <span class="likes" th:text="'(' + ${shopping.likes} + ')'"> (0) </span>
-                </div>
-
-                <form class="like-form" data-rating-id="${rating.id}">
-                    <button type="button" class="btn btn-success btn-sm like-btn">
-                        <i class="fa fa-thumbs-up"></i> 좋아요
-                        <span class="like-count" th:text="${rating.likeCount}">0</span>
-                    </button>
-                </form>
             </li>
         </ul>
         <li th:if="${#lists.isEmpty(ratings)}" class="list-group-item">아직 리뷰가 없습니다.</li>
     </div>
-    <script>
-        $(document).ready(function() {
-            $('.like-btn').click(function() {
-                var $button = $(this);
-                var ratingId = $button.closest('form').data('rating-id');
 
-                $.ajax({
-                    url: '/shopping/review/likey/' + ratingId,
-                    type: 'POST',
-                    success: function(data) {
-                        if (data.likeCount !== undefined) {
-                            $button.find('.like-count').text(data.likeCount);
-                        }
-                    },
-                    error: function(xhr) {
-                        alert('Error: ' + (xhr.responseJSON.error || 'Something went wrong'));
-                    }
-                });
-            });
-        });
-    </script>
 </section>
 </body>
 </html>

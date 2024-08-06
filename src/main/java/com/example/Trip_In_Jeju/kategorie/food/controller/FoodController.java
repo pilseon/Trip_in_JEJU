@@ -115,7 +115,7 @@ public class FoodController {
         model.addAttribute("rating", rating);
         Member currentMember = memberService.getCurrentMember();
         model.addAttribute("member", currentMember);
-        return "rating/edit";
+        return "food/edit";
     }
 
     @PostMapping("/review/edit/{ratingId}")

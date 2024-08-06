@@ -134,10 +134,3 @@ div.clickEffect {
       transform: translateY(100px);
       opacity: 0;
   }
-
-.main-bg {
-  background-image: url('https://github.com/user-attachments/assets/49436bc7-f7e1-4200-82f1-1970ee059374');
-  background-repeat: no-repeat;
-  height: 50vh; /* 필요한 높이에 따라 조정 */
-  width: 100%;
-}

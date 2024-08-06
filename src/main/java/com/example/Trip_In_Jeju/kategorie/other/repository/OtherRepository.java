@@ -17,4 +17,7 @@ public interface OtherRepository extends JpaRepository<Other, Long> {
 
     @Query("SELECT f FROM Other f WHERE (f.calendar.periodStart <= :end AND f.calendar.periodEnd >= :start)")
     List<Other> findByCalendarPeriod(@Param("start") LocalDate start, @Param("end") LocalDate end);
+
+    @Query("SELECT a.title, a.place FROM Other a WHERE a.title LIKE %:query% OR a.place LIKE %:query%")
+    List<Object[]> findByTitleAndPlaceContaining(@Param("query") String query);
 }

@@ -62,7 +62,7 @@ spring:
         show_sql: true # SQL 쿼리를 로그에 출력
         format_sql: true # SQL 쿼리를 포맷팅하여 보기 좋게 출력
         use_sql_comments: true # SQL 쿼리 주석 사용
-  logging:
+    logging:
     level:
       # SQL 쿼리를 디버깅하고, SQL 파라미터를 추적하고 추출할 때의 로깅 레벨 설정
       org.hibernate.SQL: DEBUG

@@ -130,8 +130,9 @@
                 <li sec:authorize="isAuthenticated()" class="flex-grow py-1 border-b-2">
                     <a href="/member/logout" class="option cursor-pointer inline-block w-100 h-100 text-left hover:text-green-300">로그아웃</a>
                 </li>
-
-
+                <li sec:authorize="isAuthenticated() and principal.username == 'admin'" class="flex-grow py-1 border-b-2">
+                    <a href="/adm/home/main" class="option cursor-pointer inline-block w-100 h-100 text-left hover:text-green-300">관리자 페이지</a>
+                </li>
             </ul>
         </div>
     </div>

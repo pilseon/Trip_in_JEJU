@@ -10,6 +10,7 @@ import com.example.Trip_In_Jeju.location.entity.Location;
 import com.example.Trip_In_Jeju.location.repository.LocationRepository;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
+import com.example.Trip_In_Jeju.search.dto.Result;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -170,5 +171,10 @@ public class ShoppingService {
 
     public Shopping getShoppingById(Long id) {
         return shoppingRepository.findById(id).orElse(null);
+    }
+
+    public Result findResultById(Long id) {
+        Shopping shopping = findById(id); // 기존의 findById 메서드를 사용
+        return new Result(shopping.getId(), shopping.getTitle(), shopping.getPlace(), shopping.getThumbnailImg(), shopping.getContent());
     }
 }

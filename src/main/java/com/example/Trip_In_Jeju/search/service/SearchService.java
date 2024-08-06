@@ -1,6 +1,7 @@
 package com.example.Trip_In_Jeju.search.service;
 
 import com.example.Trip_In_Jeju.member.entity.Member;
+import com.example.Trip_In_Jeju.search.dto.Result;
 import com.example.Trip_In_Jeju.search.entity.Search;
 import com.example.Trip_In_Jeju.search.ripository.SearchRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SearchService {
     private final SearchRepository searchRepository;
+    private final CategorySearchService categorySearchService;
 
     // 검색어 저장 메서드
     public void saveSearchTerm(Member member, String searchTerm) {
@@ -26,5 +28,10 @@ public class SearchService {
     // 특정 검색어로 검색 기록을 조회하는 메서드
     public List<Search> getSearchResultsByTerm(String searchTerm) {
         return searchRepository.findBySearchTerm(searchTerm);
+    }
+
+    // 검색어를 받아서 결과를 처리하는 메서드
+    public List<Result> searchByQuery(String query) {
+        return categorySearchService.findSuggestions(query);
     }
 }

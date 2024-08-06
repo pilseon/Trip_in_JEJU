@@ -7,13 +7,12 @@ import com.example.Trip_In_Jeju.kategorie.festivals.repository.FestivalsReposito
 import com.example.Trip_In_Jeju.kategorie.food.repository.FoodRepository;
 import com.example.Trip_In_Jeju.kategorie.other.repository.OtherRepository;
 import com.example.Trip_In_Jeju.kategorie.shopping.repository.ShoppingRepository;
+import com.example.Trip_In_Jeju.search.dto.Result;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -26,66 +25,92 @@ public class CategorySearchService {
     private final OtherRepository otherRepository;
     private final ShoppingRepository shoppingRepository;
 
-    public List<Map<String, String>> findSuggestions(String query) {
-        List<Map<String, String>> suggestions = new ArrayList<>();
+    public List<Result> findSuggestions(String query) {
+        List<Result> suggestions = new ArrayList<>();
 
         List<Object[]> activityResults = activityRepository.findByTitleAndPlaceContaining(query);
         for (Object[] result : activityResults) {
-            Map<String, String> map = new HashMap<>();
-            map.put("title", (String) result[0]);
-            map.put("place", (String) result[1]);
-            suggestions.add(map);
+            Result res = new Result();
+            res.setId((Long) result[0]); // Assuming id is the first element
+            res.setTitle((String) result[1]);
+            res.setPlace((String) result[2]);
+            res.setThumbnailImg(result.length > 3 ? (String) result[3] : "");
+            res.setContent(result.length > 4 ? (String) result[4] : "");
+            res.setCategory("activity");
+            suggestions.add(res);
         }
 
         List<Object[]> attractionsResults = attractionsRepository.findByTitleAndPlaceContaining(query);
         for (Object[] result : attractionsResults) {
-            Map<String, String> map = new HashMap<>();
-            map.put("title", (String) result[0]);
-            map.put("place", (String) result[1]);
-            suggestions.add(map);
+            Result res = new Result();
+            res.setId((Long) result[0]);
+            res.setTitle((String) result[1]);
+            res.setPlace((String) result[2]);
+            res.setThumbnailImg(result.length > 3 ? (String) result[3] : "");
+            res.setContent(result.length > 4 ? (String) result[4] : "");
+            res.setCategory("attraction");
+            suggestions.add(res);
         }
 
         List<Object[]> dessertResults = dessertRepository.findByTitleAndPlaceContaining(query);
         for (Object[] result : dessertResults) {
-            Map<String, String> map = new HashMap<>();
-            map.put("title", (String) result[0]);
-            map.put("place", (String) result[1]);
-            suggestions.add(map);
+            Result res = new Result();
+            res.setId((Long) result[0]);
+            res.setTitle((String) result[1]);
+            res.setPlace((String) result[2]);
+            res.setThumbnailImg(result.length > 3 ? (String) result[3] : "");
+            res.setContent(result.length > 4 ? (String) result[4] : "");
+            res.setCategory("dessert");
+            suggestions.add(res);
         }
 
         List<Object[]> festivalsResults = festivalsRepository.findByTitleAndPlaceContaining(query);
         for (Object[] result : festivalsResults) {
-            Map<String, String> map = new HashMap<>();
-            map.put("title", (String) result[0]);
-            map.put("place", (String) result[1]);
-            suggestions.add(map);
+            Result res = new Result();
+            res.setId((Long) result[0]);
+            res.setTitle((String) result[1]);
+            res.setPlace((String) result[2]);
+            res.setThumbnailImg(result.length > 3 ? (String) result[3] : "");
+            res.setContent(result.length > 4 ? (String) result[4] : "");
+            res.setCategory("festivals");
+            suggestions.add(res);
         }
 
         List<Object[]> foodResults = foodRepository.findByTitleAndPlaceContaining(query);
         for (Object[] result : foodResults) {
-            Map<String, String> map = new HashMap<>();
-            map.put("title", (String) result[0]);
-            map.put("place", (String) result[1]);
-            suggestions.add(map);
+            Result res = new Result();
+            res.setId((Long) result[0]);
+            res.setTitle((String) result[1]);
+            res.setPlace((String) result[2]);
+            res.setThumbnailImg(result.length > 3 ? (String) result[3] : "");
+            res.setContent(result.length > 4 ? (String) result[4] : "");
+            res.setCategory("food");
+            suggestions.add(res);
         }
 
         List<Object[]> otherResults = otherRepository.findByTitleAndPlaceContaining(query);
         for (Object[] result : otherResults) {
-            Map<String, String> map = new HashMap<>();
-            map.put("title", (String) result[0]);
-            map.put("place", (String) result[1]);
-            suggestions.add(map);
+            Result res = new Result();
+            res.setId((Long) result[0]);
+            res.setTitle((String) result[1]);
+            res.setPlace((String) result[2]);
+            res.setThumbnailImg(result.length > 3 ? (String) result[3] : "");
+            res.setContent(result.length > 4 ? (String) result[4] : "");
+            res.setCategory("other");
+            suggestions.add(res);
         }
 
         List<Object[]> shoppingResults = shoppingRepository.findByTitleAndPlaceContaining(query);
         for (Object[] result : shoppingResults) {
-            Map<String, String> map = new HashMap<>();
-            map.put("title", (String) result[0]);
-            map.put("place", (String) result[1]);
-            suggestions.add(map);
+            Result res = new Result();
+            res.setId((Long) result[0]);
+            res.setTitle((String) result[1]);
+            res.setPlace((String) result[2]);
+            res.setThumbnailImg(result.length > 3 ? (String) result[3] : "");
+            res.setContent(result.length > 4 ? (String) result[4] : "");
+            res.setCategory("shopping");
+            suggestions.add(res);
         }
-
-        System.out.println("Suggestions found: " + suggestions);
 
         return suggestions;
     }

@@ -16,6 +16,6 @@ public interface FestivalsRepository extends JpaRepository<Festivals, Long> {
     List<Festivals> findByCalendarId(Long calendarId);
 
 
-    @Query("SELECT a.title, a.place FROM Festivals a WHERE a.title LIKE %:query% OR a.place LIKE %:query%")
+    @Query("SELECT a.id, a.title, a.place, a.thumbnailImg, a.content FROM Festivals a WHERE a.title LIKE %:query% OR a.place LIKE %:query%")
     List<Object[]> findByTitleAndPlaceContaining(@Param("query") String query);
 }

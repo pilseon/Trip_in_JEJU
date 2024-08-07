@@ -107,6 +107,50 @@
                                 </a>
                             </div>
                         </div>
+
+                        <div th:if="${scrap.activity != null}">
+                            <a th:href="@{/activity/detail/{id}(id=${scrap.activity.id})}">
+                                <img th:src="@{|/gen/${scrap.activity.thumbnailImg}|}" alt="액티비티 이미지" class="history-img">
+                            </a>
+                            <div class="item-info">
+                                <a th:href="@{/activity/detail/{id}(id=${scrap.activity.id})}">
+                                    <p th:text="${scrap.activity.title}">액티비티 이름</p>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div th:if="${scrap.attractions != null}">
+                            <a th:href="@{/attractions/detail/{id}(id=${scrap.attractions.id})}">
+                                <img th:src="@{|/gen/${scrap.attractions.thumbnailImg}|}" alt="관광지 이미지" class="history-img">
+                            </a>
+                            <div class="item-info">
+                                <a th:href="@{/attractions/detail/{id}(id=${scrap.attractions.id})}">
+                                    <p th:text="${scrap.attractions.title}">관광지 이름</p>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div th:if="${scrap.other != null}">
+                            <a th:href="@{/other/detail/{id}(id=${scrap.other.id})}">
+                                <img th:src="@{|/gen/${scrap.other.thumbnailImg}|}" alt="기타 이미지" class="history-img">
+                            </a>
+                            <div class="item-info">
+                                <a th:href="@{/other/detail/{id}(id=${scrap.other.id})}">
+                                    <p th:text="${scrap.other.title}">기타 이름</p>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div th:if="${scrap.shopping != null}">
+                            <a th:href="@{/shopping/detail/{id}(id=${scrap.shopping.id})}">
+                                <img th:src="@{|/gen/${scrap.shopping.thumbnailImg}|}" alt="쇼핑 이미지" class="history-img">
+                            </a>
+                            <div class="item-info">
+                                <a th:href="@{/shopping/detail/{id}(id=${scrap.shopping.id})}">
+                                    <p th:text="${scrap.shopping.title}">쇼핑 이름</p>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

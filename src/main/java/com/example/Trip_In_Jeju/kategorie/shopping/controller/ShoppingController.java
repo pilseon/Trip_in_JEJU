@@ -8,6 +8,7 @@ import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.member.servcie.MemberService;
 import com.example.Trip_In_Jeju.rating.entity.Rating;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
+import com.example.Trip_In_Jeju.scrap.ScrapService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
@@ -27,6 +28,7 @@ public class ShoppingController {
     private final ShoppingService shoppingService;
     private final RatingService ratingService;
     private final MemberService memberService;
+    private final ScrapService scrapService;
 
     @GetMapping("/list")
     public String list(
@@ -162,6 +164,24 @@ public class ShoppingController {
         return "redirect:/shopping/detail/" + id;
     }
 
+    @PostMapping("/scrap/{id}")
+    public String toggleScrap(@PathVariable("id") Long id, Authentication authentication) {
+        if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails)) {
+            return "redirect:/shopping/detail/" + id;
+        }
+
+        String username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        Member member = memberService.findByUsername(username).orElseThrow(() -> new RuntimeException("Member not found"));
+
+        Shopping shopping = getShoppingById(id);
+        boolean isScraped = scrapService.toggleScrap(shopping, member);
+
+        return "redirect:/shopping/detail/" + id + (isScraped ? "?scraped=true" : "?scraped=false");
+    }
+
+    private Shopping getShoppingById(Long id) {
+        return shoppingService.getShoppingById(id);
+    }
 
 
 }

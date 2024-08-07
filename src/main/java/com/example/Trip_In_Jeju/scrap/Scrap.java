@@ -1,7 +1,11 @@
 package com.example.Trip_In_Jeju.scrap;
 
+import com.example.Trip_In_Jeju.kategorie.activity.entity.Activity;
+import com.example.Trip_In_Jeju.kategorie.attractions.entity.Attractions;
 import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
 import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
+import com.example.Trip_In_Jeju.kategorie.other.entity.Other;
+import com.example.Trip_In_Jeju.kategorie.shopping.entity.Shopping;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -28,7 +32,21 @@ public class Scrap {
     private Food food;
 
     @ManyToOne
+    private Activity activity;
+
+    @ManyToOne
+    private Attractions attractions;
+
+    @ManyToOne
+    private Other other;
+
+    @ManyToOne
+    private Shopping shopping;
+
+    @ManyToOne
     private Member member;
+
+
 
 
 }

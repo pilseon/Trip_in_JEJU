@@ -10,6 +10,7 @@ import com.example.Trip_In_Jeju.location.entity.Location;
 import com.example.Trip_In_Jeju.location.repository.LocationRepository;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
+import com.example.Trip_In_Jeju.scrap.ScrapService;
 import com.example.Trip_In_Jeju.search.dto.Result;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,6 +38,7 @@ public class ActivityService {
     private final CalendarRepository calendarRepository;
     private final LikeRepository likeRepository;
     private final RatingService ratingService;
+    private final ScrapService scrapService;
 
     @Value("${kakao.api.key}")
     private String apiKey;
@@ -63,6 +65,7 @@ public class ActivityService {
 
         return activityRepository.findAll(pageable);
     }
+
     public void create(String title, String businessHoursStart, String businessHoursEnd, String content, String place, String closedDay,
                        String websiteUrl, String phoneNumber, String hashtags, MultipartFile thumbnail, double latitude, double longitude, String subCategory) {
 
@@ -102,6 +105,7 @@ public class ActivityService {
                 .phoneNumber(phoneNumber)
                 .hashtags(hashtags)
                 .likes(0)
+                .scrapCount(0)
                 .subCategory(subCategory) // Ensure subCategory is used if provided
                 .build();
 
@@ -155,14 +159,17 @@ public class ActivityService {
 
     public Activity findByIdWithAverageRating(Long id, String category) {
         Activity activity = findById(id);
-        double averageRating = ratingService.calculateAverageScore(id,category);
+        double averageRating = ratingService.calculateAverageScore(id, category);
         activity.setAverageRating(averageRating);
         return activity;
     }
 
     public Activity findById(Long id) {
         Optional<Activity> optionalActivity = activityRepository.findById(id);
-        return optionalActivity.orElseThrow(() -> new RuntimeException("Activity not found with id: " + id));
+        Activity activity = optionalActivity.orElseThrow(() -> new RuntimeException("activity not found with id: " + id));
+        // 스크랩 수를 업데이트
+        activity.setScrapCount(scrapService.getScrapCount(activity));
+        return activity;
     }
 
     public void save(Activity activity) {
@@ -170,11 +177,19 @@ public class ActivityService {
     }
 
     public Activity getActivityById(Long id) {
-        return activityRepository.findById(id).orElse(null);
+        Activity activity = activityRepository.findById(id).orElse(null);
+
+        if (activity != null) {
+            // 스크랩 수를 업데이트
+            int scrapCount = scrapService.getScrapCount(activity);
+            activity.setScrapCount(scrapCount);
+        }
+        return activity;
     }
 
     public Result findResultById(Long id) {
         Activity activity = findById(id); // 기존의 findById 메서드를 사용
         return new Result(activity.getId(), activity.getTitle(), activity.getPlace(), activity.getThumbnailImg(), activity.getContent());
     }
+
 }

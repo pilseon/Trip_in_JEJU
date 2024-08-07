@@ -10,6 +10,7 @@ import com.example.Trip_In_Jeju.location.entity.Location;
 import com.example.Trip_In_Jeju.location.repository.LocationRepository;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
+import com.example.Trip_In_Jeju.scrap.ScrapService;
 import com.example.Trip_In_Jeju.search.dto.Result;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,6 +38,7 @@ public class OtherService {
     private final CalendarRepository calendarRepository;
     private final LikeRepository likeRepository;
     private final RatingService ratingService;
+    private final ScrapService scrapService;
 
     @Value("${kakao.api.key}")
     private String apiKey;
@@ -102,6 +104,7 @@ public class OtherService {
                 .phoneNumber(phoneNumber)
                 .hashtags(hashtags)
                 .likes(0)
+                .scrapCount(0)
                 .subCategory(subCategory) // Ensure subCategory is used if provided
                 .build();
 
@@ -137,6 +140,7 @@ public class OtherService {
                 .phoneNumber(phoneNumber)
                 .hashtags(hashtags)
                 .likes(0)
+                .scrapCount(0)
                 .subCategory(subCategory) // Ensure subCategory is used if provided
                 .build();
 
@@ -198,7 +202,10 @@ public class OtherService {
 
     public Other findById(Long id) {
         Optional<Other> optionalOther = otherRepository.findById(id);
-        return optionalOther.orElseThrow(() -> new RuntimeException("Other not found with id: " + id));
+        Other other = optionalOther.orElseThrow(() -> new RuntimeException("other not found with id: " + id));
+        // 스크랩 수를 업데이트
+        other.setScrapCount(scrapService.getScrapCount(other));
+        return other;
     }
 
     public void save(Other other) {
@@ -206,7 +213,14 @@ public class OtherService {
     }
 
     public Other getOtherById(Long id) {
-        return otherRepository.findById(id).orElse(null);
+        Other other = otherRepository.findById(id).orElse(null);
+
+        if (other != null) {
+            // 스크랩 수를 업데이트
+            int scrapCount = scrapService.getScrapCount(other);
+            other.setScrapCount(scrapCount);
+        }
+        return other;
     }
 
     public Result findResultById(Long id) {

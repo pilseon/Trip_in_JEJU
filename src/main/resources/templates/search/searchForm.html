@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/resource/css/search.css"> <!-- CSS 파일 경로 조정 -->
 </head>
 <section layout:fragment="content" class="section-prod-list">
     <body>
@@ -19,7 +18,10 @@
 
     <div th:if="${results != null}">
         <div th:if="${#lists.isEmpty(results)}" class="mt-4">
-            <p class="text-center">"<span class="font-bold" th:text="${query}"></span>" 해당 검색어는 검색결과가 존재하지 않습니다.</p>
+            <p class="text-center">
+                <img class="w-96 h-96 mr-auto ml-auto" src="https://github.com/user-attachments/assets/a5663c38-3c8e-4c84-8bed-cd2d9c741141" alt="당황당황">
+                "<span class="font-bold" th:text="${query}"></span>" 해당 검색어는 검색결과가 존재하지 않습니다.
+            </p>
         </div>
         <div th:if="${!#lists.isEmpty(results)}" class="mt-4">
             <ul>

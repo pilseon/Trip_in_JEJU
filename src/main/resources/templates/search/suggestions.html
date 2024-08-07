@@ -6,11 +6,10 @@
 </head>
 <body>
 <ul>
-    <li th:each="suggestion : ${suggestions}">
-        <a href="">
-            <strong th:text="${suggestion['title']}"></strong><br>
-            <span th:text="${suggestion['place']}"></span>
-        </a>
+    <span class="inline-block text-xs border-b border-gray-600 pb-1 mb-3">검색어 미리보기</span>
+    <li th:each="suggestion : ${suggestions}" class="border-b border-gray-200 mt-1 mb-2">
+        <strong th:text="${suggestion['title']}"></strong><br>
+        <span th:text="${suggestion['place']}"></span>
     </li>
 </ul>
 </body>

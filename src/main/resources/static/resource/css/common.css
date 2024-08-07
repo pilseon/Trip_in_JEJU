@@ -144,3 +144,7 @@ div.clickEffect {
       transform: translateY(100px);
       opacity: 0;
   }
+
+  a:hover > .category_hover{
+    		animation: bounce 0.8s infinite;
+  }

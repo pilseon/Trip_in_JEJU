@@ -7,6 +7,7 @@ import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.member.servcie.MemberService;
 import com.example.Trip_In_Jeju.rating.entity.Rating;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
+import com.example.Trip_In_Jeju.scrap.ScrapService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
@@ -27,6 +28,7 @@ public class DessertController {
     private final DessertService dessertService;
     private final RatingService ratingService;
     private final MemberService memberService;
+    private final ScrapService scrapService;
 
     @GetMapping("/list")
     public String list(
@@ -188,5 +190,19 @@ public class DessertController {
         return "redirect:/dessert/detail/" + id;
     }
 
+    @PostMapping("/scrap/{id}")
+    public String toggleScrap(@PathVariable("id") Long id, Authentication authentication) {
+        if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails)) {
+            return "redirect:/dessert/detail/" + id;
+        }
+
+        String username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        Member member = memberService.findByUsername(username).orElseThrow(() -> new RuntimeException("Member not found"));
+
+        Dessert dessert = dessertService.getDessertById(id);
+        boolean isScraped = scrapService.toggleScrap(dessert, member);
+
+        return "redirect:/dessert/detail/" + id + (isScraped ? "?scraped=true" : "?scraped=false");
+    }
 
 }

@@ -10,6 +10,7 @@ import com.example.Trip_In_Jeju.location.entity.Location;
 import com.example.Trip_In_Jeju.location.repository.LocationRepository;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
+import com.example.Trip_In_Jeju.scrap.ScrapService;
 import com.example.Trip_In_Jeju.search.dto.Result;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,6 +38,7 @@ public class DessertService {
     private final CalendarRepository calendarRepository;
     private final LikeRepository likeRepository;
     private final RatingService ratingService;
+    private final ScrapService scrapService;
 
     @Value("${kakao.api.key}")
     private String apiKey;
@@ -109,6 +111,7 @@ public class DessertService {
                 .phoneNumber(phoneNumber)
                 .hashtags(hashtags)
                 .likes(0)
+                .scrapCount(0)
                 .subCategory(subCategory) // Ensure subCategory is used if provided
                 .build();
 
@@ -142,6 +145,7 @@ public class DessertService {
                 .phoneNumber(phoneNumber)
                 .hashtags(hashtags)
                 .likes(0)
+                .scrapCount(0)
                 .subCategory(subCategory) // Ensure subCategory is used if provided
                 .build();
 
@@ -227,7 +231,10 @@ public class DessertService {
 
     public Dessert findById(Long id) {
         Optional<Dessert> optionalDessert = dessertRepository.findById(id);
-        return optionalDessert.orElseThrow(() -> new RuntimeException("Dessert not found with id: " + id));
+        Dessert dessert = optionalDessert.orElseThrow(() -> new RuntimeException("dessert not found with id: " + id));
+        // 스크랩 수를 업데이트
+        dessert.setScrapCount(scrapService.getScrapCount(dessert));
+        return dessert;
     }
 
     public void save(Dessert dessert) {
@@ -235,7 +242,14 @@ public class DessertService {
     }
 
     public Dessert getDessertById(Long id) {
-        return dessertRepository.findById(id).orElse(null);
+        Dessert dessert = dessertRepository.findById(id).orElse(null);
+
+        if (dessert != null) {
+            // 스크랩 수를 업데이트
+            int scrapCount = scrapService.getScrapCount(dessert);
+            dessert.setScrapCount(scrapCount);
+        }
+        return dessert;
     }
 
     public Result findResultById(Long id) {

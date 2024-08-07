@@ -9,6 +9,8 @@ import com.example.Trip_In_Jeju.kategorie.festivals.service.FestivalsService;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.member.entity.MemberRole;
 import com.example.Trip_In_Jeju.member.servcie.MemberService;
+import com.example.Trip_In_Jeju.scrap.Scrap;
+import com.example.Trip_In_Jeju.scrap.ScrapService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -43,6 +45,7 @@ public class MemberController {
     private final VerificationCodeService verificationCodeService;
     private final CalendarService calendarService;
     private final FestivalsService festivalsService;
+    private final ScrapService scrapService;
     @PreAuthorize("isAnonymous()")
     @GetMapping("/login")
     public String loginPage() {
@@ -100,6 +103,9 @@ public class MemberController {
         Map<LocalDate, List<com.example.Trip_In_Jeju.calendar.entity.Calendar>> eventsByDate = new HashMap<>();
         eventsByDate.put(date, new ArrayList<>(uniqueCalendars));
 
+        // 스크랩 기록 가져오기
+        List<Scrap> scraps = scrapService.getScrapsByMember(currentMember);
+        model.addAttribute("scraps", scraps);
 
         model.addAttribute("weekStart", startOfWeek);
         model.addAttribute("weekEnd", endOfWeek);

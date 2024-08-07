@@ -25,16 +25,21 @@
     <!-- 폰트 어썸-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css' rel='stylesheet' />
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js'></script>
 </head>
-
+<style>
+    .suggestions {
+        max-height: 200px; /* Set the max height */
+        overflow-y: auto; /* Enable vertical scrolling */
+        -ms-overflow-style: none; /* for Internet Explorer, Edge */
+        scrollbar-width: none; /* for Firefox */
+    }
+</style>
 <body class="flex flex-col min-h-screen">
 <!-- common.css -->
 <link href="/resource/css/common.css" rel="stylesheet" type="text/css" />
 <link href="/resource/css/click.css" rel="stylesheet" type="text/css" />
 
-<header class="h-full mb-4">
+<header class="h-full mb-8">
     <div class="bg-[url('https://github.com/user-attachments/assets/49436bc7-f7e1-4200-82f1-1970ee059374')] bg-no-repeat bg-cover bg-top md:h-[50vh] w-full h-1/2">
         <!-- 고정된 네비게이션 바 -->
         <nav class="navbar navbar-expand-md navbar-dark md:w-1/2 ml-auto mr-auto rounded-bl-3xl rounded-br-3xl">
@@ -43,20 +48,72 @@
                 <div class="text-center flex-grow" style="flex-basis: 0">
                     <a class="inline-block w-28" href="/"><img src="https://github.com/user-attachments/assets/e0055092-5d06-426f-ab4e-3626388002b5" alt="textlogo" class="w-28"></a>
                 </div>
-                <ul class="flex navbar-nav me-auto mb-2 mb-md-0 justify-end flex-row gap-4 h-100 items-center flex-grow" style="flex-basis: 0">
-                    <li class="nav-item">
-                        <a href="#"><i class="fa-solid fa-bell fa-xl text-white"></i></a>
+                <div class="flex flex-grow" style="flex-basis: 0">
+                    <li class="nav-item flex-grow text-end">
+                        <a class="inline-block" sec:authorize="isAnonymous()" href="/member/login">
+                            <span class="text-white">로그인(회원가입)</span>
+                        </a>
                     </li>
-                    <li class="nav-item mr-5">
-                        <a href="/search/searchForm"><i class="fa-solid fa-magnifying-glass fa-xl text-white"></i></a>
-                    </li>
-                </ul>
+                </div>
             </div>
         </nav>
+        <form action="/search/searchForm" method="GET" class="absolute w-full md:top-[46%] top-[10%]">
+            <div class="flex items-center md:w-1/2 w-full bg-white border border-gray-300 rounded-full shadow-md ml-auto mr-auto">
+                <input type="text" name="query" placeholder="검색어를 입력해주세요." class="w-full p-3 text-gray-700 rounded-full focus:outline-none" id="search-input" autocomplete="off" oninput="fetchSuggestions()" required />
+                <button type="submit" class="p-3 focus:outline-none">
+                    <i class="fa-solid fa-magnifying-glass fa-xl"></i>
+                </button>
+            </div>
+            <ul id="suggestions" class="suggestions absolute md:left-[25%] bg-white border border-gray-300 rounded-3xl shadow-lg hidden md:w-1/2 w-full max-h-48 overflow-y-auto p-3 mt-1">
+            </ul>
+        </form>
     </div>
 </header>
-
 <section class="pb-[50px]">
+        <ul class="flex md:w-1/2 w-full justify-around ml-auto mr-auto flex-wrap gap-2 mt-4 mb-4">
+            <a class="inline-block " href="/food/list">
+                <div class="category_hover w-16 h-16 border ring-gray-400 rounded-full text-center content-center text-4xl">
+                    <img src="https://github.com/user-attachments/assets/5eb2988b-2bc2-4bc7-8569-2045297b34f7" alt="음식점">
+                </div>
+                <div class="text-center mt-2">음식점</div>
+            </a>
+            <a class="inline-block " href="/dessert/list">
+                <div class="category_hover w-16 h-16 border ring-gray-400 rounded-full text-center content-center text-4xl">
+                    <img src="https://github.com/user-attachments/assets/5e90e3fa-3561-442f-b12b-4114038a2ca0" alt="디저트">
+                </div>
+                <div class="text-center mt-2">디저트</div>
+            </a>
+            <a class="inline-block " href="/shopping/list">
+                <div class="category_hover w-16 h-16 border ring-gray-400 rounded-full text-center content-center text-4xl">
+                    <img src="https://github.com/user-attachments/assets/cd0940e0-b313-4338-8c30-4c94a6b1dd53" alt="쇼핑">
+                </div>
+                <div class="text-center mt-2">쇼핑</div>
+            </a>
+            <a class="inline-block " href="/attractions/list">
+                <div class="category_hover w-16 h-16 border ring-gray-400 rounded-full text-center content-center text-4xl">
+                    <img src="https://github.com/user-attachments/assets/d682b2be-2c00-4e97-9e1f-885c3fbf582c" alt="관광지">
+                </div>
+                <div class="text-center mt-2">관광지</div>
+            </a>
+            <a class="inline-block " href="/festivals/list">
+                <div class="category_hover w-16 h-16 border ring-gray-400 rounded-full text-center content-center text-4xl">
+                    <img src="https://github.com/user-attachments/assets/d9f7055e-b765-40ea-8a3b-d97b7fb8628d" alt="축제">
+                </div>
+                <div class="text-center mt-2">축제</div>
+            </a>
+            <a class="inline-block " href="/activity/list">
+                <div class="category_hover w-16 h-16 border ring-gray-400 rounded-full text-center content-center text-4xl">
+                    <img src="https://github.com/user-attachments/assets/b3f46a50-08f3-4abd-b73a-f6cbb25f0c6e" alt="액티비티">
+                </div>
+                <div class="text-center mt-2">액티비티</div>
+            </a>
+            <a class=" inline-block " href="/other/list">
+                <div class="category_hover w-16 h-16 border ring-gray-400 rounded-full text-center content-center text-4xl">
+                    <img src="https://github.com/user-attachments/assets/5ecc7960-41f0-491c-a287-40246e55604c" alt="기타">
+                </div>
+                <div class="text-center mt-2">기타</div>
+            </a>
+        </ul>
 
     <!-- OO님을 위한 추천 리뷰 Section -->
     <div class="md:w-1/2 ml-auto mr-auto">
@@ -137,22 +194,22 @@
         <div class="action-options mt-3">
             <!-- 여러 선택 옵션들 -->
             <div class="option font-black text-xl pb-2 border-b-2">전체메뉴</div>
-            <ul class="flex flex-col h-96 mb-48">
-                <li class="flex-grow py-1 border-b-2">
-                    <a class="flex option cursor-pointer inline-block w-100 text-left hover:text-green-300" onclick="toggleSubMenu(event)">여행장소
-                        <div class="flex-grow text-right"><i class="fa-solid fa-plus" id="plusIcon"></i></div>
-                    </a>
-                    <ul class="flex w-80 justify-around ml-auto mr-auto flex-wrap gap-2 sub-menu hidden mt-2">
-                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="/food/list">음식</a></li>
-                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="/dessert/list">디저트</a></li>
-                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">관광지</a></li>
-                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">숙박</a></li>
-                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">쇼핑</a></li>
-                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">축제</a></li>
-                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">액티비티</a></li>
-                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">기타</a></li>
-                    </ul>
-                </li>
+            <ul class="flex flex-col h-96">
+<!--                <li class="flex-grow py-1 border-b-2">-->
+<!--                    <a class="flex option cursor-pointer inline-block w-100 text-left hover:text-green-300" onclick="toggleSubMenu(event)">여행장소-->
+<!--                        <div class="flex-grow text-right"><i class="fa-solid fa-plus" id="plusIcon"></i></div>-->
+<!--                    </a>-->
+<!--                    <ul class="flex w-80 justify-around ml-auto mr-auto flex-wrap gap-2 sub-menu hidden mt-2">-->
+<!--                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="/food/list">음식</a></li>-->
+<!--                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="/dessert/list">디저트</a></li>-->
+<!--                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">관광지</a></li>-->
+<!--                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">숙박</a></li>-->
+<!--                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">쇼핑</a></li>-->
+<!--                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">축제</a></li>-->
+<!--                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">액티비티</a></li>-->
+<!--                        <li class="bg-gray-200 rounded-full w-16 h-16 text-center"><a class="inline-block text-black w-full h-full content-center" href="#">기타</a></li>-->
+<!--                    </ul>-->
+<!--                </li>-->
                 <li class="flex-grow py-1 border-b-2">
                     <a href="#" class="option cursor-pointer inline-block w-100 h-100 text-left hover:text-green-300">마이페이지</a>
                 </li>
@@ -176,10 +233,24 @@
                 </li>
             </ul>
         </div>
+<!--        <div class="flex text-white absolute bottom-4 left-[20%]">-->
+<!--            <div>-->
+<!--                <div>-->
+<!--                    <span class="text-xs">Trip In Jeju</span> <span>  |  </span>-->
+<!--                    <span class="text-xs">대표 : 유필선</span> <span>  |  </span>-->
+<!--                    <span class="text-xs">사업자등록번호 : 000-00-00000</span>-->
+<!--                </div>-->
+<!--                <div>-->
+<!--                    <p class="text-xs">주소 : 대전 서구 대덕대로 179 9층 (우)35230</p>-->
+<!--                </div>-->
+<!--                <div>-->
+<!--                    <p class="text-xs">Copyright © Trip_In_Jeju Corp. All rights reserved.</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
     </div>
 </footer>
-
 <script th:src="@{/clickjs/click.js}"></script>
-<script th:src="@{/calendarjs/calendar.js}"></script>
+<script th:src="@{/searchjs/search.js}"></script>
 </body>
 </html>

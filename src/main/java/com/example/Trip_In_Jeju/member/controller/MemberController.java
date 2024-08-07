@@ -260,7 +260,7 @@ public class MemberController {
         return "member/find-username"; // templates/user/find-username.html 경로에 파일이 있어야 함
     }
 
-    // 아이디 찾기 기능 처리
+
     @PostMapping("/find-username")
     public String processFindUsername(@RequestParam("email") String email, Model model) {
         try {

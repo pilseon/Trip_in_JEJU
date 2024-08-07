@@ -113,22 +113,26 @@ public class CalendarController {
             @RequestParam(name = "id", required = false) Long id,
             @RequestParam(name = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
             Model model) {
-        LocalDate startOfWeek = date.with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 1);
-        LocalDate endOfWeek = date.with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 7);
-        if (id == null) {
-            id = getDefaultFestivalId();
-            if (id == null) {
-                throw new IllegalArgumentException("Festival ID is required but not provided");
-            }
-        }
-
-        Festivals festivals = festivalsService.getFestivalsById(id);
-        if (festivals == null) {
-            throw new IllegalArgumentException("No festival found for ID: " + id);
-        }
 
         if (date == null) {
             date = LocalDate.now();
+        }
+
+        LocalDate startOfWeek = date.with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 1);
+        LocalDate endOfWeek = date.with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 7);
+
+        // Festival ID를 확인하고, 기본 ID를 설정합니다.
+        if (id == null) {
+            id = getDefaultFestivalId();
+        }
+
+        Festivals festivals = null;
+        if (id != null) {
+            festivals = festivalsService.getFestivalsById(id);
+            if (festivals == null) {
+                // ID로 페스티벌을 찾지 못하면 기본적으로 null로 설정
+                System.out.println("No festival found for ID: " + id);
+            }
         }
 
         List<Calendar> dailyCalendars = calendarService.findCalendarsWithFoodsBetween2(date, date);
@@ -149,8 +153,9 @@ public class CalendarController {
         model.addAttribute("weekDates", List.of(startOfWeek, startOfWeek.plusDays(1), startOfWeek.plusDays(2), startOfWeek.plusDays(3), startOfWeek.plusDays(4), startOfWeek.plusDays(5), startOfWeek.plusDays(6)));
         model.addAttribute("currentDate", date);
         model.addAttribute("eventsByDate", eventsByDate);
-        model.addAttribute("festivals", festivals);
+        model.addAttribute("festivals", festivals); // festivals가 null일 수 있음
 
         return "calendar/dailyCalendar";
     }
+
 }

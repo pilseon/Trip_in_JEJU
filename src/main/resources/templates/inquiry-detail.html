@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout}">
+<section layout:fragment="content" class="section-prod-list">
+    <div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md">
+        <h1 class="text-3xl font-bold mb-4" th:text="${inquiry.title}"></h1>
+        <p class="mb-6" th:text="${inquiry.content}"></p>
+
+        <h2 class="text-2xl font-semibold mb-4">답변하기</h2>
+        <form action="#" th:action="@{/inquiries/{id}/responses(id=${inquiry.id})}" th:object="${response}" method="post">
+            <textarea th:field="*{content}" placeholder="답변을 작성해주세요..."
+                      class="w-full p-2 border border-gray-300 rounded-lg mb-4" rows="5"></textarea>
+            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">답변 제출</button>
+        </form>
+
+        <h2 class="text-2xl font-semibold mt-6 mb-4">답변 목록</h2>
+        <div th:each="response : ${inquiry.response}" class="mb-4">
+            <p class="bg-gray-100 p-4 rounded-lg" th:text="${response.content}"></p>
+        </div>
+    </div>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</section>
+</html>

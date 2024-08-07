@@ -1,11 +1,13 @@
 package com.example.Trip_In_Jeju.member;
 
+import com.example.Trip_In_Jeju.member.entity.Member;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
 public class CustomUserDetails implements UserDetails {
+    private Member member;
     private String username;
     private String password;
     private String nickname;
@@ -34,7 +36,7 @@ public class CustomUserDetails implements UserDetails {
     }
 
     public String getNickname() {
-        return nickname;
+        return member.getNickname();
     }
 
     @Override

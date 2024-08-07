@@ -10,6 +10,7 @@ import com.example.Trip_In_Jeju.location.entity.Location;
 import com.example.Trip_In_Jeju.location.repository.LocationRepository;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
+import com.example.Trip_In_Jeju.scrap.ScrapService;
 import com.example.Trip_In_Jeju.search.dto.Result;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,6 +38,8 @@ public class FoodService {
     private final LikeRepository likeRepository;
     private final CalendarRepository calendarRepository;
     private final RatingService ratingService;
+    private final ScrapService scrapService; // 추가된 의존성
+
 
     @Value("${kakao.api.key}")
     private String apiKey;
@@ -102,6 +105,7 @@ public class FoodService {
                 .phoneNumber(phoneNumber)
                 .hashtags(hashtags)
                 .likes(0)
+                .scrapCount(0)
                 .subCategory(subCategory) // Ensure subCategory is used if provided
                 .build();
 
@@ -137,6 +141,7 @@ public class FoodService {
                 .phoneNumber(phoneNumber)
                 .hashtags(hashtags)
                 .likes(0)
+                .scrapCount(0)
                 .subCategory(subCategory) // Ensure subCategory is used if provided
                 .build();
 
@@ -198,7 +203,10 @@ public class FoodService {
 
     public Food findById(Long id) {
         Optional<Food> optionalFood = foodRepository.findById(id);
-        return optionalFood.orElseThrow(() -> new RuntimeException("Food not found with id: " + id));
+        Food food = optionalFood.orElseThrow(() -> new RuntimeException("Food not found with id: " + id));
+        // 스크랩 수를 업데이트
+        food.setScrapCount(scrapService.getScrapCount(food));
+        return food;
     }
 
     public Result findResultById(Long id) {
@@ -211,7 +219,13 @@ public class FoodService {
     }
 
     public Food getFoodById(Long id) {
-        return foodRepository.findById(id).orElse(null);
+        Food food = foodRepository.findById(id).orElse(null);
+        if (food != null) {
+            // 스크랩 수를 업데이트
+            int scrapCount = scrapService.getScrapCount(food);
+            food.setScrapCount(scrapCount);
+        }
+        return food;
     }
 
 }

@@ -26,6 +26,9 @@ public class ScrapService {
         } else {
             Scrap scrap = new Scrap();
             scrap.setFood(food);
+            scrap.setContent(food.getContent());
+            scrap.setTitle(food.getTitle());
+            scrap.setThumbnailImg(food.getThumbnailImg());
             scrap.setMember(member);
             scrapRepository.save(scrap);
             return true; // 스크랩 추가됨

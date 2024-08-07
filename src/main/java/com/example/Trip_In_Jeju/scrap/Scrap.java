@@ -17,15 +17,18 @@ public class Scrap {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id")
-    private Member member;
+    private String title;
+    private String content;
+    private String thumbnailImg;
 
     @ManyToOne
-    @JoinColumn(name = "food_id", nullable = true)
+    private Dessert dessert;
+
+    @ManyToOne
     private Food food;
 
     @ManyToOne
-    @JoinColumn(name = "dessert_id", nullable = true)
-    private Dessert dessert;
+    private Member member;
+
+
 }

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout}">
+<head>
+    <style>
+        .text-red {
+    color: red;
+}
+
+.text-green {
+    color: green;
+}
+    </style>
+</head>
+<section layout:fragment="content" class="section-prod-list">
+    <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
+        <a sec:authorize="isAuthenticated()" href="/inquiries/new" class="mb-6 inline-block px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 font-semibold">
+            새 문의 작성하기
+        </a>
+
+        <h1 class="text-3xl font-bold mb-6">문의 목록</h1>
+        <ul class="space-y-4">
+            <li th:each="inquiry : ${inquiries}" class="border border-gray-300 rounded-lg">
+                <button onclick="toggleAccordion(this)" class="w-full p-4 text-left font-semibold bg-gray-200 rounded-t-lg focus:outline-none">
+                    <span th:text="${inquiry.title}"></span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span th:class="${inquiry.answer != null ? 'text-green' : 'text-red'}"
+                          th:text="${inquiry.answer != null ? '답변 완료' : '답변 대기 중'}"></span>
+                </button>
+                <div class="accordion-content hidden p-4 bg-gray-50 rounded-b-lg">
+                    <!-- 문의 작성자와 작성 시간 추가 -->
+                    <div class="mb-2 text-sm text-gray-600">
+                        작성자: <span th:text="${inquiry.author}"></span> <br>
+                        작성 시간: <span th:text="${inquiry.createdAt}"></span>
+                    </div>
+
+                    <p th:text="${inquiry.content}"></p>
+
+                    <div sec:authorize="hasAuthority('ADMIN')" th:if="${inquiry.answer == null}">
+                        <form action="#" method="post" th:action="@{/inquiries/{id}/responses(id=${inquiry.id})}" class="mt-4">
+                            <textarea name="content" rows="3" class="w-full p-2 border border-gray-300 rounded-lg" placeholder="답변을 입력하세요..."></textarea>
+                            <button type="submit" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 font-semibold">
+                                답변 추가
+                            </button>
+                        </form>
+                    </div>
+
+
+
+                    <!-- 기존 답변 표시 부분 -->
+                    <div class="mt-4">
+                        <p class="bg-gray-100 p-2 rounded-lg" th:text="${inquiry.answer != null ? inquiry.answer : '답변 없음'}"></p>
+                    </div>
+
+                    <!-- 답변 상황 추가 -->
+                    <div class="mt-2 text-sm text-gray-600">
+                        답변 상황: <span th:text="${inquiry.answer != null ? '답변 완료' : '답변 대기 중'}"></span>
+                    </div>
+
+
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        function toggleAccordion(button) {
+            const content = button.nextElementSibling;
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                button.classList.add('bg-gray-300');
+            } else {
+                content.classList.add('hidden');
+                button.classList.remove('bg-gray-300');
+            }
+        }
+    </script>
+</section>
+</html>

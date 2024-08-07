@@ -260,7 +260,6 @@ public class MemberService {
         Member member = memberRepository.findByUsernameAndEmail(username, email)
                 .orElseThrow(() -> new IllegalArgumentException("사용자 정보가 일치하지 않습니다."));
 
-
         // 비밀번호 변경
         member.setPassword(passwordEncoder.encode(newPassword));
         member.setResetToken(null); // 인증코드 초기화
@@ -303,4 +302,5 @@ public class MemberService {
             }
         }
     }
+
 }

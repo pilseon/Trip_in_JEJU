@@ -69,6 +69,14 @@
                 <div class="mt-4">
                     <span th:text="${activity.content}"></span>
                 </div>
+
+                <div class="scrap-button-container mt-4" id="scrapButtonContainer">
+                    <form id="scrapForm" th:action="@{/activity/scrap/{id}(id=${activity.id})}" method="post" style="display: inline;">
+                        <button type="submit" th:disabled="${alreadyScrapped}">📌</button>
+                    </form>
+                    <span class="scraps" th:text="'(' + ${activity.scrapCount} + ')'"> (0) </span>
+                </div>
+
                 <!-- 지도  -->
                 <div class="mt-4">
                     <span span class="font-bold" style="font-size: 1.5rem;">지도 </span>
@@ -83,9 +91,15 @@
         document.addEventListener('DOMContentLoaded', function () {
             const likeButtonContainer = document.getElementById('likeButtonContainer');
             const likeForm = document.getElementById('likeForm');
+            const scrapButtonContainer = document.getElementById('scrapButtonContainer');
+            const scrapForm = document.getElementById('scrapForm');
 
             likeButtonContainer.addEventListener('click', function () {
                 likeForm.submit();
+            });
+
+            scrapButtonContainer.addEventListener('click', function () {
+                scrapForm.submit();
             });
         });
     </script>

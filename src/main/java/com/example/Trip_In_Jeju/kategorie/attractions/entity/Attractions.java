@@ -56,4 +56,6 @@ public class Attractions {
     private double averageRating;  // 평균 별점 추가
 
     private String subCategory;
+
+    private int scrapCount;
 }

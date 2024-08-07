@@ -10,6 +10,7 @@ import com.example.Trip_In_Jeju.location.entity.Location;
 import com.example.Trip_In_Jeju.location.repository.LocationRepository;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
+import com.example.Trip_In_Jeju.scrap.ScrapService;
 import com.example.Trip_In_Jeju.search.dto.Result;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,6 +38,7 @@ public class ShoppingService {
     private final CalendarRepository calendarRepository;
     private final LikeRepository likeRepository;
     private final RatingService ratingService;
+    private final ScrapService scrapService;
 
     @Value("${kakao.api.key}")
     private String apiKey;
@@ -102,6 +104,7 @@ public class ShoppingService {
                 .phoneNumber(phoneNumber)
                 .hashtags(hashtags)
                 .likes(0)
+                .scrapCount(0)
                 .subCategory(subCategory) // Ensure subCategory is used if provided
                 .build();
 
@@ -162,15 +165,25 @@ public class ShoppingService {
 
     public Shopping findById(Long id) {
         Optional<Shopping> optionalShopping = shoppingRepository.findById(id);
-        return optionalShopping.orElseThrow(() -> new RuntimeException("Shopping not found with id: " + id));
+        Shopping shopping = optionalShopping.orElseThrow(() -> new RuntimeException("shopping not found with id: " + id));
+        // 스크랩 수를 업데이트
+        shopping.setScrapCount(scrapService.getScrapCount(shopping));
+        return shopping;
     }
 
-    public void save(Shopping Shopping) {
-        shoppingRepository.save(Shopping);
+    public void save(Shopping shopping) {
+        shoppingRepository.save(shopping);
     }
 
     public Shopping getShoppingById(Long id) {
-        return shoppingRepository.findById(id).orElse(null);
+        Shopping shopping = shoppingRepository.findById(id).orElse(null);
+
+        if (shopping != null) {
+            // 스크랩 수를 업데이트
+            int scrapCount = scrapService.getScrapCount(shopping);
+            shopping.setScrapCount(scrapCount);
+        }
+        return shopping;
     }
 
     public Result findResultById(Long id) {

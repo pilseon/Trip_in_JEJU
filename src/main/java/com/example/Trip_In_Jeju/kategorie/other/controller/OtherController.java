@@ -7,6 +7,7 @@ import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.member.servcie.MemberService;
 import com.example.Trip_In_Jeju.rating.entity.Rating;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
+import com.example.Trip_In_Jeju.scrap.ScrapService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
@@ -26,6 +27,7 @@ public class OtherController {
     private final OtherService otherService;
     private final RatingService ratingService;
     private final MemberService memberService;
+    private final ScrapService scrapService;
 
     @GetMapping("/list")
     public String list(
@@ -158,6 +160,21 @@ public class OtherController {
         }
 
         return "redirect:/other/detail/" + id;
+    }
+
+    @PostMapping("/scrap/{id}")
+    public String toggleScrap(@PathVariable("id") Long id, Authentication authentication) {
+        if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails)) {
+            return "redirect:/other/detail/" + id;
+        }
+
+        String username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        Member member = memberService.findByUsername(username).orElseThrow(() -> new RuntimeException("Member not found"));
+
+        Other other = otherService.getOtherById(id);
+        boolean isScraped = scrapService.toggleScrap(other, member);
+
+        return "redirect:/other/detail/" + id + (isScraped ? "?scraped=true" : "?scraped=false");
     }
 
 

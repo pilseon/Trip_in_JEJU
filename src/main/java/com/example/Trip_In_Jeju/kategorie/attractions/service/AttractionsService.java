@@ -10,6 +10,7 @@ import com.example.Trip_In_Jeju.location.entity.Location;
 import com.example.Trip_In_Jeju.location.repository.LocationRepository;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
+import com.example.Trip_In_Jeju.scrap.ScrapService;
 import com.example.Trip_In_Jeju.search.dto.Result;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,6 +38,7 @@ public class AttractionsService {
     private final CalendarRepository calendarRepository;
     private final LikeRepository likeRepository;
     private final RatingService ratingService;
+    private final ScrapService scrapService;
 
     @Value("${kakao.api.key}")
     private String apiKey;
@@ -102,6 +104,7 @@ public class AttractionsService {
                 .phoneNumber(phoneNumber)
                 .hashtags(hashtags)
                 .likes(0)
+                .scrapCount(0)
                 .subCategory(subCategory) // Ensure subCategory is used if provided
                 .build();
 
@@ -162,7 +165,10 @@ public class AttractionsService {
 
     public Attractions findById(Long id) {
         Optional<Attractions> optionalAttractions = attractionsRepository.findById(id);
-        return optionalAttractions.orElseThrow(() -> new RuntimeException("Attractions not found with id: " + id));
+        Attractions attractions = optionalAttractions.orElseThrow(() -> new RuntimeException("attractions not found with id: " + id));
+        // 스크랩 수를 업데이트
+        attractions.setScrapCount(scrapService.getScrapCount(attractions));
+        return attractions;
     }
 
     public void save(Attractions attractions) {
@@ -170,7 +176,14 @@ public class AttractionsService {
     }
 
     public Attractions getAttractionsById(Long id) {
-        return attractionsRepository.findById(id).orElse(null);
+        Attractions attractions = attractionsRepository.findById(id).orElse(null);
+
+        if (attractions != null) {
+            // 스크랩 수를 업데이트
+            int scrapCount = scrapService.getScrapCount(attractions);
+            attractions.setScrapCount(scrapCount);
+        }
+        return attractions;
     }
 
     public Result findResultById(Long id) {

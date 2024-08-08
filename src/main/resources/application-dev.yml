@@ -7,11 +7,19 @@ spring:
     restart:
       enabled: true
   datasource:
-    url: jdbc:mariadb://127.0.0.1:3307/Trip_In_Jeju?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;serverTimezone=Asia/Seoul
+    url: jdbc:mariadb://127.0.0.1:3306/Trip_In_Jeju?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;serverTimezone=Asia/Seoul
     username: root
     password:
   jpa:
     hibernate:
       ddl-auto: create
 custom:
-  fileDirPath: C:\work\genFile
+  fileDirPath: C:/work/Trip_In_Jeju/src/main/resources/static/imagefile/post
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            devUser:
+              oauthId: oauthId
+              nickname: nickname

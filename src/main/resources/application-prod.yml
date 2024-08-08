@@ -12,7 +12,13 @@ spring:
         show_sql: false
         format_sql: false
         use_sql_comments: false
-
 custom:
   fileDirPath: /temp/thumbnail
-
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            devUser:
+              oauthId: oauthId
+              nickname: nickname

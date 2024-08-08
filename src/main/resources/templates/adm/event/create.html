@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout}">
+<section layout:fragment="content" class="section-prod-list">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>컨텐츠 생성 페이지</title>
+        <link href="/resource/css/admCreate.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+    <div class="container mx-auto p-4">
+        <h1 class="text-2xl font-bold mb-4">Create Event</h1>
+        <form th:action="@{/adm/event/create}" method="post" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-md">
+            <div class="mb-4">
+                <label for="title" class="block text-gray-700 font-bold mb-2">Title:</label>
+                <input type="text" id="title" name="title" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+            <div class="mb-4">
+                <label for="content" class="block text-gray-700 font-bold mb-2">Content:</label>
+                <textarea id="content" name="content" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+            </div>
+            <div class="mb-4">
+                <label for="thumbnailImg" class="block text-gray-700 font-bold mb-2">Thumbnail Image:</label>
+                <input type="file" id="thumbnailImg" name="thumbnailImg" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
+            </div>
+            <div class="mb-4">
+                <label for="periodStart" class="block text-gray-700 font-bold mb-2">Start Date:</label>
+                <input type="date" id="periodStart" name="periodStart" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+            <div class="mb-4">
+                <label for="periodEnd" class="block text-gray-700 font-bold mb-2">End Date:</label>
+                <input type="date" id="periodEnd" name="periodEnd" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+            <div class="mb-4">
+                <label for="steps" class="block text-gray-700 font-bold mb-2">Event Steps:</label>
+                <div id="stepContainer">
+                    <input type="file" id="steps" name="steps" multiple class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
+                </div>
+                <button type="button" id="addStep" class="mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Add Step</button>
+            </div>
+            <div class="flex items-center justify-between">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Create Event
+                </button>
+            </div>
+        </form>
+    </div>
+    <script th:src="@{/eventCreatejs/eventCreate.js}"></script>
+    </body>
+</section>
+</html>

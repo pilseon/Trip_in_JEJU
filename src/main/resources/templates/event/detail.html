@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/resource/css/openAi.css"> <!-- CSS 파일 경로 조정 -->
+</head>
+
+<section layout:fragment="content" class="section-prod-list">
+    <body>
+    <div class="container mx-auto p-4">
+        <h1 class="text-2xl font-bold mb-4" th:text="${event.title}">Event Title</h1>
+        <!-- Step images -->
+        <div th:each="step : ${event.steps}">
+            <img th:src="${step.imageFilePath}" alt="Step Image" class="w-full max-h-screen object-contain rounded-lg">
+        </div>
+    </div>
+    <!--    <script th:src="@{/searchjs/search.js}"></script>-->
+    </body>
+</section>
+</html>

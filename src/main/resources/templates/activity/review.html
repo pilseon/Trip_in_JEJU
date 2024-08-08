@@ -55,10 +55,10 @@
                 </div>
                 <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal.username == rating.nickname or #authorization.expression('hasAuthority(''ADMIN'')')}">
                     <a
-                            th:href="@{/dessert/review/delete/{id}(id=${dessert.id}, ratingId=${rating.id})}"
+                            th:href="@{/activity/review/delete/{id}(id=${activity.id}, ratingId=${rating.id})}"
                             class="btn btn-danger btn-sm">삭제</a>
                     <a
-                            th:href="@{/dessert/review/edit/{ratingId}(ratingId=${rating.id})}"
+                            th:href="@{/activity/review/edit/{ratingId}(ratingId=${rating.id})}"
                             class="btn btn-warning btn-sm">수정</a>
                 </div>
 

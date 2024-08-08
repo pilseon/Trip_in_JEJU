@@ -2,6 +2,8 @@ package com.example.Trip_In_Jeju.inquiry.service;
 
 import com.example.Trip_In_Jeju.inquiry.entity.Inquiry;
 import com.example.Trip_In_Jeju.inquiry.repository.InquiryRepository;
+import com.example.Trip_In_Jeju.member.entity.Member;
+import com.example.Trip_In_Jeju.member.entity.MemberRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -52,7 +54,16 @@ public class InquiryService {
         return inquiryRepository.findAll();
     }
 
-    public void deleteInquiry(Long id) {
-        inquiryRepository.deleteById(id);
+    public void deleteInquiry(Long id, Member currentUser) {
+        Inquiry inquiry = inquiryRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid inquiry ID: " + id));
+
+
+        if (currentUser.getRole() == MemberRole.ADMIN || inquiry.getAuthor().equals(currentUser.getUsername())) {
+            inquiryRepository.deleteById(id);
+        } else {
+            throw new SecurityException("You do not have permission to delete this inquiry.");
+        }
     }
+
 }

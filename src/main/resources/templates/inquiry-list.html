@@ -3,16 +3,18 @@
 <head>
     <style>
         .text-red {
-    color: red;
-}
+            color: red;
+        }
 
-.text-green {
-    color: green;
-}
+        .text-green {
+            color: green;
+        }
     </style>
 </head>
+<body>
 <section layout:fragment="content" class="section-prod-list">
     <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
+        <!-- 로그인된 사용자만 '새 문의 작성하기' 버튼 보이기 -->
         <a sec:authorize="isAuthenticated()" href="/inquiries/new" class="mb-6 inline-block px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 font-semibold">
             새 문의 작성하기
         </a>
@@ -35,6 +37,7 @@
 
                     <p th:text="${inquiry.content}"></p>
 
+                    <!-- 관리자에게만 답변 입력 폼 보이기 -->
                     <div sec:authorize="hasAuthority('ADMIN')" th:if="${inquiry.answer == null}">
                         <form action="#" method="post" th:action="@{/inquiries/{id}/responses(id=${inquiry.id})}" class="mt-4">
                             <textarea name="content" rows="3" class="w-full p-2 border border-gray-300 rounded-lg" placeholder="답변을 입력하세요..."></textarea>
@@ -43,8 +46,6 @@
                             </button>
                         </form>
                     </div>
-
-
 
                     <!-- 기존 답변 표시 부분 -->
                     <div class="mt-4">
@@ -56,6 +57,14 @@
                         답변 상황: <span th:text="${inquiry.answer != null ? '답변 완료' : '답변 대기 중'}"></span>
                     </div>
 
+                    <!-- 관리자 또는 작성자에게만 삭제 버튼 보이기 -->
+                    <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal.username == inquiry.author or #authorization.expression('hasAuthority(''ADMIN'')')}">
+                        <form th:action="@{/inquiries/{id}/delete(id=${inquiry.id})}" method="post">
+                            <button type="submit" class="mt-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 font-semibold">
+                                삭제
+                            </button>
+                        </form>
+                    </div>
 
                 </div>
             </li>
@@ -75,4 +84,5 @@
         }
     </script>
 </section>
+</body>
 </html>

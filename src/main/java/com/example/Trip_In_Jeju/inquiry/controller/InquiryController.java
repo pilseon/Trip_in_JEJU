@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @Controller
 @RequestMapping("/inquiries")
 @RequiredArgsConstructor
@@ -68,8 +70,17 @@ public class InquiryController {
     }
 
     @PostMapping("/{id}/delete")
-    public String deleteInquiry(@PathVariable("id") Long id) {
-        inquiryService.deleteInquiry(id);
-        return "redirect:/inquiries"; // 삭제 후 목록 페이지로 리디렉션
+    public String deleteInquiry(@PathVariable("id") Long id, Principal principal) {
+        String username = principal.getName();
+
+        // 사용자 정보를 가져오는 서비스
+        Member currentUser = memberService.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다: " + username));
+
+        // 사용자 권한 검사 및 삭제 처리
+        inquiryService.deleteInquiry(id, currentUser);
+        return "redirect:/inquiries";
     }
+
+
 }

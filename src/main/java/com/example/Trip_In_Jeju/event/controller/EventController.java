@@ -31,4 +31,11 @@ public class EventController {
         model.addAttribute("event", event);
         return "event/detail";
     }
+
+    @GetMapping("/main")
+    public String viewEventMain(Model model) {
+        List<Event> events = eventService.findAllEvents();
+        model.addAttribute("events", events);
+        return "event/main";
+    }
 }

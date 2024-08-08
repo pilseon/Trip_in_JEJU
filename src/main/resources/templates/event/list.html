@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/resource/css/openAi.css"> <!-- CSS 파일 경로 조정 -->
+</head>
+
+<section layout:fragment="content" class="section-prod-list">
+    <body>
+        <div class="container mx-auto p-4">
+            <h1 class="text-2xl font-bold mb-4">이벤트</h1>
+            <div class="grid grid-cols-1 gap-4">
+                <!-- Thymeleaf 조건문으로 이벤트가 없을 때 메시지 표시 -->
+                <div th:if="${events.empty}" class="text-center text-gray-500">
+                    <img class="w-96 h-96 mr-auto ml-auto" src="https://github.com/user-attachments/assets/73c43efd-0bfb-4911-9713-42d097733896" alt="죄송">
+                    현재 진행 중인 이벤트가 없습니다.
+                </div>
+                <!-- Thymeleaf loop for events -->
+                <div th:each="event : ${events}" class="bg-white p-6 rounded-lg shadow-md">
+                    <a th:href="@{'/event/detail/' + ${event.id}}">
+                        <img th:src="@{${event.thumbnailImg}}" alt="Event Thumbnail" class="w-full h-48 object-cover mb-4 rounded-lg">
+                        <h2 th:text="${event.title}" class="text-xl font-bold mb-2">Event Title</h2>
+                        <p class="text-gray-600">
+                            <span th:text="${event.periodStart}">Start Date</span> ~ <span th:text="${event.periodEnd}">End Date</span>
+                        </p>
+                    </a>
+                </div>
+                <!-- End of Thymeleaf loop -->
+            </div>
+        </div>
+<!--    <script th:src="@{/searchjs/search.js}"></script>-->
+    </body>
+</section>
+</html>

@@ -24,6 +24,7 @@ public class Scrap {
     private String title;
     private String content;
     private String thumbnailImg;
+    private String category;
 
     @ManyToOne
     private Dessert dessert;

@@ -27,7 +27,7 @@ public class Food {
     private long id;
     private String title;
     private String content;
-    private int category;
+    private String category;
     private Long hit;
     private String place; // 장소를 나타내는 단순 문자열 필드
     private String thumbnail;
@@ -53,7 +53,7 @@ public class Food {
 
     private int likes;
 
-    private double averageRating;  // 평균 별점 추가
+    private double averageRating;// 평균 별점 추가
 
     private String subCategory;
 

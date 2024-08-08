@@ -121,7 +121,6 @@
             background-color: #fff;
             padding: 10px;
             border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         .schedule-list h2,
@@ -139,8 +138,8 @@
 
         .schedule-item img,
         .history-item img {
-            height: 50px;
-            width: 50px;
+            height: 100px;
+            width: 100px;
             margin-right: 10px;
             border-radius: 5px;
         }

@@ -83,19 +83,21 @@
 
             <div class="tab-content" id="tab-history">
                 <div class="history-list">
-                    <h2>찜 목록</h2>
-                    <div th:each="scrap : ${scraps}" class="history-item">
-                        <!-- Food의 경우 -->
-                        <div th:if="${scrap.food != null}">
+                    <h2 class="text-xl font-bold mb-4">찜 목록</h2>
+                    <div th:each="scrap : ${scraps}" class="history-item flex items-center p-4 bg-white shadow rounded mb-4">
+                        <div th:if="${scrap.food != null}" class="flex items-center">
                             <a th:href="@{/food/detail/{id}(id=${scrap.food.id})}">
-                                <img th:src="@{|/gen/${scrap.food.thumbnailImg}|}" alt="음식점 이미지" class="history-img">
+                                <img th:src="@{|/gen/${scrap.food.thumbnailImg}|}" alt="음식점 이미지" class="w-24 h-24 rounded-md mr-4">
                             </a>
                             <div class="item-info">
-                                <a th:href="@{/food/detail/{id}(id=${scrap.food.id})}">
-                                    <p th:text="${scrap.food.title}">음식점 이름</p>
+                                <a th:href="@{/food/detail/{id}(id=${scrap.food.id})}" class="no-underline hover:underline text-black">
+                                    <p th:text="${scrap.food.category}" class="inline"></p>/<p th:text="${scrap.food.subCategory}" class="inline"></p>
+                                    <p th:text="${scrap.food.title}" class="text-lg font-bold">음식점 이름</p>
+                                    <p th:text="${scrap.food.location.name}" class="text-m">음식점 위치</p>
                                 </a>
                             </div>
                         </div>
+
                         <!-- Dessert의 경우 -->
                         <div th:if="${scrap.dessert != null}">
                             <a th:href="@{/dessert/detail/{id}(id=${scrap.dessert.id})}">

@@ -79,8 +79,8 @@ public class AdminContentController {
             @RequestParam(value = "periodStart", required = false) String periodStart,
             @RequestParam(value = "periodEnd", required = false) String periodEnd) {
 
-        if (category.equals("food")) {
-            foodService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, subCategory);
+        if (category.equals("음식점")) {
+            foodService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, category, subCategory);
         } else if (category.equals("dessert")) {
             dessertService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, subCategory);
         }
@@ -107,7 +107,7 @@ public class AdminContentController {
     public String getDetail(@PathVariable String category, @PathVariable Long id, Model model) {
         Result result;
         switch (category) {
-            case "food":
+            case "음식점":
                 result = foodService.findResultById(id);
                 break;
             case "activity":

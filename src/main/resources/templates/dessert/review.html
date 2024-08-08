@@ -7,7 +7,7 @@
 <body>
 <section layout:fragment="content" class="section-prod-list">
     <div class="container mt-1">
-        <!-- 리뷰 작성 폼 -->
+        <div sec:authorize="isAuthenticated()">
         <h3 class="mt-4">리뷰 작성</h3>
         <form th:action="@{/dessert/review/{id}(id=${dessert.id})}" method="post" enctype="multipart/form-data">
             <div class="form-group">
@@ -38,6 +38,8 @@
             <button type="submit" class="btn btn-primary">리뷰 제출</button>
         </form>
 
+        </div>
+
         <!-- 리뷰 목록 -->
         <h3 class="mt-4">리뷰 목록</h3>
         <ul class="list-group">
@@ -52,13 +54,13 @@
                 <div th:if="${rating.thumbnailImg != null}">
                     <img th:src="@{|/gen/${rating.thumbnailImg}|}" alt="리뷰 이미지" style="max-width: 200px;">
                 </div>
-                <div>
-                    <a th:if="${#authentication.getPrincipal().getUsername() == rating.nickname or #authentication.getPrincipal().getUsername() == 'admin'}"
-                       th:href="@{/dessert/review/delete/{id}(id=${dessert.id}, ratingId=${rating.id})}"
-                       class="btn btn-danger btn-sm">삭제</a>
-                    <a th:if="${#authentication.getPrincipal().getUsername() == rating.nickname or #authentication.getPrincipal().getUsername() == 'admin'}"
-                       th:href="@{/dessert/review/edit/{ratingId}(ratingId=${rating.id})}"
-                       class="btn btn-warning btn-sm">수정</a>
+                <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal.username == rating.nickname or #authorization.expression('hasAuthority(''ADMIN'')')}">
+                    <a
+                            th:href="@{/dessert/review/delete/{id}(id=${dessert.id}, ratingId=${rating.id})}"
+                            class="btn btn-danger btn-sm">삭제</a>
+                    <a
+                            th:href="@{/dessert/review/edit/{ratingId}(ratingId=${rating.id})}"
+                            class="btn btn-warning btn-sm">수정</a>
                 </div>
 
             </li>

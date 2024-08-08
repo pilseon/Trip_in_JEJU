@@ -7,12 +7,12 @@
 <body>
 <section layout:fragment="content" class="section-prod-list">
     <div class="container mt-1">
-        <!-- 리뷰 작성 폼 -->
+        <div sec:authorize="isAuthenticated()">
         <h3 class="mt-4">리뷰 작성</h3>
         <form th:action="@{/activity/review/{id}(id=${activity.id})}" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="score">점수</label>
-                <div class="rating">
+                <div cla>
                     <input type="radio" id="star5" name="score" value="5" required>
                     <label for="star5"></label>
                     <input type="radio" id="star4" name="score" value="4">
@@ -24,7 +24,7 @@
                     <input type="radio" id="star1" name="score" value="1">
                     <label for="star1"></label>
                 </div>
-            </div>
+            </div>ss="rating"
             <div class="form-group">
                 <label for="comment">댓글</label>
                 <textarea id="comment" name="comment" class="form-control" rows="3" required></textarea>
@@ -37,6 +37,7 @@
             <input type="hidden" name="category" value="activity"> <!-- category 추가 -->
             <button type="submit" class="btn btn-primary">리뷰 제출</button>
         </form>
+        </div>
 
         <!-- 리뷰 목록 -->
         <h3 class="mt-4">리뷰 목록</h3>
@@ -52,13 +53,13 @@
                 <div th:if="${rating.thumbnailImg != null}">
                     <img th:src="@{|/gen/${rating.thumbnailImg}|}" alt="리뷰 이미지" style="max-width: 200px;">
                 </div>
-                <div>
-                    <a th:if="${#authentication.getPrincipal().getUsername() == rating.nickname or #authentication.getPrincipal().getUsername() == 'admin'}"
-                       th:href="@{/activity/review/delete/{id}(id=${activity.id}, ratingId=${rating.id})}"
-                       class="btn btn-danger btn-sm">삭제</a>
-                    <a th:if="${#authentication.getPrincipal().getUsername() == rating.nickname or #authentication.getPrincipal().getUsername() == 'admin'}"
-                       th:href="@{/activity/review/edit/{ratingId}(ratingId=${rating.id})}"
-                       class="btn btn-warning btn-sm">수정</a>
+                <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal.username == rating.nickname or #authorization.expression('hasAuthority(''ADMIN'')')}">
+                    <a
+                            th:href="@{/dessert/review/delete/{id}(id=${dessert.id}, ratingId=${rating.id})}"
+                            class="btn btn-danger btn-sm">삭제</a>
+                    <a
+                            th:href="@{/dessert/review/edit/{ratingId}(ratingId=${rating.id})}"
+                            class="btn btn-warning btn-sm">수정</a>
                 </div>
 
             </li>

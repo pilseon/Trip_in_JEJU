@@ -38,4 +38,9 @@ public class EventController {
         model.addAttribute("events", events);
         return "event/main";
     }
+
+    @GetMapping("/game")
+    public String viewGame() {
+        return "event/game";
+    }
 }

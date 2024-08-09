@@ -14,7 +14,7 @@
     <div class="container">
         <section class="profile">
             <div class="profile-pic">
-                <img th:src="${member != null && member.thumbnailImg != null ? '/gen/' + member.thumbnailImg : 'https://i.ibb.co/mJYXKqb/images.jpg'}" alt="프로필 사진" class="profile-img"/>
+                <img th:src="${member != null && member.thumbnailImg != null ? '/gen/' + member.thumbnailImg : 'https://i.ibb.co/sbGP6nb/image.webp'}" alt="프로필 사진" class="profile-img"/>
             </div>
 
             <div class="profile-info">
@@ -44,7 +44,6 @@
                         <span th:if="${rating.category == 'shopping'}">카테고리 : 쇼핑</span>
                         <span th:if="${rating.category == 'other'}">카테고리 : 기타</span>
                         <span th:if="${rating.category == 'festivals'}">카테고리 : 축제</span>
-                        <span th:if="${rating.category != 'dessert' && rating.category != 'beverage' && rating.category != 'snack'}">카테고리 : 알 수 없는 카테고리</span>
                     </p>
 
 

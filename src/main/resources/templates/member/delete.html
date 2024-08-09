@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>회원 탈퇴</title>
+    <link href="/resource/css/memberDelete.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<section layout:fragment="content" class="section-prod-list">
+<div class="container">
+    <h1>정말로 회원 탈퇴하시겠습니까?</h1>
+    <p>회원 탈퇴 시 모든 정보가 삭제되며, 복구할 수 없습니다.</p>
+
+    <form th:action="@{/member/delete}" method="post">
+        <!-- 현재 로그인된 사용자의 이름을 hidden input으로 전송 -->
+        <input type="hidden" name="username" th:value="${#authentication.name}">
+
+        <!-- 삭제 확인 및 취소 버튼 -->
+        <button type="submit" class="confirm-btn" onclick="return confirm('정말로 탈퇴하시겠습니까?')">확인</button>
+        <a th:href="@{/member/myPage}" class="cancel-btn">취소</a>
+    </form>
+</div>
+</section>
+</body>
+</html>

@@ -209,4 +209,11 @@ public class DessertController {
         return "redirect:/dessert/detail/" + id + (isScraped ? "?scraped=true" : "?scraped=false");
     }
 
+
+    @GetMapping("/delete/{id}")
+    public String deleteDessert(@PathVariable("id") Long id) {
+        dessertService.deleteDessert(id);
+        return "redirect:/dessert/list";
+    }
+
 }

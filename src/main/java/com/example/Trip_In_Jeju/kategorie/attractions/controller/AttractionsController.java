@@ -3,6 +3,7 @@ package com.example.Trip_In_Jeju.kategorie.attractions.controller;
 
 import com.example.Trip_In_Jeju.kategorie.attractions.entity.Attractions;
 import com.example.Trip_In_Jeju.kategorie.attractions.service.AttractionsService;
+import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
 import com.example.Trip_In_Jeju.member.CustomUserDetails;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.member.servcie.MemberService;
@@ -64,6 +65,7 @@ public class AttractionsController {
         model.addAttribute("ratings", ratings);
         model.addAttribute("averageScore", averageScore);
         model.addAttribute("nickname", nickname);
+        model.addAttribute("categoryTitle", attractions.getTitle());
         return "attractions/detail";
     }
 
@@ -94,17 +96,20 @@ public class AttractionsController {
             return "redirect:/attractions/detail/" + id;
         }
 
-        String nickname;
+        String username;
         Object principal = authentication.getPrincipal();
         if (principal instanceof CustomUserDetails) {
-            nickname = ((CustomUserDetails) principal).getNickname();
+            username = ((CustomUserDetails) principal).getNickname();
         } else if (principal instanceof UserDetails) {
-            nickname = ((UserDetails) principal).getUsername();
+            username = ((UserDetails) principal).getUsername();
         } else {
-            nickname = principal.toString();
+            username = principal.toString();
         }
 
-        ratingService.saveRating(id, score, ratingId, comment, nickname, thumbnail, "attractions");
+        Attractions attractions = attractionsService.getAttractionsById(id);
+        String categoryTitle = attractions.getTitle();
+
+        ratingService.saveRating(id, score, ratingId, comment, username, thumbnail, "attractions", categoryTitle);
         return "redirect:/attractions/detail/" + id;
     }
 

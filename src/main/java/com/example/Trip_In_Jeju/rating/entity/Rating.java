@@ -30,6 +30,7 @@ public class Rating {
     private String category;
     private Long itemId;
     private String username;
+    private String title;
 
     private Long ratingId;
 

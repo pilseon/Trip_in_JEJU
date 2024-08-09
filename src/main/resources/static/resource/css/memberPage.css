@@ -86,12 +86,12 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.category {
+.title {
     font-weight: bold;
     margin-bottom: 5px;
 }
 
-.comment {
+.comment, .category {
     margin-bottom: 10px;
     color: #555;
 }

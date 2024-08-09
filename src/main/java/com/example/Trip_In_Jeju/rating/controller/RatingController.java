@@ -24,17 +24,18 @@ public class RatingController {
         model.addAttribute("member", currentMember);
         model.addAttribute("allRatings", ratingService.getAllRatings(itemId, category));
         model.addAttribute("averageScore", ratingService.calculateAverageScore(itemId, category));
+
         return "rating/review";
     }
 
     @PostMapping("/review/save")
     public String saveRating(@RequestParam String category, @RequestParam Long itemId, @RequestParam Integer score,  @RequestParam("ratingId") Long ratingId,
-                             @RequestParam String comment, Authentication authentication, @RequestParam("thumbnail") MultipartFile thumbnail) {
+                             @RequestParam String comment,  @RequestParam String categoryTitle , Authentication authentication, @RequestParam("thumbnail") MultipartFile thumbnail) {
         if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails)) {
             return "redirect:/" + category + "/detail/" + itemId;
         }
         String nickname = ((UserDetails) authentication.getPrincipal()).getUsername();
-        ratingService.saveRating(itemId, score, ratingId,comment, nickname, thumbnail, category);
+        ratingService.saveRating(itemId, score, ratingId,comment, nickname, thumbnail, category, categoryTitle);
         return "redirect:/" + category + "/detail/" + itemId;
     }
     private Member getAuthenticatedMember(Authentication authentication) {

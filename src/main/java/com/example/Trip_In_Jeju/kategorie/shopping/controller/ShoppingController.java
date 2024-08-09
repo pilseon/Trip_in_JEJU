@@ -1,6 +1,7 @@
 package com.example.Trip_In_Jeju.kategorie.shopping.controller;
 
 
+import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
 import com.example.Trip_In_Jeju.kategorie.shopping.entity.Shopping;
 import com.example.Trip_In_Jeju.kategorie.shopping.service.ShoppingService;
 import com.example.Trip_In_Jeju.member.CustomUserDetails;
@@ -64,6 +65,7 @@ public class ShoppingController {
         model.addAttribute("ratings", ratings);
         model.addAttribute("averageScore", averageScore);
         model.addAttribute("nickname", nickname);
+        model.addAttribute("categoryTitle", shopping.getTitle());
         return "shopping/detail";
     }
 
@@ -94,17 +96,20 @@ public class ShoppingController {
             return "redirect:/shopping/detail/" + id;
         }
 
-        String nickname;
+        String username;
         Object principal = authentication.getPrincipal();
         if (principal instanceof CustomUserDetails) {
-            nickname = ((CustomUserDetails) principal).getNickname();
+            username = ((CustomUserDetails) principal).getNickname();
         } else if (principal instanceof UserDetails) {
-            nickname = ((UserDetails) principal).getUsername();
+            username = ((UserDetails) principal).getUsername();
         } else {
-            nickname = principal.toString();
+            username = principal.toString();
         }
 
-        ratingService.saveRating(id, score, ratingId, comment, nickname, thumbnail, "shopping");
+        Shopping shopping = shoppingService.getShoppingById(id);
+        String categoryTitle = shopping.getTitle();
+
+        ratingService.saveRating(id, score, ratingId, comment, username, thumbnail, "shopping", categoryTitle);
         return "redirect:/shopping/detail/" + id;
     }
 

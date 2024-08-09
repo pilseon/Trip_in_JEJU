@@ -1,5 +1,6 @@
 package com.example.Trip_In_Jeju.kategorie.other.controller;
 
+import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
 import com.example.Trip_In_Jeju.kategorie.other.entity.Other;
 import com.example.Trip_In_Jeju.kategorie.other.service.OtherService;
 import com.example.Trip_In_Jeju.member.CustomUserDetails;
@@ -63,6 +64,7 @@ public class OtherController {
         model.addAttribute("ratings", ratings);
         model.addAttribute("averageScore", averageScore);
         model.addAttribute("nickname", nickname);
+        model.addAttribute("categoryTitle", other.getTitle());
         return "other/detail";
     }
 
@@ -93,17 +95,20 @@ public class OtherController {
             return "redirect:/other/detail/" + id;
         }
 
-        String nickname;
+        String username;
         Object principal = authentication.getPrincipal();
         if (principal instanceof CustomUserDetails) {
-            nickname = ((CustomUserDetails) principal).getNickname();
+            username = ((CustomUserDetails) principal).getNickname();
         } else if (principal instanceof UserDetails) {
-            nickname = ((UserDetails) principal).getUsername();
+            username = ((UserDetails) principal).getUsername();
         } else {
-            nickname = principal.toString();
+            username = principal.toString();
         }
 
-        ratingService.saveRating(id, score, ratingId, comment, nickname, thumbnail, "other");
+        Other other = otherService.getOtherById(id);
+        String categoryTitle = other.getTitle();
+
+        ratingService.saveRating(id, score, ratingId, comment, username, thumbnail, "other", categoryTitle);
         return "redirect:/other/detail/" + id;
     }
 

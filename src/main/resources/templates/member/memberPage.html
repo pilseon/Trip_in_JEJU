@@ -21,22 +21,35 @@
                 <p class="username" th:text="${member.nickname}">사용자</p>
                 <p class="email" th:text="${member.email}">mail@mail.com</p>
             </div>
-            <a href="/member/myPage" class="settings-link">마이페이지로 이동</a>
         </section>
 
-        <div class="holy">
-        <h2>총 작성 리뷰</h2>
 
-        <p th:text="'리뷰 수: ' + ${#lists.size(Ratings)}"></p>
+        <div class="holy">
+            <p th:text="'리뷰 수: ' + ${#lists.size(Ratings)}"></p>
+            <p th:text="' 평균 별점: ' + ${averageScore}"></p>
         </div>
         <ul>
             <li th:each="rating : ${Ratings}">
                 <div class="review">
 
-                    <p class="category" th:text="'카테고리: ' + ${rating.category}"></p>
+                    <a th:href="@{'/' + ${rating.category} + '/detail/' + ${rating.itemId}}" class="category-link">
+                        <p class="title" th:text="'글 제목 : ' + ${rating.title}"></p>
+                    </a>
+
+                    <p class="category">
+                        <span th:if="${rating.category == 'dessert'}">카테고리 : 디저트</span>
+                        <span th:if="${rating.category == 'food'}">카테고리 : 음식점</span>
+                        <span th:if="${rating.category == 'activity'}">카테고리 : 엑티비티</span>
+                        <span th:if="${rating.category == 'attractions'}">카테고리 : 관광지</span>
+                        <span th:if="${rating.category == 'shopping'}">카테고리 : 쇼핑</span>
+                        <span th:if="${rating.category == 'other'}">카테고리 : 기타</span>
+                        <span th:if="${rating.category == 'festivals'}">카테고리 : 축제</span>
+                        <span th:if="${rating.category != 'dessert' && rating.category != 'beverage' && rating.category != 'snack'}">카테고리 : 알 수 없는 카테고리</span>
+                    </p>
+
 
                     <!-- 리뷰 내용 -->
-                    <p class="comment" th:text="'리뷰: ' + ${rating.comment}"></p>
+                    <p class="comment" th:text="'리뷰 : ' + ${rating.comment}"></p>
 
                     <!-- 별점 (Font Awesome 아이콘 사용) -->
                     <div class="score">
@@ -55,6 +68,7 @@
     <script th:src="@{/js/main.js}"></script>
     <script th:src="@{/weekcalendarjs/weekcalendar.js}"></script>
     <script th:src="@{/myPagejs/myPage.js}"></script>
+
 </section>
 </body>
 </html>

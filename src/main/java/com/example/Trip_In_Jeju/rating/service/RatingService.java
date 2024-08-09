@@ -38,7 +38,7 @@ public class RatingService {
     public String genFileDirPath;
 
     @Transactional
-    public void saveRating(Long itemId, Integer score, Long ratingId ,String comment, String nickname, MultipartFile thumbnail, String category) {
+    public void saveRating(Long itemId, Integer score, Long ratingId ,String comment, String username, MultipartFile thumbnail, String category) {
         String thumbnailRelPath = "rating/" + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
 
@@ -55,7 +55,7 @@ public class RatingService {
                 .score(score)
                 .ratingId(ratingId)
                 .comment(comment)
-                .nickname(nickname)
+                .username(username)
                 .thumbnailImg(thumbnailRelPath)
                 .category(category)
                 .build();
@@ -174,5 +174,13 @@ public class RatingService {
         Rating rating = ratingRepository.findById(ratingId)
                 .orElseThrow(() -> new RuntimeException("Rating not found"));
         return rating.getLikeCount();
+    }
+
+    public List<Rating> getRatingsByMember(Member member) {
+        return ratingRepository.findByUsername(member.getUsername());
+    }
+    public List<Rating> getRatingsByUsername(String username) {
+
+        return ratingRepository.findByUsername(username);
     }
 }

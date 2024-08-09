@@ -29,6 +29,7 @@ public class Rating {
     private Long foodId;
     private String category;
     private Long itemId;
+    private String username;
 
     private Long ratingId;
 

@@ -99,17 +99,17 @@ public class DessertController {
             return "redirect:/dessert/detail/" + id;
         }
 
-        String nickname;
+        String username;
         Object principal = authentication.getPrincipal();
         if (principal instanceof CustomUserDetails) {
-            nickname = ((CustomUserDetails) principal).getNickname();
+            username = ((CustomUserDetails) principal).getNickname();
         } else if (principal instanceof UserDetails) {
-            nickname = ((UserDetails) principal).getUsername();
+            username = ((UserDetails) principal).getUsername();
         } else {
-            nickname = principal.toString();
+            username = principal.toString();
         }
 
-        ratingService.saveRating(id, score, ratingId, comment, nickname, thumbnail, "dessert");
+        ratingService.saveRating(id, score, ratingId, comment, username, thumbnail, "dessert");
         return "redirect:/dessert/detail/" + id;
     }
 

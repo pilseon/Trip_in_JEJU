@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>유저 페이지</title>
+    <!-- Font Awesome 추가 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <link href="/resource/css/memberPage.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<section layout:fragment="content" class="section-prod-list">
+    <div class="container">
+        <section class="profile">
+            <div class="profile-pic">
+                <img th:src="${member != null && member.thumbnailImg != null ? '/gen/' + member.thumbnailImg : 'https://i.ibb.co/mJYXKqb/images.jpg'}" alt="프로필 사진" class="profile-img"/>
+            </div>
+
+            <div class="profile-info">
+                <p class="username" th:text="${member.nickname}">사용자</p>
+                <p class="email" th:text="${member.email}">mail@mail.com</p>
+            </div>
+            <a href="/member/myPage" class="settings-link">마이페이지로 이동</a>
+        </section>
+
+        <div class="holy">
+        <h2>총 작성 리뷰</h2>
+
+        <p th:text="'리뷰 수: ' + ${#lists.size(Ratings)}"></p>
+        </div>
+        <ul>
+            <li th:each="rating : ${Ratings}">
+                <div class="review">
+
+                    <p class="category" th:text="'카테고리: ' + ${rating.category}"></p>
+
+                    <!-- 리뷰 내용 -->
+                    <p class="comment" th:text="'리뷰: ' + ${rating.comment}"></p>
+
+                    <!-- 별점 (Font Awesome 아이콘 사용) -->
+                    <div class="score">
+                        <p>별점: </p>
+                        <span th:each="star : ${#numbers.sequence(1, rating.score)}">
+                            <i class="fas fa-star"></i>
+                        </span>
+                    </div>
+
+                    <!-- 리뷰 썸네일 -->
+                    <img th:if="${rating.thumbnailImg != null}" th:src="@{'/gen/' + ${rating.thumbnailImg}}" alt="리뷰 썸네일" class="review-thumbnail"/>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <script th:src="@{/js/main.js}"></script>
+    <script th:src="@{/weekcalendarjs/weekcalendar.js}"></script>
+    <script th:src="@{/myPagejs/myPage.js}"></script>
+</section>
+</body>
+</html>

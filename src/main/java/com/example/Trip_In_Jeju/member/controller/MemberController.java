@@ -9,6 +9,8 @@ import com.example.Trip_In_Jeju.kategorie.festivals.service.FestivalsService;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.member.entity.MemberRole;
 import com.example.Trip_In_Jeju.member.servcie.MemberService;
+import com.example.Trip_In_Jeju.rating.entity.Rating;
+import com.example.Trip_In_Jeju.rating.service.RatingService;
 import com.example.Trip_In_Jeju.scrap.Scrap;
 import com.example.Trip_In_Jeju.scrap.ScrapService;
 import jakarta.servlet.http.HttpSession;
@@ -19,10 +21,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -368,5 +367,19 @@ public class MemberController {
 
         // 수정 완료 후 마이페이지로 리다이렉트
         return "redirect:/member/myPage";
+    }
+
+
+    private final RatingService ratingService;
+    @GetMapping("/myPage/{username}")
+    public String viewMemberProfile(@PathVariable("username") String username, Model model) {
+        Member member = memberService.getMemberByNickname(username);
+        if (member == null) {
+            return "error/404"; // 사용자 정보를 찾을 수 없는 경우 404 페이지로 리다이렉트
+        }
+        List<Rating> ratings = ratingService.getRatingsByMember(member);
+        model.addAttribute("member", member);
+        model.addAttribute("Ratings", ratings);
+        return "member/memberPage";
     }
 }

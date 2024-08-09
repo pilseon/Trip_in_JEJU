@@ -303,4 +303,7 @@ public class MemberService {
         }
     }
 
+    public Member getMemberByNickname(String username) {
+        return memberRepository.findByUsername(username).orElse(null);
+    }
 }

@@ -12,7 +12,7 @@
         <form th:action="@{/activity/review/{id}(id=${activity.id})}" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="score">점수</label>
-                <div cla>
+                <div class="rating">
                     <input type="radio" id="star5" name="score" value="5" required>
                     <label for="star5"></label>
                     <input type="radio" id="star4" name="score" value="4">
@@ -49,7 +49,7 @@
                     </span>
                 </p>
                 <p>내용: &nbsp;<span th:text="${rating.comment}"></span></p>
-                <p>작성자: &nbsp;<span th:text="${rating.nickname}"></span></p>
+                <p>작성자: &nbsp;<span th:text="${rating.username}"></span></p>
                 <div th:if="${rating.thumbnailImg != null}">
                     <img th:src="@{|/gen/${rating.thumbnailImg}|}" alt="리뷰 이미지" style="max-width: 200px;">
                 </div>

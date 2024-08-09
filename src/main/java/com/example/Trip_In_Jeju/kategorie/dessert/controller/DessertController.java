@@ -69,6 +69,7 @@ public class DessertController {
         model.addAttribute("ratings", ratings);
         model.addAttribute("averageScore", averageScore);
         model.addAttribute("nickname", nickname);
+        model.addAttribute("categoryTitle", dessert.getTitle());
         return "dessert/detail";
     }
 
@@ -108,8 +109,11 @@ public class DessertController {
         } else {
             username = principal.toString();
         }
+        Dessert dessert = dessertService.getDessertById(id);
+        String categoryTitle = dessert.getTitle();
 
-        ratingService.saveRating(id, score, ratingId, comment, username, thumbnail, "dessert");
+
+        ratingService.saveRating(id, score, ratingId, comment, username, thumbnail, "dessert", categoryTitle);
         return "redirect:/dessert/detail/" + id;
     }
 

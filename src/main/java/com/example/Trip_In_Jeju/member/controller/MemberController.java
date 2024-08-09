@@ -378,8 +378,21 @@ public class MemberController {
             return "error/404"; // 사용자 정보를 찾을 수 없는 경우 404 페이지로 리다이렉트
         }
         List<Rating> ratings = ratingService.getRatingsByMember(member);
+
+        // 평균 점수 계산
+        double averageScore = ratings.stream()
+                .mapToInt(Rating::getScore)
+                .average()
+                .orElse(0.0);
+
+        String formattedAverageScore = String.format("%.2f", averageScore);
+
         model.addAttribute("member", member);
         model.addAttribute("Ratings", ratings);
+        model.addAttribute("averageScore", formattedAverageScore);
+        // 평균 점수를 모델에 추가
+
         return "member/memberPage";
     }
+
 }

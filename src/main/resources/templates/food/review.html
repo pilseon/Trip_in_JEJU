@@ -48,7 +48,7 @@
                     </span>
                 </p>
                 <p>내용: &nbsp;<span th:text="${rating.comment}"></span></p>
-                <p>작성자: &nbsp;<span th:text="${rating.nickname}"></span></p>
+                <p>작성자: &nbsp;<span th:text="${rating.username}"></span></p>
                 <div th:if="${rating.thumbnailImg != null}">
                     <img th:src="@{|/gen/${rating.thumbnailImg}|}" alt="리뷰 이미지" style="max-width: 200px;">
                 </div>

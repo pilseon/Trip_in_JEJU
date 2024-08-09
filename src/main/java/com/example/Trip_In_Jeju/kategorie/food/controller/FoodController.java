@@ -1,5 +1,6 @@
 package com.example.Trip_In_Jeju.kategorie.food.controller;
 
+import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
 import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
 import com.example.Trip_In_Jeju.kategorie.food.service.FoodService;
 import com.example.Trip_In_Jeju.member.CustomUserDetails;
@@ -94,17 +95,20 @@ public class FoodController {
             return "redirect:/food/detail/" + id;
         }
 
-        String nickname;
+        String username;
         Object principal = authentication.getPrincipal();
         if (principal instanceof CustomUserDetails) {
-            nickname = ((CustomUserDetails) principal).getNickname();
+            username = ((CustomUserDetails) principal).getNickname();
         } else if (principal instanceof UserDetails) {
-            nickname = ((UserDetails) principal).getUsername();
+            username = ((UserDetails) principal).getUsername();
         } else {
-            nickname = principal.toString();
+            username = principal.toString();
         }
 
-        ratingService.saveRating(id, score, ratingId, comment, nickname, thumbnail, "food");
+        Food food = foodService.getFoodById(id);
+        String categoryTitle = food.getTitle();
+
+        ratingService.saveRating(id, score, ratingId, comment, username, thumbnail, "food", categoryTitle);
         return "redirect:/food/detail/" + id;
     }
 

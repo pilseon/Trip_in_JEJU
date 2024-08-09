@@ -38,7 +38,7 @@ public class RatingService {
     public String genFileDirPath;
 
     @Transactional
-    public void saveRating(Long itemId, Integer score, Long ratingId ,String comment, String username, MultipartFile thumbnail, String category) {
+    public void saveRating(Long itemId, Integer score, Long ratingId ,String comment, String username, MultipartFile thumbnail, String category, String categoryTitle) {
         String thumbnailRelPath = "rating/" + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
 
@@ -52,6 +52,7 @@ public class RatingService {
 
         Rating rating = Rating.builder()
                 .itemId(itemId)
+                .title(categoryTitle)
                 .score(score)
                 .ratingId(ratingId)
                 .comment(comment)

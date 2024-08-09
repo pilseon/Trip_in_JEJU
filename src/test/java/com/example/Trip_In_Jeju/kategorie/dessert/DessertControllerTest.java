@@ -46,12 +46,13 @@ public class DessertControllerTest {
             // 제주도의 위도 및 경도 범위로 수정
             double latitude = 33.0 + (random.nextDouble() * 0.5);  // 제주도 위도 범위: 33.0 ~ 33.5
             double longitude = 126.0 + (random.nextDouble() * 0.5); // 제주도 경도 범위: 126.0 ~ 126.5
-            String subCategory = "cafe";
+            String category = "디저트";
+            String subCategory = "카페";
 
             // 디저트 데이터 생성
             dessertService.create2(
                     title, businessHoursStart, businessHoursEnd, content, place, closedDay,
-                    websiteUrl, phoneNumber, hashtags, latitude, longitude, subCategory
+                    websiteUrl, phoneNumber, hashtags, latitude, longitude, category, subCategory
             );
         }
     }
@@ -75,12 +76,13 @@ public class DessertControllerTest {
             // 제주도의 위도 및 경도 범위로 수정
             double latitude = 33.0 + (random.nextDouble() * 0.5);  // 제주도 위도 범위: 33.0 ~ 33.5
             double longitude = 126.0 + (random.nextDouble() * 0.5); // 제주도 경도 범위: 126.0 ~ 126.5
-            String subCategory = "bakery";
+            String category = "디저트";
+            String subCategory = "베이커리";
 
             // 디저트 데이터 생성
             dessertService.create2(
                     title, businessHoursStart, businessHoursEnd, content, place, closedDay,
-                    websiteUrl, phoneNumber, hashtags, latitude, longitude, subCategory
+                    websiteUrl, phoneNumber, hashtags, latitude, longitude, category, subCategory
             );
         }
     }
@@ -104,12 +106,13 @@ public class DessertControllerTest {
             // 제주도의 위도 및 경도 범위로 수정
             double latitude = 33.0 + (random.nextDouble() * 0.5);  // 제주도 위도 범위: 33.0 ~ 33.5
             double longitude = 126.0 + (random.nextDouble() * 0.5); // 제주도 경도 범위: 126.0 ~ 126.5
-            String subCategory = "iceCream";
+            String category = "디저트";
+            String subCategory = "아이스크림";
 
             // 디저트 데이터 생성
             dessertService.create2(
                     title, businessHoursStart, businessHoursEnd, content, place, closedDay,
-                    websiteUrl, phoneNumber, hashtags, latitude, longitude, subCategory
+                    websiteUrl, phoneNumber, hashtags, latitude, longitude, category, subCategory
             );
         }
     }
@@ -133,12 +136,13 @@ public class DessertControllerTest {
             // 제주도의 위도 및 경도 범위로 수정
             double latitude = 33.0 + (random.nextDouble() * 0.5);  // 제주도 위도 범위: 33.0 ~ 33.5
             double longitude = 126.0 + (random.nextDouble() * 0.5); // 제주도 경도 범위: 126.0 ~ 126.5
-            String subCategory = "other";
+            String category = "디저트";
+            String subCategory = "기타";
 
             // 디저트 데이터 생성
             dessertService.create2(
                     title, businessHoursStart, businessHoursEnd, content, place, closedDay,
-                    websiteUrl, phoneNumber, hashtags, latitude, longitude, subCategory
+                    websiteUrl, phoneNumber, hashtags, latitude, longitude, category, subCategory
             );
         }
     }

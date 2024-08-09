@@ -81,23 +81,23 @@ public class AdminContentController {
 
         if (category.equals("음식점")) {
             foodService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, category, subCategory);
-        } else if (category.equals("dessert")) {
-            dessertService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, subCategory);
+        } else if (category.equals("디저트")) {
+            dessertService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, category, subCategory);
         }
-        else if (category.equals("shopping")) {
-            shoppingService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, subCategory);
+        else if (category.equals("쇼핑")) {
+            shoppingService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, category, subCategory);
         }
-        else if (category.equals("activity")) {
-            activityService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, subCategory);
+        else if (category.equals("액티비티")) {
+            activityService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, category, subCategory);
         }
-        else if (category.equals("attractions")) {
-            attractionsService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, subCategory);
+        else if (category.equals("관광지")) {
+            attractionsService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, category, subCategory);
         }
-        else if (category.equals("festivals")) {
+        else if (category.equals("축제")) {
             festivalsService.create(title, periodStart, periodEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, subCategory);
         }
-        else if (category.equals("other")) {
-            otherService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, subCategory);
+        else if (category.equals("기타")) {
+            otherService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, hashtags, thumbnail, latitude, longitude, category, subCategory);
         }
 
         return "redirect:/adm/content/create";
@@ -110,22 +110,22 @@ public class AdminContentController {
             case "음식점":
                 result = foodService.findResultById(id);
                 break;
-            case "activity":
+            case "액티비티":
                 result = activityService.findResultById(id);
                 break;
-            case "attractions":
+            case "관광지":
                 result = attractionsService.findResultById(id);
                 break;
-            case "dessert":
+            case "디저트":
                 result = dessertService.findResultById(id);
                 break;
-            case "festivals":
+            case "페스티벌":
                 result = festivalsService.findResultById(id);
                 break;
-            case "other":
+            case "기타":
                 result = otherService.findResultById(id);
                 break;
-            case "shopping":
+            case "쇼핑":
                 result = shoppingService.findResultById(id);
                 break;
             default:

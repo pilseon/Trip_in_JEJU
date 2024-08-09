@@ -47,7 +47,7 @@ public class FestivalsControllerTest {
 
             double latitude = 33.0 + (random.nextDouble() * 0.5);  // 제주도 위도 범위: 33.0 ~ 33.5
             double longitude = 126.0 + (random.nextDouble() * 0.5); // 제주도 경도 범위: 126.0 ~ 126.5
-            String subCategory = "seasonal";
+            String subCategory = "계절";
 
             festivalsService.create2(
                     title, periodStart.toString(), periodEnd.toString(), content, place, closedDay,
@@ -78,7 +78,7 @@ public class FestivalsControllerTest {
 
             double latitude = 33.0 + (random.nextDouble() * 0.5);  // 제주도 위도 범위: 33.0 ~ 33.5
             double longitude = 126.0 + (random.nextDouble() * 0.5); // 제주도 경도 범위: 126.0 ~ 126.5
-            String subCategory = "musicArt";
+            String subCategory = "음악/예술";
 
             festivalsService.create2(
                     title, periodStart.toString(), periodEnd.toString(), content, place, closedDay,
@@ -109,7 +109,7 @@ public class FestivalsControllerTest {
 
             double latitude = 33.0 + (random.nextDouble() * 0.5);  // 제주도 위도 범위: 33.0 ~ 33.5
             double longitude = 126.0 + (random.nextDouble() * 0.5); // 제주도 경도 범위: 126.0 ~ 126.5
-            String subCategory = "traditional";
+            String subCategory = "전통";
 
             festivalsService.create2(
                     title, periodStart.toString(), periodEnd.toString(), content, place, closedDay,
@@ -140,7 +140,7 @@ public class FestivalsControllerTest {
 
             double latitude = 33.0 + (random.nextDouble() * 0.5);  // 제주도 위도 범위: 33.0 ~ 33.5
             double longitude = 126.0 + (random.nextDouble() * 0.5); // 제주도 경도 범위: 126.0 ~ 126.5
-            String subCategory = "food";
+            String subCategory = "음식";
 
             festivalsService.create2(
                     title, periodStart.toString(), periodEnd.toString(), content, place, closedDay,
@@ -171,7 +171,7 @@ public class FestivalsControllerTest {
 
             double latitude = 33.0 + (random.nextDouble() * 0.5);  // 제주도 위도 범위: 33.0 ~ 33.5
             double longitude = 126.0 + (random.nextDouble() * 0.5); // 제주도 경도 범위: 126.0 ~ 126.5
-            String subCategory = "other";
+            String subCategory = "기타";
 
             festivalsService.create2(
                     title, periodStart.toString(), periodEnd.toString(), content, place, closedDay,

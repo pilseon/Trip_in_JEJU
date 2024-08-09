@@ -67,7 +67,7 @@ public class ActivityService {
     }
 
     public void create(String title, String businessHoursStart, String businessHoursEnd, String content, String place, String closedDay,
-                       String websiteUrl, String phoneNumber, String hashtags, MultipartFile thumbnail, double latitude, double longitude, String subCategory) {
+                       String websiteUrl, String phoneNumber, String hashtags, MultipartFile thumbnail, double latitude, double longitude, String category, String subCategory) {
 
         String thumbnailRelPath = "activity/" + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
@@ -106,6 +106,7 @@ public class ActivityService {
                 .hashtags(hashtags)
                 .likes(0)
                 .scrapCount(0)
+                .category(category)
                 .subCategory(subCategory) // Ensure subCategory is used if provided
                 .build();
 

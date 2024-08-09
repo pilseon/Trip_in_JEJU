@@ -70,7 +70,7 @@ public class DessertService {
     }
 
     public void create(String title, String businessHoursStart, String businessHoursEnd, String content, String place, String closedDay,
-                       String websiteUrl, String phoneNumber, String hashtags, MultipartFile thumbnail, double latitude, double longitude, String subCategory) {
+                       String websiteUrl, String phoneNumber, String hashtags, MultipartFile thumbnail, double latitude, double longitude,String category, String subCategory) {
 
         // 이미지를 저장할 디렉토리의 전체 경로를 생성합니다.
         String thumbnailRelPath = DESSERT_IMAGE_DIR + UUID.randomUUID().toString() + ".jpg";
@@ -112,6 +112,7 @@ public class DessertService {
                 .hashtags(hashtags)
                 .likes(0)
                 .scrapCount(0)
+                .category(category)
                 .subCategory(subCategory) // Ensure subCategory is used if provided
                 .build();
 
@@ -119,7 +120,7 @@ public class DessertService {
     }
 
     public void create2(String title, String businessHoursStart, String businessHoursEnd, String content, String place, String closedDay,
-                        String websiteUrl, String phoneNumber, String hashtags, double latitude, double longitude, String subCategory) {
+                        String websiteUrl, String phoneNumber, String hashtags, double latitude, double longitude, String category, String subCategory) {
 
         // Location 엔티티 생성 및 저장
         Location location = new Location();
@@ -146,6 +147,7 @@ public class DessertService {
                 .hashtags(hashtags)
                 .likes(0)
                 .scrapCount(0)
+                .category(category)
                 .subCategory(subCategory) // Ensure subCategory is used if provided
                 .build();
 

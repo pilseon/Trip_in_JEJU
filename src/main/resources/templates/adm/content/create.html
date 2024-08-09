@@ -18,12 +18,12 @@
                 <label for="category" class="block text-lg font-semibold text-teal-700">카테고리:</label>
                 <select id="category" name="category" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50" onchange="updateSubCategoryOptions()">
                     <option value="음식점">음식점</option>
-                    <option value="dessert">디저트</option>
-                    <option value="shopping">쇼핑</option>
-                    <option value="activity">액티비티</option>
-                    <option value="attractions">관광지</option>
-                    <option value="festivals">축제</option>
-                    <option value="other">기타</option>
+                    <option value="디저트">디저트</option>
+                    <option value="쇼핑">쇼핑</option>
+                    <option value="액티비티">액티비티</option>
+                    <option value="관광지">관광지</option>
+                    <option value="축제">축제</option>
+                    <option value="기타">기타</option>
                 </select>
             </div>
 
@@ -118,13 +118,13 @@
             const subCategoryContainer = document.getElementById('subCategoryContainer');
             const subCategorySelect = document.getElementById('subCategory');
 
-            if (category === 'dessert') {
+            if (category === '디저트') {
                 subCategoryContainer.style.display = 'block';
                 subCategorySelect.innerHTML = `
-                    <option value="cafe">카페</option>
-                    <option value="bakery">베이커리</option>
-                    <option value="iceCream">아이스크림</option>
-                    <option value="other">기타</option>
+                    <option value="카페">카페</option>
+                    <option value="베이커리">베이커리</option>
+                    <option value="아이스크림">아이스크림</option>
+                    <option value="기타">기타</option>
                 `;
 
             } else if (category === '음식점') {
@@ -137,50 +137,50 @@
                     <option value="기타">기타</option>
                 `;
 
-            } else if (category === 'shopping') {
+            } else if (category === '쇼핑') {
                 subCategoryContainer.style.display = 'block';
                 subCategorySelect.innerHTML = `
-                    <option value="traditionalMarkets">전통시장</option>
-                    <option value="duty-FreeShops">면세점</option>
-                    <option value="souvenirs">기념품</option>
-                    <option value="other">기타</option>
+                    <option value="전통시장">전통시장</option>
+                    <option value="면세점">면세점</option>
+                    <option value="기념품">기념품</option>
+                    <option value="기타">기타</option>
                 `;
 
-            } else if (category === 'activity') {
+            } else if (category === '액티비티') {
                 subCategoryContainer.style.display = 'block';
                 subCategorySelect.innerHTML = `
-                    <option value="sports">스포츠</option>
-                    <option value="experienceActivities">체험활동</option>
-                    <option value="leisure-entertainment">레저/오락</option>
-                    <option value="other">기타</option>
+                    <option value="스포츠">스포츠</option>
+                    <option value="체험활동">체험활동</option>
+                    <option value="레저/오락">레저/오락</option>
+                    <option value="기타">기타</option>
                 `;
 
-            } else if (category === 'attractions') {
+            } else if (category === '관광지') {
                 subCategoryContainer.style.display = 'block';
                 subCategorySelect.innerHTML = `
-                    <option value="naturalScenery">자연경관</option>
-                    <option value="museums">박물관/유적지</option>
-                    <option value="themeParks">레저/테마파크</option>
-                    <option value="other">기타</option>
+                    <option value="자연경관">자연경관</option>
+                    <option value="박물관/유적지">박물관/유적지</option>
+                    <option value="레저/테마파크">레저/테마파크</option>
+                    <option value="기타">기타</option>
                 `;
 
-            } else if (category === 'festivals') {
+            } else if (category === '축제') {
                 subCategoryContainer.style.display = 'block';
                 subCategorySelect.innerHTML = `
-                    <option value="seasonal">계절</option>
-                    <option value="musicArt">음악/예술</option>
-                    <option value="traditional">전통</option>
-                    <option value="음식점">음식</option>
-                    <option value="other">기타</option>
+                    <option value="계절">계절</option>
+                    <option value="음악/예술">음악/예술</option>
+                    <option value="전통">전통</option>
+                    <option value="음식">음식</option>
+                    <option value="기타">기타</option>
                 `;
 
-            } else if (category === 'other') {
+            } else if (category === '기타') {
                 subCategoryContainer.style.display = 'block';
                 subCategorySelect.innerHTML = `
-                    <option value="fitness">피트니스</option>
-                    <option value="pet">반려동물</option>
-                    <option value="children">어린이</option>
-                    <option value="other">기타</option>
+                    <option value="피트니스">피트니스</option>
+                    <option value="반려동물">반려동물</option>
+                    <option value="어린이">어린이</option>
+                    <option value="기타">기타</option>
                 `;
 
             } else {

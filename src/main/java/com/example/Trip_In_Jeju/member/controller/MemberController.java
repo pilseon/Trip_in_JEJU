@@ -13,16 +13,22 @@ import com.example.Trip_In_Jeju.rating.entity.Rating;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
 import com.example.Trip_In_Jeju.scrap.Scrap;
 import com.example.Trip_In_Jeju.scrap.ScrapService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -250,6 +256,25 @@ public class MemberController {
         return "member/delete"; // 탈퇴 확인 폼 페이지로 이동
     }
 
+    @PostMapping("/delete")
+    public String deleteMember(@RequestParam("username") String username, HttpServletRequest request, HttpServletResponse response) {
+        memberService.deleteMember(username);
+        new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
+        return "redirect:/";
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin/deleteMember/{username}")
+    public String deleteMemberByAdmin(@PathVariable("username") String username) {
+        Member admin = memberService.getCurrentMember();
+        if (admin == null || !memberService.isAdmin(admin)) {
+            logger.warn("Unauthorized access attempt by user: {}", admin != null ? admin.getUsername() : "unknown");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "관리자 권한이 필요합니다.");
+        }
+
+        memberService.deleteMemberByAdmin(username);
+        return "redirect:/admin/memberList";  // 회원 목록 페이지로 리다이렉트
+    }
 
     // 아이디 찾기 시작
     @GetMapping("/find-username")

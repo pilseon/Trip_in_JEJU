@@ -146,4 +146,8 @@ public class ScrapService {
     public List<Scrap> getScrapsByMember(Member member) {
         return scrapRepository.findByMember(member);
     }
+
+    public void deleteByDessert(Dessert dessert) {
+        scrapRepository.deleteByDessert(dessert);
+    }
 }

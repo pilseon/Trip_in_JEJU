@@ -68,4 +68,6 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
     @Query("DELETE FROM Like l WHERE l.festivals = :festivals AND l.member = :member")
     void deleteByFestivalsAndMember(@Param("festivals") Festivals festivals, @Param("member") Member member);
 
+    void deleteByDessert(Dessert dessert);
+
 }

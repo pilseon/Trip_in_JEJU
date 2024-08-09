@@ -35,6 +35,14 @@
             color: #333;
         }
 
+        .info-box {
+            position: absolute;
+            top: 110px;
+            right: 10px;
+            color: #333;
+
+        }
+
         .notification-icon {
             height: 24px;
         }

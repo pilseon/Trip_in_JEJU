@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html layout:decorate="~{layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="/resource/css/like.css" rel="stylesheet" type="text/css"/>
+    <link href="/resource/css/click.css" rel="stylesheet" type="text/css"/>
+    <title>Trip_In_Jeju</title>
+</head>
+<body>
 <section layout:fragment="content" class="section-prod-list">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport"
-              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <link href="/resource/css/like.css" rel="stylesheet" type="text/css"/>
-        <link href="/resource/css/click.css" rel="stylesheet" type="text/css"/>
-        <title>test</title>
-    </head>
-    <body>
     <section class="container mt-1">
         <!-- 내용  -->
         <!-- 이미지 -->
@@ -76,13 +76,23 @@
                     </form>
                     <span class="scraps" th:text="'(' + ${dessert.scrapCount} + ')'"> (0) </span>
                 </div>
+
+                <form th:action="@{/dessert/delete/{id}(id=${dessert.id})}" method="post" style="display:inline;"
+                      onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                    <input type="hidden" name="_method" value="delete"/>
+                    <button type="submit" class="delete-button">
+                        <i class="fas fa-trash-alt"></i> 삭제
+                    </button>
+                </form>
                 <!-- 지도  -->
                 <div class="mt-4">
-                    <span span class="font-bold" style="font-size: 1.5rem;">지도 </span>
+                    <span class="font-bold" style="font-size: 1.5rem;">지도 </span>
                     <div id="map" th:data-latitude="${dessert.location.latitude}" th:data-longitude="${dessert.location.longitude}" style="width:100%;height:400px;"></div>
                 </div>
             </div>
         </div>
+
+
     </section>
 
     <script th:inline="javascript" th:src="@{/detailjs/detail.js}"></script>
@@ -102,6 +112,6 @@
             });
         });
     </script>
-    </body>
+</body>
 </section>
 </html>

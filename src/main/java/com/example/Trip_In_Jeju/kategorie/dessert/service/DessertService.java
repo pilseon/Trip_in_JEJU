@@ -258,4 +258,17 @@ public class DessertService {
         Dessert dessert = findById(id); // 기존의 findById 메서드를 사용
         return new Result(dessert.getId(), dessert.getTitle(), dessert.getPlace(), dessert.getThumbnailImg(), dessert.getContent());
     }
+
+    @Transactional
+    public void deleteDessert(Long id) {
+        Dessert dessert = dessertRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Dessert not found with id: " + id));
+
+        // 관련된 스크랩 및 좋아요 데이터 삭제
+        likeRepository.deleteByDessert(dessert);
+        scrapService.deleteByDessert(dessert);
+
+        // 디저트 삭제
+        dessertRepository.delete(dessert);
+    }
 }

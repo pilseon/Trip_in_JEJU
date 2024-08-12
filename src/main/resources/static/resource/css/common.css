@@ -121,7 +121,7 @@ div.clickEffect {
 }
 
 .action-options ul li:hover {
-                        background-color: #666; /* 배경색을 밝게 조정 */
+                        background-color: #f59f0b; /* 배경색을 밝게 조정 */
                         transition: background-color 0.3s ease;
 }
 

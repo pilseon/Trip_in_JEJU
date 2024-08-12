@@ -220,4 +220,5 @@ public class FestivalsService {
         Festivals festivals = findById(id); // 기존의 findById 메서드를 사용
         return new Result(festivals.getId(), festivals.getTitle(), festivals.getPlace(), festivals.getThumbnailImg(), festivals.getContent());
     }
+
 }

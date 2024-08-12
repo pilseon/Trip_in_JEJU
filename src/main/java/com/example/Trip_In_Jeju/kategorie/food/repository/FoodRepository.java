@@ -20,4 +20,5 @@ public interface FoodRepository extends JpaRepository<Food, Long> {
 
     @Query("SELECT a.id, a.title, a.place, a.thumbnailImg, a.content FROM Food a WHERE a.title LIKE %:query% OR a.place LIKE %:query%")
     List<Object[]> findByTitleAndPlaceContaining(@Param("query") String query);
+
 }

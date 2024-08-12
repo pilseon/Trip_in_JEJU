@@ -25,10 +25,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -229,4 +227,16 @@ public class OtherService {
         Other other = findById(id); // 기존의 findById 메서드를 사용
         return new Result(other.getId(), other.getTitle(), other.getPlace(), other.getThumbnailImg(), other.getContent());
     }
+    // 랜덤으로 10개의 Food 항목을 가져오는 메서드
+    public List<Other> getRandomOthers(int limit) {
+        List<Other> allOthers = otherRepository.findAll();
+        return getRandomItems(allOthers, limit);
+    }
+
+    private <T> List<T> getRandomItems(List<T> items, int limit) {
+        Random rand = new Random();
+        Collections.shuffle(items, rand);
+        return items.stream().limit(limit).collect(Collectors.toList());
+    }
+
 }

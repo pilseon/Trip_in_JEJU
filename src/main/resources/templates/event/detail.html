@@ -9,11 +9,15 @@
 <section layout:fragment="content" class="section-prod-list">
     <body>
     <div class="container mx-auto p-4">
-        <h1 class="text-2xl font-bold mb-4" th:text="${event.title}">Event Title</h1>
+        <div class="mb-4 border-b border-black">
+            <h1 class="text-2xl font-bold" th:text="${event.title}">Event Title</h1>
+            <span>이벤트 기간 : </span><span th:text="${event.periodStart}">Start Date</span> ~ <span th:text="${event.periodEnd}">End Date</span>
+        </div>
         <!-- Step images -->
         <div th:each="step : ${event.steps}">
             <img th:src="${step.imageFilePath}" alt="Step Image" class="w-full max-h-screen object-contain rounded-lg">
         </div>
+        <div class="mt-8" th:text="${event.content}" style="white-space: pre-line;"></div>
     </div>
     <!--    <script th:src="@{/searchjs/search.js}"></script>-->
     </body>

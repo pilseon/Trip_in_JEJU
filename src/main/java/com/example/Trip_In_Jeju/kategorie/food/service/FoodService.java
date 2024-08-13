@@ -10,6 +10,7 @@ import com.example.Trip_In_Jeju.location.entity.Location;
 import com.example.Trip_In_Jeju.location.repository.LocationRepository;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
+import com.example.Trip_In_Jeju.scrap.ScrapRepository;
 import com.example.Trip_In_Jeju.scrap.ScrapService;
 import com.example.Trip_In_Jeju.search.dto.Result;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,7 @@ public class FoodService {
     private final CalendarRepository calendarRepository;
     private final RatingService ratingService;
     private final ScrapService scrapService; // 추가된 의존성
+    private final ScrapRepository scrapRepository;
 
 
     @Value("${kakao.api.key}")
@@ -228,15 +230,18 @@ public class FoodService {
         return food;
     }
 
-    // 랜덤으로 10개의 Food 항목을 가져오는 메서드
-    public List<Food> getRandomFoods(int limit) {
-        List<Food> allFoods = foodRepository.findAll();
-        return getRandomItems(allFoods, limit);
-    }
+    @Transactional
+    public void deleteFood(Long foodId) {
+        // 먼저 스크랩 테이블에서 관련 데이터를 삭제해요
+        scrapRepository.deleteByFoodId(foodId);
 
-    private <T> List<T> getRandomItems(List<T> items, int limit) {
-        Random rand = new Random();
-        Collections.shuffle(items, rand);
-        return items.stream().limit(limit).collect(Collectors.toList());
+        // 좋아요 삭제
+        likeRepository.deleteByFoodId(foodId);
+
+        // 리뷰 삭제
+        ratingService.deleteRatingsByFoodId(foodId);
+
+
+        foodRepository.deleteById(foodId);
     }
 }

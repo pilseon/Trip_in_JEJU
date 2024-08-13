@@ -170,7 +170,34 @@ public class ScrapService {
         return scrapRepository.findByMember(member);
     }
 
-    public void deleteByDessert(Dessert dessert) {
-        scrapRepository.deleteByDessert(dessert);
+
+
+
+    @Transactional
+    public void removeAllScrapsForItem(Food food) {
+        scrapRepository.deleteByFoodId(food.getId());
     }
+
+    @Transactional
+    public void removeAllScrapsForItem(Activity activity) {
+        scrapRepository.deleteByActivityId(activity.getId());
+    }
+
+    @Transactional
+    public void removeAllScrapsForItem(Attractions attractions) {
+        scrapRepository.deleteByAttractionsId(attractions.getId());
+    }
+    @Transactional
+    public void removeAllScrapsForItem(Dessert dessert) {
+        scrapRepository.deleteByDessertId(dessert.getId());
+    }
+    @Transactional
+    public void removeAllScrapsForItem(Other other) {
+        scrapRepository.deleteByOtherId(other.getId());
+    }
+    @Transactional
+    public void removeAllScrapsForItem(Shopping shopping) {
+        scrapRepository.deleteByShoppingId(shopping.getId());
+    }
+
 }

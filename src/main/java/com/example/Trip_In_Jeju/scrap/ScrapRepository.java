@@ -48,10 +48,24 @@ public interface ScrapRepository extends JpaRepository<Scrap, Long> {
 
     void deleteByDessert(Dessert dessert);
 
+
     Optional<Scrap> findByFestivalsAndMember(Festivals festivals, Member member);
 
     void deleteByFestivalsAndMember(Festivals festivals, Member member);
 
     int countByFestivals(Festivals festivals);
 
+
+
+    void deleteByFoodId(Long foodId);
+
+    void deleteByActivityId(Long activityId);
+
+    void deleteByAttractionsId(Long attractionsId);
+
+    void deleteByDessertId(Long dessertId);
+
+    void deleteByOtherId(Long otherId);
+
+    void deleteByShoppingId(Long shoppingId);
 }

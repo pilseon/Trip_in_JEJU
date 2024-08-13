@@ -3,6 +3,7 @@ package com.example.Trip_In_Jeju.kategorie.food.controller;
 import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
 import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
 import com.example.Trip_In_Jeju.kategorie.food.service.FoodService;
+import com.example.Trip_In_Jeju.like.LikeService;
 import com.example.Trip_In_Jeju.member.CustomUserDetails;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.member.servcie.MemberService;
@@ -11,9 +12,11 @@ import com.example.Trip_In_Jeju.rating.service.RatingService;
 import com.example.Trip_In_Jeju.scrap.ScrapService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,6 +32,7 @@ public class FoodController {
     private final RatingService ratingService;
     private final MemberService memberService;
     private final ScrapService scrapService;
+    private final LikeService likeService;
 
 
     @GetMapping("/list")
@@ -182,5 +186,31 @@ public class FoodController {
 
         return "redirect:/food/detail/" + id + (isScraped ? "?scraped=true" : "?scraped=false");
     }
+
+    @Transactional
+    @DeleteMapping("/delete/{id}")
+    public String deleteFood(@PathVariable("id") Long id, Model model) {
+        // 해당 음식 ID로 음식 정보를 가져옵니다.
+        Food food = foodService.getFoodById(id);
+
+        // 해당 음식에 대한 모든 스크랩 삭제
+        scrapService.removeAllScrapsForItem(food);
+
+        // 해당 음식에 대한 모든 좋아요 삭제
+        likeService.removeAllLikesForItem(food);
+
+        // 해당 음식에 대한 모든 리뷰 삭제
+        ratingService.removeAllRatingsForItem(food);
+
+        // 음식 데이터 삭제
+        foodService.deleteFood(id);
+
+        Member member = memberService.getCurrentMember();
+
+        model.addAttribute("nickname", member);
+        // 음식 목록 페이지로 리다이렉트
+        return "redirect:/food/list";
+    }
+
 
 }

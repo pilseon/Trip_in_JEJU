@@ -4,6 +4,8 @@ package com.example.Trip_In_Jeju.scrap;
 import com.example.Trip_In_Jeju.kategorie.activity.entity.Activity;
 import com.example.Trip_In_Jeju.kategorie.attractions.entity.Attractions;
 import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
+import com.example.Trip_In_Jeju.kategorie.festivals.entity.Festivals;
+import com.example.Trip_In_Jeju.kategorie.festivals.service.FestivalsService;
 import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
 import com.example.Trip_In_Jeju.kategorie.other.entity.Other;
 import com.example.Trip_In_Jeju.kategorie.shopping.entity.Shopping;
@@ -119,6 +121,24 @@ public class ScrapService {
         }
     }
 
+    @Transactional
+    public boolean toggleScrap(Festivals festivals, Member member) {
+        Optional<Scrap> existingScrap = scrapRepository.findByFestivalsAndMember(festivals, member);
+
+        if (existingScrap.isPresent()) {
+            scrapRepository.deleteByFestivalsAndMember(festivals, member);
+            return false; // 스크랩 삭제됨
+        } else {
+            Scrap scrap = new Scrap();
+            scrap.setFestivals(festivals);
+            scrap.setPeriodStart(festivals.getPeriodStart());
+            scrap.setPeriodEnd(festivals.getPeriodEnd());
+            scrap.setMember(member);
+            scrapRepository.save(scrap);
+            return true; // 스크랩 추가됨
+        }
+    }
+
     public int getScrapCount(Food food) {
         return scrapRepository.countByFood(food); // Food에 대한 스크랩 수 카운트
     }
@@ -129,6 +149,9 @@ public class ScrapService {
 
     public int getScrapCount(Activity activity) {
         return scrapRepository.countByActivity(activity);
+    }
+    public int getScrapCount(Festivals festivals) {
+        return scrapRepository.countByFestivals(festivals);
     }
 
     public int getScrapCount(Attractions attractions) {

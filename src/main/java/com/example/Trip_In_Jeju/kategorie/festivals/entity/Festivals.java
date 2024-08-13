@@ -53,6 +53,9 @@ public class Festivals {
     private String websiteUrl;
     private String hashtags;
 
+    private String periodStart;
+    private String periodEnd;
+
     private int likes;
 
 
@@ -60,5 +63,6 @@ public class Festivals {
 
     private String subCategory;
 
+    private int scrapCount;
 
 }

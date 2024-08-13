@@ -10,7 +10,7 @@
 ## 🧑‍🤝‍🧑 맴버구성
 * 유필선 - GPS , CALENDAR , AI 작업
 * 어근혁 - MEMBER , LIST , REVIEW 작업
-* 송현지 - LIST CATEGORY , PPT 작업
+* 송현지 - LIST CATEGORY , PPT 작업 
 
 ## 🕰️개발 기간
 

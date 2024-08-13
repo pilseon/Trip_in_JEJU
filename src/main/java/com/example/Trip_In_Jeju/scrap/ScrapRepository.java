@@ -4,6 +4,7 @@ package com.example.Trip_In_Jeju.scrap;
 import com.example.Trip_In_Jeju.kategorie.activity.entity.Activity;
 import com.example.Trip_In_Jeju.kategorie.attractions.entity.Attractions;
 import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
+import com.example.Trip_In_Jeju.kategorie.festivals.entity.Festivals;
 import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
 import com.example.Trip_In_Jeju.kategorie.other.entity.Other;
 import com.example.Trip_In_Jeju.kategorie.shopping.entity.Shopping;
@@ -46,4 +47,11 @@ public interface ScrapRepository extends JpaRepository<Scrap, Long> {
     int countByShopping(Shopping shopping);
 
     void deleteByDessert(Dessert dessert);
+
+    Optional<Scrap> findByFestivalsAndMember(Festivals festivals, Member member);
+
+    void deleteByFestivalsAndMember(Festivals festivals, Member member);
+
+    int countByFestivals(Festivals festivals);
+
 }

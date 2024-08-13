@@ -18,18 +18,17 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: auto;
+            overflow: auto; /* 스크롤 가능하도록 설정 */
         }
-
         .form-wrapper {
             position: relative;
             width: 90%;
             max-width: 400px;
             height: 90%;
+
             display: flex;
             flex-direction: column;
         }
-
         .form-container {
             position: absolute;
             width: 100%;
@@ -40,27 +39,23 @@
             transition: transform 0.6s ease-in-out;
             transform-style: preserve-3d;
         }
-
         .form-container.login.active {
             transform: translateX(0) rotateX(0deg);
         }
-
         .form-container.login.hidden {
             transform: translateX(-100%) rotateX(-90deg);
         }
-
         .form-container.signup.active {
             transform: translateX(0) rotateX(0deg);
         }
-
         .form-container.signup.hidden {
             transform: translateX(100%) rotateX(90deg);
-        }
+            }
 
-        .toggle-btn {
-            position: fixed; /* Fixed position */
-            bottom: 20px; /* Distance from bottom */
-            left: 20px; /* Distance from left */
+            .toggle-btn {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
             width: 50px;
             height: 50px;
             background-color: #007bff;
@@ -72,18 +67,19 @@
             align-items: center;
             cursor: pointer;
             z-index: 10;
-            transition: left 0.6s ease-in-out; /* Smooth transition for horizontal movement */
+            transform: translateX(-50%);
+            animation: moveButton 1s infinite alternate;
         }
-
-        .toggle-btn.move-right {
-            left: calc(100% - 70px); /* Adjusted for fixed positioning */
         }
 
         .toggle-btn i {
             font-size: 24px;
             transform: rotate(45deg);
         }
-
+        @keyframes moveButton {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(-40%); }
+        }
         .wave {
             position: absolute;
             width: 100%;
@@ -92,18 +88,15 @@
             border-radius: 50%;
             animation: wave-animation 6s infinite;
         }
-
         .wave.layer_1 {
             animation-duration: 8s;
             background: rgba(255, 255, 255, 0.1);
         }
-
         @keyframes wave-animation {
             0% { transform: scale(0.8); opacity: 0.4; }
             50% { transform: scale(1.2); opacity: 0.1; }
             100% { transform: scale(0.8); opacity: 0.4; }
         }
-
         .orange {
             position: absolute;
             width: 50px;
@@ -114,7 +107,6 @@
             opacity: 0;
             animation: fall 10s forwards;
         }
-
         @keyframes fall {
             0% {
                 transform: translateY(-100px);
@@ -129,7 +121,6 @@
     <!-- Font Awesome CDN for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-
 <body>
 <div class="wrap">
     <div class="wave"></div>
@@ -140,7 +131,7 @@
     <div class="form-wrapper">
         <div class="form-container login active">
             <div class="content">
-                <br><br><br><br><br><br><br><br><br>
+                <br><br><br><br><br>
                 <h1>
                     <a href="/">
                         <img src="https://i.ibb.co/s3RSNmC/sdfa-removebg-preview.png" alt="트립인 제주" width="300" height="300">
@@ -176,16 +167,15 @@
                     </a>
                     <br>
                     <br>
-                    <a>아래 비행기를 눌러 회원가입으로 전환!</a>
-                    <br> <br> <br> <br> <br> <br>
-                    <br>
+                    <a > 아래 비행기를 눌러 회원가입으로 전환!</a>
+                    <br> <br> <br> <br> <br>
                 </div>
 
             </div>
         </div>
         <div class="form-container signup hidden">
             <div class="content">
-                <br><br><br><br><br><br><br><br><br><br><br><br>
+                <br><br><br><br>
                 <h1>
                     <a href="/">
                         <img src="https://i.ibb.co/s3RSNmC/sdfa-removebg-preview.png" alt="트립인 제주" width="300" height="300">
@@ -224,47 +214,42 @@
                                         <option value="쇼핑">쇼핑</option>
                                         <option value="기타">기타</option>
                                     </select>
-                                    <br><br>
-                                    <label for="thumbnail"><i class="fas fa-image"></i> 프로필 사진)</label>
+                                    <br> <br>   <label for="thumbnail"><i class="fas fa-image"></i> 프로필 사진</label>
                                     <input type="file" id="thumbnail" name="thumbnail" accept="image/png, image/gif, image/jpeg" >
-                                    <br><br>
+                                    <br>
                                     <button type="submit" class="btn btn-primary">회원가입</button>
-                                    <br><br><br>
+                                    <br>
                                 </form>
+                                <a> 아래 비행기로  로그인으로 전환!</a>
                             </div>
-                            <a>아래 비행기를 눌러 로그인으로 전환!</a>
-                            <br> <br> <br> <br> <br> <br>
-                            <br>
+                            <br><br><br><br>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <button class="toggle-btn" onclick="toggleForm()">
-            <i class="fas fa-plane"></i>
-        </button>
     </div>
+    <br><br><br><br><br>
 </div>
-
+<button class="toggle-btn" onclick="toggleForm()">
+    <i class="fas fa-plane"></i>
+</button>
 
 <script>
     function toggleForm() {
         const loginForm = document.querySelector('.form-container.login');
         const signupForm = document.querySelector('.form-container.signup');
-        const toggleBtn = document.querySelector('.toggle-btn');
 
         if (loginForm.classList.contains('active')) {
             loginForm.classList.remove('active');
             loginForm.classList.add('hidden');
             signupForm.classList.remove('hidden');
             signupForm.classList.add('active');
-            toggleBtn.classList.add('move-right');
         } else {
             signupForm.classList.remove('active');
             signupForm.classList.add('hidden');
             loginForm.classList.remove('hidden');
             loginForm.classList.add('active');
-            toggleBtn.classList.remove('move-right');
         }
     }
 

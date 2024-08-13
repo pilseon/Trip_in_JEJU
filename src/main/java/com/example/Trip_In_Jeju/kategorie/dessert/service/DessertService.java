@@ -262,11 +262,11 @@ public class DessertService {
         Dessert dessert = dessertRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Dessert not found with id: " + id));
 
-        // 관련된 스크랩 및 좋아요 데이터 삭제
+
         likeRepository.deleteByDessert(dessert);
         scrapService.deleteByDessert(dessert);
 
-        // 디저트 삭제
+
         dessertRepository.delete(dessert);
     }
 

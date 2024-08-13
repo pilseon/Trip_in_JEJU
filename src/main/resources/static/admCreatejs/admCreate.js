@@ -13,7 +13,7 @@ var map, marker, infowindow, ps;
             const timeInputs = document.getElementById('timeInputs');
             const periodInputs = document.getElementById('periodInputs');
 
-            if (selectedCategory === 'festivals') {
+            if (selectedCategory === '축제') {
                 timeInputs.style.display = 'none';
                 periodInputs.style.display = 'block';
             }

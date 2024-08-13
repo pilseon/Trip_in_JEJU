@@ -70,7 +70,16 @@
                     <span th:text="${food.content}"></span>
                 </div>
 
-                <!-- food/detail.html -->
+                <div sec:authorize="isAuthenticated()" th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                    <form th:action="@{/food/delete/{id}(id=${food.id})}" method="post" style="display:inline;"
+                          onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                        <input type="hidden" name="_method" value="delete"/>
+                        <button type="submit" class="delete-button">
+                            <i class="fas fa-trash-alt"></i> 삭제
+                        </button>
+                    </form>
+                </div>
+
                 <div class="scrap-button-container mt-4" id="scrapButtonContainer">
                     <form id="scrapForm" th:action="@{/food/scrap/{id}(id=${food.id})}" method="post" style="display: inline;">
                         <button type="submit" th:disabled="${alreadyScrapped}">📌</button>

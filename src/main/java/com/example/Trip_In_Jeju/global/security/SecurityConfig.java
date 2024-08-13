@@ -29,19 +29,19 @@ public class SecurityConfig {
                         .loginPage("/member/login")
                         .defaultSuccessUrl("/", true)
                 )
-                .oauth2Login(
-                        oauth2Login -> oauth2Login
-                                .loginPage("/member/login")
+                .oauth2Login(oauth2Login -> oauth2Login
+                        .loginPage("/member/login")
                 )
-                .logout(
-                        logout -> logout
-                                .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
-                                .logoutSuccessUrl("/")
-                                .invalidateHttpSession(true)
+                .logout(logout -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true)
                 )
+
                 .cors() // CORS 설정 활성화
                 .and()
                 .csrf().disable(); // CSRF 보안 기능 비활성화
+
 
         return http.build();
     }

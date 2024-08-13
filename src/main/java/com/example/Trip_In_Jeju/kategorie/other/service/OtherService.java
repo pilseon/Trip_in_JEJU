@@ -10,6 +10,7 @@ import com.example.Trip_In_Jeju.location.entity.Location;
 import com.example.Trip_In_Jeju.location.repository.LocationRepository;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
+import com.example.Trip_In_Jeju.scrap.ScrapRepository;
 import com.example.Trip_In_Jeju.scrap.ScrapService;
 import com.example.Trip_In_Jeju.search.dto.Result;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,7 @@ public class OtherService {
     private final LikeRepository likeRepository;
     private final RatingService ratingService;
     private final ScrapService scrapService;
+    private final ScrapRepository scrapRepository;
 
     @Value("${kakao.api.key}")
     private String apiKey;
@@ -227,16 +229,20 @@ public class OtherService {
         Other other = findById(id); // 기존의 findById 메서드를 사용
         return new Result(other.getId(), other.getTitle(), other.getPlace(), other.getThumbnailImg(), other.getContent());
     }
-    // 랜덤으로 10개의 Food 항목을 가져오는 메서드
-    public List<Other> getRandomOthers(int limit) {
-        List<Other> allOthers = otherRepository.findAll();
-        return getRandomItems(allOthers, limit);
-    }
 
-    private <T> List<T> getRandomItems(List<T> items, int limit) {
-        Random rand = new Random();
-        Collections.shuffle(items, rand);
-        return items.stream().limit(limit).collect(Collectors.toList());
+    @Transactional
+    public void deleteOther(Long otherId) {
+        // 먼저 스크랩 테이블에서 관련 데이터를 삭제해요
+        scrapRepository.deleteByOtherId(otherId);
+
+        // 좋아요 삭제
+        likeRepository.deleteByOtherId(otherId);
+
+        // 리뷰 삭제
+        ratingService.deleteRatingsByOtherId(otherId);
+
+
+        otherRepository.deleteById(otherId);
     }
 
 }

@@ -10,6 +10,7 @@ import com.example.Trip_In_Jeju.location.entity.Location;
 import com.example.Trip_In_Jeju.location.repository.LocationRepository;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
+import com.example.Trip_In_Jeju.scrap.ScrapRepository;
 import com.example.Trip_In_Jeju.scrap.ScrapService;
 import com.example.Trip_In_Jeju.search.dto.Result;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,7 @@ public class DessertService {
     private final LikeRepository likeRepository;
     private final RatingService ratingService;
     private final ScrapService scrapService;
+    private final ScrapRepository scrapRepository;
 
     @Value("${kakao.api.key}")
     private String apiKey;
@@ -258,27 +260,19 @@ public class DessertService {
     }
 
     @Transactional
-    public void deleteDessert(Long id) {
-        Dessert dessert = dessertRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Dessert not found with id: " + id));
+    public void deleteDessert(Long dessertId) {
+        // 먼저 스크랩 테이블에서 관련 데이터를 삭제해요
+        scrapRepository.deleteByDessertId(dessertId);
+
+        // 좋아요 삭제
+        likeRepository.deleteByDessertId(dessertId);
+
+        // 리뷰 삭제
+        ratingService.deleteRatingsByDessertId(dessertId);
 
 
-        likeRepository.deleteByDessert(dessert);
-        scrapService.deleteByDessert(dessert);
-
-
-        dessertRepository.delete(dessert);
+        dessertRepository.deleteById(dessertId);
     }
 
-    public List<Dessert> getRandomDesserts(int limit) {
-        List<Dessert> allDesserts = dessertRepository.findAll();
-        return getRandomItems(allDesserts, limit);
-    }
-
-    private <T> List<T> getRandomItems(List<T> items, int limit) {
-        Random rand = new Random();
-        Collections.shuffle(items, rand);
-        return items.stream().limit(limit).collect(Collectors.toList());
-    }
 
 }

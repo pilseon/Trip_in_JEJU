@@ -32,7 +32,7 @@
                 <label for="thumbnail">사진 수정</label>
                 <input type="file" id="thumbnail" name="thumbnail" accept="image/png, image/gif, image/jpeg">
             </div>
-                <img id="thumbnailPreview" th:src="@{/gen/{thumbnailImg}(thumbnailImg=${rating.thumbnailImg})}" alt="Thumbnail Preview" style="max-width: 200px; max-height: 200px;"/>
+            <img id="thumbnailPreview" th:src="@{/gen/{thumbnailImg}(thumbnailImg=${rating.thumbnailImg})}" alt="Thumbnail Preview" style="max-width: 200px; max-height: 200px;"/>
             <button type="submit" class="btn btn-primary">리뷰 수정</button>
         </form>
     </div>

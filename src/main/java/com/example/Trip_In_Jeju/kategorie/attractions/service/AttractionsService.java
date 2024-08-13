@@ -10,6 +10,7 @@ import com.example.Trip_In_Jeju.location.entity.Location;
 import com.example.Trip_In_Jeju.location.repository.LocationRepository;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
+import com.example.Trip_In_Jeju.scrap.ScrapRepository;
 import com.example.Trip_In_Jeju.scrap.ScrapService;
 import com.example.Trip_In_Jeju.search.dto.Result;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,7 @@ public class AttractionsService {
     private final LikeRepository likeRepository;
     private final RatingService ratingService;
     private final ScrapService scrapService;
+    private final ScrapRepository scrapRepository;
 
     @Value("${kakao.api.key}")
     private String apiKey;
@@ -190,15 +192,19 @@ public class AttractionsService {
         return new Result(attractions.getId(), attractions.getTitle(), attractions.getPlace(), attractions.getThumbnailImg(), attractions.getContent());
     }
 
-    // 랜덤으로 10개의 Food 항목을 가져오는 메서드
-    public List<Attractions> getRandomAttractions(int limit) {
-        List<Attractions> allAttractions = attractionsRepository.findAll();
-        return getRandomItems(allAttractions, limit);
-    }
+    @Transactional
+    public void deleteAttractions(Long attractionsId) {
+        // 먼저 스크랩 테이블에서 관련 데이터를 삭제해요
+        scrapRepository.deleteByAttractionsId(attractionsId);
 
-    private <T> List<T> getRandomItems(List<T> items, int limit) {
-        Random rand = new Random();
-        Collections.shuffle(items, rand);
-        return items.stream().limit(limit).collect(Collectors.toList());
+        // 좋아요 삭제
+        likeRepository.deleteByAttractionsId(attractionsId);
+
+        // 리뷰 삭제
+        ratingService.deleteRatingsByAttractionsId(attractionsId);
+
+
+        attractionsRepository.deleteById(attractionsId);
+
     }
 }

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<section layout:fragment="content" class="section-prod-list">
+    <body>
+    <div class="container mx-auto p-4">
+        <h1 class="text-2xl font-bold mb-4">이벤트 수정</h1>
+        <!-- 이벤트 수정 폼 시작 -->
+        <form th:action="@{/adm/event/update/{id}(id=${event.id})}" method="post" enctype="multipart/form-data">
+            <!-- 제목 입력 -->
+            <div class="mb-4">
+                <label class="block text-sm font-bold mb-2" for="title">제목</label>
+                <input type="text" id="title" name="title" th:value="${event.title}" class="w-full p-2 border rounded" required>
+            </div>
+
+            <!-- 내용 입력 -->
+            <div class="mb-4">
+                <label class="block text-sm font-bold mb-2" for="content">내용</label>
+                <textarea id="content" name="content" class="w-full p-2 border rounded" rows="5" required th:text="${event.content}"></textarea>
+            </div>
+
+            <!-- 이벤트 시작일 -->
+            <div class="mb-4">
+                <label class="block text-sm font-bold mb-2" for="periodStart">이벤트 시작일</label>
+                <input type="date" id="periodStart" name="periodStart" th:value="${event.periodStart}" class="w-full p-2 border rounded" required>
+            </div>
+
+            <!-- 이벤트 종료일 -->
+            <div class="mb-4">
+                <label class="block text-sm font-bold mb-2" for="periodEnd">이벤트 종료일</label>
+                <input type="date" id="periodEnd" name="periodEnd" th:value="${event.periodEnd}" class="w-full p-2 border rounded" required>
+            </div>
+
+            <!-- 썸네일 이미지 업로드 -->
+            <div class="mb-4">
+                <label class="block text-sm font-bold mb-2" for="thumbnailImg">썸네일 이미지</label>
+                <input type="file" id="thumbnailImg" name="thumbnailImg" class="w-full p-2 border rounded">
+                <p class="text-xs text-gray-500">이미지를 선택하지 않으면 기존 이미지가 유지됩니다.</p>
+            </div>
+
+            <!-- 기존 스텝 이미지 표시 및 수정 -->
+            <div class="mb-4" th:each="step, iterStat : ${event.steps}">
+                <label class="block text-sm font-bold mb-2">Step [[${iterStat.index + 1}]] 이미지</label>
+                <!-- 기존 이미지 표시 -->
+                <img th:src="${step.imageFilePath}" alt="Step Image" class="w-full max-h-screen object-contain rounded-lg mb-2">
+                <!-- 기존 이미지 경로를 hidden 필드로 유지 -->
+                <input type="hidden" name="existingStepImages" th:value="${step.imageFilePath}">
+                <!-- 새로운 이미지 업로드 필드 -->
+                <input type="file" name="steps" class="w-full p-2 border rounded">
+                <p class="text-xs text-gray-500">이미지를 선택하지 않으면 기존 이미지가 유지됩니다.</p>
+            </div>
+
+            <!-- 새로운 스텝 이미지 추가 -->
+            <div class="mb-4" id="additionalImagesContainer">
+                <label class="block text-sm font-bold mb-2">새로운 Step 이미지 추가</label>
+                <input type="file" name="steps" class="w-full p-2 border rounded">
+                <p class="text-xs text-gray-500">필요한 경우 새 이미지를 추가로 업로드하세요.</p>
+            </div>
+
+            <!-- "추가 이미지" 버튼 -->
+            <button type="button" id="addImageButton" class="bg-gray-500 text-white p-2 rounded">추가 이미지</button>
+
+            <!-- 수정 버튼 -->
+            <div class="text-right mt-4">
+                <button type="submit" class="bg-blue-500 text-white p-2 rounded">수정하기</button>
+            </div>
+
+            <script>
+        document.getElementById('addImageButton').addEventListener('click', function () {
+            const container = document.getElementById('additionalImagesContainer');
+            const newImageInput = document.createElement('input');
+            newImageInput.type = 'file';
+            newImageInput.name = 'steps';  // steps 배열에 포함되도록 설정
+            newImageInput.className = 'w-full p-2 border rounded mt-2';
+            container.appendChild(newImageInput);
+        });
+    </script>
+    </body>
+</section>
+</html>

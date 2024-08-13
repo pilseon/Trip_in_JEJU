@@ -48,6 +48,42 @@ public class EventService {
         eventRepository.save(event);
     }
 
+    @Transactional
+    public void updateEvent(Event event, MultipartFile thumbnailImg, MultipartFile[] steps) {
+        if (!thumbnailImg.isEmpty()) {
+            String thumbnailImgPath = saveFile(thumbnailImg);
+            event.setThumbnailImg(thumbnailImgPath);
+        }
+
+        if (steps != null && steps.length > 0) {
+            List<ImageStep> imageSteps = event.getSteps();
+            for (int i = 0; i < steps.length; i++) {
+                if (i < imageSteps.size()) {
+                    // 기존 이미지를 업데이트
+                    if (!steps[i].isEmpty()) {
+                        String stepImgPath = saveFile(steps[i]);
+                        ImageStep imageStep = imageSteps.get(i);
+                        imageStep.setImageFilename(steps[i].getOriginalFilename());
+                        imageStep.setImageFilePath(stepImgPath);
+                    }
+                } else {
+                    // 새로운 이미지를 추가
+                    if (!steps[i].isEmpty()) {
+                        String stepImgPath = saveFile(steps[i]);
+                        ImageStep newImageStep = new ImageStep();
+                        newImageStep.setStepNumber(i + 1);
+                        newImageStep.setImageFilename(steps[i].getOriginalFilename());
+                        newImageStep.setImageFilePath(stepImgPath);
+                        newImageStep.setEvent(event);
+                        imageSteps.add(newImageStep);
+                    }
+                }
+            }
+        }
+
+        eventRepository.save(event);
+    }
+
     private String saveFile(MultipartFile file) {
         if (file.isEmpty()) {
             return null;
@@ -73,5 +109,10 @@ public class EventService {
     public Event findEventById(Long id) {
         Optional<Event> event = eventRepository.findById(id);
         return event.orElse(null);
+    }
+
+    @Transactional
+    public void deleteEventById(Long id) {
+        eventRepository.deleteById(id);
     }
 }

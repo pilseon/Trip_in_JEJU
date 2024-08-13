@@ -2,6 +2,7 @@ package com.example.Trip_In_Jeju.kategorie.festivals.service;
 
 import com.example.Trip_In_Jeju.calendar.entity.Calendar;
 import com.example.Trip_In_Jeju.calendar.repository.CalendarRepository;
+import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
 import com.example.Trip_In_Jeju.kategorie.festivals.entity.Festivals;
 import com.example.Trip_In_Jeju.kategorie.festivals.repository.FestivalsRepository;
 import com.example.Trip_In_Jeju.like.entity.Like;
@@ -10,6 +11,7 @@ import com.example.Trip_In_Jeju.location.entity.Location;
 import com.example.Trip_In_Jeju.location.repository.LocationRepository;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
+import com.example.Trip_In_Jeju.scrap.ScrapService;
 import com.example.Trip_In_Jeju.search.dto.Result;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,6 +39,7 @@ public class FestivalsService {
     private final LikeRepository likeRepository;
     private final CalendarRepository calendarRepository;
     private final RatingService ratingService;
+    private final ScrapService scrapService;
 
     @Value("${kakao.api.key}")
     private String apiKey;
@@ -209,7 +212,14 @@ public class FestivalsService {
     }
 
     public Festivals getFestivalsById(Long id) {
-        return festivalsRepository.findById(id).orElse(null);
+        Festivals festivals = festivalsRepository.findById(id).orElse(null);
+
+        if (festivals != null) {
+            // 스크랩 수를 업데이트
+            int scrapCount = scrapService.getScrapCount(festivals);
+            festivals.setScrapCount(scrapCount);
+        }
+        return festivals;
     }
 
     public List<Festivals> getAllFestivals() {

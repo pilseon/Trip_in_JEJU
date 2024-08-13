@@ -61,6 +61,12 @@
                     </span>
                 </div>
 
+                <div class="scrap-button-container mt-4" id="scrapButtonContainer">
+                    <form id="scrapForm" th:action="@{/festivals/scrap/{id}(id=${festivals.id})}" method="post" style="display: inline;">
+                        <button type="submit" th:disabled="${alreadyScrapped}">📌</button>
+                    </form>
+                    <span class="scraps" th:text="'(' + ${festivals.scrapCount} + ')'"> (0) </span>
+                </div>
                 <!-- 내용 -->
                 <div class="mt-4">
                     <span th:text="${festivals.content}"></span>

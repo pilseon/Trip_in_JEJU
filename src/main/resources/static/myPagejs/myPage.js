@@ -29,7 +29,7 @@
                     }
                 });
 
-                // 탭 내용 표시
+
                 tabContents.forEach(tabContent => {
                     if (tabContent.id === target) {
                         tabContent.style.display = "block";
@@ -45,6 +45,39 @@
                 });
             });
 
-            // 페이지가 처음 로드될 때 일정 탭을 활성화
+
             updateTabVisibility(document.getElementById("schedule"));
         });
+
+
+    function changeDate(days) {
+
+              var storedDate = localStorage.getItem('selectedDate');
+              var currentDate = storedDate ? new Date(storedDate) : new Date();
+
+
+              currentDate.setDate(currentDate.getDate() + days);
+              var formattedDate = currentDate.toISOString().split('T')[0];
+
+
+              localStorage.setItem('selectedDate', formattedDate);
+
+
+              window.location.href = '/member/myPage?date=' + formattedDate;
+          }
+
+          window.onload = function() {
+              var storedDate = localStorage.getItem('selectedDate');
+              if (storedDate) {
+                  // 저장된 날짜를 사용하여 필요한 작업을 수행
+                  console.log('저장된 날짜:', storedDate);
+              } else {
+                  // 저장된 날짜가 없는 경우
+                  console.log('저장된 날짜가 없습니다.');
+              }
+          };
+
+function showDatePicker() {
+    const datePicker = document.getElementById('datePicker');
+    datePicker.showPicker(); // 직접 캘린더를 보여주는 메서드 호출
+}

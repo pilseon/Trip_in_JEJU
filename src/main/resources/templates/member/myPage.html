@@ -35,15 +35,17 @@
 
         <section class="content">
             <div class="tab-content" id="tab-schedule">
-                <div class="flex flex-col p-4">
+                <div class="flex flex-col pt-4">
                     <div class="flex justify-between items-center">
+                        <button class="button" onclick="changeDate(-1)">◀</button> <!-- 하루 전 버튼 -->
                         <div class="relative">
                             <div class="flex items-center">
                                 <span th:text="${currentDate.format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy년 MM월 dd일'))}"></span>
-                                <button class="text-gray-500 ml-2" onclick="toggleDatePicker()">▼</button>
+                                <button class="text-gray-500 ml-2" onclick="showDatePicker()">▼</button>
+                                <input type="date" id="datePicker" class="hidden mt-2 border border-gray-300 rounded p-2 bg-white absolute" onchange="navigateToDate()" />
                             </div>
-                            <input type="date" id="datePicker" class="hidden mt-2 border border-gray-300 rounded p-2 bg-white absolute" onchange="navigateToDate()"/>
                         </div>
+                        <button class="button" onclick="changeDate(1)">▶</button>
                     </div>
                     <div class="grid grid-cols-7 text-center font-semibold mb-4">
                         <div class="date-cell" th:each="date : ${weekDates}">
@@ -55,34 +57,36 @@
                         </div>
                     </div>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="">
                     <div th:each="entry : ${eventsByDate}" th:if="${entry.value.size() > 0}">
-                        <div th:each="event : ${entry.value}" class="event-card">
-                            <!-- 카드 전체를 링크로 만들기 위해 <a> 태그로 감쌌습니다. -->
-                            <a th:each="festival : ${event.festivals}"
-                               th:href="@{/festivals/detail/{id}(id=${festival.id})}"
-                               class="festival-link">
-                                <div class="event-date">
-                                    <span th:text="${currentDate}"></span>
-                                </div>
-                                <div class="event-content">
-                                    <h4 th:text="${event.title}"></h4>
-                                    <span th:text="${event.periodStart} + ' - ' + ${event.periodEnd}"></span>
-                                    <div class="festivals" th:if="${event.festivals != null and !#lists.isEmpty(event.festivals)}">
-                                        <div class="festival-info">
-                                            <img th:src="@{|/gen/${festival.thumbnailImg}|}" alt="Festival Thumbnail" class="festival-thumbnail">
+                    <div th:each="scrap : ${scraps}" th:if="${scrap.festivals != null}" class="history-item flex items-center p-4 bg-white shadow rounded mb-4">
+                        <a th:href="@{/festivals/detail/{id}(id=${scrap.festivals.id})}" class="festival-link">
+
+                                <div  th:if="${scrap.festivals != null}" class="flex items-center">
+                                    <img th:src="@{|/gen/${scrap.festivals.thumbnailImg}|}" alt="Festivals Thumbnail"
+                                         class="w-24 h-24 rounded-md mr-4">
+                                    <div>
+                                        <div>
+                                            <span class="font-bold">축제 일정 : </span>
+                                        <div class="md:inline" th:text="${scrap.festivals.calendar.periodStart} + ' - ' + ${scrap.festivals.calendar.periodEnd}"></div>
+                                        </div>
                                             <div>
-                                                <h5 th:text="${festival.title}"></h5>
-                                                <p th:text="${festival.subCategory}"></p>
-                                                <p th:text="${festival.place}"></p>
-                                            </div>
+                                            <span class="font-bold">축제명 : </span>
+                                            <span th:text="${scrap.festivals.title}"></span>
+                                        </div>
+                                        <div>
+                                            <span class="font-bold">카테고리 : </span>
+                                            <span th:text="${scrap.festivals.subCategory}"></span>
+                                        </div>
+                                        <div>
+                                            <span class="font-bold">축제명 : </span>
+                                            <span th:text="${scrap.festivals.place}"></span>
                                         </div>
                                     </div>
-                                    <p th:if="${event.festivals == null or #lists.isEmpty(event.festivals)}">진행중인 축제가 없습니다.</p>
                                 </div>
-                            </a>
-                        </div>
+                        </a>
                     </div>
+                </div>
                 </div>
             </div>
 

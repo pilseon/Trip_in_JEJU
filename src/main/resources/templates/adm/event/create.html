@@ -10,38 +10,38 @@
     </head>
     <body>
     <div class="container mx-auto p-4">
-        <h1 class="text-2xl font-bold mb-4">Create Event</h1>
+        <h1 class="text-2xl font-bold mb-4">이벤트 생성</h1>
         <form th:action="@{/adm/event/create}" method="post" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-md">
             <div class="mb-4">
-                <label for="title" class="block text-gray-700 font-bold mb-2">Title:</label>
+                <label for="title" class="block text-gray-700 font-bold mb-2">제목 :</label>
                 <input type="text" id="title" name="title" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
             <div class="mb-4">
-                <label for="content" class="block text-gray-700 font-bold mb-2">Content:</label>
+                <label for="content" class="block text-gray-700 font-bold mb-2">안내사항 :</label>
                 <textarea id="content" name="content" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
             </div>
             <div class="mb-4">
-                <label for="thumbnailImg" class="block text-gray-700 font-bold mb-2">Thumbnail Image:</label>
+                <label for="thumbnailImg" class="block text-gray-700 font-bold mb-2">배너 이미지 :</label>
                 <input type="file" id="thumbnailImg" name="thumbnailImg" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
             </div>
             <div class="mb-4">
-                <label for="periodStart" class="block text-gray-700 font-bold mb-2">Start Date:</label>
+                <label for="periodStart" class="block text-gray-700 font-bold mb-2">이벤트 시작 :</label>
                 <input type="date" id="periodStart" name="periodStart" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
             <div class="mb-4">
-                <label for="periodEnd" class="block text-gray-700 font-bold mb-2">End Date:</label>
+                <label for="periodEnd" class="block text-gray-700 font-bold mb-2">이벤트 종료:</label>
                 <input type="date" id="periodEnd" name="periodEnd" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
             <div class="mb-4">
-                <label for="steps" class="block text-gray-700 font-bold mb-2">Event Steps:</label>
+                <label for="steps" class="block text-gray-700 font-bold mb-2">이미지 첨부:</label>
                 <div id="stepContainer">
                     <input type="file" id="steps" name="steps" multiple class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
                 </div>
-                <button type="button" id="addStep" class="mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Add Step</button>
+                <button type="button" id="addStep" class="mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">이미지 추가하기</button>
             </div>
             <div class="flex items-center justify-between">
                 <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                    Create Event
+                    이벤트 생성
                 </button>
             </div>
         </form>

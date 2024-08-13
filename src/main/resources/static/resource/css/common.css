@@ -148,3 +148,9 @@ div.clickEffect {
   a:hover > .category_hover{
     animation: bounce 0.8s infinite;
       }
+      .hidden {
+        display: none;
+        max-height: 0; /* 기본적으로 높이 0 */
+        overflow: hidden; /* 요소가 숨겨질 때 깔끔하게 처리 */
+        transition: max-height 0.3s ease-out; /* 부드러운 애니메이션 */
+      }

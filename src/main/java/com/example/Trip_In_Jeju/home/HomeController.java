@@ -2,11 +2,19 @@ package com.example.Trip_In_Jeju.home;
 
 import com.example.Trip_In_Jeju.event.entity.Event;
 import com.example.Trip_In_Jeju.event.service.EventService;
+import com.example.Trip_In_Jeju.kategorie.activity.entity.Activity;
 import com.example.Trip_In_Jeju.kategorie.activity.service.ActivityService;
+import com.example.Trip_In_Jeju.kategorie.attractions.entity.Attractions;
 import com.example.Trip_In_Jeju.kategorie.attractions.service.AttractionsService;
+import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
 import com.example.Trip_In_Jeju.kategorie.dessert.service.DessertService;
+import com.example.Trip_In_Jeju.kategorie.festivals.entity.Festivals;
+import com.example.Trip_In_Jeju.kategorie.festivals.service.FestivalsService;
+import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
 import com.example.Trip_In_Jeju.kategorie.food.service.FoodService;
+import com.example.Trip_In_Jeju.kategorie.other.entity.Other;
 import com.example.Trip_In_Jeju.kategorie.other.service.OtherService;
+import com.example.Trip_In_Jeju.kategorie.shopping.entity.Shopping;
 import com.example.Trip_In_Jeju.kategorie.shopping.service.ShoppingService;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.member.servcie.MemberService;
@@ -30,17 +38,76 @@ public class HomeController {
     private final AttractionsService attractionsService;
     private final ActivityService activityService;
     private final OtherService otherService;
+    private final FestivalsService festivalsService;
 
     @GetMapping("/")
     public String index(Model model) {
+        // 현재 회원 정보 가져오기
         Member currentMember = memberService.getCurrentMember();
         model.addAttribute("member", currentMember);
+
 
         List<Event> events = eventService.findAllEvents();
         model.addAttribute("events", events);
 
+        if (currentMember == null) {
+            model.addAttribute("member", null);
+            // 로그인하지 않은 상태에서 사용할 기본 데이터를 설정합니다.
+
+
+            return "home/main"; // 비회원 페이지로 리턴
+        }
+        // 공통 데이터 설정
+
+
+        // 회원의 테마 정보에 따라 다르게 데이터 설정
+        String thema = currentMember.getThema();
+
+        if (thema != null) {
+            switch (thema.toLowerCase()) {
+                case "음식점":
+                    List<Food> randomFoods = foodService.getRandomFoods(5);
+                    model.addAttribute("randomFoods", randomFoods);
+                    break;
+                case "디저트":
+                    List<Dessert> randomDesserts = dessertService.getRandomDesserts(5);
+                    model.addAttribute("randomDesserts", randomDesserts);
+                    break;
+                case "엑티비티":
+                    List<Activity> randomActivitys = activityService.getRandomActivities(5);
+                    model.addAttribute("randomActivitys", randomActivitys);
+                    break;
+                case "관광지":
+                    List<Attractions> randomAttractionss = attractionsService.getRandomAttractions(5);
+                    model.addAttribute("randomAttractionss", randomAttractionss);
+                    break;
+                case "축제":
+                    List<Festivals> randomFestivalss = festivalsService.getRandomFestivals(10);
+                    model.addAttribute("randomFestivalss", randomFestivalss);
+                    break;
+                case "쇼핑":
+                    List<Shopping> randomShoppings = shoppingService.getRandomShoppings(10);
+                    model.addAttribute("randomShoppings", randomShoppings);
+                    break;
+                case "기타":
+                    List<Other> randomOthers = otherService.getRandomOthers(5);
+                    model.addAttribute("randomOthers", randomOthers);
+                    break;
+
+            }
+        } else {
+            // thema가 없는 경우 기본 데이터를 설정
+            List<Food> defaultFoods = foodService.getRandomFoods(5);
+            model.addAttribute("randomFoods", defaultFoods);
+        }
+
         return "home/main";
     }
 
+
+    // 특정 카테고리가 회원의 카테고리 목록에 포함되어 있는지 확인하는 메서드
+    private boolean memberCategoryContains(String memberThema, String thema) {
+        return memberThema != null && memberThema.contains(thema);
+    }
 
 }

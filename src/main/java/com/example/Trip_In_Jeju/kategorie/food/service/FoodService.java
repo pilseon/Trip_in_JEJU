@@ -244,4 +244,15 @@ public class FoodService {
 
         foodRepository.deleteById(foodId);
     }
+
+    public List<Food> getRandomFoods(int limit) {
+        List<Food> allFoods = foodRepository.findAll();
+        return getRandomItems(allFoods, limit);
+    }
+
+    private <T> List<T> getRandomItems(List<T> items, int limit) {
+        Random rand = new Random();
+        Collections.shuffle(items, rand);
+        return items.stream().limit(limit).collect(Collectors.toList());
+    }
 }

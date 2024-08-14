@@ -274,5 +274,15 @@ public class DessertService {
         dessertRepository.deleteById(dessertId);
     }
 
+    public List<Dessert> getRandomDesserts(int limit) {
+        List<Dessert> allDesserts = dessertRepository.findAll();
+        return getRandomItems(allDesserts, limit);
+    }
+
+    private <T> List<T> getRandomItems(List<T> items, int limit) {
+        Random rand = new Random();
+        Collections.shuffle(items, rand);
+        return items.stream().limit(limit).collect(Collectors.toList());
+    }
 
 }

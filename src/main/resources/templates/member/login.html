@@ -13,27 +13,28 @@
     <style>
         .container {
             position: relative;
-            width: 100%;
-            height: 100vh;
+            width: 80%;
+            height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: auto; /* 스크롤 가능하도록 설정 */
+            overflow: auto;
+            scrollbar-width : none;
+
         }
         .form-wrapper {
             position: relative;
-            width: 90%;
-            max-width: 400px;
+            width: 100%;
+            max-width: 350px;
             height: 90%;
-
             display: flex;
             flex-direction: column;
         }
         .form-container {
             position: absolute;
             width: 100%;
-            height: 100%;
-            display: flex;
+            height: 80%;
+            display: block;
             justify-content: center;
             align-items: center;
             transition: transform 0.6s ease-in-out;
@@ -50,9 +51,8 @@
         }
         .form-container.signup.hidden {
             transform: translateX(100%) rotateX(90deg);
-            }
-
-            .toggle-btn {
+        }
+        .toggle-btn {
             position: absolute;
             bottom: 20px;
             left: 50%;
@@ -70,8 +70,6 @@
             transform: translateX(-50%);
             animation: moveButton 1s infinite alternate;
         }
-        }
-
         .toggle-btn i {
             font-size: 24px;
             transform: rotate(45deg);
@@ -101,7 +99,7 @@
             position: absolute;
             width: 50px;
             height: 50px;
-            background-image: url('https://i.ibb.co/PGhNNqQ/removebg-preview.png'); /* 귤 아이콘 이미지 URL */
+            background-image: url('https://i.ibb.co/PGhNNqQ/removebg-preview.png');
             background-size: cover;
             border-radius: 50%;
             opacity: 0;
@@ -131,10 +129,9 @@
     <div class="form-wrapper">
         <div class="form-container login active">
             <div class="content">
-                <br><br><br><br><br>
                 <h1>
                     <a href="/">
-                        <img src="https://i.ibb.co/s3RSNmC/sdfa-removebg-preview.png" alt="트립인 제주" width="300" height="300">
+                        <img src="https://i.ibb.co/s3RSNmC/sdfa-removebg-preview.png" alt="트립인 제주" width="200" height="200">
                     </a>
                     <nav>로그인</nav>
                 </h1>
@@ -175,10 +172,9 @@
         </div>
         <div class="form-container signup hidden">
             <div class="content">
-                <br><br><br><br>
                 <h1>
                     <a href="/">
-                        <img src="https://i.ibb.co/s3RSNmC/sdfa-removebg-preview.png" alt="트립인 제주" width="300" height="300">
+                        <img src="https://i.ibb.co/s3RSNmC/sdfa-removebg-preview.png" alt="트립인 제주" width="200" height="200">
                     </a>
                 </h1>
                 <div class="row">

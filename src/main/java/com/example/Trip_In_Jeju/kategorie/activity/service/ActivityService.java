@@ -209,4 +209,16 @@ public class ActivityService {
         activityRepository.deleteById(activityId);
 
     }
+
+    public List<Activity> getRandomActivities(int limit) {
+        List<Activity> allActivity = activityRepository.findAll();
+        return getRandomItems(allActivity, limit);
+    }
+
+    private <T> List<T> getRandomItems(List<T> items, int limit) {
+        Random rand = new Random();
+        Collections.shuffle(items, rand);
+        return items.stream().limit(limit).collect(Collectors.toList());
+    }
+
 }

@@ -245,4 +245,16 @@ public class OtherService {
         otherRepository.deleteById(otherId);
     }
 
+    public List<Other> getRandomOthers(int limit) {
+        List<Other> allOthers = otherRepository.findAll();
+        return getRandomItems(allOthers, limit);
+    }
+
+    private <T> List<T> getRandomItems(List<T> items, int limit) {
+        Random rand = new Random();
+        Collections.shuffle(items, rand);
+        return items.stream().limit(limit).collect(Collectors.toList());
+    }
+
+
 }

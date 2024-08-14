@@ -2,6 +2,7 @@ package com.example.Trip_In_Jeju.kategorie.shopping.service;
 
 import com.example.Trip_In_Jeju.calendar.entity.Calendar;
 import com.example.Trip_In_Jeju.calendar.repository.CalendarRepository;
+import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
 import com.example.Trip_In_Jeju.kategorie.shopping.entity.Shopping;
 import com.example.Trip_In_Jeju.kategorie.shopping.repository.ShoppingRepository;
 import com.example.Trip_In_Jeju.like.entity.Like;
@@ -204,5 +205,16 @@ public class ShoppingService {
 
 
         shoppingRepository.deleteById(shoppingId);
+    }
+
+    public List<Shopping> getRandomShoppings(int limit) {
+        List<Shopping> allShoppings = shoppingRepository.findAll();
+        return getRandomItems(allShoppings, limit);
+    }
+
+    private <T> List<T> getRandomItems(List<T> items, int limit) {
+        Random rand = new Random();
+        Collections.shuffle(items, rand);
+        return items.stream().limit(limit).collect(Collectors.toList());
     }
 }

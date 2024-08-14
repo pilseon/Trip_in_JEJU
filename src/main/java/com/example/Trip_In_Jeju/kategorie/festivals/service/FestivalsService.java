@@ -26,10 +26,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -231,4 +229,15 @@ public class FestivalsService {
         return new Result(festivals.getId(), festivals.getTitle(), festivals.getPlace(), festivals.getThumbnailImg(), festivals.getContent());
     }
 
+    public List<Festivals> getRandomFestivals(int limit) {
+
+        List<Festivals> allFestivals = festivalsRepository.findAll();
+
+        return getRandomItems(allFestivals, limit);
+    }
+    private <T> List<T> getRandomItems(List<T> items, int limit) {
+        Random rand = new Random();
+        Collections.shuffle(items, rand);
+        return items.stream().limit(limit).collect(Collectors.toList());
+    }
 }

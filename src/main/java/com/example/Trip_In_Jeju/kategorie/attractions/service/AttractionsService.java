@@ -207,4 +207,14 @@ public class AttractionsService {
         attractionsRepository.deleteById(attractionsId);
 
     }
+    public List<Attractions> getRandomAttractions(int limit) {
+        List<Attractions> allAttractions = attractionsRepository.findAll();
+        return getRandomItems(allAttractions, limit);
+    }
+
+    private <T> List<T> getRandomItems(List<T> items, int limit) {
+        Random rand = new Random();
+        Collections.shuffle(items, rand);
+        return items.stream().limit(limit).collect(Collectors.toList());
+    }
 }

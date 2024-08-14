@@ -21,7 +21,7 @@
             font-size: 32px;
             color: #333;
         }
-        .profile-img {
+        .profile-img2 {
             display: block;
             width: 150px;
             height: 150px;
@@ -76,40 +76,39 @@
             font-size: 12px;
             margin-top: 5px;
         }
+        .form-group2 input[readonly] {
+
+            background-color: #e9ecef; /* 회색빛 배경 */
+            color: #495057; /* 텍스트 색상 */
+            border: 1px solid #ced4da; /* 테두리 색상 */
+            cursor: not-allowed; /* 커서 변경 */
+            opacity: 1; /* 비활성화된 스타일로 투명도 설정 */
+        }
+
+        .form-group2 input[readonly]::placeholder {
+            color: #6c757d; /* 플레이스홀더 색상 */
+        }
 
     </style>
 </head>
 
 <body>
 <section layout:fragment="content" class="section-prod-list">
-<<<<<<< HEAD
-<div class="container">
-    <img id="profilePicturePreview"
-         th:src="@{${member != null && member.thumbnailImg != null ? '/gen/' + member.thumbnailImg : 'https://i.ibb.co/sbGP6nb/image.webp'}}"
-         alt="프로필 사진"
-         class="profile-img"/>
-    <form action="showModifyForm" method="post" enctype="multipart/form-data" th:action="@{/member/modify}">
-        <div class="form-group">
-            <label for="thumbnail"><i class="fas fa-camera"></i> 프로필 사진</label>
-            <input type="file" id="thumbnail" name="thumbnail" accept="image/*" onchange="previewProfilePicture(event)">
-        </div>
-=======
     <div class="container">
         <img id="profilePicturePreview"
              th:src="@{${member != null && member.thumbnailImg != null ? '/gen/' + member.thumbnailImg : 'https://i.ibb.co/sbGP6nb/image.webp'}}"
              alt="프로필 사진"
-             class="profile-img"/>
+             class="profile-img2"/>
         <form action="showModifyForm" method="post" enctype="multipart/form-data" th:action="@{/member/modify}">
             <div class="form-group">
                 <label for="thumbnail"><i class="fas fa-camera"></i> 프로필 사진</label>
                 <input type="file" id="thumbnail" name="thumbnail" accept="image/*" onchange="previewProfilePicture(event)">
             </div>
 
-            <div class="form-group">
+            <div class="form-group2 w-full" style="margin-bottom: 15px;">
                 <label for="username"><i class="fas fa-user"></i> ID (수정 불가)</label>
                 <input type="text" id="username" name="username" th:value="${member.username}" readonly>
             </div>
->>>>>>> 0213ff1 (게시물 관리자만 삭제 끝)
 
             <div class="form-group">
                 <label for="nickname"><i class="fas fa-user"></i> 닉네임</label>
@@ -128,38 +127,11 @@
             </div>
 
 
-<<<<<<< HEAD
-
-
-        <div class="form-group">
-            <label for="email"><i class="fas fa-envelope"></i> 이메일</label>
-            <input type="email" id="email" name="email" th:value="${member.email}" required>
-        </div>
-
-
-        <label for="thema"><i class="fas fa-map-marker-alt"></i> 선호하는 여행 테마 (필수) </label>
-        <select id="thema" name="thema" class="px-2 py-3 ">
-            <option value="--">선호하시는 테마를 선택해 주세요!</option>
-            <option value="음식">음식</option>
-            <option value="디저트">디저트</option>
-            <option value="관광지">관광지</option>
-            <option value="축제">축제</option>
-            <option value="엑티비티">엑티비티</option>
-            <option value="쇼핑">쇼핑</option>
-            <option value="기타">기타</option>
-        </select>
-    <br><br>
-        <button type="submit" class="btn">수정하기</button>
-    </form>
-<br><br><br>
-</div>
-=======
 
             <div class="form-group">
                 <label for="email"><i class="fas fa-envelope"></i> 이메일</label>
                 <input type="email" id="email" name="email" th:value="${member.email}" required>
             </div>
->>>>>>> 0213ff1 (게시물 관리자만 삭제 끝)
 
 
             <label for="thema"><i class="fas fa-map-marker-alt"></i> 선호하는 여행 테마 (필수) </label>
@@ -173,10 +145,10 @@
                 <option value="쇼핑">쇼핑</option>
                 <option value="기타">기타</option>
             </select>
-            <br><br><br><br>
+            <br><br>
             <button type="submit" class="btn">수정하기</button>
         </form>
-        <br><br><br><br>
+        <br><br><br>
     </div>
 
     <script>
@@ -209,7 +181,6 @@
             document.getElementById("confirmPassword").addEventListener("input", checkPasswordMatch);
         };
     </script>
-
+</section>
 </body>
-
 </html>

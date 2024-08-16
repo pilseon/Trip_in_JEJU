@@ -44,18 +44,26 @@ public class RatingService {
     public String genFileDirPath;
 
     @Transactional
-    public void saveRating(Long itemId, Integer score, Long ratingId ,String comment, String username, MultipartFile thumbnail, String category, String categoryTitle) {
-        String thumbnailRelPath = "rating/" + UUID.randomUUID().toString() + ".jpg";
-        File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
+    public void saveRating(Long itemId, Integer score, Long ratingId, String comment, String username, MultipartFile thumbnail, String category, String categoryTitle) {
+        // 기본 이미지 경로를 null로 설정
+        String thumbnailRelPath = null;
 
-        thumbnailFile.mkdirs();
+        // thumbnail이 null이 아니면 파일을 저장
+        if (thumbnail != null && !thumbnail.isEmpty()) {
+            thumbnailRelPath = "rating/" + UUID.randomUUID().toString() + ".jpg";
+            File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
 
-        try {
-            thumbnail.transferTo(thumbnailFile);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            // 필요한 경우 상위 디렉토리 생성
+            thumbnailFile.getParentFile().mkdirs();
+
+            try {
+                thumbnail.transferTo(thumbnailFile);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
+        // Rating 객체 생성
         Rating rating = Rating.builder()
                 .itemId(itemId)
                 .title(categoryTitle)
@@ -66,8 +74,11 @@ public class RatingService {
                 .thumbnailImg(thumbnailRelPath)
                 .category(category)
                 .build();
+
+        // Rating 객체 저장
         ratingRepository.save(rating);
     }
+
 
 
     @Transactional

@@ -1,82 +1,207 @@
 <!DOCTYPE html>
 <html layout:decorate="~{layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="/resource/css/rating.css" rel="stylesheet" type="text/css"/>
+    <link href="/resource/css/click.css" rel="stylesheet" type="text/css"/>
+    <title>Trip_In_Jeju</title>
+    <style>
+        .list-group-item {
+            padding-left: 0;
+            margin-left: 0;
+        }
+
+        .list-group {
+            padding-left: 0;
+            margin-left: 0;
+        }
+
+        .scrap-button-container {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .image-container {
+            position: relative;
+        }
+
+        .scrap-button {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #FF4500;
+            cursor: pointer;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
 <section layout:fragment="content" class="section-prod-list">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport"
-              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <link href="/resource/css/like.css" rel="stylesheet" type="text/css"/>
-        <link href="/resource/css/click.css" rel="stylesheet" type="text/css"/>
-        <title>test</title>
-    </head>
-    <body>
     <section class="container mt-1">
-        <!-- 내용  -->
-        <!-- 이미지 -->
+        <!-- 이미지 컨테이너 -->
         <div class="image-container">
-        <img class="w-full" style="width: 100%; max-width: 100%;" th:src="@{|/gen/${festivals.thumbnailImg}|}" alt="상품이미지">
-        <div class="like-button-container" id="likeButtonContainer">
-            <form id="likeForm" th:action="@{/festivals/like/{id}(id=${festivals.id})}" method="post" style="display: inline;">
-                <button type="submit" th:disabled="${alreadyLiked}">❤️</button>
-            </form>
-            <span class="likes" th:text="'(' + ${festivals.likes} + ')'"> (0) </span>
+            <img class="w-full" style="width: 100%; max-width: 100%;" th:src="@{|/gen/${festivals.thumbnailImg}|}"
+                 alt="상품이미지">
+            <!-- 스크랩 -->
+            <div class="scrap-button-container mt-4" id="scrapButtonContainer"
+                 style="background-color: #f2f2f2; padding: 10px; border-radius: 5px;">
+                <form id="scrapForm" th:action="@{/festivals/scrap/{id}(id=${festivals.id})}" method="post"
+                      style="display: inline;">
+                    <button type="submit" style="background-color: transparent; border: none;">
+                        <i class="fa-heart"
+                           th:classappend="${festivals.scrapCount != null && festivals.scrapCount > 0 ? 'fa-solid heart-filled' : 'fa-regular heart-empty'}"
+                           style="color: #ff6666;"></i>
+                    </button>
+                </form>
+            </div>
         </div>
-    </div>
-        <!-- 내용 -->
+
+        <!-- 축제 정보 -->
         <div class="card">
             <div class="card-body">
                 <span class="font-bold" style="font-size: 1.5rem;" th:text="${festivals.title}"></span>
                 <ul class="list-group list-group-flush">
+                    <!-- 축제 기간 -->
                     <li class="list-group-item">
-                        <span>기간 : </span>
+                        <span style="font-weight: bold;">기간: </span>
                         <span th:text="${#temporals.format(festivals.calendar.periodStart, 'yyyy년 MM월 dd일')}"></span>
                         <span> ~ </span>
                         <span th:text="${#temporals.format(festivals.calendar.periodEnd, 'yyyy년 MM월 dd일')}"></span>
                     </li>
+                    <!-- 위치 -->
                     <li class="list-group-item">
-                        <span style="font-weight: bold;">위치 : </span>
+                        <span style="font-weight: bold;">위치: </span>
                         <span th:text="${festivals.location.name}"></span>
-                        <br>
                     </li>
+                    <!-- 정보 -->
                     <li class="list-group-item">
                         <span style="font-weight: bold;">정보: </span>
                         <a th:href="${festivals.websiteUrl}" target="_blank" style="color: blue;">홈페이지</a>
                     </li>
+                    <!-- 번호 -->
                     <li class="list-group-item">
                         <span style="font-weight: bold;">번호: </span>
                         <span th:text="${festivals.phoneNumber}"></span>
                     </li>
                 </ul>
-                <!-- 해시태그 -->
+
+                <!-- 축제 소개(내용) -->
                 <div class="mt-4">
-                    <span th:text="${festivals.hashtags}"></span>
+                    <span th:text="${festivals.content}"></span>
                 </div>
 
-                <div class="mt-4">
+                <!-- 좋아요 및 별점 -->
+                <div class="mt-4" style="display: flex; align-items: center;">
+                    <!-- 좋아요 -->
+                    <div class="like-button-container" id="likeButtonContainer"
+                         style="display: flex; align-items: center; margin-right: 10px;">
+                        <form id="likeForm" th:action="@{/festivals/like/{id}(id=${festivals.id})}" method="post"
+                              style="display: inline;">
+                            <button type="submit" th:disabled="${alreadyLiked}"
+                                    style="background-color: transparent; border: none; display: flex; align-items: center;">
+                                <i class="fa-thumbs-up"
+                                   th:classappend="${alreadyLiked} ? 'fa-solid' : 'fa-regular'"></i>
+                                <span style="margin-left: 5px;">좋아요</span>
+                            </button>
+                        </form>
+                        <span class="likes" style="margin-left: 5px;"
+                              th:text="'(' + (${festivals.likes} > 999 ? '999+' : ${festivals.likes}) + ')'"> (0) </span>
+                    </div>
+                    <!-- 별점 -->
                     <span>
-                        <a th:href="@{/festivals/review/{id}(id=${festivals.id})}" style="font-size: 1.5rem;">
+                        <a id="averageScoreLink" th:href="@{/festivals/review/{id}(id=${festivals.id})}"
+                           style="font-size: 1rem;">
                             ⭐ <span th:text="${averageScore}">4.9</span> 리뷰 (<span th:text="${ratings.size()}">999+</span>)
                         </a>
                     </span>
                 </div>
 
-                <div class="scrap-button-container mt-4" id="scrapButtonContainer">
-                    <form id="scrapForm" th:action="@{/festivals/scrap/{id}(id=${festivals.id})}" method="post" style="display: inline;">
-                        <button type="submit" th:disabled="${alreadyScrapped}">📌</button>
-                    </form>
-                    <span class="scraps" th:text="'(' + ${festivals.scrapCount} + ')'"> (0) </span>
-                </div>
-                <!-- 내용 -->
+                <!-- 지도 -->
                 <div class="mt-4">
-                    <span th:text="${festivals.content}"></span>
-                </div>
-                <!-- 지도  -->
-                <div class="mt-4">
-                    <span span class="font-bold" style="font-size: 1.5rem;">지도 </span>
-                    <div id="map" th:data-latitude="${festivals.location.latitude}" th:data-longitude="${festivals.location.longitude}" style="width:100%;height:400px;"></div>
+                    <span class="font-bold" style="font-size: 1.5rem;">지도 </span>
+                    <div id="map" th:data-latitude="${festivals.location.latitude}"
+                         th:data-longitude="${festivals.location.longitude}" style="width:100%;height:400px;"></div>
                 </div>
             </div>
+        </div>
+
+        <!-- 삭제 -->
+        <form th:action="@{/festivals/delete/{id}(id=${festivals.id})}" method="post" style="display:inline;"
+              onsubmit="return confirm('정말 삭제하시겠습니까?');">
+            <input type="hidden" name="_method" value="delete"/>
+            <button type="submit" class="delete-button">
+                <i class="fas fa-trash-alt"></i> 삭제
+            </button>
+        </form>
+
+        <!-- 리뷰 작성 및 목록 -->
+        <div class="containers mt-1" id="container2">
+            <!-- 리뷰 작성 -->
+            <div sec:authorize="isAuthenticated()">
+                <h3 class="mt-4">리뷰 작성</h3>
+                <form th:action="@{/festivals/review/{id}(id=${festivals.id})}" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="score">점수</label>
+                        <div class="rating">
+                            <input type="radio" id="star5" name="score" value="5" required>
+                            <label for="star5"></label>
+                            <input type="radio" id="star4" name="score" value="4">
+                            <label for="star4"></label>
+                            <input type="radio" id="star3" name="score" value="3">
+                            <label for="star3"></label>
+                            <input type="radio" id="star2" name="score" value="2">
+                            <label for="star2"></label>
+                            <input type="radio" id="star1" name="score" value="1">
+                            <label for="star1"></label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="comment">댓글</label>
+                        <textarea id="comment" name="comment" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="thumbnail">사진 업로드</label>
+                        <input type="file" id="thumbnail" name="thumbnail" accept="image/png, image/gif, image/jpeg">
+                    </div>
+                    <input type="hidden" name="itemId" th:value="${festivals.id}">
+                    <input type="hidden" name="category" value="festivals">
+                    <button type="submit" class="btn btn-primary">리뷰 제출</button>
+                </form>
+            </div>
+            <!-- 리뷰 목록 -->
+            <h3 class="mt-4">리뷰 목록</h3>
+            <ul class="list-group">
+                <li class="list-group-item" th:each="rating : ${ratings}">
+                    <p>점수:
+                        <span class="rating">
+                            <span th:each="i : ${#numbers.sequence(1,5)}"
+                                  th:classappend="${i <= rating.score ? 'fa-star' : 'fa-star-o'}" class="fa"></span>
+                        </span>
+                    </p>
+                    <p>내용: &nbsp;<span th:text="${rating.comment}"></span></p>
+                    <a th:href="@{|/member/myPage/${rating.username}|}">
+                        <p>작성자: &nbsp;<span th:text="${rating.username}"></span></p>
+                    </a>
+
+                    <div th:if="${rating.thumbnailImg != null}">
+                        <img th:src="@{|/gen/${rating.thumbnailImg}|}" alt="리뷰 이미지" style="max-width: 200px;">
+                    </div>
+                    <div sec:authorize="isAuthenticated()"
+                         th:if="${#authentication.principal.username == rating.username or #authorization.expression('hasAuthority(''ADMIN'')')}">
+                        <a th:href="@{/festivals/review/delete/{id}(id=${festivals.id}, ratingId=${rating.id})}"
+                           class="btn btn-danger btn-sm">삭제</a>
+                        <a th:href="@{/festivals/review/edit/{ratingId}(ratingId=${rating.id})}"
+                           class="btn btn-warning btn-sm">수정</a>
+                    </div>
+                </li>
+                <li th:if="${#lists.isEmpty(ratings)}" class="list-group-item">아직 리뷰가 없습니다.</li>
+            </ul>
         </div>
     </section>
 
@@ -85,12 +210,42 @@
         document.addEventListener('DOMContentLoaded', function () {
             const likeButtonContainer = document.getElementById('likeButtonContainer');
             const likeForm = document.getElementById('likeForm');
+            const scrapButtonContainer = document.getElementById('scrapButtonContainer');
+            const scrapForm = document.getElementById('scrapForm');
 
             likeButtonContainer.addEventListener('click', function () {
                 likeForm.submit();
             });
+
+            scrapButtonContainer.addEventListener('click', function () {
+                scrapForm.submit();
+            });
+
+            const averageScoreLink = document.getElementById('averageScoreLink');
+            const container2 = document.getElementById('container2');
+
+            averageScoreLink.addEventListener('click', function (event) {
+                event.preventDefault();
+                container2.scrollIntoView({ behavior: 'smooth' });
+            });
         });
+
+        function previewThumbnail(input) {
+            const preview = document.getElementById('thumbnailPreview');
+            const file = input.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+            };
+
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = "";
+            }
+        }
     </script>
-    </body>
 </section>
+</body>
 </html>

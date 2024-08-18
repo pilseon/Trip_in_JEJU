@@ -8,9 +8,13 @@
 
 <section layout:fragment="content" class="section-prod-list">
     <body>
-        <div class="container mx-auto p-4">
-            <h1 class="text-2xl font-bold mb-4">이벤트</h1>
-            <div class="grid grid-cols-1 gap-4">
+    <div class="container mx-auto p-4">
+        <div class="flex justify-between items-center mb-4">
+            <h1 class="text-2xl font-bold">이벤트</h1>
+            <li sec:authorize="isAuthenticated() and principal.username == 'admin'" class="flex-shrink-0 py-3">
+                <a href="/adm/event/create" class="btn btn-primary">이벤트 등록</a>
+            </li>
+        </div>
                 <!-- Thymeleaf 조건문으로 이벤트가 없을 때 메시지 표시 -->
                 <div th:if="${events.empty}" class="text-center text-gray-500">
                     <img class="w-96 h-96 mr-auto ml-auto" src="https://github.com/user-attachments/assets/73c43efd-0bfb-4911-9713-42d097733896" alt="죄송">

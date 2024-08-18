@@ -4,41 +4,41 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="/resource/css/rating.css" rel="stylesheet" type="text/css" />
 </head>
-<body>
 <section layout:fragment="content" class="section-prod-list">
+    <body>
     <div class="container mt-1">
         <div sec:authorize="isAuthenticated()">
-        <h3 class="mt-4">리뷰 작성</h3>
-        <form th:action="@{/food/review/{id}(id=${food.id})}" method="post" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="score">점수</label>
-                <div class="rating">
-                    <input type="radio" id="star5" name="score" value="5" required>
-                    <label for="star5"></label>
-                    <input type="radio" id="star4" name="score" value="4">
-                    <label for="star4"></label>
-                    <input type="radio" id="star3" name="score" value="3">
-                    <label for="star3"></label>
-                    <input type="radio" id="star2" name="score" value="2">
-                    <label for="star2"></label>
-                    <input type="radio" id="star1" name="score" value="1">
-                    <label for="star1"></label>
+            <h3 class="mt-4">리뷰 작성</h3>
+            <form id="reviewForm" th:action="@{/food/review/{id}(id=${food.id})}" method="post" enctype="multipart/form-data" style="display:none;">
+                <div class="form-group">
+                    <label for="score">점수</label>
+                    <div class="rating">
+                        <input type="radio" id="star5" name="score" value="5" required>
+                        <label for="star5"></label>
+                        <input type="radio" id="star4" name="score" value="4">
+                        <label for="star4"></label>
+                        <input type="radio" id="star3" name="score" value="3">
+                        <label for="star3"></label>
+                        <input type="radio" id="star2" name="score" value="2">
+                        <label for="star2"></label>
+                        <input type="radio" id="star1" name="score" value="1">
+                        <label for="star1"></label>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="comment">댓글</label>
-                <textarea id="comment" name="comment" class="form-control" rows="3" required></textarea>
-            </div>
-            <div class="form-group">
-                <label for="thumbnail">사진 업로드</label>
-                <input type="file" id="thumbnail" name="thumbnail" accept="image/png, image/gif, image/jpeg">
-            </div>
-            <input type="hidden" name="itemId" th:value="${food.id}"> <!-- itemId 추가 -->
-            <input type="hidden" name="category" value="food"> <!-- category 추가 -->
-            <button type="submit" class="btn btn-primary">리뷰 제출</button>
-        </form>
+                <div class="form-group">
+                    <label for="comment">댓글</label>
+                    <textarea id="comment" name="comment" class="form-control" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="thumbnail">사진 업로드</label>
+                    <input type="file" id="thumbnail" name="thumbnail" accept="image/png, image/gif, image/jpeg">
+                </div>
+                <input type="hidden" name="itemId" th:value="${food.id}">
+                <input type="hidden" name="category" value="food">
+                <button type="submit" class="btn btn-primary">리뷰 제출</button>
+            </form>
+        </div>
 
-        <!-- 리뷰 목록 -->
         <h3 class="mt-4">리뷰 목록</h3>
         <ul class="list-group">
             <li class="list-group-item" th:each="rating : ${ratings}">
@@ -53,18 +53,14 @@
                     <img th:src="@{|/gen/${rating.thumbnailImg}|}" alt="리뷰 이미지" style="max-width: 200px;">
                 </div>
                 <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal.username == rating.nickname or #authorization.expression('hasAuthority(''ADMIN'')')}">
-                    <a
-                            th:href="@{/food/review/delete/{id}(id=${food.id}, ratingId=${rating.id})}"
-                            class="btn btn-danger btn-sm">삭제</a>
-                    <a
-                            th:href="@{/food/review/edit/{ratingId}(ratingId=${rating.id})}"
-                            class="btn btn-warning btn-sm">수정</a>
+                    <a th:href="@{/food/review/delete/{id}(id=${food.id}, ratingId=${rating.id})}" class="btn btn-danger btn-sm">삭제</a>
+                    <a th:href="@{/food/review/edit/{ratingId}(ratingId=${rating.id})}" class="btn btn-warning btn-sm">수정</a>
                 </div>
-
             </li>
         </ul>
         <li th:if="${#lists.isEmpty(ratings)}" class="list-group-item">아직 리뷰가 없습니다.</li>
     </div>
-</section>
+    <script th:src="@{/reviewjs/review.js}"></script>
 </body>
+</section>
 </html>

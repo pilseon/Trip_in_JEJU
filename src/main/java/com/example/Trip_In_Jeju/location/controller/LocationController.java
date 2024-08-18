@@ -1,5 +1,6 @@
 package com.example.Trip_In_Jeju.location.controller;
 
+import com.example.Trip_In_Jeju.kategorie.food.service.FoodService;
 import com.example.Trip_In_Jeju.location.entity.Location;
 import com.example.Trip_In_Jeju.location.service.LocationService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LocationController {
 
+    private final FoodService foodService;
     private final LocationService locationService;
 
     @GetMapping

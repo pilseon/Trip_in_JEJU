@@ -29,7 +29,6 @@ public class Member {
 
     private String password;
 
-    @Column(unique = true)
     @Comment("유저 닉네임")
     private String nickname;
 
@@ -87,10 +86,10 @@ public class Member {
         this.thumbnailImg = thumbnailImg;
     }
 
-    public void getUsername(String username) {
-        this.username = username;
-    }
-
+//    public void getUsername(String username) {
+//        this.username = username;
+//    }
+// lombok 중복으로 에러 날 수 있음
     public void setResetToken(String resetToken) { // 이 부분을 추가합니다.
         this.resetToken = resetToken;
     }

@@ -54,19 +54,58 @@ body {
     text-decoration: underline;
 }
 
+.navigation {
+  display: flex;
+  justify-content: space-around;
+  background-color: #ddd;
+}
 
 .nav-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+  flex: 1;
+  padding: 10px;
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #ddd;
+  transition: background-color 0.3s ease;
 }
 
 .nav-button:hover {
-    background-color: #0056b3;
+  background-color: #ccc;
+}
+
+.nav-button.active {
+  background-color: white;
+  font-weight: bold;
+  cursor: default;
+}
+
+.schedule-list,
+.history-list {
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+.schedule-list h2,
+.history-list h2,
+.discount-list h2 {
+  margin-top: 0;
+}
+
+.schedule-item,
+.history-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.schedule-item img,
+.history-item img {
+  height: 100px;
+  width: 100px;
+  margin-right: 10px;
+  border-radius: 5px;
 }
 .holy {
     background-color: white;

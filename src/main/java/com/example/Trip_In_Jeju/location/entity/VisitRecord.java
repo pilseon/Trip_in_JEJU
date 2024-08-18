@@ -1,0 +1,33 @@
+package com.example.Trip_In_Jeju.location.entity;
+
+import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
+import com.example.Trip_In_Jeju.member.entity.Member;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Getter
+@Setter
+@Table(name = "visit_record", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"member_id", "food_id"})
+})
+public class VisitRecord {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @ManyToOne
+    @JoinColumn(name = "food_id")
+    private Food food;
+
+    @CreatedDate
+    private LocalDateTime visitTime;
+}

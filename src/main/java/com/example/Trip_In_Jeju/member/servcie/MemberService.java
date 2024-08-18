@@ -306,4 +306,14 @@ public class MemberService {
     public Member getMemberByNickname(String username) {
         return memberRepository.findByUsername(username).orElse(null);
     }
+
+
+    public String getCurrentMemberId() {
+        // 현재 로그인된 사용자의 정보를 가져와서 memberId를 반환
+        // 예: SecurityContextHolder에서 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (String) authentication.getPrincipal(); // 또는 다른 방식으로 memberId를 추출
+    }
+
+
 }

@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -39,6 +40,7 @@ import java.time.LocalDate;
 import java.time.temporal.WeekFields;
 import java.util.*;
 
+@Slf4j
 @Controller
 @RequestMapping("/member")
 @RequiredArgsConstructor
@@ -420,4 +422,9 @@ public class MemberController {
         return "member/memberPage";
     }
 
+    @PostMapping("/login")
+    public String loginSuccess(HttpServletRequest request, HttpServletResponse response) {
+        log.info("Current Session ID: {}", request.getSession().getId());
+        return "redirect:/";
+    }
 }

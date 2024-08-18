@@ -20,7 +20,12 @@
             <div id="autocomplete-list" class="absolute w-full bg-white border border-gray-300 rounded shadow-md z-20"></div>
         </div>
     </div>
-    <div id="map"></div>
+    <div id="map" class="relative">
+        <button id="moveToCurrentPosition" class="absolute bottom-2 right-2 z-50 bg-white border border-gray-300 rounded-full">
+            <i class="fa-solid fa-location-crosshairs p-2 text-xl"></i>
+        </button>
+    </div>
+
     <script th:src="@{/mapjs/map.js}"></script>
     <script th:src="@{'https://dapi.kakao.com/v2/maps/sdk.js?appkey=' + ${kakaoApiKey} + '&libraries=services'}"></script>
 </body>

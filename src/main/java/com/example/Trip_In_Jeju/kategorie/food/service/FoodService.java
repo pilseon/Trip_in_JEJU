@@ -2,12 +2,16 @@ package com.example.Trip_In_Jeju.kategorie.food.service;
 
 import com.example.Trip_In_Jeju.calendar.entity.Calendar;
 import com.example.Trip_In_Jeju.calendar.repository.CalendarRepository;
+import com.example.Trip_In_Jeju.kategorie.food.dto.FoodLocationDto;
 import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
 import com.example.Trip_In_Jeju.kategorie.food.repository.FoodRepository;
 import com.example.Trip_In_Jeju.like.entity.Like;
 import com.example.Trip_In_Jeju.like.repository.LikeRepository;
+import com.example.Trip_In_Jeju.location.dto.LocationRequest;
+import com.example.Trip_In_Jeju.location.dto.VisitRequest;
 import com.example.Trip_In_Jeju.location.entity.Location;
 import com.example.Trip_In_Jeju.location.repository.LocationRepository;
+import com.example.Trip_In_Jeju.location.service.VisitRecordService;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
 import com.example.Trip_In_Jeju.scrap.ScrapRepository;
@@ -40,6 +44,7 @@ public class FoodService {
     private final ScrapService scrapService; // 추가된 의존성
     private final ScrapRepository scrapRepository;
 
+    private final VisitRecordService visitRecordService;
 
     @Value("${kakao.api.key}")
     private String apiKey;
@@ -254,5 +259,69 @@ public class FoodService {
         Random rand = new Random();
         Collections.shuffle(items, rand);
         return items.stream().limit(limit).collect(Collectors.toList());
+    }
+
+    public void processFoodLocation(Long memberId, LocationRequest locationRequest) {
+        Location userLocation = new Location(locationRequest.getLatitude(), locationRequest.getLongitude());
+
+        List<Food> foodLocations = foodRepository.findAll();
+
+        for (Food food : foodLocations) {
+            if (isNearLocation(userLocation, food.getLocation())) {
+                VisitRequest visitRequest = new VisitRequest(food.getId(), memberId);
+                visitRecordService.saveVisitRecord(visitRequest);
+            }
+        }
+    }
+
+    private boolean isNearLocation(Location userLocation, Location foodLocation) {
+        // 위치 간의 거리를 계산하고, 근접 여부를 반환합니다.
+        // 예: 300미터 이내인지 확인
+        double distance = calculateDistance(userLocation, foodLocation);
+        return distance <= 300;
+    }
+
+    private double calculateDistance(Location loc1, Location loc2) {
+        // 지구 반지름 (미터 단위)
+        final double R = 6371e3;
+
+        // 위도와 경도를 라디안 단위로 변환
+        double lat1 = Math.toRadians(loc1.getLatitude());
+        double lat2 = Math.toRadians(loc2.getLatitude());
+        double deltaLat = Math.toRadians(loc2.getLatitude() - loc1.getLatitude());
+        double deltaLon = Math.toRadians(loc2.getLongitude() - loc1.getLongitude());
+
+        // Haversine 공식 적용
+        double a = Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
+                Math.cos(lat1) * Math.cos(lat2) *
+                        Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        // 최종 거리 계산 (미터 단위)
+        double distance = R * c;
+
+        return distance;
+    }
+
+    public List<FoodLocationDto> getAllFoodLocations() {
+        // Food 엔티티의 리스트를 데이터베이스에서 가져옵니다.
+        List<Food> foodList = foodRepository.findAll();
+
+        // Food 엔티티를 FoodLocationDto로 변환하여 리스트에 추가합니다.
+        List<FoodLocationDto> foodLocationDtos = new ArrayList<>();
+        for (Food food : foodList) {
+            FoodLocationDto dto = new FoodLocationDto(
+                    food.getId(),
+                    food.getTitle(),
+                    food.getLocation().getLatitude(),
+                    food.getLocation().getLongitude(),
+                    food.getCategory(),
+                    food.getPlace()
+            );
+            foodLocationDtos.add(dto);
+        }
+
+        // 변환된 DTO 리스트를 반환합니다.
+        return foodLocationDtos;
     }
 }

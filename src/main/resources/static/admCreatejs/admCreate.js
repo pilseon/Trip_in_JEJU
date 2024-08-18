@@ -118,8 +118,7 @@ var map, marker, infowindow, ps;
             }
 
             var options = {
-                location: new kakao.maps.LatLng(33.499621, 126.531188), // 제주특별자치도 중심 좌표
-                radius: 20000 // 검색 반경 (단위: 미터)
+                location: new kakao.maps.LatLng(33.499621, 126.531188) // 제주특별자치도 중심 좌표, 반경 옵션 제거
             };
             ps.keywordSearch(keyword, function (data, status) {
                 console.log('Auto-complete status:', status); // 디버깅 메시지 추가
@@ -128,17 +127,15 @@ var map, marker, infowindow, ps;
                     var list = document.getElementById('autocomplete-list');
                     list.innerHTML = '';
                     data.forEach(function (place, index) {
-                        if (place.address_name.includes('제주특별자치도')) { // 제주특별자치도에 해당하는 장소만 필터링
-                            var item = document.createElement('div');
-                            item.className = 'autocomplete-item';
-                            item.innerHTML = place.place_name + '<small>' + place.address_name + '</small>';
-                            item.addEventListener('click', function () {
-                                document.getElementById('place').value = place.place_name;
-                                clearAutoComplete();
-                                moveToPlace(place);
-                            });
-                            list.appendChild(item);
-                        }
+                        var item = document.createElement('div');
+                        item.className = 'autocomplete-item';
+                        item.innerHTML = place.place_name + '<small>' + place.address_name + '</small>';
+                        item.addEventListener('click', function () {
+                            document.getElementById('place').value = place.place_name;
+                            clearAutoComplete();
+                            moveToPlace(place);
+                        });
+                        list.appendChild(item);
                     });
                 } else {
                     clearAutoComplete();

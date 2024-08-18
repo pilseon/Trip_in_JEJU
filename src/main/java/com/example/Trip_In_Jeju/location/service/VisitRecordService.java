@@ -102,4 +102,11 @@ public class VisitRecordService {
         // VisitRecord 저장
         visitRecordRepository.save(visitRecord);
     }
+
+    public List<VisitRecord> getVisitRecordsByMemberId(Long memberId) {
+        return visitRecordRepository.findByMemberId(memberId);
+    }
+    public boolean hasVisited(Long memberId, Long foodId) {
+        return visitRecordRepository.existsByMemberIdAndFoodId(memberId, foodId);
+    }
 }

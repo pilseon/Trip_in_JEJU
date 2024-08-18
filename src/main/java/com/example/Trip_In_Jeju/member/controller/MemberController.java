@@ -6,6 +6,8 @@ import com.example.Trip_In_Jeju.email.service.EmailService;
 import com.example.Trip_In_Jeju.email.service.VerificationCodeService;
 import com.example.Trip_In_Jeju.kategorie.festivals.entity.Festivals;
 import com.example.Trip_In_Jeju.kategorie.festivals.service.FestivalsService;
+import com.example.Trip_In_Jeju.location.entity.VisitRecord;
+import com.example.Trip_In_Jeju.location.service.VisitRecordService;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.member.entity.MemberRole;
 import com.example.Trip_In_Jeju.member.servcie.MemberService;
@@ -39,6 +41,7 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -53,6 +56,7 @@ public class MemberController {
     private final CalendarService calendarService;
     private final FestivalsService festivalsService;
     private final ScrapService scrapService;
+    private final VisitRecordService visitRecordService;
     @PreAuthorize("isAnonymous()")
     @GetMapping("/login")
     public String loginPage() {
@@ -406,6 +410,7 @@ public class MemberController {
         if (member == null) {
             return "error/404"; // 사용자 정보를 찾을 수 없는 경우 404 페이지로 리다이렉트
         }
+
         List<Rating> ratings = ratingService.getRatingsByMember(member);
 
         // 평균 점수 계산
@@ -416,10 +421,19 @@ public class MemberController {
 
         String formattedAverageScore = String.format("%.2f", averageScore);
 
+        // 사용자의 방문 기록 가져오기
+        List<VisitRecord> visitRecords = visitRecordService.getVisitRecordsByMemberId(member.getId());
+
+        Set<Long> reviewedFoodIds = ratings.stream()
+                .map(Rating::getItemId) // 리뷰에 해당하는 음식점 ID 추출
+                .collect(Collectors.toSet());
+
         model.addAttribute("member", member);
         model.addAttribute("Ratings", ratings);
         model.addAttribute("averageScore", formattedAverageScore);
         // 평균 점수를 모델에 추가
+        model.addAttribute("visitRecords", visitRecords); // 방문 기록 추가
+        model.addAttribute("reviewedFoodIds", reviewedFoodIds); // 이미 리뷰를 작성한 음식점 ID 리스트 추가
 
         return "member/memberPage";
     }

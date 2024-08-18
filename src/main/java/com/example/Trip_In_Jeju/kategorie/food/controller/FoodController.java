@@ -6,6 +6,7 @@ import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
 import com.example.Trip_In_Jeju.kategorie.food.service.FoodService;
 import com.example.Trip_In_Jeju.like.LikeService;
 import com.example.Trip_In_Jeju.location.dto.LocationRequest;
+import com.example.Trip_In_Jeju.location.service.VisitRecordService;
 import com.example.Trip_In_Jeju.member.CustomUserDetails;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.member.servcie.MemberService;
@@ -36,6 +37,7 @@ public class FoodController {
     private final MemberService memberService;
     private final ScrapService scrapService;
     private final LikeService likeService;
+    private final VisitRecordService visitRecordService;
 
     @GetMapping("/list")
     public String list(
@@ -59,6 +61,9 @@ public class FoodController {
         Member currentMember = memberService.getCurrentMember();
         model.addAttribute("member", currentMember);
         String username = null;
+        boolean canWriteReview = false; // 방문 확인
+        boolean hasWrittenReview = false;
+
         if (authentication != null) {
             Object principal = authentication.getPrincipal();
             if (principal instanceof UserDetails) {
@@ -67,10 +72,18 @@ public class FoodController {
                 username = principal.toString();
             }
         }
+
+        if (currentMember != null) {
+            canWriteReview = visitRecordService.hasVisited(currentMember.getId(), id);
+            hasWrittenReview = ratingService.hasUserWrittenReview(currentMember.getUsername(), id, "food");
+        }
+
         model.addAttribute("food", food);
         model.addAttribute("ratings", ratings);
         model.addAttribute("averageScore", averageScore);
         model.addAttribute("username", username);
+        model.addAttribute("canWriteReview", canWriteReview);
+        model.addAttribute("hasWrittenReview", hasWrittenReview); // 방문 확인
         return "food/detail";
     }
 

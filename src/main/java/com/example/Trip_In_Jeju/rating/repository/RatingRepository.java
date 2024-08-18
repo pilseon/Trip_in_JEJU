@@ -20,4 +20,5 @@ public interface RatingRepository extends JpaRepository<Rating, Long> {
 
     void deleteByFoodId(long id);
 
+    boolean existsByUsernameAndItemIdAndCategory(String username, Long itemId, String category);
 }

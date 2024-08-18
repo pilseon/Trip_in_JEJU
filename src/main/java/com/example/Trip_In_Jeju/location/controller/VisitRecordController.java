@@ -2,9 +2,7 @@
 
 
     import com.example.Trip_In_Jeju.location.dto.VisitRequest;
-    import com.example.Trip_In_Jeju.location.entity.VisitRecord;
     import com.example.Trip_In_Jeju.location.service.VisitRecordService;
-    import com.example.Trip_In_Jeju.member.CustomUserDetails;
     import com.example.Trip_In_Jeju.member.entity.Member;
     import com.example.Trip_In_Jeju.member.servcie.MemberService;
     import lombok.RequiredArgsConstructor;
@@ -12,12 +10,8 @@
     import org.springframework.http.HttpStatus;
     import org.springframework.http.ResponseEntity;
     import org.springframework.security.core.Authentication;
-    import org.springframework.security.core.annotation.AuthenticationPrincipal;
     import org.springframework.security.core.context.SecurityContextHolder;
-    import org.springframework.ui.Model;
     import org.springframework.web.bind.annotation.*;
-
-    import java.util.List;
 
     @Slf4j
     @RestController
@@ -52,17 +46,6 @@
             }
         }
 
-        @GetMapping("/profile")
-        public String profilePage(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
-            if (userDetails == null) {
-                return "redirect:/member/login";
-            }
-
-            List<VisitRecord> visitRecords = visitRecordService.getVisitRecords(userDetails.getUsername());
-            model.addAttribute("visitRecords", visitRecords);
-
-            return "profile";
-        }
 
         @GetMapping("/getMemberId")
         public ResponseEntity<Long> getMemberId() {

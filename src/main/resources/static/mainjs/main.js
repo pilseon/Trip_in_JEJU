@@ -6,9 +6,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const slideIndicator = document.getElementById("slideIndicator");
         const slideControls = document.getElementById("slideControls");
 
-        console.log(slides); // 슬라이드 요소들이 제대로 선택되었는지 확인
-        console.log(slideControls); // 컨트롤이 제대로 선택되었는지 확인
-
         if (slides.length > 0) {
             function updateSlides() {
                 slides.forEach((slide, index) => {

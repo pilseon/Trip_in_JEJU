@@ -411,15 +411,15 @@
                     <a th:href="@{/event/detail/{id}(id=${event.id})}" class="w-full h-full block"></a>
                 </div>
 
-                <div th:if="${events.size() > 1}" class="absolute bottom-0 right-1 flex items-center space-x-2 bg-black rounded-3xl">
+                <div th:if="${events.size() > 1}" id="slideControls" class="absolute bottom-0 right-1 flex items-center space-x-2 bg-white bg-opacity-25 rounded-3xl">
                     <button id="prevButton" class="p-1">
-                        <i class="fa-solid fa-chevron-left text-white"></i>
+                        <i class="fa-solid fa-chevron-left text-black"></i>
                     </button>
-                    <div class="p-2 rounded-full text-white">
-                        <span id="slideIndicator">1/<span th:text="${events.size()}"></span></span>
+                    <div class="p-2 rounded-full">
+                        <span id="slideIndicator" class="text-black">1/<span th:text="${events.size()}"></span></span>
                     </div>
                     <button id="nextButton" class="p-1">
-                        <i class="fa-solid fa-chevron-right text-white"></i>
+                        <i class="fa-solid fa-chevron-right text-black"></i>
                     </button>
                 </div>
             </div>

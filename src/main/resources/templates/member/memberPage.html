@@ -34,10 +34,27 @@
             <div class="tab-content" id="tab-schedule" th:if="${#authentication.name == member.username or #authorization.expression('hasAuthority(''ADMIN'')')}">
                 <div class="history-list">
                     <h2 class="text-xl font-bold my-2">방문 기록</h2>
-                    <ul>
-                        <li th:each="record : ${visitRecords}">
-                            <p th:text="${record.food.name}">음식점 이름</p>
-                            <p th:text="${#dates.format(record.visitTime, 'yyyy-MM-dd HH:mm:ss')}">방문 시간</p>
+                    <ul class="space-y-4">
+                        <li th:each="record : ${visitRecords}" class="bg-white shadow rounded-lg p-4 flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <!-- Thumbnail 이미지 -->
+                                <img th:src="@{'/gen/' + ${record.food.thumbnailImg}}" alt="Thumbnail"
+                                     class="w-16 h-16 rounded object-cover">
+
+                                <!-- 음식점 정보 -->
+                                <div>
+                                    <h2 class="text-xl font-semibold text-gray-900" th:text="${record.food.place}">음식점 이름</h2>
+                                    <p class="text-gray-600" th:text="${#temporals.format(record.visitTime, 'yyyy-MM-dd')}">방문 시간</p>
+                                </div>
+                            </div>
+
+                            <!-- 리뷰 작성 상태에 따른 링크 또는 텍스트 -->
+                            <a th:if="${reviewedFoodIds.contains(record.food.id)}" class="text-green-500 flex-shrink-0">
+                                <div>리뷰 작성 완료</div>
+                            </a>
+                            <a th:unless="${reviewedFoodIds.contains(record.food.id)}" th:href="@{'/food/detail/' + ${record.food.id}}" class="text-yellow-500 hover:text-blue-700 flex-shrink-0">
+                                <div>리뷰 작성 &gt;</div>
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -89,7 +106,6 @@
         </div>
     </div>
     <script th:src="@{/js/main.js}"></script>
-    <script th:src="@{/weekcalendarjs/weekcalendar.js}"></script>
     <script th:src="@{/myPagejs/myPage.js}"></script>
 
 </section>

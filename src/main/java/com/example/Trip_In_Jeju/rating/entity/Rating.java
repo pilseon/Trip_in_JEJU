@@ -34,6 +34,10 @@ public class Rating {
 
     private Long ratingId;
 
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
+
     @OneToMany(mappedBy = "rating", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Likey> likey;
 

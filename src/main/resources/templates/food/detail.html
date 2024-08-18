@@ -145,10 +145,9 @@
         </form>
 
         <!-- 리뷰 작성 및 목록 -->
-        <div class="containers mt-1" id="container2">
-            <!-- 리뷰 작성 -->
-            <div sec:authorize="isAuthenticated()">
-                <h3 class="mt-4">리뷰 작성</h3>
+        <div sec:authorize="isAuthenticated()">
+            <h3 class="mt-4">리뷰 작성</h3>
+            <div th:if="${canWriteReview && !hasWrittenReview}">
                 <form th:action="@{/food/review/{id}(id=${food.id})}" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="score">점수</label>
@@ -178,6 +177,11 @@
                     <button type="submit" class="btn btn-primary">리뷰 제출</button>
                 </form>
             </div>
+            <div th:if="${!canWriteReview || hasWrittenReview}">
+                <p th:if="${hasWrittenReview}">이미 리뷰를 작성하셨습니다.</p>
+                <p th:if="${!canWriteReview}">리뷰를 작성하려면 해당 장소를 방문해야 합니다.</p>
+            </div>
+        </div>
             <!-- 리뷰 목록 -->
             <h3 class="mt-4">리뷰 목록</h3>
             <ul class="list-group">

@@ -8,6 +8,7 @@ import com.example.Trip_In_Jeju.kategorie.other.entity.Other;
 import com.example.Trip_In_Jeju.kategorie.shopping.entity.Shopping;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.member.repository.MemberRepository;
+import com.example.Trip_In_Jeju.member.servcie.MemberService;
 import com.example.Trip_In_Jeju.rating.entity.Likey;
 import com.example.Trip_In_Jeju.rating.entity.Rating;
 import com.example.Trip_In_Jeju.rating.repository.LikeyRepository;
@@ -30,6 +31,7 @@ public class RatingService {
     private final RatingRepository ratingRepository;
     private final MemberRepository memberRepository;
     private final LikeyRepository likeyRepository;
+    private final MemberService memberService;
 
     public double calculateAverageScore(Long itemId, String category) {
         List<Rating> ratings = ratingRepository.findByItemIdAndCategory(itemId, category);
@@ -243,5 +245,9 @@ public class RatingService {
     }
 
     public void deleteRatingsByShoppingId(Long shoppingId) {
+    }
+
+    public boolean hasUserWrittenReview(String username, Long itemId, String category) {
+        return ratingRepository.existsByUsernameAndItemIdAndCategory(username, itemId, category);
     }
 }

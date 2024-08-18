@@ -13,4 +13,8 @@ public interface VisitRecordRepository extends JpaRepository<VisitRecord, Long> 
     List<VisitRecord> findByMember(Member member);
 
     boolean existsByMemberAndFood(Member member, Food food);
+
+    List<VisitRecord> findByMemberId(Long memberId);
+
+    boolean existsByMemberIdAndFoodId(Long memberId, Long foodId);
 }

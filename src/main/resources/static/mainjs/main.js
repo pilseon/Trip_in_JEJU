@@ -91,3 +91,11 @@ document.addEventListener("DOMContentLoaded", function () {
     handleEventSlides();
     handleTodayPickSlides();
 });
+
+window.addEventListener('load', () => {
+        const scrollContent = document.getElementById('scroll-content');
+        const clone = scrollContent.cloneNode(true);
+        scrollContent.parentNode.appendChild(clone);
+
+        const contentWidth = scrollContent.scrollWidth;
+    });

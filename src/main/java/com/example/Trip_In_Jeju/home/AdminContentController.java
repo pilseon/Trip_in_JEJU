@@ -1,4 +1,4 @@
-package com.example.Trip_In_Jeju.kategorie.food.controller;
+package com.example.Trip_In_Jeju.home;
 
 import com.example.Trip_In_Jeju.kategorie.activity.entity.Activity;
 import com.example.Trip_In_Jeju.kategorie.activity.service.ActivityService;

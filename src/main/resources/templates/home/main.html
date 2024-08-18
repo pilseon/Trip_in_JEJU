@@ -293,26 +293,105 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
 
 
-        <!-- 오늘의 픽 Section -->
+        <!-- AI 픽 Section -->
         <div class="mb-16 text-center">
-            <div class="relative mb-2">
-                <h2 class="text-xl font-bold">오늘의 Pick</h2>
-                <div class="absolute right-0 bottom-0">
-                    <a href="#" class="text-gray-500">전체보기 ></a>
-                </div>
+            <div class="relative mb-4">
+                <h2 class="text-xl font-bold">AI Pick</h2>
             </div>
             <div class="flex space-x-4 overflow-x-auto">
-                <div class="w-48 h-32 bg-gray-200 flex items-center justify-center rounded-3xl">유저 취향맞춤 추천 컨텐츠!</div>
-                <div class="w-48 h-32 bg-gray-200 flex items-center justify-center rounded-3xl">유저 취향맞춤 추천 컨텐츠</div>
-                <div class="w-48 h-32 bg-gray-200 flex items-center justify-center rounded-3xl">유저 취향맞춤 추천 컨텐츠</div>
-            </div>
 
+
+                <!-- 랜덤 음식 목록 -->
+                <div th:if="${randomFoodsForAll != null}" class="w-48 h-32 bg-gray-200 rounded-3xl overflow-hidden">
+                    <a th:each="item : ${randomFoodsForAll}" th:href="@{|/food/detail/${item.id}|}" class="flex items-center justify-center w-full h-full relative">
+                        <img th:src="@{|/gen/${item.thumbnailImg}|}" alt="Item Thumbnail" class="w-full h-full object-cover rounded-3xl"/>
+                        <div class="absolute bottom-0 left-0 w-full bg-black bg-opacity-25 text-white p-2 text-center rounded-t-3xl">
+                            <div th:text="${item.title}" class="font-bold"></div>
+                            <div th:text="${item.place}" class="text-sm"></div>
+                            <div th:text="${item.subCategory}" class="text-xs"></div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- 랜덤 디저트 목록 -->
+                <div th:if="${randomDessertsForAll != null}" class="w-48 h-32 bg-gray-200 rounded-3xl overflow-hidden">
+                    <a th:each="item : ${randomDessertsForAll}" th:href="@{|/dessert/detail/${item.id}|}" class="flex items-center justify-center w-full h-full relative">
+                        <img th:src="@{|/gen/${item.thumbnailImg}|}" alt="Item Thumbnail" class="w-full h-full object-cover rounded-3xl"/>
+                        <div class="absolute bottom-0 left-0 w-full bg-black bg-opacity-25 text-white p-2 text-center rounded-t-3xl">
+                            <div th:text="${item.title}" class="font-bold"></div>
+                            <div th:text="${item.place}" class="text-sm"></div>
+                            <div th:text="${item.subCategory}" class="text-xs"></div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- 랜덤 액티비티 목록 -->
+                <div th:if="${randomActivitiesForAll != null}" class="w-48 h-32 bg-gray-200 rounded-3xl overflow-hidden">
+                    <a th:each="item : ${randomActivitiesForAll}" th:href="@{|/activity/detail/${item.id}|}" class="flex items-center justify-center w-full h-full relative">
+                        <img th:src="@{|/gen/${item.thumbnailImg}|}" alt="Item Thumbnail" class="w-full h-full object-cover rounded-3xl"/>
+                        <div class="absolute bottom-0 left-0 w-full bg-black bg-opacity-25 text-white p-2 text-center rounded-t-3xl">
+                            <div th:text="${item.title}" class="font-bold"></div>
+                            <div th:text="${item.place}" class="text-sm"></div>
+                            <div th:text="${item.subCategory}" class="text-xs"></div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- 랜덤 관광지 목록 -->
+                <div th:if="${randomAttractionsForAll != null}" class="w-48 h-32 bg-gray-200 rounded-3xl overflow-hidden">
+                    <a th:each="item : ${randomAttractionsForAll}" th:href="@{|/attractions/detail/${item.id}|}" class="flex items-center justify-center w-full h-full relative">
+                        <img th:src="@{|/gen/${item.thumbnailImg}|}" alt="Item Thumbnail" class="w-full h-full object-cover rounded-3xl"/>
+                        <div class="absolute bottom-0 left-0 w-full bg-black bg-opacity-25 text-white p-2 text-center rounded-t-3xl">
+                            <div th:text="${item.title}" class="font-bold"></div>
+                            <div th:text="${item.place}" class="text-sm"></div>
+                            <div th:text="${item.subCategory}" class="text-xs"></div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- 랜덤 축제 목록 -->
+                <div th:if="${randomFestivalsForAll != null}" class="w-48 h-32 bg-gray-200 rounded-3xl overflow-hidden">
+                    <a th:each="item : ${randomFestivalsForAll}" th:href="@{|/festivals/detail/${item.id}|}" class="flex items-center justify-center w-full h-full relative">
+                        <img th:src="@{|/gen/${item.thumbnailImg}|}" alt="Item Thumbnail" class="w-full h-full object-cover rounded-3xl"/>
+                        <div class="absolute bottom-0 left-0 w-full bg-black bg-opacity-25 text-white p-2 text-center rounded-t-3xl">
+                            <div th:text="${item.title}" class="font-bold"></div>
+                            <div th:text="${item.place}" class="text-sm"></div>
+                            <div th:text="${item.subCategory}" class="text-xs"></div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- 랜덤 쇼핑 목록 -->
+                <div th:if="${randomShoppingsForAll != null}" class="w-48 h-32 bg-gray-200 rounded-3xl overflow-hidden">
+                    <a th:each="item : ${randomShoppingsForAll}" th:href="@{|/shopping/detail/${item.id}|}" class="flex items-center justify-center w-full h-full relative">
+                        <img th:src="@{|/gen/${item.thumbnailImg}|}" alt="Item Thumbnail" class="w-full h-full object-cover rounded-3xl"/>
+                        <div class="absolute bottom-0 left-0 w-full bg-black bg-opacity-25 text-white p-2 text-center rounded-t-3xl">
+                            <div th:text="${item.title}" class="font-bold"></div>
+                            <div th:text="${item.place}" class="text-sm"></div>
+                            <div th:text="${item.subCategory}" class="text-xs"></div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- 랜덤 기타 목록 -->
+                <div th:if="${randomOthersForAll != null}" class="w-48 h-32 bg-gray-200 rounded-3xl overflow-hidden">
+                    <a th:each="item : ${randomOthersForAll}" th:href="@{|/other/detail/${item.id}|}" class="flex items-center justify-center w-full h-full relative">
+                        <img th:src="@{|/gen/${item.thumbnailImg}|}" alt="Item Thumbnail" class="w-full h-full object-cover rounded-3xl"/>
+                        <div class="absolute bottom-0 left-0 w-full bg-black bg-opacity-25 text-white p-2 text-center rounded-t-3xl">
+                            <div th:text="${item.title}" class="font-bold"></div>
+                            <div th:text="${item.place}" class="text-sm"></div>
+                            <div th:text="${item.subCategory}" class="text-xs"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
         </div>
+
+
 
         <!-- 이벤트 Section -->
         <div class="mb-6 text-center">

@@ -57,7 +57,24 @@ public class HomeController {
 
             return "home/main"; // 비회원 페이지로 리턴
         }
-        // 공통 데이터 설정
+
+
+        List<Food> randomFoodsForAll = foodService.getRandomFoods(1);
+        List<Dessert> randomDessertsForAll = dessertService.getRandomDesserts(1);
+        List<Activity> randomActivitiesForAll = activityService.getRandomActivities(1);
+        List<Attractions> randomAttractionsForAll = attractionsService.getRandomAttractions(1);
+        List<Festivals> randomFestivalsForAll = festivalsService.getRandomFestivals(1);
+        List<Shopping> randomShoppingsForAll = shoppingService.getRandomShoppings(1);
+        List<Other> randomOthersForAll = otherService.getRandomOthers(1);
+
+        model.addAttribute("randomFoodsForAll", randomFoodsForAll);
+        model.addAttribute("randomDessertsForAll", randomDessertsForAll);
+        model.addAttribute("randomActivitiesForAll", randomActivitiesForAll);
+        model.addAttribute("randomAttractionsForAll", randomAttractionsForAll);
+        model.addAttribute("randomFestivalsForAll", randomFestivalsForAll);
+        model.addAttribute("randomShoppingsForAll", randomShoppingsForAll);
+        model.addAttribute("randomOthersForAll", randomOthersForAll);
+
 
 
         // 회원의 테마 정보에 따라 다르게 데이터 설정
@@ -66,19 +83,19 @@ public class HomeController {
         if (thema != null) {
             switch (thema.toLowerCase()) {
                 case "음식점":
-                    List<Food> randomFoods = foodService.getRandomFoods(5);
+                    List<Food> randomFoods = foodService.getRandomFoods(10);
                     model.addAttribute("randomFoods", randomFoods);
                     break;
                 case "디저트":
-                    List<Dessert> randomDesserts = dessertService.getRandomDesserts(5);
+                    List<Dessert> randomDesserts = dessertService.getRandomDesserts(10);
                     model.addAttribute("randomDesserts", randomDesserts);
                     break;
                 case "엑티비티":
-                    List<Activity> randomActivitys = activityService.getRandomActivities(5);
+                    List<Activity> randomActivitys = activityService.getRandomActivities(10);
                     model.addAttribute("randomActivitys", randomActivitys);
                     break;
                 case "관광지":
-                    List<Attractions> randomAttractionss = attractionsService.getRandomAttractions(5);
+                    List<Attractions> randomAttractionss = attractionsService.getRandomAttractions(10);
                     model.addAttribute("randomAttractionss", randomAttractionss);
                     break;
                 case "축제":
@@ -90,14 +107,14 @@ public class HomeController {
                     model.addAttribute("randomShoppings", randomShoppings);
                     break;
                 case "기타":
-                    List<Other> randomOthers = otherService.getRandomOthers(5);
+                    List<Other> randomOthers = otherService.getRandomOthers(10);
                     model.addAttribute("randomOthers", randomOthers);
                     break;
 
             }
         } else {
             // thema가 없는 경우 기본 데이터를 설정
-            List<Food> defaultFoods = foodService.getRandomFoods(5);
+            List<Food> defaultFoods = foodService.getRandomFoods(0);
             model.addAttribute("randomFoods", defaultFoods);
         }
 

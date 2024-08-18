@@ -108,28 +108,33 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
+    @Transactional
     public Member modify(Member member, String nickname, String password,
                          String email, String thema, MultipartFile thumbnail) {
-        String thumbnailRelPath = "member/" + UUID.randomUUID().toString() + ".jpg";
-        File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
-
-        try {
-            thumbnail.transferTo(thumbnailFile);
-        } catch ( IOException e ) {
-            throw new RuntimeException(e);
+        // 비밀번호가 비어있는지 확인하여 기존 비밀번호를 유지합니다.
+        if (password == null || password.isEmpty()) {
+            password = member.getPassword(); // 기존 비밀번호를 사용
+        } else {
+            password = passwordEncoder.encode(password); // 새 비밀번호 암호화
         }
-        // 기존 회원 정보를 수정합니다.
+
+        // 썸네일 파일이 있는 경우, 새 썸네일을 저장합니다.
+        String thumbnailRelPath = member.getThumbnailImg(); // 기존 썸네일 경로 유지
+        if (thumbnail != null && !thumbnail.isEmpty()) {
+            thumbnailRelPath = saveThumbnail(thumbnail); // 새 썸네일 저장
+        }
+
+        // 회원 정보를 업데이트합니다.
         member.setNickname(nickname);
-        member.setPassword(passwordEncoder.encode(password));
+        member.setPassword(password);
         member.setEmail(email);
         member.setThema(thema);
-        member.setModifyDate(LocalDateTime.now());
-        member.setThumbnailImg(thumbnailRelPath);
+        member.setThumbnailImg(thumbnailRelPath); // 썸네일 경로 업데이트
+        member.setModifyDate(LocalDateTime.now()); // 수정 날짜 업데이트
 
         // 수정된 회원 정보를 저장하고 반환합니다.
         return memberRepository.save(member);
     }
-
 
     @Transactional
     public Member signup2(String username, String nickname, String password,

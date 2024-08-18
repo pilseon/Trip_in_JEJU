@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html layout:decorate="~{layout/layout}" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>유저 페이지</title>
     <!-- Font Awesome 추가 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/style.css}">
 
     <link href="/resource/css/memberPage.css" rel="stylesheet" type="text/css" />
 </head>
+
 <body>
 <section layout:fragment="content" class="section-prod-list">
     <div class="container">
         <section class="profile">
             <div class="profile-pic">
-                <img th:src="${member != null && member.thumbnailImg != null ? '/gen/' + member.thumbnailImg : 'https://i.ibb.co/sbGP6nb/image.webp'}" alt="프로필 사진" class="profile-img"/>
+                <img th:src="${member != null && member.thumbnailImg != null ? '/gen/' + member.thumbnailImg : 'https://i.ibb.co/sbGP6nb/image.webp'}" alt="프로필 사진" class="profile-img" />
             </div>
 
             <div class="profile-info">
@@ -23,46 +24,69 @@
             </div>
         </section>
 
-
         <div class="holy">
             <p th:text="'리뷰 수: ' + ${#lists.size(Ratings)}"></p>
             <p th:text="' 평균 별점: ' + ${averageScore}"></p>
-        </div>
-        <ul>
-            <li th:each="rating : ${Ratings}">
-                <div class="review">
+            <section th:if="${#authentication.name == member.username or #authorization.expression('hasAuthority(''ADMIN'')')}" class="navigation mt-2">
+                <button class="nav-button" id="schedule">방문 기록</button>
+                <button class="nav-button" id="history">리뷰 기록</button>
+            </section>
+            <div class="tab-content" id="tab-schedule" th:if="${#authentication.name == member.username or #authorization.expression('hasAuthority(''ADMIN'')')}">
+                <div class="history-list">
+                    <h2 class="text-xl font-bold my-2">방문 기록</h2>
+                    <ul>
+                        <li th:each="record : ${visitRecords}">
+                            <p th:text="${record.food.name}">음식점 이름</p>
+                            <p th:text="${#dates.format(record.visitTime, 'yyyy-MM-dd HH:mm:ss')}">방문 시간</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tab-content" id="tab-history">
+                <div class="history-list">
+                    <h2 class="text-xl font-bold my-2">리뷰 기록</h2>
+                    <ul>
+                        <li th:if="${#lists.isEmpty(Ratings)}">
+                            <img class="w-80 h-80 mr-auto ml-auto" src="https://github.com/user-attachments/assets/a5663c38-3c8e-4c84-8bed-cd2d9c741141" alt="당황당황">
+                            <p class="text-center">작성한 리뷰가 없습니다.</p>
+                        </li>
+                        <li th:each="rating : ${Ratings}">
+                            <div class="review">
 
-                    <a th:href="@{'/' + ${rating.category} + '/detail/' + ${rating.itemId}}" class="category-link">
-                        <p class="title" th:text="'글 제목 : ' + ${rating.title}"></p>
-                    </a>
+                                <a th:href="@{'/' + ${rating.category} + '/detail/' + ${rating.itemId}}" class="category-link">
+                                    <p class="title" th:text="'글 제목 : ' + ${rating.title}"></p>
+                                </a>
 
-                    <p class="category">
-                        <span th:if="${rating.category == 'dessert'}">카테고리 : 디저트</span>
-                        <span th:if="${rating.category == 'food'}">카테고리 : 음식점</span>
-                        <span th:if="${rating.category == 'activity'}">카테고리 : 엑티비티</span>
-                        <span th:if="${rating.category == 'attractions'}">카테고리 : 관광지</span>
-                        <span th:if="${rating.category == 'shopping'}">카테고리 : 쇼핑</span>
-                        <span th:if="${rating.category == 'other'}">카테고리 : 기타</span>
-                        <span th:if="${rating.category == 'festivals'}">카테고리 : 축제</span>
-                    </p>
+                                <p class="category">
+                                    <span th:if="${rating.category == 'dessert'}">카테고리 : 디저트</span>
+                                    <span th:if="${rating.category == 'food'}">카테고리 : 음식점</span>
+                                    <span th:if="${rating.category == 'activity'}">카테고리 : 엑티비티</span>
+                                    <span th:if="${rating.category == 'attractions'}">카테고리 : 관광지</span>
+                                    <span th:if="${rating.category == 'shopping'}">카테고리 : 쇼핑</span>
+                                    <span th:if="${rating.category == 'other'}">카테고리 : 기타</span>
+                                    <span th:if="${rating.category == 'festivals'}">카테고리 : 축제</span>
+                                </p>
 
 
-                    <!-- 리뷰 내용 -->
-                    <p class="comment" th:text="'리뷰 : ' + ${rating.comment}"></p>
+                                <!-- 리뷰 내용 -->
+                                <p class="comment" th:text="'리뷰 : ' + ${rating.comment}"></p>
 
-                    <!-- 별점 (Font Awesome 아이콘 사용) -->
-                    <div class="score">
-                        <p>별점: </p>
-                        <span th:each="star : ${#numbers.sequence(1, rating.score)}">
+                                <!-- 별점 (Font Awesome 아이콘 사용) -->
+                                <div class="score">
+                                    <p>별점: </p>
+                                    <span th:each="star : ${#numbers.sequence(1, rating.score)}">
                             <i class="fas fa-star"></i>
                         </span>
-                    </div>
+                                </div>
 
-                    <!-- 리뷰 썸네일 -->
-                    <img th:if="${rating.thumbnailImg != null}" th:src="@{'/gen/' + ${rating.thumbnailImg}}" alt="리뷰 썸네일" class="review-thumbnail"/>
+                                <!-- 리뷰 썸네일 -->
+                                <img th:if="${rating.thumbnailImg != null}" th:src="@{'/gen/' + ${rating.thumbnailImg}}" alt="리뷰 썸네일" class="review-thumbnail"/>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-            </li>
-        </ul>
+            </div>
+        </div>
     </div>
     <script th:src="@{/js/main.js}"></script>
     <script th:src="@{/weekcalendarjs/weekcalendar.js}"></script>

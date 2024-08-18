@@ -1,9 +1,11 @@
 package com.example.Trip_In_Jeju.kategorie.food.controller;
 
 
+import com.example.Trip_In_Jeju.kategorie.food.dto.FoodLocationDto;
 import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
 import com.example.Trip_In_Jeju.kategorie.food.service.FoodService;
 import com.example.Trip_In_Jeju.like.LikeService;
+import com.example.Trip_In_Jeju.location.dto.LocationRequest;
 import com.example.Trip_In_Jeju.member.CustomUserDetails;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.member.servcie.MemberService;
@@ -12,7 +14,7 @@ import com.example.Trip_In_Jeju.rating.service.RatingService;
 import com.example.Trip_In_Jeju.scrap.ScrapService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,7 +36,6 @@ public class FoodController {
     private final MemberService memberService;
     private final ScrapService scrapService;
     private final LikeService likeService;
-
 
     @GetMapping("/list")
     public String list(
@@ -289,4 +290,15 @@ public class FoodController {
     }
 
 
+    @PostMapping("/check-visit")
+    public ResponseEntity<?> checkVisit(@RequestParam("memberId") Long memberId, @RequestBody LocationRequest locationRequest) {
+        foodService.processFoodLocation(memberId, locationRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/locations")
+    public ResponseEntity<List<FoodLocationDto>> getFoodLocations() {
+        List<FoodLocationDto> locations = foodService.getAllFoodLocations();
+        return ResponseEntity.ok(locations);
+    }
 }

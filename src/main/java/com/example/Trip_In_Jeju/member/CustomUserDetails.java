@@ -13,7 +13,8 @@ public class CustomUserDetails implements UserDetails {
     private String nickname;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public CustomUserDetails(String username, String password, String nickname, Collection<? extends GrantedAuthority> authorities) {
+    public CustomUserDetails(Member member, String username, String password, String nickname, Collection<? extends GrantedAuthority> authorities) {
+        this.member = member;  // 추가
         this.username = username;
         this.password = password;
         this.nickname = nickname;
@@ -57,5 +58,9 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public Member getMember() {
+        return this.member;
     }
 }

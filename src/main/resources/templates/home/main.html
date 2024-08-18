@@ -360,7 +360,16 @@
                 <a class="relative inline-block w-7 h-7 rounded-full bg-white content-center p-[20px]" href="/"><i class="fa-solid fa-house fa-lg absolute left-1/4"></i></a>
             </li>
             <li class="nav-item flex-grow ">
-                <a class="relative inline-block w-7 h-7 rounded-full bg-white content-center p-[20px]" href="#"><i class="fa-solid fa-pen fa-lg absolute left-1/4"></i></a>
+                <a sec:authorize="isAuthenticated()"
+                   class="relative inline-block w-7 h-7 rounded-full bg-white content-center p-[20px]"
+                   th:href="@{'/member/myPage/' + ${#authentication.name}}">
+                    <i class="fa-solid fa-pen fa-lg absolute left-1/4"></i>
+                </a>
+                <a sec:authorize="isAnonymous()"
+                   class="relative inline-block w-7 h-7 rounded-full bg-white content-center p-[20px]"
+                   href="/member/login">
+                    <i class="fa-solid fa-pen fa-lg absolute left-1/4"></i>
+                </a>
             </li>
             <li class="nav-item flex-grow">
                 <button class="relative inline-block w-7 h-7 rounded-full bg-white content-center p-[20px]" onclick="toggleActionSheet()"><i class="fa-solid fa-arrow-up fa-lg absolute left-1/3" id="arrowIcon"></i></button>

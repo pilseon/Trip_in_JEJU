@@ -23,7 +23,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
-                .allowedOrigins("http://localhost:8010") // 클라이언트의 URL (배포 시에는 도메인 설정 필요)
+                .allowedOrigins("https://kkyul.site") // 클라이언트의 URL (배포 시에는 도메인 설정 필요)
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);

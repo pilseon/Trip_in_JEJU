@@ -96,3 +96,18 @@ window.addEventListener('load', () => {
 
         const contentWidth = scrollContent.scrollWidth;
     });
+
+var swiper = new Swiper('.swiper-container', {
+        slidesPerView: 3,
+        spaceBetween: 30,
+        centeredSlides: true,
+        loop: true, // 슬라이드를 무한 반복
+        autoplay: {
+            delay: 2000, // 5초마다 슬라이드 넘김
+            disableOnInteraction: false, // 사용자 상호작용 후에도 자동 재생 유지
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        }
+    });

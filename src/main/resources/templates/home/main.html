@@ -37,7 +37,7 @@
     }
 
     .transition-opacity {
-        transition: opacity 1s ease-in-out;
+        transition: opacity 10s ease-in-out;
     }
 
     .opacity-0 {
@@ -63,19 +63,27 @@
     }
     /* 스크롤 애니메이션 */
 .scroll-container {
-  width: 100%;
-  overflow: hidden;
-  position: relative;
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    white-space: nowrap;
+    width: 100%;
 }
 
 .scroll-content {
-  display: flex;
-  white-space: nowrap;
-  animation: scroll 20s linear infinite;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 16px;
+    animation: scroll 10s linear infinite;
+    width: max-content; /* 콘텐츠 너비에 맞게 크기 설정 */
 }
 
-.scroll-container:hover .scroll-content {
-  animation-play-state: paused;
+.scroll-content li {
+    flex: 0 0 auto;
+    width: 20%; /* 5개 아이템이 한 줄에 표시되도록 설정 */
+    min-width: 200px;
+    box-sizing: border-box;
+    padding: 10px;
 }
 
 @keyframes scroll {
@@ -85,6 +93,20 @@
   100% {
     transform: translateX(-100%);
   }
+}
+
+
+.my-swiper-container {
+    width: 100%;
+    height: auto;
+}
+
+.my-swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* 슬라이드가 가로로 꽉 차게 설정 */
+    height: auto;
 }
 
 .swiper-button-next,
@@ -112,7 +134,7 @@
 <!-- common.css -->
 <link href="/resource/css/common.css" rel="stylesheet" type="text/css" />
 <link href="/resource/css/click.css" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 <header class="h-full mb-8">
     <div class="bg-[url('https://github.com/user-attachments/assets/49436bc7-f7e1-4200-82f1-1970ee059374')] bg-no-repeat bg-cover bg-top md:h-[50vh] w-full h-1/2">
         <!-- 고정된 네비게이션 바 -->
@@ -188,9 +210,12 @@
     <div class="md:w-1/2 mx-auto">
         <div class="mb-16 text-center">
             <div class="relative mb-4">
-                <div class="flex justify-center">
+                <div sec:authorize="isAuthenticated()" class="flex justify-center">
                     <h2 th:text="${member != null && member.nickname != null ? member.nickname : 'Guest'}" class="inline-block text-xl font-bold mr-1 text-yellow-500"></h2>
                     <h2 class="inline-block text-xl font-bold">님 여기는 어떠세요 ?</h2>
+                </div>
+                <div sec:authorize="isAnonymous()">
+                    <h2 class="inline-block text-xl font-bold">회원님들을 위한 추천 !</h2>
                 </div>
                 <div  th:if="${member != null}" class="absolute right-0 bottom-0">
                     <a th:if="${member.thema == '디저트'}" href="/dessert/list">더보기 ></a>
@@ -210,17 +235,17 @@
             <!-- 로그인 후 이용 가능한 콘텐츠 -->
             <div th:if="${member != null}" class="relative">
                 <!-- 스크롤 컨테이너 -->
-                <div class="scroll-container overflow-hidden relative">
-                    <div class="scroll-content flex whitespace-nowrap animate-scroll">
+                <div class="overflow-hidden relative">
+                    <div class="flex whitespace-nowrap">
                         <!-- 랜덤 음식 목록 -->
-                        <div th:if="${randomFoods != null}" class="flex-shrink-0 w-full mb-6">
-                            <ul class="flex space-x-4">
-                                <li th:each="food : ${randomFoods}" class="flex-none w-1/2 md:w-1/4 lg:w-1/5 mb-4">
+                        <div th:if="${randomFoods != null}" class="scroll-container flex overflow-x-hidden whitespace-nowrap w-full mb-6 relative">
+                            <ul  class="scroll-content flex space-x-4 w-full h-64">
+                                <li th:each="food : ${randomFoods}" class="swiper-slide flex-none w-1/2 md:w-1/4 lg:w-1/5">
                                     <a th:href="@{|/food/detail/${food.id}|}">
-                                        <div class="border rounded-lg p-2">
-                                            <img th:src="@{|/gen/${food.thumbnailImg}|}" alt="Food Image" class="w-full h-32 object-cover rounded-md mb-2">
-                                            <span th:text="${food.title}" class="block font-medium"></span>
-                                            <span th:text="${food.place}" class="text-sm text-gray-600"></span>
+                                        <div class="border rounded-lg p-2 h-full">
+                                            <img th:src="@{|/gen/${food.thumbnailImg}|}" alt="Food Image" class="w-full h-32 object-cover rounded-md mb-4">
+                                            <span th:text="${food.title}" class="block font-medium mb-2 whitespace-normal"></span>
+                                            <span th:text="${food.place}" class="text-sm text-gray-600 whitespace-normal mb-2"></span>
                                         </div>
                                     </a>
                                 </li>
@@ -228,14 +253,14 @@
                         </div>
 
                         <!-- 랜덤 디저트 목록 -->
-                        <div th:if="${randomDesserts != null}" class="flex-shrink-0 w-full mb-6">
-                            <ul class="flex space-x-4">
-                                <li th:each="dessert : ${randomDesserts}" class="flex-none w-1/2 md:w-1/4 lg:w-1/5 mb-4">
+                        <div th:if="${randomDesserts != null}" class="swiper-slide flex-shrink-0 w-full mb-6">
+                            <ul class="flex space-x-4 w-full h-64">
+                                <li th:each="dessert : ${randomDesserts}" class="flex-none w-1/2 md:w-1/4 lg:w-1/5">
                                     <a th:href="@{|/dessert/detail/${dessert.id}|}">
-                                        <div class="border rounded-lg p-2">
-                                            <img th:src="@{|/gen/${dessert.thumbnailImg}|}" alt="Dessert Image" class="w-full h-32 object-cover rounded-md mb-2">
-                                            <span th:text="${dessert.title}" class="block font-medium"></span>
-                                            <span th:text="${dessert.place}" class="text-sm text-gray-600"></span>
+                                        <div class="border rounded-lg p-2 h-full">
+                                            <img th:src="@{|/gen/${dessert.thumbnailImg}|}" alt="Dessert Image" class="w-full h-32 object-cover rounded-md mb-4">
+                                            <span th:text="${dessert.title}" class="block font-medium mb-2 whitespace-normal"></span>
+                                            <span th:text="${dessert.place}" class="text-sm text-gray-600 whitespace-normal mb-2"></span>
                                         </div>
                                     </a>
                                 </li>
@@ -243,14 +268,14 @@
                         </div>
 
                         <!-- 랜덤 액티비티 목록 -->
-                        <div th:if="${randomActivitys != null}" class="flex-shrink-0 w-full mb-6">
-                            <ul class="flex space-x-4">
-                                <li th:each="activity : ${randomActivitys}" class="flex-none w-1/2 md:w-1/4 lg:w-1/5 mb-4">
+                        <div th:if="${randomActivitys != null}" class="swiper-slide flex-shrink-0 w-full mb-6">
+                            <ul class="flex space-x-4 w-full h-64">
+                                <li th:each="activity : ${randomActivitys}" class="flex-none w-1/2 md:w-1/4 lg:w-1/5">
                                     <a th:href="@{|/activity/detail/${activity.id}|}">
-                                        <div class="border rounded-lg p-2">
-                                            <img th:src="@{|/gen/${activity.thumbnailImg}|}" alt="Activity Image" class="w-full h-32 object-cover rounded-md mb-2">
-                                            <span th:text="${activity.title}" class="block font-medium"></span>
-                                            <span th:text="${activity.place}" class="text-sm text-gray-600"></span>
+                                        <div class="border rounded-lg p-2 h-full">
+                                            <img th:src="@{|/gen/${activity.thumbnailImg}|}" alt="Activity Image" class="w-full h-32 object-cover rounded-md mb-4">
+                                            <span th:text="${activity.title}" class="block font-medium mb-2 whitespace-normal"></span>
+                                            <span th:text="${activity.place}" class="text-sm text-gray-600 whitespace-normal mb-2"></span>
                                         </div>
                                     </a>
                                 </li>
@@ -258,14 +283,14 @@
                         </div>
 
                         <!-- 랜덤 관광지 목록 -->
-                        <div th:if="${randomAttractionss != null}" class="flex-shrink-0 w-full mb-6">
-                            <ul class="flex space-x-4">
-                                <li th:each="attractions : ${randomAttractionss}" class="flex-none w-1/2 md:w-1/4 lg:w-1/5 mb-4">
+                        <div th:if="${randomAttractionss != null}" class="swiper-slide flex-shrink-0 w-full mb-6">
+                            <ul class="flex space-x-4 w-full h-64">
+                                <li th:each="attractions : ${randomAttractionss}" class="flex-none w-1/2 md:w-1/4 lg:w-1/5">
                                     <a th:href="@{|/attractions/detail/${attractions.id}|}">
-                                        <div class="border rounded-lg p-2">
-                                            <img th:src="@{|/gen/${attractions.thumbnailImg}|}" alt="Attractions Image" class="w-full h-32 object-cover rounded-md mb-2">
-                                            <span th:text="${attractions.title}" class="block font-medium"></span>
-                                            <span th:text="${attractions.place}" class="text-sm text-gray-600"></span>
+                                        <div class="border rounded-lg p-2 h-full">
+                                            <img th:src="@{|/gen/${attractions.thumbnailImg}|}" alt="Attractions Image" class="w-full h-32 object-cover rounded-md mb-4">
+                                            <span th:text="${attractions.title}" class="block font-medium mb-2 whitespace-normal"></span>
+                                            <span th:text="${attractions.place}" class="text-sm text-gray-600 whitespace-normal mb-2"></span>
                                         </div>
                                     </a>
                                 </li>
@@ -273,28 +298,28 @@
                         </div>
 
                         <!-- 랜덤 축제 목록 -->
-                        <div th:if="${randomFestivalss != null}" class="flex-shrink-0 w-full mb-6">
-                            <ul class="flex space-x-4">
-                                <li th:each="festivals : ${randomFestivalss}" class="flex-none w-1/2 md:w-1/4 lg:w-1/5 mb-4">
+                        <div th:if="${randomFestivalss != null}" class="swiper-slide flex-shrink-0 w-full mb-6">
+                            <ul class="flex space-x-4 w-full h-64">
+                                <li th:each="festivals : ${randomFestivalss}" class="flex-none w-1/2 md:w-1/4 lg:w-1/5">
                                     <a th:href="@{|/festivals/detail/${festivals.id}|}">
-                                        <div class="border rounded-lg p-2">
-                                            <img th:src="@{|/gen/${festivals.thumbnailImg}|}" alt="Festivals Image" class="w-full h-32 object-cover rounded-md mb-2">
-                                            <span th:text="${festivals.title}" class="block font-medium"></span>
-                                            <span th:text="${festivals.place}" class="text-sm text-gray-600"></span>
+                                        <div class="border rounded-lg p-2 h-full">
+                                            <img th:src="@{|/gen/${festivals.thumbnailImg}|}" alt="Festivals Image" class="w-full h-32 object-cover rounded-md mb-4">
+                                            <span th:text="${festivals.title}" class="block font-medium mb-2 whitespace-normal"></span>
+                                            <span th:text="${festivals.place}" class="text-sm text-gray-600 whitespace-normal mb-2"></span>
                                         </div>
                                     </a>
                                 </li>
                             </ul>
                         </div>
 
-                        <div th:if="${randomShoppings != null}" class="flex-shrink-0 w-full mb-6">
-                            <ul class="flex space-x-4">
-                                <li th:each="shopping : ${randomShoppings}" class="flex-none w-1/2 md:w-1/4 lg:w-1/5 mb-4">
+                        <div th:if="${randomShoppings != null}" class="swiper-slide flex-shrink-0 w-full mb-6">
+                            <ul class="flex space-x-4 w-full h-64">
+                                <li th:each="shopping : ${randomShoppings}" class="flex-none w-1/2 md:w-1/4 lg:w-1/5">
                                     <a th:href="@{|/shopping/detail/${shopping.id}|}">
-                                        <div class="border rounded-lg p-2">
-                                            <img th:src="@{|/gen/${shopping.thumbnailImg}|}" alt="Attractions Image" class="w-full h-32 object-cover rounded-md mb-2">
-                                            <span th:text="${shopping.title}" class="block font-medium"></span>
-                                            <span th:text="${shopping.place}" class="text-sm text-gray-600"></span>
+                                        <div class="border rounded-lg p-2 h-full">
+                                            <img th:src="@{|/gen/${shopping.thumbnailImg}|}" alt="Attractions Image" class="w-full h-32 object-cover rounded-md mb-4">
+                                            <span th:text="${shopping.title}" class="block font-medium mb-2 whitespace-normal"></span>
+                                            <span th:text="${shopping.place}" class="text-sm text-gray-600 whitespace-normal mb-2"></span>
                                         </div>
                                     </a>
                                 </li>
@@ -302,14 +327,14 @@
                         </div>
 
                         <!-- 랜덤 기타 목록 -->
-                        <div th:if="${randomOthers != null}" class="flex-shrink-0 w-full mb-6">
-                            <ul class="flex space-x-4">
-                                <li th:each="other : ${randomOthers}" class="flex-none w-1/2 md:w-1/4 lg:w-1/5 mb-4">
+                        <div th:if="${randomOthers != null}" class="swiper-slide flex-shrink-0 w-full mb-6">
+                            <ul class="flex space-x-4 w-full h-64">
+                                <li th:each="other : ${randomOthers}" class="flex-none w-1/2 md:w-1/4 lg:w-1/5">
                                     <a th:href="@{|/other/detail/${other.id}|}">
-                                        <div class="border rounded-lg p-2">
-                                            <img th:src="@{|/gen/${other.thumbnailImg}|}" alt="Other Image" class="w-full h-32 object-cover rounded-md mb-2">
-                                            <span th:text="${other.title}" class="block font-medium"></span>
-                                            <span th:text="${other.place}" class="text-sm text-gray-600"></span>
+                                        <div class="border rounded-lg p-2 h-full">
+                                            <img th:src="@{|/gen/${other.thumbnailImg}|}" alt="Other Image" class="w-full h-32 object-cover rounded-md mb-4">
+                                            <span th:text="${other.title}" class="block font-medium mb-2 whitespace-normal"></span>
+                                            <span th:text="${other.place}" class="text-sm text-gray-600 whitespace-normal mb-2"></span>
                                         </div>
                                     </a>
                                 </li>

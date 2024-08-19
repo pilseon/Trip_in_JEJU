@@ -1,5 +1,24 @@
 document.addEventListener("DOMContentLoaded", function () {
+
     // 이벤트 슬라이드 처리
+    handleEventSlides();
+    handleTodayPickSlides();
+
+    var swiper = new Swiper('.swiper-container', {
+            slidesPerView: 3,
+            spaceBetween: 30,
+            centeredSlides: true,
+            loop: true, // 슬라이드를 무한 반복
+            autoplay: {
+                delay: 2000, // 2초마다 슬라이드 넘김
+                disableOnInteraction: false, // 사용자 상호작용 후에도 자동 재생 유지
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            }
+        });
+
     function handleEventSlides() {
         let currentIndex = 0;
         const slides = document.querySelectorAll(".event-slide");
@@ -83,31 +102,4 @@ document.addEventListener("DOMContentLoaded", function () {
         nextButton.addEventListener('click', nextSlide);
         prevButton.addEventListener('click', prevSlide);
     }
-
-    // 두 가지 슬라이드 처리 함수 호출
-    handleEventSlides();
-    handleTodayPickSlides();
 });
-
-window.addEventListener('load', () => {
-        const scrollContent = document.getElementById('scroll-content');
-        const clone = scrollContent.cloneNode(true);
-        scrollContent.parentNode.appendChild(clone);
-
-        const contentWidth = scrollContent.scrollWidth;
-    });
-
-var swiper = new Swiper('.swiper-container', {
-        slidesPerView: 3,
-        spaceBetween: 30,
-        centeredSlides: true,
-        loop: true, // 슬라이드를 무한 반복
-        autoplay: {
-            delay: 2000, // 5초마다 슬라이드 넘김
-            disableOnInteraction: false, // 사용자 상호작용 후에도 자동 재생 유지
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        }
-    });

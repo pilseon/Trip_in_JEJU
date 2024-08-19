@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/resource/css/game.css"> <!-- CSS 파일 경로 조정 -->
+    <title>뀰을 지켜줘 !</title>
+
+</head>
+<body>
+    <div id="nicknameDisplay"></div> <!-- 닉네임 표시용 div 추가 -->
+    <div id="gameContainer">
+        <img id="startButton"  src="/images/gamestart.png" alt="게임 시작">
+        <canvas id="gameCanvas" width="400" height="700"></canvas>
+    </div>
+    <div id="rankingContainer">
+        <div id="rankingTitle">Ranking</div>
+        <div id="scoreBoard">
+            <!-- 랭킹 데이터가 여기 표시됩니다. -->
+        </div>
+    </div>
+
+    <script src="/gamejs/game.js"></script> <!-- 게임 스크립트 파일 -->
+</body>
+</html>

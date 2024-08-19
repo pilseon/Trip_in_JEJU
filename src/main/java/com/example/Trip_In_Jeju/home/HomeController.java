@@ -54,6 +54,21 @@ public class HomeController {
             model.addAttribute("member", null);
             // 로그인하지 않은 상태에서 사용할 기본 데이터를 설정합니다.
 
+            List<Food> randomFoodsForAll = foodService.getRandomFoods(1);
+            List<Dessert> randomDessertsForAll = dessertService.getRandomDesserts(1);
+            List<Activity> randomActivitiesForAll = activityService.getRandomActivities(1);
+            List<Attractions> randomAttractionsForAll = attractionsService.getRandomAttractions(1);
+            List<Festivals> randomFestivalsForAll = festivalsService.getRandomFestivals(1);
+            List<Shopping> randomShoppingsForAll = shoppingService.getRandomShoppings(1);
+            List<Other> randomOthersForAll = otherService.getRandomOthers(1);
+
+            model.addAttribute("randomFoodsForAll", randomFoodsForAll);
+            model.addAttribute("randomDessertsForAll", randomDessertsForAll);
+            model.addAttribute("randomActivitiesForAll", randomActivitiesForAll);
+            model.addAttribute("randomAttractionsForAll", randomAttractionsForAll);
+            model.addAttribute("randomFestivalsForAll", randomFestivalsForAll);
+            model.addAttribute("randomShoppingsForAll", randomShoppingsForAll);
+            model.addAttribute("randomOthersForAll", randomOthersForAll);
 
             return "home/main"; // 비회원 페이지로 리턴
         }

@@ -55,3 +55,17 @@
   overflow: hidden !important;
   text-overflow: ellipsis !important;
 }
+
+#moveToCurrentPosition {
+  width: 50px; /* 버튼의 기본 크기 */
+  height: 50px; /* 버튼의 기본 크기 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s, box-shadow 0.3s; /* 크기와 그림자 변화에 애니메이션 추가 */
+}
+
+#moveToCurrentPosition:hover {
+  transform: scale(1.2); /* 호버 시 버튼 크기 확대 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 효과 추가 */
+}

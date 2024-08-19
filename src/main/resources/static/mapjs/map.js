@@ -32,6 +32,16 @@ function initMap() {
         document.getElementById("searchButton").addEventListener("click", searchPlace);
         document.getElementById("keyword").addEventListener("input", autoComplete);
 
+        // 현재 위치로 이동 버튼에 이벤트 추가
+        document.getElementById("moveToCurrentPosition").addEventListener("click", function () {
+            if (currentPosition) {
+                map.setCenter(currentPosition);
+                map.setLevel(3);  // 지도의 줌 레벨을 3으로 설정 (원하는 대로 조정 가능)
+            } else {
+                console.error("Current position is not available.");
+            }
+        });
+
     } else {
         console.error("Failed to load Kakao Map API.");
     }

@@ -65,7 +65,7 @@ public class FestivalsService {
         return festivalsRepository.findAll(pageable);
     }
     public void create(String title, String periodStart, String periodEnd, String content, String place, String closedDay,
-                       String websiteUrl, String phoneNumber, String hashtags, MultipartFile thumbnail, double latitude, double longitude, String subCategory) {
+                       String websiteUrl, String phoneNumber, MultipartFile thumbnail, double latitude, double longitude, String subCategory) {
 
         String thumbnailRelPath = "festivals/" + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
@@ -103,7 +103,6 @@ public class FestivalsService {
                 .closedDay(closedDay)
                 .websiteUrl(websiteUrl)
                 .phoneNumber(phoneNumber)
-                .hashtags(hashtags)
                 .likes(0)
                 .subCategory(subCategory) // Ensure subCategory is used if provided
                 .build();
@@ -112,7 +111,7 @@ public class FestivalsService {
     }
 
     public void create2(String title, String periodStart, String periodEnd, String content, String place, String closedDay,
-                       String websiteUrl, String phoneNumber, String hashtags,  double latitude, double longitude, String subCategory) {
+                       String websiteUrl, String phoneNumber,  double latitude, double longitude, String subCategory) {
 
 
 
@@ -140,7 +139,6 @@ public class FestivalsService {
                 .closedDay(closedDay)
                 .websiteUrl(websiteUrl)
                 .phoneNumber(phoneNumber)
-                .hashtags(hashtags)
                 .likes(0)
                 .subCategory(subCategory) // Ensure subCategory is used if provided
                 .build();

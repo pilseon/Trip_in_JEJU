@@ -49,7 +49,6 @@ public class Activity {
 
     private String phoneNumber;
     private String websiteUrl;
-    private String hashtags;
 
     private int likes;
 

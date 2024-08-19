@@ -51,7 +51,6 @@ public class Festivals {
 
     private String phoneNumber;
     private String websiteUrl;
-    private String hashtags;
 
     private String periodStart;
     private String periodEnd;

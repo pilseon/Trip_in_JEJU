@@ -72,7 +72,7 @@ public class FoodService {
         return foodRepository.findAll(pageable);
     }
     public void create(String title, String businessHoursStart, String businessHoursEnd, String content, String place, String closedDay,
-                       String websiteUrl, String phoneNumber, String hashtags, MultipartFile thumbnail, double latitude, double longitude, String category, String subCategory) {
+                       String websiteUrl, String phoneNumber, MultipartFile thumbnail, double latitude, double longitude, String category, String subCategory) {
 
         String thumbnailRelPath = "food/" + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
@@ -108,7 +108,6 @@ public class FoodService {
                 .thumbnailImg(thumbnailRelPath)
                 .websiteUrl(websiteUrl)
                 .phoneNumber(phoneNumber)
-                .hashtags(hashtags)
                 .likes(0)
                 .scrapCount(0)
                 .category(category)
@@ -119,7 +118,7 @@ public class FoodService {
     }
 
     public void create2(String title, String businessHoursStart, String businessHoursEnd, String content, String place, String closedDay,
-                        String websiteUrl, String phoneNumber, String hashtags, double latitude, double longitude, String category, String subCategory) {
+                        String websiteUrl, String phoneNumber, double latitude, double longitude, String category, String subCategory) {
 
 
 
@@ -145,7 +144,6 @@ public class FoodService {
                 .place(place)
                 .websiteUrl(websiteUrl)
                 .phoneNumber(phoneNumber)
-                .hashtags(hashtags)
                 .likes(0)
                 .scrapCount(0)
                 .category(category)

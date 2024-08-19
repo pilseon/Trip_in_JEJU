@@ -57,7 +57,7 @@ public class FoodControllerTest {
             // 디저트 데이터 생성
             foodService.create2(
                     title, businessHoursStart, businessHoursEnd, content, place, closedDay,
-                    websiteUrl, phoneNumber, hashtags, latitude, longitude, category, subCategory
+                    websiteUrl, phoneNumber, latitude, longitude, category, subCategory
             );
         }
     }

@@ -49,10 +49,8 @@ public class Dessert {
 
     private String phoneNumber;
     private String websiteUrl;
-    private String hashtags;
 
     private int likes;
-    private int likey;
 
     private double averageRating;  // 평균 별점 추가
 

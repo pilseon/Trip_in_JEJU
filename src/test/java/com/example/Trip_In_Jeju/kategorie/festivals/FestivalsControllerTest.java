@@ -36,7 +36,6 @@ public class FestivalsControllerTest {
             String place = PLACES[random.nextInt(PLACES.length)];
             String closedDay = "매주 월요일 휴무";
             String websiteUrl = "https://example.com";
-            String hashtags = String.format("#축제%d", i);
             String phoneNumber = String.format("010-1234-%04d", i);
 
             LocalDate startDate = LocalDate.of(2024, 8, 1);
@@ -51,7 +50,7 @@ public class FestivalsControllerTest {
 
             festivalsService.create2(
                     title, periodStart.toString(), periodEnd.toString(), content, place, closedDay,
-                    websiteUrl, phoneNumber, hashtags, latitude, longitude, subCategory
+                    websiteUrl, phoneNumber, latitude, longitude, subCategory
             );
         }
     }
@@ -67,7 +66,6 @@ public class FestivalsControllerTest {
             String place = PLACES[random.nextInt(PLACES.length)];
             String closedDay = "매주 월요일 휴무";
             String websiteUrl = "https://example.com";
-            String hashtags = String.format("#축제%d", i);
             String phoneNumber = String.format("010-1234-%04d", i);
 
             LocalDate startDate = LocalDate.of(2024, 8, 1);
@@ -82,7 +80,7 @@ public class FestivalsControllerTest {
 
             festivalsService.create2(
                     title, periodStart.toString(), periodEnd.toString(), content, place, closedDay,
-                    websiteUrl, phoneNumber, hashtags, latitude, longitude, subCategory
+                    websiteUrl, phoneNumber, latitude, longitude, subCategory
             );
         }
     }
@@ -98,7 +96,6 @@ public class FestivalsControllerTest {
             String place = PLACES[random.nextInt(PLACES.length)];
             String closedDay = "매주 월요일 휴무";
             String websiteUrl = "https://example.com";
-            String hashtags = String.format("#축제%d", i);
             String phoneNumber = String.format("010-1234-%04d", i);
 
             LocalDate startDate = LocalDate.of(2024, 8, 1);
@@ -113,7 +110,7 @@ public class FestivalsControllerTest {
 
             festivalsService.create2(
                     title, periodStart.toString(), periodEnd.toString(), content, place, closedDay,
-                    websiteUrl, phoneNumber, hashtags, latitude, longitude, subCategory
+                    websiteUrl, phoneNumber, latitude, longitude, subCategory
             );
         }
     }
@@ -129,7 +126,6 @@ public class FestivalsControllerTest {
             String place = PLACES[random.nextInt(PLACES.length)];
             String closedDay = "매주 월요일 휴무";
             String websiteUrl = "https://example.com";
-            String hashtags = String.format("#음식 축제%d", i);
             String phoneNumber = String.format("010-1234-%04d", i);
 
             LocalDate startDate = LocalDate.of(2024, 8, 1);
@@ -144,7 +140,7 @@ public class FestivalsControllerTest {
 
             festivalsService.create2(
                     title, periodStart.toString(), periodEnd.toString(), content, place, closedDay,
-                    websiteUrl, phoneNumber, hashtags, latitude, longitude, subCategory
+                    websiteUrl, phoneNumber, latitude, longitude, subCategory
             );
         }
     }
@@ -160,7 +156,6 @@ public class FestivalsControllerTest {
             String place = PLACES[random.nextInt(PLACES.length)];
             String closedDay = "매주 월요일 휴무";
             String websiteUrl = "https://example.com";
-            String hashtags = String.format("#기타축제%d", i);
             String phoneNumber = String.format("010-1234-%04d", i);
 
             LocalDate startDate = LocalDate.of(2024, 8, 1);
@@ -175,7 +170,7 @@ public class FestivalsControllerTest {
 
             festivalsService.create2(
                     title, periodStart.toString(), periodEnd.toString(), content, place, closedDay,
-                    websiteUrl, phoneNumber, hashtags, latitude, longitude, subCategory
+                    websiteUrl, phoneNumber, latitude, longitude, subCategory
             );
         }
     }

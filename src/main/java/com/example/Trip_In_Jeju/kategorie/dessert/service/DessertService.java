@@ -70,7 +70,7 @@ public class DessertService {
     }
 
     public void create(String title, String businessHoursStart, String businessHoursEnd, String content, String place, String closedDay,
-                       String websiteUrl, String phoneNumber, String hashtags, MultipartFile thumbnail, double latitude, double longitude,String category, String subCategory) {
+                       String websiteUrl, String phoneNumber, MultipartFile thumbnail, double latitude, double longitude,String category, String subCategory) {
 
         // 이미지를 저장할 디렉토리의 전체 경로를 생성합니다.
         String thumbnailRelPath = DESSERT_IMAGE_DIR + UUID.randomUUID().toString() + ".jpg";
@@ -109,7 +109,6 @@ public class DessertService {
                 .thumbnailImg(thumbnailRelPath)
                 .websiteUrl(websiteUrl)
                 .phoneNumber(phoneNumber)
-                .hashtags(hashtags)
                 .likes(0)
                 .scrapCount(0)
                 .category(category)
@@ -120,7 +119,7 @@ public class DessertService {
     }
 
     public void create2(String title, String businessHoursStart, String businessHoursEnd, String content, String place, String closedDay,
-                        String websiteUrl, String phoneNumber, String hashtags, double latitude, double longitude, String category, String subCategory) {
+                        String websiteUrl, String phoneNumber, double latitude, double longitude, String category, String subCategory) {
 
         // Location 엔티티 생성 및 저장
         Location location = new Location();
@@ -144,7 +143,6 @@ public class DessertService {
                 .place(place)
                 .websiteUrl(websiteUrl)
                 .phoneNumber(phoneNumber)
-                .hashtags(hashtags)
                 .likes(0)
                 .scrapCount(0)
                 .category(category)
@@ -188,30 +186,6 @@ public class DessertService {
             like.setMember(member);
             likeRepository.save(like);
             dessert.setLikes(dessert.getLikes() + 1);
-            dessertRepository.save(dessert);
-            return true; // 좋아요 추가됨
-        }
-    }
-
-    @Transactional
-    public boolean toggleLike2(Long id, Member member) {
-        Dessert dessert = dessertRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Dessert not found"));
-
-        boolean alreadyLiked = likeRepository.existsByDessertAndMember(dessert, member);
-        if (alreadyLiked) {
-            // 이미 좋아요를 눌렀다면 좋아요 취소
-            likeRepository.deleteByDessertAndMember(dessert, member);
-            dessert.setLikey(dessert.getLikey() - 1);
-            dessertRepository.save(dessert);
-            return false; // 좋아요 취소됨
-        } else {
-            // 좋아요 추가
-            Like like = new Like();
-            like.setDessert(dessert);
-            like.setMember(member);
-            likeRepository.save(like);
-            dessert.setLikey(dessert.getLikey() + 1);
             dessertRepository.save(dessert);
             return true; // 좋아요 추가됨
         }

@@ -247,28 +247,7 @@ public class DessertController {
 
         return "redirect:/dessert/detail/" + id;
     }
-    @PostMapping("review/like/{id}")
-    public String like2(@PathVariable("id") Long id, Authentication authentication) {
-        if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails)) {
-            return "redirect:/dessert/detail/" + id;
-        }
 
-        String username = ((UserDetails) authentication.getPrincipal()).getUsername();
-        Optional<Member> memberOptional = memberService.findByUsername(username);
-
-        if (!memberOptional.isPresent()) {
-            return "redirect:/dessert/detail/" + id + "?error=memberNotFound";
-        }
-
-        Member member = memberOptional.get();
-        boolean liked = dessertService.toggleLike2(id, member);
-
-        if (!liked) {
-            return "redirect:/dessert/detail/" + id + "?error=alreadyLiked";
-        }
-
-        return "redirect:/dessert/detail/" + id;
-    }
 
     @PostMapping("/scrap/{id}")
     public String toggleScrap(@PathVariable("id") Long id, Authentication authentication) {

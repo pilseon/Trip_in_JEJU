@@ -67,7 +67,7 @@ public class ShoppingService {
         return shoppingRepository.findAll(pageable);
     }
     public void create(String title, String businessHoursStart, String businessHoursEnd, String content, String place, String closedDay,
-                       String websiteUrl, String phoneNumber, String hashtags, MultipartFile thumbnail, double latitude, double longitude, String category, String subCategory) {
+                       String websiteUrl, String phoneNumber, MultipartFile thumbnail, double latitude, double longitude, String category, String subCategory) {
 
         String thumbnailRelPath = "shopping/" + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
@@ -103,7 +103,6 @@ public class ShoppingService {
                 .thumbnailImg(thumbnailRelPath)
                 .websiteUrl(websiteUrl)
                 .phoneNumber(phoneNumber)
-                .hashtags(hashtags)
                 .likes(0)
                 .scrapCount(0)
                 .category(category)

@@ -9,11 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,13 +29,21 @@ public class GameController {
 
 
     @GetMapping("/index")
-    public String showGamePage() {
-        return "game/index"; // `game.html` 파일이 `src/main/resources/templates`에 있어야 합니다.
+    public String showGamePage(Model model) {
+        Member currentMember = memberService.getCurrentMember();
+        List<Game> topScores = gameService.getTopScores();
+        topScores.forEach(game -> {
+            if (game.getMember().getThumbnailImg() == null || game.getMember().getThumbnailImg().isEmpty()) {
+                game.getMember().setThumbnailImg("https://i.ibb.co/mJYXKqb/images.jpg"); // 기본 이미지 설정
+            }
+        });
+        model.addAttribute("topScores", topScores);
+        model.addAttribute("member", currentMember);
+        return "game/index"; // game.html 파일이 열림
     }
-
     // 점수 저장
     @PostMapping("/score")
-    public ResponseEntity<Game> saveScore(@RequestBody Map<String, Object> requestData) {
+    public ResponseEntity<Map<String, Object>> saveScore(@RequestBody Map<String, Object> requestData) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
@@ -44,7 +54,14 @@ public class GameController {
         int score = Integer.parseInt(requestData.get("score").toString());
 
         Game savedGame = gameService.saveScore(member.getId(), score);
-        return ResponseEntity.ok(savedGame);
+
+        String profileImageUrl = "/imagefile/post/post/" + member.getThumbnailImg(); // 프로필 이미지 URL
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("game", savedGame);
+        response.put("profileImageUrl", profileImageUrl); // 프로필 이미지 URL을 반환
+
+        return ResponseEntity.ok(response);
     }
 
     // 상위 점수 조회

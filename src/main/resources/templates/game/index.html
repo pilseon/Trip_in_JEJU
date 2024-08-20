@@ -11,12 +11,19 @@
     <div id="nicknameDisplay"></div> <!-- 닉네임 표시용 div 추가 -->
     <div id="gameContainer">
         <img id="startButton"  src="/images/gamestart.png" alt="게임 시작">
-        <canvas id="gameCanvas" width="400" height="700"></canvas>
+        <canvas id="gameCanvas" width="700" height="700"></canvas>
     </div>
     <div id="rankingContainer">
         <div id="rankingTitle">Ranking</div>
         <div id="scoreBoard">
-            <!-- 랭킹 데이터가 여기 표시됩니다. -->
+            <div th:each="game, iterStat : ${topScores}" class="ranking-item">
+                <div class="ranking-rank" th:text="${iterStat.index + 1}">1</div>
+                <img class="ranking-image"
+                     th:src="@{|/gen/${game.member.thumbnailImg != null ? game.member.thumbnailImg : 'https://i.ibb.co/mJYXKqb/images.jpg'}|}"
+                     alt="Profile Image">
+                <div class="ranking-name" th:text="${game.member.nickname}">Nickname</div>
+                <div class="ranking-score" th:text="${game.score}">0</div>
+            </div>
         </div>
     </div>
 

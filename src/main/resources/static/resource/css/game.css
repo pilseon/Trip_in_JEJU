@@ -36,41 +36,63 @@ body {
 }
 
 #rankingContainer {
-  background-color: #ffffff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-  padding: 20px;
-  width: 300px;
-  text-align: center;
+    background-color: #6a1b9a;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    width: 350px;
+    text-align: center;
+    color: #ffffff;
+    font-family: "Arial", sans-serif;
 }
 
 #rankingTitle {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  color: #2c3e50;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #ffeb3b;
 }
 
 #scoreBoard {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .ranking-item {
-  font-size: 18px;
-  padding: 10px;
-  border-radius: 5px;
-  background-color: #f1f1f1;
+    display: flex;
+    align-items: center;
+    background-color: #8e24aa;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-.ranking-item:nth-child(odd) {
-  background-color: #e7e7e7;
+.ranking-rank {
+    font-size: 24px;
+    font-weight: bold;
+    margin-right: 15px;
+    color: #ffeb3b;
 }
 
-.ranking-item span {
-  font-weight: bold;
-  color: #2c3e50;
+.ranking-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+    border: 2px solid #ffeb3b;
+}
+
+.ranking-name {
+    flex-grow: 1;
+    font-size: 18px;
+    text-align: left;
+}
+
+.ranking-score {
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffeb3b;
 }
 
 #restartButton, #endButton {

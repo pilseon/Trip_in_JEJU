@@ -551,6 +551,9 @@
                 <li class="flex-shrink-0 py-3 border-b-2">
                     <a href="/api/chat/openai" class="option cursor-pointer inline-block w-100 h-100 text-left hover:text-yellow-500 ml-2">챗 봇</a>
                 </li>
+                <li sec:authorize="isAuthenticated()" class="flex-shrink-0 py-3 border-b-2">
+                    <a href="/game/index" class="option cursor-pointer inline-block w-100 h-100 text-left hover:text-yellow-500 ml-2">미니게임</a>
+                </li>
                 <li sec:authorize="isAnonymous()" class="flex-shrink-0 py-3 border-b-2">
                     <a   href="/member/login"class="option cursor-pointer inline-block w-100 h-100 text-left hover:text-yellow-500 ml-2">로그인</a>
                 </li>

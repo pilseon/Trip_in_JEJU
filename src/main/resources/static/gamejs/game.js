@@ -22,7 +22,7 @@ function Bullet() {
   };
 
   this.update = function() {
-    this.y -= 5;
+    this.y -= 10;
   };
 
   this.checkHit = function() {
@@ -52,7 +52,7 @@ function Enemy() {
     enemyList.push(this);
   };
   this.update = function() {
-    this.y += 8;
+    this.y += 5;
     if (this.y >= canvas.height - 48) {
       gameOver = true;
     }
@@ -122,10 +122,10 @@ function createEnemy() {
 
 function update() {
   if (39 in keysDown) {
-    spaceshipX += 7;
+    spaceshipX += 10;
   } // right
   if (37 in keysDown) {
-    spaceshipX -= 7;
+    spaceshipX -= 10;
   } // left
 
   if (spaceshipX <= 0) {
@@ -153,6 +153,7 @@ function render() {
   ctx.fillText(`score: ${score}`, 20, 30);
   ctx.fillStyle = "white";
   ctx.font = "20px Arial";
+  ctx.objectFit = "cover";
   for (let i = 0; i < bulletList.length; i++) {
     if (bulletList[i].alive) {
       ctx.drawImage(bulletImage, bulletList[i].x, bulletList[i].y);
@@ -298,7 +299,29 @@ function loadTopScores() {
             scoreBoard.innerHTML = ''; // 기존 내용을 지우고
             data.forEach((game, index) => {
                 const scoreItem = document.createElement('div');
-                scoreItem.textContent = `${index + 1}. ${game.member.nickname}: ${game.score}`;
+                scoreItem.classList.add('ranking-item'); // CSS 클래스 추가
+
+                const rank = document.createElement('div');
+                rank.classList.add('ranking-rank');
+                rank.textContent = `${index + 1}`;
+
+                const imgElement = document.createElement('img');
+                imgElement.classList.add('ranking-image');
+                imgElement.src = game.member.thumbnailImg ? `/gen/${game.member.thumbnailImg}` : 'https://i.ibb.co/mJYXKqb/images.jpg';
+
+                const name = document.createElement('div');
+                name.classList.add('ranking-name');
+                name.textContent = game.member.nickname;
+
+                const score = document.createElement('div');
+                score.classList.add('ranking-score');
+                score.textContent = game.score;
+
+                scoreItem.appendChild(rank);
+                scoreItem.appendChild(imgElement);
+                scoreItem.appendChild(name);
+                scoreItem.appendChild(score);
+
                 scoreBoard.appendChild(scoreItem);
             });
         })

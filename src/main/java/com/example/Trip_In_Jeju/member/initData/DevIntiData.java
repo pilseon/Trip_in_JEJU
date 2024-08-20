@@ -33,7 +33,7 @@ public class DevIntiData implements BeforeIntiData {
             }
 
             if (memberService.findByUsername("user3").isEmpty()) {
-                memberService.signup2("user3", "근혀기", password, "user3@test.com", "음식", MemberRole.MEMBER);
+                memberService.signup2("user3", "근혀기", password, "user3@test.com", "음식점", MemberRole.MEMBER);
             }
         };
     }

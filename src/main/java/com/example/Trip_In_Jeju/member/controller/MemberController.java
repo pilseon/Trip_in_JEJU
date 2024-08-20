@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -442,5 +443,12 @@ public class MemberController {
     public String loginSuccess(HttpServletRequest request, HttpServletResponse response) {
         log.info("Current Session ID: {}", request.getSession().getId());
         return "redirect:/";
+    }
+
+    @GetMapping("/info")
+    public ResponseEntity<Member> getMemberInfo(@RequestParam("username") String username) {
+        Member member = memberService.findByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        return ResponseEntity.ok(member);
     }
 }

@@ -2,7 +2,7 @@
 let canvas = document.getElementById("gameCanvas");
 let ctx = canvas.getContext("2d");
 
-let backgroundImage, spaceshipImage, bulletImage, enemyImage, gameoverImage, gamestartImage, oneImage, twoImage, threeImage;
+let backgroundImage, spaceshipImage, bulletImage, enemyImage, gameoverImage, gamestartImage, oneImage, twoImage, threeImage, restartImage, endImage;
 let gameOver = false; // true이면 게임이 끝남, false이면 게임이 안 끝남
 let score = 0;
 
@@ -48,12 +48,12 @@ function Enemy() {
   this.y = 0;
   this.init = function() {
     this.y = 0;
-    this.x = generateRandomValue(0, canvas.width - 64);
+    this.x = generateRandomValue(0, canvas.width - 48);
     enemyList.push(this);
   };
   this.update = function() {
     this.y += 8;
-    if (this.y >= canvas.height - 64) {
+    if (this.y >= canvas.height - 48) {
       gameOver = true;
     }
   };
@@ -86,6 +86,12 @@ function loadImage() {
 
   threeImage = new Image();
   threeImage.src = "/images/three.png";
+
+  restartImage = new Image();
+  restartImage.src = "/images/restart.png";
+
+    endImage = new Image();
+    endImage.src = "/images/end.png";
 }
 
 let keysDown = {};
@@ -154,18 +160,70 @@ function render() {
   }
   for (let i = 0; i < enemyList.length; i++) {
     ctx.drawImage(enemyImage, enemyList[i].x, enemyList[i].y);
+
   }
 }
 
-function main() {
-  if (!gameOver) {
-    update(); // 좌표값을 업데이트하고
-    render(); // 그려주고
-    requestAnimationFrame(main); // 재생성
-  } else {
-    ctx.drawImage(gameoverImage, 10, 100, 380, 380);
-  }
+// member 찾아오기
+function getMemberInfo(username) {
+    return fetch(`/api/member/info?username=${username}`)
+        .then(response => response.json())
+        .then(data => data)
+        .catch(error => console.error('Error fetching member info:', error));
 }
+
+let memberId;
+
+function initializeGame() {
+    const username = localStorage.getItem('username'); // 예: 로그인 시 저장된 사용자 이름을 가져옴
+    getMemberInfo(username).then(member => {
+        memberId = member.id;
+        startGame(); // 사용자 정보를 가져온 후 게임을 시작합니다.
+    });
+}
+
+function main() {
+    if (!gameOver) {
+        update(); // 좌표값을 업데이트하고
+        render(); // 그려주고
+        requestAnimationFrame(main); // 재생성
+    } else {
+        ctx.drawImage(gameoverImage, 10, 100, 380, 380);
+        saveScore(memberId, score); // 게임 종료 시 memberId를 사용하여 점수를 저장합니다.
+        ctx.drawImage(restartImage, canvas.width / 2 - 250, canvas.height / 2 + 50, 300, 150);
+        ctx.drawImage(endImage, canvas.width / 2 - 50, canvas.height / 2 + 50, 300, 150);
+    }
+}
+canvas.addEventListener('click', function(event) {
+    let x = event.pageX - canvas.offsetLeft;
+    let y = event.pageY - canvas.offsetTop;
+
+    if (gameOver) {
+        // Restart 버튼의 위치와 크기
+        let restartX = canvas.width / 2 - 150;
+        let restartY = canvas.height / 2 + 75;
+        let restartWidth = 100;
+        let restartHeight = 100;
+
+        // End 버튼의 위치와 크기
+        let endX = canvas.width / 2 + 50;
+        let endY = canvas.height / 2 + 75;
+        let endWidth = 100;
+        let endHeight = 100;
+
+        // Restart 버튼이 클릭되었는지 확인
+        if (x >= restartX && x <= restartX + restartWidth &&
+            y >= restartY && y <= restartY + restartHeight) {
+            startGame(); // 게임 재시작
+        }
+
+        // End 버튼이 클릭되었는지 확인
+        if (x >= endX && x <= endX + endWidth &&
+            y >= endY && y <= endY + endHeight) {
+            window.location.href = '/'; // 메인 페이지로 이동
+        }
+    }
+});
 
 function startGame() {
   setupKeyboardListener();
@@ -214,3 +272,38 @@ function initializeGame() {
 }
 
 initializeGame(); // 게임 초기화 및 시작
+
+// 점수 저장
+function saveScore(memberId, score) {
+    fetch('/game/score', { // 서버의 `/game/score` 경로로 POST 요청
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ memberId, score })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Score saved:', data);
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function loadTopScores() {
+    fetch('/game/top-scores') // 서버의 `/game/top-scores` 경로로 GET 요청
+        .then(response => response.json())
+        .then(data => {
+            console.log('Top scores:', data);
+            const scoreBoard = document.getElementById('scoreBoard'); // 랭킹을 표시할 요소
+            scoreBoard.innerHTML = ''; // 기존 내용을 지우고
+            data.forEach((game, index) => {
+                const scoreItem = document.createElement('div');
+                scoreItem.textContent = `${index + 1}. ${game.member.nickname}: ${game.score}`;
+                scoreBoard.appendChild(scoreItem);
+            });
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+// 페이지 로드 시 랭킹을 로드
+window.onload = loadTopScores;

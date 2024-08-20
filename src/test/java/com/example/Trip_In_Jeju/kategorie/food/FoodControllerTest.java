@@ -45,7 +45,6 @@ public class FoodControllerTest {
             String place = PLACES[random.nextInt(PLACES.length)];
             String closedDay = String.format("매주 월요일 휴무");
             String websiteUrl = "https://i.ibb.co/C2hv4Cp/Kakao-Talk-20240718-114435946.jpg";
-            String hashtags = String.format("#크크%d", i);
             String phoneNumber = String.format("010-1234-%04d", i);
 
             // 제주도의 위도 및 경도 범위로 수정
@@ -74,7 +73,6 @@ public class FoodControllerTest {
             String place = PLACES[random.nextInt(PLACES.length)];
             String closedDay = String.format("매주 월요일 휴무");
             String websiteUrl = "https://i.ibb.co/C2hv4Cp/Kakao-Talk-20240718-114435946.jpg";
-            String hashtags = String.format("#모고이건%d", i);
             String phoneNumber = String.format("010-1234-%04d", i);
 
             // 제주도의 위도 및 경도 범위로 수정
@@ -86,7 +84,7 @@ public class FoodControllerTest {
             // 디저트 데이터 생성
             dessertService.create2(
                     title, businessHoursStart, businessHoursEnd, content, place, closedDay,
-                    websiteUrl, phoneNumber, hashtags, latitude, longitude, category, subCategory
+                    websiteUrl, phoneNumber, latitude, longitude, category, subCategory
             );
         }
     }
@@ -104,7 +102,6 @@ public class FoodControllerTest {
             String place = PLACES[random.nextInt(PLACES.length)];
             String closedDay = String.format("매주 월요일 휴무");
             String websiteUrl = "https://i.ibb.co/C2hv4Cp/Kakao-Talk-20240718-114435946.jpg";
-            String hashtags = String.format("#모고이건%d", i);
             String phoneNumber = String.format("010-1234-%04d", i);
 
             // 제주도의 위도 및 경도 범위로 수정
@@ -116,7 +113,7 @@ public class FoodControllerTest {
             // 디저트 데이터 생성
             dessertService.create2(
                     title, businessHoursStart, businessHoursEnd, content, place, closedDay,
-                    websiteUrl, phoneNumber, hashtags, latitude, longitude, category, subCategory
+                    websiteUrl, phoneNumber, latitude, longitude, category, subCategory
             );
         }
     }
@@ -134,7 +131,6 @@ public class FoodControllerTest {
             String place = PLACES[random.nextInt(PLACES.length)];
             String closedDay = String.format("매주 월요일 휴무");
             String websiteUrl = "https://i.ibb.co/C2hv4Cp/Kakao-Talk-20240718-114435946.jpg";
-            String hashtags = String.format("#모고이건%d", i);
             String phoneNumber = String.format("010-1234-%04d", i);
 
             // 제주도의 위도 및 경도 범위로 수정
@@ -146,7 +142,7 @@ public class FoodControllerTest {
             // 디저트 데이터 생성
             dessertService.create2(
                     title, businessHoursStart, businessHoursEnd, content, place, closedDay,
-                    websiteUrl, phoneNumber, hashtags, latitude, longitude, category, subCategory
+                    websiteUrl, phoneNumber, latitude, longitude, category, subCategory
             );
         }
     }
@@ -164,7 +160,6 @@ public class FoodControllerTest {
             String place = PLACES[random.nextInt(PLACES.length)];
             String closedDay = String.format("매주 월요일 휴무");
             String websiteUrl = "https://i.ibb.co/C2hv4Cp/Kakao-Talk-20240718-114435946.jpg";
-            String hashtags = String.format("#모고이건%d", i);
             String phoneNumber = String.format("010-1234-%04d", i);
 
             // 제주도의 위도 및 경도 범위로 수정
@@ -176,7 +171,7 @@ public class FoodControllerTest {
             // 디저트 데이터 생성
             dessertService.create2(
                     title, businessHoursStart, businessHoursEnd, content, place, closedDay,
-                    websiteUrl, phoneNumber, hashtags, latitude, longitude, category, subCategory
+                    websiteUrl, phoneNumber, latitude, longitude, category, subCategory
             );
         }
     }
@@ -191,7 +186,6 @@ public class FoodControllerTest {
             String place = PLACES[random.nextInt(PLACES.length)];
             String closedDay = "매주 월요일 휴무";
             String websiteUrl = "https://example.com";
-            String hashtags = String.format("#축제%d", i);
             String phoneNumber = String.format("010-1234-%04d", i);
 
             LocalDate startDate = LocalDate.of(2024, 8, 1);
@@ -206,7 +200,7 @@ public class FoodControllerTest {
 
             festivalsService.create2(
                     title, periodStart.toString(), periodEnd.toString(), content, place, closedDay,
-                    websiteUrl, phoneNumber, hashtags, latitude, longitude, subCategory
+                    websiteUrl, phoneNumber, latitude, longitude, subCategory
             );
         }
     }
@@ -222,7 +216,6 @@ public class FoodControllerTest {
             String place = PLACES[random.nextInt(PLACES.length)];
             String closedDay = "매주 월요일 휴무";
             String websiteUrl = "https://example.com";
-            String hashtags = String.format("#축제%d", i);
             String phoneNumber = String.format("010-1234-%04d", i);
 
             LocalDate startDate = LocalDate.of(2024, 8, 1);
@@ -237,7 +230,7 @@ public class FoodControllerTest {
 
             festivalsService.create2(
                     title, periodStart.toString(), periodEnd.toString(), content, place, closedDay,
-                    websiteUrl, phoneNumber, hashtags, latitude, longitude, subCategory
+                    websiteUrl, phoneNumber, latitude, longitude, subCategory
             );
         }
     }
@@ -253,7 +246,6 @@ public class FoodControllerTest {
             String place = PLACES[random.nextInt(PLACES.length)];
             String closedDay = "매주 월요일 휴무";
             String websiteUrl = "https://example.com";
-            String hashtags = String.format("#축제%d", i);
             String phoneNumber = String.format("010-1234-%04d", i);
 
             LocalDate startDate = LocalDate.of(2024, 8, 1);
@@ -268,7 +260,7 @@ public class FoodControllerTest {
 
             festivalsService.create2(
                     title, periodStart.toString(), periodEnd.toString(), content, place, closedDay,
-                    websiteUrl, phoneNumber, hashtags, latitude, longitude, subCategory
+                    websiteUrl, phoneNumber, latitude, longitude, subCategory
             );
         }
     }
@@ -284,7 +276,6 @@ public class FoodControllerTest {
             String place = PLACES[random.nextInt(PLACES.length)];
             String closedDay = "매주 월요일 휴무";
             String websiteUrl = "https://example.com";
-            String hashtags = String.format("#음식 축제%d", i);
             String phoneNumber = String.format("010-1234-%04d", i);
 
             LocalDate startDate = LocalDate.of(2024, 8, 1);
@@ -299,7 +290,7 @@ public class FoodControllerTest {
 
             festivalsService.create2(
                     title, periodStart.toString(), periodEnd.toString(), content, place, closedDay,
-                    websiteUrl, phoneNumber, hashtags, latitude, longitude, subCategory
+                    websiteUrl, phoneNumber, latitude, longitude, subCategory
             );
         }
     }
@@ -315,7 +306,6 @@ public class FoodControllerTest {
             String place = PLACES[random.nextInt(PLACES.length)];
             String closedDay = "매주 월요일 휴무";
             String websiteUrl = "https://example.com";
-            String hashtags = String.format("#기타축제%d", i);
             String phoneNumber = String.format("010-1234-%04d", i);
 
             LocalDate startDate = LocalDate.of(2024, 8, 1);
@@ -330,7 +320,7 @@ public class FoodControllerTest {
 
             festivalsService.create2(
                     title, periodStart.toString(), periodEnd.toString(), content, place, closedDay,
-                    websiteUrl, phoneNumber, hashtags, latitude, longitude, subCategory
+                    websiteUrl, phoneNumber, latitude, longitude, subCategory
             );
         }
     }

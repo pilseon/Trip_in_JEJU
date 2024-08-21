@@ -96,31 +96,14 @@
 }
 
 
-.my-swiper-container {
+.swiper-container {
     width: 100%;
     height: auto;
+
 }
 
-.my-swiper-slide {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%; /* 슬라이드가 가로로 꽉 차게 설정 */
-    height: auto;
-}
 
-.swiper-button-next,
-.swiper-button-prev {
-    @apply absolute top-1/2 transform -translate-y-1/2 w-12 h-12 bg-gray-800 text-white;
-}
 
-.swiper-button-next {
-    @apply right-2;
-}
-
-.swiper-button-prev {
-    @apply left-2;
-}
 
 .swiper-slide {
     transition: transform 0.3s ease;
@@ -129,6 +112,56 @@
 .swiper-slide-active {
     transform: scale(1.1); /* 중앙 슬라이드 강조 */
 }
+
+    /* Slider Container */
+.slider-container {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+/* Slider Wrapper */
+.slider-wrapper {
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Slider Items */
+.slider-item {
+    flex: 0 0 auto;
+    margin-right: 16px; /* 간격을 위한 마진 */
+}
+
+/* Navigation Buttons */
+.slider-button-prev,
+.slider-button-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    cursor: pointer;
+}
+
+.slider-button-prev {
+    left: 0;
+}
+
+.slider-button-next {
+    right: 0;
+}
+
+/* 버튼이 없는 경우 스크롤 막기 */
+.slider-container:focus-within .slider-wrapper {
+    scroll-behavior: smooth;
+}
+
+
+
 </style>
 <body class="flex flex-col min-h-screen">
 <!-- common.css -->
@@ -351,95 +384,95 @@
             <div class="relative mb-4">
                 <h2 class="text-xl font-bold">여기도 확인해 봐요 !</h2>
             </div>
-            <div class="swiper-container mx-auto relative">
-                <div class="swiper-wrapper">
+            <div class="slider-container mx-auto relative">
+                <div class="slider-wrapper">
                     <!-- 랜덤 음식 목록 -->
-                        <div th:each="item : ${randomFoodsForAll}" class="swiper-slide w-48 h-32 bg-gray-200 rounded-3xl overflow-hidden">
-                            <a th:href="@{|/food/detail/${item.id}|}" class="flex items-center justify-center w-full h-full relative">
-                                <img th:src="@{|/gen/${item.thumbnailImg}|}" alt="Item Thumbnail" class="w-full h-full object-cover rounded-3xl"/>
-                                <div class="absolute bottom-0 left-0 w-full bg-black bg-opacity-25 text-white p-2 text-center rounded-t-3xl">
-                                    <div th:text="${item.title}" class="font-bold"></div>
-                                    <div th:text="${item.place}" class="text-sm"></div>
-                                    <div th:text="${item.subCategory}" class="text-xs"></div>
-                                </div>
-                            </a>
-                        </div>
+                    <div th:each="item : ${randomFoodsForAll}" class="slider-item w-48 h-32 bg-gray-200 rounded-3xl overflow-hidden">
+                        <a th:href="@{|/food/detail/${item.id}|}" class="flex items-center justify-center w-full h-full relative">
+                            <img th:src="@{|/gen/${item.thumbnailImg}|}" alt="Item Thumbnail" class="w-full h-full object-cover rounded-3xl"/>
+                            <div class="absolute bottom-0 left-0 w-full bg-black bg-opacity-25 text-white p-2 text-center rounded-t-3xl">
+                                <div th:text="${item.title}" class="font-bold"></div>
+                                <div th:text="${item.place}" class="text-sm"></div>
+                                <div th:text="${item.subCategory}" class="text-xs"></div>
+                            </div>
+                        </a>
+                    </div>
 
-                        <!-- 랜덤 디저트 목록 -->
-                        <div th:each="item : ${randomDessertsForAll}" class="swiper-slide w-48 h-32 bg-gray-200 rounded-3xl overflow-hidden">
-                            <a th:href="@{|/dessert/detail/${item.id}|}" class="flex items-center justify-center w-full h-full relative">
-                                <img th:src="@{|/gen/${item.thumbnailImg}|}" alt="Item Thumbnail" class="w-full h-full object-cover rounded-3xl"/>
-                                <div class="absolute bottom-0 left-0 w-full bg-black bg-opacity-25 text-white p-2 text-center rounded-t-3xl">
-                                    <div th:text="${item.title}" class="font-bold"></div>
-                                    <div th:text="${item.place}" class="text-sm"></div>
-                                    <div th:text="${item.subCategory}" class="text-xs"></div>
-                                </div>
-                            </a>
-                        </div>
+                    <!-- 랜덤 디저트 목록 -->
+                    <div th:each="item : ${randomDessertsForAll}" class="slider-item w-48 h-32 bg-gray-200 rounded-3xl overflow-hidden">
+                        <a th:href="@{|/dessert/detail/${item.id}|}" class="flex items-center justify-center w-full h-full relative">
+                            <img th:src="@{|/gen/${item.thumbnailImg}|}" alt="Item Thumbnail" class="w-full h-full object-cover rounded-3xl"/>
+                            <div class="absolute bottom-0 left-0 w-full bg-black bg-opacity-25 text-white p-2 text-center rounded-t-3xl">
+                                <div th:text="${item.title}" class="font-bold"></div>
+                                <div th:text="${item.place}" class="text-sm"></div>
+                                <div th:text="${item.subCategory}" class="text-xs"></div>
+                            </div>
+                        </a>
+                    </div>
 
-                        <!-- 랜덤 액티비티 목록 -->
-                        <div th:each="item : ${randomActivitiesForAll}" class="swiper-slide w-48 h-32 bg-gray-200 rounded-3xl overflow-hidden">
-                            <a th:href="@{|/activity/detail/${item.id}|}" class="flex items-center justify-center w-full h-full relative">
-                                <img th:src="@{|/gen/${item.thumbnailImg}|}" alt="Item Thumbnail" class="w-full h-full object-cover rounded-3xl"/>
-                                <div class="absolute bottom-0 left-0 w-full bg-black bg-opacity-25 text-white p-2 text-center rounded-t-3xl">
-                                    <div th:text="${item.title}" class="font-bold"></div>
-                                    <div th:text="${item.place}" class="text-sm"></div>
-                                    <div th:text="${item.subCategory}" class="text-xs"></div>
-                                </div>
-                            </a>
-                        </div>
+                    <!-- 랜덤 액티비티 목록 -->
+                    <div th:each="item : ${randomActivitiesForAll}" class="slider-item w-48 h-32 bg-gray-200 rounded-3xl overflow-hidden">
+                        <a th:href="@{|/activity/detail/${item.id}|}" class="flex items-center justify-center w-full h-full relative">
+                            <img th:src="@{|/gen/${item.thumbnailImg}|}" alt="Item Thumbnail" class="w-full h-full object-cover rounded-3xl"/>
+                            <div class="absolute bottom-0 left-0 w-full bg-black bg-opacity-25 text-white p-2 text-center rounded-t-3xl">
+                                <div th:text="${item.title}" class="font-bold"></div>
+                                <div th:text="${item.place}" class="text-sm"></div>
+                                <div th:text="${item.subCategory}" class="text-xs"></div>
+                            </div>
+                        </a>
+                    </div>
 
-                        <!-- 랜덤 관광지 목록 -->
-                        <div th:each="item : ${randomAttractionsForAll}" class="swiper-slide w-48 h-32 bg-gray-200 rounded-3xl overflow-hidden">
-                            <a th:href="@{|/attractions/detail/${item.id}|}" class="flex items-center justify-center w-full h-full relative">
-                                <img th:src="@{|/gen/${item.thumbnailImg}|}" alt="Item Thumbnail" class="w-full h-full object-cover rounded-3xl"/>
-                                <div class="absolute bottom-0 left-0 w-full bg-black bg-opacity-25 text-white p-2 text-center rounded-t-3xl">
-                                    <div th:text="${item.title}" class="font-bold"></div>
-                                    <div th:text="${item.place}" class="text-sm"></div>
-                                    <div th:text="${item.subCategory}" class="text-xs"></div>
-                                </div>
-                            </a>
-                        </div>
+                    <!-- 랜덤 관광지 목록 -->
+                    <div th:each="item : ${randomAttractionsForAll}" class="slider-item w-48 h-32 bg-gray-200 rounded-3xl overflow-hidden">
+                        <a th:href="@{|/attractions/detail/${item.id}|}" class="flex items-center justify-center w-full h-full relative">
+                            <img th:src="@{|/gen/${item.thumbnailImg}|}" alt="Item Thumbnail" class="w-full h-full object-cover rounded-3xl"/>
+                            <div class="absolute bottom-0 left-0 w-full bg-black bg-opacity-25 text-white p-2 text-center rounded-t-3xl">
+                                <div th:text="${item.title}" class="font-bold"></div>
+                                <div th:text="${item.place}" class="text-sm"></div>
+                                <div th:text="${item.subCategory}" class="text-xs"></div>
+                            </div>
+                        </a>
+                    </div>
 
-                        <!-- 랜덤 축제 목록 -->
-                        <div th:each="item : ${randomFestivalsForAll}" class="swiper-slide w-48 h-32 bg-gray-200 rounded-3xl overflow-hidden">
-                            <a th:href="@{|/festivals/detail/${item.id}|}" class="flex items-center justify-center w-full h-full relative">
-                                <img th:src="@{|/gen/${item.thumbnailImg}|}" alt="Item Thumbnail" class="w-full h-full object-cover rounded-3xl"/>
-                                <div class="absolute bottom-0 left-0 w-full bg-black bg-opacity-25 text-white p-2 text-center rounded-t-3xl">
-                                    <div th:text="${item.title}" class="font-bold"></div>
-                                    <div th:text="${item.place}" class="text-sm"></div>
-                                    <div th:text="${item.subCategory}" class="text-xs"></div>
-                                </div>
-                            </a>
-                        </div>
+                    <!-- 랜덤 축제 목록 -->
+                    <div th:each="item : ${randomFestivalsForAll}" class="slider-item w-48 h-32 bg-gray-200 rounded-3xl overflow-hidden">
+                        <a th:href="@{|/festivals/detail/${item.id}|}" class="flex items-center justify-center w-full h-full relative">
+                            <img th:src="@{|/gen/${item.thumbnailImg}|}" alt="Item Thumbnail" class="w-full h-full object-cover rounded-3xl"/>
+                            <div class="absolute bottom-0 left-0 w-full bg-black bg-opacity-25 text-white p-2 text-center rounded-t-3xl">
+                                <div th:text="${item.title}" class="font-bold"></div>
+                                <div th:text="${item.place}" class="text-sm"></div>
+                                <div th:text="${item.subCategory}" class="text-xs"></div>
+                            </div>
+                        </a>
+                    </div>
 
-                        <!-- 랜덤 쇼핑 목록 -->
-                        <div th:each="item : ${randomShoppingsForAll}" class="swiper-slide w-48 h-32 bg-gray-200 rounded-3xl overflow-hidden">
-                            <a th:href="@{|/shopping/detail/${item.id}|}" class="flex items-center justify-center w-full h-full relative">
-                                <img th:src="@{|/gen/${item.thumbnailImg}|}" alt="Item Thumbnail" class="w-full h-full object-cover rounded-3xl"/>
-                                <div class="absolute bottom-0 left-0 w-full bg-black bg-opacity-25 text-white p-2 text-center rounded-t-3xl">
-                                    <div th:text="${item.title}" class="font-bold"></div>
-                                    <div th:text="${item.place}" class="text-sm"></div>
-                                    <div th:text="${item.subCategory}" class="text-xs"></div>
-                                </div>
-                            </a>
-                        </div>
+                    <!-- 랜덤 쇼핑 목록 -->
+                    <div th:each="item : ${randomShoppingsForAll}" class="slider-item w-48 h-32 bg-gray-200 rounded-3xl overflow-hidden">
+                        <a th:href="@{|/shopping/detail/${item.id}|}" class="flex items-center justify-center w-full h-full relative">
+                            <img th:src="@{|/gen/${item.thumbnailImg}|}" alt="Item Thumbnail" class="w-full h-full object-cover rounded-3xl"/>
+                            <div class="absolute bottom-0 left-0 w-full bg-black bg-opacity-25 text-white p-2 text-center rounded-t-3xl">
+                                <div th:text="${item.title}" class="font-bold"></div>
+                                <div th:text="${item.place}" class="text-sm"></div>
+                                <div th:text="${item.subCategory}" class="text-xs"></div>
+                            </div>
+                        </a>
+                    </div>
 
-                        <!-- 랜덤 기타 목록 -->
-                        <div th:each="item : ${randomOthersForAll}" class="swiper-slide w-48 h-32 bg-gray-200 rounded-3xl overflow-hidden">
-                            <a th:href="@{|/other/detail/${item.id}|}" class="flex items-center justify-center w-full h-full relative">
-                                <img th:src="@{|/gen/${item.thumbnailImg}|}" alt="Item Thumbnail" class="w-full h-full object-cover rounded-3xl"/>
-                                <div class="absolute bottom-0 left-0 w-full bg-black bg-opacity-25 text-white p-2 text-center rounded-t-3xl">
-                                    <div th:text="${item.title}" class="font-bold"></div>
-                                    <div th:text="${item.place}" class="text-sm"></div>
-                                    <div th:text="${item.subCategory}" class="text-xs"></div>
-                                </div>
-                            </a>
-                        </div>
+                    <!-- 랜덤 기타 목록 -->
+                    <div th:each="item : ${randomOthersForAll}" class="slider-item w-48 h-32 bg-gray-200 rounded-3xl overflow-hidden">
+                        <a th:href="@{|/other/detail/${item.id}|}" class="flex items-center justify-center w-full h-full relative">
+                            <img th:src="@{|/gen/${item.thumbnailImg}|}" alt="Item Thumbnail" class="w-full h-full object-cover rounded-3xl"/>
+                            <div class="absolute bottom-0 left-0 w-full bg-black bg-opacity-25 text-white p-2 text-center rounded-t-3xl">
+                                <div th:text="${item.title}" class="font-bold"></div>
+                                <div th:text="${item.place}" class="text-sm"></div>
+                                <div th:text="${item.subCategory}" class="text-xs"></div>
+                            </div>
+                        </a>
+                    </div>
                 </div>
                 <!-- Add Navigation -->
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
+                <button class="slider-button-prev">◀</button>
+                <button class="slider-button-next">▶</button>
             </div>
         </div>
 

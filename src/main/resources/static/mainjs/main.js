@@ -103,7 +103,6 @@ document.addEventListener("DOMContentLoaded", function () {
         prevButton.addEventListener('click', prevSlide);
     }
 });
-
 document.addEventListener('DOMContentLoaded', function () {
     const sliderWrapper = document.querySelector('.slider-wrapper');
     const prevButton = document.querySelector('.slider-button-prev');
@@ -113,21 +112,21 @@ document.addEventListener('DOMContentLoaded', function () {
     const itemWidth = document.querySelector('.slider-item').offsetWidth + 16; // 아이템 너비 + 마진
     const slideIntervalTime = 2000; // 자동 슬라이드 시간 (밀리초)
     let slideInterval;
+    const totalSlides = document.querySelectorAll('.slider-item').length;
+    const visibleSlides = 5; // 화면에 보이는 슬라이드 수 (변경 필요)
+    const sliderWidth = totalSlides * itemWidth;
 
     // 슬라이드를 이동시키는 함수
     function moveSlide(direction) {
-        const totalSlides = document.querySelectorAll('.slider-item').length;
-        const sliderWidth = totalSlides * itemWidth;
-
         if (direction === 'next') {
             offset -= itemWidth;
-            if (-offset >= sliderWidth) {
+            if (-offset >= sliderWidth / 2) {
                 offset = 0; // 처음으로 되돌리기
             }
         } else if (direction === 'prev') {
             offset += itemWidth;
             if (offset > 0) {
-                offset = - (sliderWidth - itemWidth); // 마지막으로 되돌리기
+                offset = - (sliderWidth / 2 - itemWidth); // 마지막으로 되돌리기
             }
         }
         sliderWrapper.style.transform = `translateX(${offset}px)`;
@@ -160,20 +159,4 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 자동 슬라이드 시작
     startSlideInterval();
-
-    // Swiper 초기화
-    const swiper = new Swiper('.swiper-container', {
-        slidesPerView: 3,
-        spaceBetween: 30,
-        centeredSlides: true,
-        loop: true, // 슬라이드를 무한 반복
-        autoplay: {
-            delay: 2000, // 2초마다 슬라이드 넘김
-            disableOnInteraction: false, // 사용자 상호작용 후에도 자동 재생 유지
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        }
-    });
 });

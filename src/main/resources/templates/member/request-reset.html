@@ -1,14 +1,204 @@
 <!DOCTYPE html>
 <html lang="ko">
-<section layout:fragment="content" class="flex-1 flex justify-center items-center">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="/resource/css/request-reset.css" rel="stylesheet" type="text/css"/>
     <link href="/resource/css/click.css" rel="stylesheet" type="text/css"/>
     <title>비밀번호 재설정 요청</title>
+    <style>
+        *, :after, :before {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(18deg, rgba(171, 255, 248, 0.5) 37%, rgba(255, 228, 192, 1) 81%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            perspective: 1000px;
+        }
+
+        .wrap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .wave {
+            width: 3800px;
+            height: 3800px;
+            position: absolute;
+            top: 40%;
+            left: -900px;
+            border-radius: 43%;
+            background: rgba(255, 255, 255, 0.5);
+            animation: drift 6s infinite linear;
+        }
+
+        .wave.layer_1 {
+            background: rgba(255, 255, 255, 0.2);
+            animation: drift 8s infinite linear;
+        }
+
+        @keyframes drift {
+            100% {
+                transform: rotate(-360deg);
+            }
+        }
+
+        .container {
+            position: relative;
+            max-width: 370px;
+            width: 370px;
+            height: 585px;
+            background: #f3f3f3;
+            padding: 20px; /* 패딩 조정 */
+            border-radius: 30px;
+            box-shadow: 0 20px 20px rgba(0, 0, 0, 0.2), 0px 0px 50px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            height: auto; /* 높이 자동 조정 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: #3ba4fa url(https://i.ibb.co/b1WpMzD/001-transformed.png) center no-repeat;
+            background-size: contain; /* 배경 이미지 크기 조정 */
+        }
+
+        .container img {
+            max-width: 100%; /* 이미지 크기 조정 */
+            height: auto;
+        }
+
+        .header-container h1 img {
+            max-width: 100%; /* 이미지 크기 조정 */
+            height: auto;
+        }
+
+        .header-container h2 {
+            margin-top: 20px;
+            font-weight: 500;
+            color: blue; /* 헤더 텍스트 색상 */
+        }
+
+        .header-container h4 {
+            margin-top: 10px;
+            font-weight: 300;
+            font-color: red; /* 부제목 색상 */
+        }
+
+        h4 {
+    color: #d9534f;
+    margin-bottom: 25px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+        form {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        label {
+            text-align: left;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #8dabfb;
+            border-radius: 5px;
+            font-size: 10px;
+            outline: none;
+        }
+
+        button.btn {
+            padding: 10px 20px;
+            background: transparent; /* 투명 배경 */
+            border: 1px solid orange; /* 오렌지색 테두리 */
+            border-radius: 10px;
+            color: black; /* 검정색 텍스트 */
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button.btn:hover {
+            background: orange; /* 호버 시 오렌지색 배경 */
+            color: #fff; /* 호버 시 흰색 텍스트 */
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+            padding: 10px;
+            background: white; /* 흰색 배경 */
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .success {
+            color: green;
+            font-size: 14px;
+            margin-top: 10px;
+            padding: 10px;
+            background: white; /* 흰색 배경 */
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .username {
+            font-weight: bold; /* 강조된 텍스트 */
+            color: #3ba4fa; /* 강조 색상 */
+        }
+
+        .login-link {
+            margin-top: 20px;
+        }
+
+        .login-link a {
+            color: black;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* 미디어 쿼리: 화면 크기에 따라 조정 */
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+
+            form {
+                gap: 10px;
+            }
+
+            button.btn {
+                padding: 8px 16px;
+                font-size: 12px;
+            }
+        }
+    </style>
 </head>
 <body>
 <div class="frame">
@@ -18,13 +208,11 @@
     </div>
 </div>
 <div class="container">
-    <h1>
-        <a href="/">
-            <img src="https://i.ibb.co/s3RSNmC/sdfa-removebg-preview.png" alt="트립인 제주" width="300" height="300">
-        </a>
-    </h1>
+
+            <a href="/"><img src="https://github.com/user-attachments/assets/981bc789-070d-429a-84b5-cdb79fcde946" alt="트립인 제주" width="150" height="150"></a>
+
     <h2>비밀번호 재설정 요청</h2>
-    <h4>회원가입 아이디와 이메일이 일치하지 않으면 재설정이 진행되지 않습니다.</h4>
+    <h4 >회원가입 아이디와 이메일이 일치하지 않으면 재설정이 진행되지 않습니다.</h4>
     <!-- 비밀번호 재설정 이메일 요청 폼 -->
     <form action="/member/request-reset" method="post">
         <label for="username">사용자 아이디</label>
@@ -33,18 +221,20 @@
         <label for="email">이메일</label>
         <input type="email" id="email" name="email" required>
 
-        <button type="submit">인증 코드 요청</button>
+        <button type="submit" class="btn">인증 코드 요청</button>
     </form>
     <div class="login-link">
         <a href="/member/login">로그인 페이지로 이동</a>
     </div>
 
     <!-- 에러 또는 성공 메시지 표시 -->
-    <div th:if="${error}" class="error">오류: <span th:text="${error}"></span></div>
-    <div th:if="${message}" class="success">성공: <span th:text="${message}"></span></div>
-
+    <div class="error" th:if="${error}">
+        오류: <span th:text="${error}"></span>
+    </div>
+    <div class="success" th:if="${message}">
+        성공: <span th:text="${message}"></span>
+    </div>
 </div>
 <script th:src="@{/clickjs/click.js}"></script>
 </body>
-</section>
 </html>

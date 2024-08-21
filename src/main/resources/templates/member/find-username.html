@@ -4,12 +4,151 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="/resource/css/find-username.css" rel="stylesheet" type="text/css"/>
-    <link href="/resource/css/click.css" rel="stylesheet" type="text/css"/>
     <title>아이디 찾기</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"/>
+    <style>
+        *, :after, :before {
+            box-sizing: border-box;
+        }
 
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(18deg, rgba(171, 255, 248, 0.5) 37%, rgba(255, 228, 192, 1) 81%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            perspective: 1000px;
+        }
+
+        .wrap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .wave {
+            width: 3800px;
+            height: 3800px;
+            position: absolute;
+            top: 40%;
+            left: -900px;
+            border-radius: 43%;
+            background: rgba(255, 255, 255, 0.5);
+            animation: drift 6s infinite linear;
+        }
+
+        .wave.layer_1 {
+            background: rgba(255, 255, 255, 0.2);
+            animation: drift 8s infinite linear;
+        }
+
+        @keyframes drift {
+            100% {
+                transform: rotate(-360deg);
+            }
+        }
+
+        .container {
+            position: relative;
+            width: 370px;
+            background: #f3f3f3;
+            padding: 10px;
+            border-radius: 30px;
+            box-shadow: 0 20px 20px rgba(0, 0, 0, 0.2), 0px 0px 50px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            height: 585px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: #3ba4fa url(https://i.ibb.co/b1WpMzD/001-transformed.png) center no-repeat;
+            background-size: contain;
+        }
+
+        .header-container h1 img {
+            width: 150px;
+            height: auto;
+        }
+
+        .header-container h4 {
+            margin-top: 10px;
+            font-weight: 700;
+            color: #3ba4fa;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #8dabfb;
+            border-radius: 5px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        button.btn {
+            padding: 10px 20px;
+            background: transparent; /* 투명 배경 */
+            border: 1px solid orange; /* 오렌지색 테두리 */
+            border-radius: 10px;
+            color: black; /* 오렌지색 텍스트 */
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button.btn:hover {
+            background: orange; /* 호버 시 오렌지색 배경 */
+            color: #fff; /* 호버 시 흰색 텍스트 */
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 16px;
+            padding: 10px;
+            background: white; /* 흰색 배경 */
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .username {
+            font-weight: bold; /* 강조된 텍스트 */
+            color: #3ba4fa; /* 강조 색상 */
+        }
+
+        .link-container {
+            margin-top: 20px;
+        }
+
+        .link-container a {
+            color: #3ba4fa;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .link-container a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
-<section layout:fragment="content" class="flex-1 flex justify-center items-center">
 <body>
 <div class="wrap">
     <div class="wave layer_1"></div>
@@ -19,10 +158,10 @@
     <div class="header-container">
         <h1>
             <a href="/">
-                <img src="https://i.ibb.co/s3RSNmC/sdfa-removebg-preview.png" alt="트립인 제주" width="300" height="300">
+                <img src="https://github.com/user-attachments/assets/981bc789-070d-429a-84b5-cdb79fcde946" alt="트립인 제주">
             </a>
         </h1>
-        <h4> 아이디 찾기 </h4>
+        <h4>아이디 찾기</h4>
     </div>
     <form th:action="@{/member/find-username}" method="post">
         <div>
@@ -41,5 +180,4 @@
 </div>
 <script th:src="@{/clickjs/click.js}"></script>
 </body>
-</section>
 </html>

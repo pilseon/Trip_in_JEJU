@@ -280,6 +280,7 @@
       letter-spacing: .05em;
       font-size: 12px;
       font-weight: 500;
+      margin-gap: 10px;
       color: #8dabfb;
     }
 
@@ -514,16 +515,26 @@
                         <input id="login-username" class="form-wrapper__input" type="text" placeholder="아이디" name="username" required>
                         <label class="form-wrapper__label" for="login-password">비밀번호</label>
                         <input id="login-password" class="form-wrapper__input" type="password" placeholder="비밀번호" name="password" pattern=".{3,}" title="Password must contain at least 3 characters" required>
-                        <a class="login-form__forgot-password" th:href="@{/member/request-reset}">비밀번호 찾기</a>
+                      <div style="margin-bottom: 10px;">
+                        <a class="login-form__forgot-password mb-2" th:href="@{/member/find-username}">아이디 찾기</a>
+                      </div>
+                        <div style="margin-bottom: 10px;">
+                        <a class="login-form__forgot-password mb-2" th:href="@{/member/request-reset}">비밀번호 찾기</a>
+                        </div><br>
                         <button class="buttons__signup buttons__signup--login-form" type="submit" href="#">로그인</button>
                     </form>
 
                     <!-- Social-Media -->
 
                     <div class="social-media">
-                        <h6 class="title__h2">Or connect with</h6>
-                        <a class="buttons__signup buttons__signup--social" href="#"><i class="fab fa-facebook-f" aria-hidden="true"></i>&nbsp;facebook</a>
+                        <h6 class="title__h2">소셜 로그인</h6>
                         <a class="buttons__signup buttons__signup--social" href="#"><i class="fab fa-google" aria-hidden="true"></i>&nbsp;google</a>
+                        <a class="buttons__signup buttons__signup--social" href="#">
+                            <i class="fa-brands fa-kaggle">&nbsp;kakao</i>
+                        </a>
+                        <a class="buttons__signup buttons__signup--social" href="#">
+                            <i class="fab fa-naver"></i>&nbsp;naver
+                        </a>
                     </div>
                 </div>
             </div>

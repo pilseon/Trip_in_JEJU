@@ -103,3 +103,77 @@ document.addEventListener("DOMContentLoaded", function () {
         prevButton.addEventListener('click', prevSlide);
     }
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const sliderWrapper = document.querySelector('.slider-wrapper');
+    const prevButton = document.querySelector('.slider-button-prev');
+    const nextButton = document.querySelector('.slider-button-next');
+
+    let offset = 0;
+    const itemWidth = document.querySelector('.slider-item').offsetWidth + 16; // 아이템 너비 + 마진
+    const slideIntervalTime = 2000; // 자동 슬라이드 시간 (밀리초)
+    let slideInterval;
+
+    // 슬라이드를 이동시키는 함수
+    function moveSlide(direction) {
+        const totalSlides = document.querySelectorAll('.slider-item').length;
+        const sliderWidth = totalSlides * itemWidth;
+
+        if (direction === 'next') {
+            offset -= itemWidth;
+            if (-offset >= sliderWidth) {
+                offset = 0; // 처음으로 되돌리기
+            }
+        } else if (direction === 'prev') {
+            offset += itemWidth;
+            if (offset > 0) {
+                offset = - (sliderWidth - itemWidth); // 마지막으로 되돌리기
+            }
+        }
+        sliderWrapper.style.transform = `translateX(${offset}px)`;
+    }
+
+    // 다음 버튼 클릭 이벤트
+    nextButton.addEventListener('click', () => {
+        moveSlide('next');
+        resetSlideInterval();
+    });
+
+    // 이전 버튼 클릭 이벤트
+    prevButton.addEventListener('click', () => {
+        moveSlide('prev');
+        resetSlideInterval();
+    });
+
+    // 자동 슬라이드 함수
+    function startSlideInterval() {
+        slideInterval = setInterval(() => {
+            moveSlide('next');
+        }, slideIntervalTime);
+    }
+
+    // 자동 슬라이드를 리셋하는 함수 (사용자가 버튼을 클릭했을 때 자동 슬라이드를 멈췄다가 재개)
+    function resetSlideInterval() {
+        clearInterval(slideInterval);
+        startSlideInterval();
+    }
+
+    // 자동 슬라이드 시작
+    startSlideInterval();
+
+    // Swiper 초기화
+    const swiper = new Swiper('.swiper-container', {
+        slidesPerView: 3,
+        spaceBetween: 30,
+        centeredSlides: true,
+        loop: true, // 슬라이드를 무한 반복
+        autoplay: {
+            delay: 2000, // 2초마다 슬라이드 넘김
+            disableOnInteraction: false, // 사용자 상호작용 후에도 자동 재생 유지
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        }
+    });
+});

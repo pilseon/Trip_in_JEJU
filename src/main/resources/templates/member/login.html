@@ -306,7 +306,7 @@
       -moz-transition: none;
       -o-transition: none;
       transition: none;
-      top: 190px;
+      top: 200px;
     }
 
     .social-media{
@@ -314,7 +314,7 @@
       margin: auto;
       top: initial;
       right: 0;
-      bottom: 0;
+      bottom: -20px;
       left: 0;
       width: inherit;
       height: 150px;
@@ -564,9 +564,9 @@
                         <input id="login-username" class="form-wrapper__input" type="text" placeholder="아이디" name="username" required>
                         <label class="form-wrapper__label" for="login-password">비밀번호</label>
                         <input id="login-password" class="form-wrapper__input" type="password" placeholder="비밀번호" name="password" pattern=".{3,}" title="Password must contain at least 3 characters" required>
-                        <div class="login-form__forgot-password mb-2">
-                            <a class="aa" th:href="@{/member/find-username}" style="text-decoration: none; color: #8dabfb;">아이디 찾기</a> |
-                            <a class="bb" th:href="@{/member/request-reset}" style="text-decoration: none; color: #8dabfb;">비밀번호 찾기</a>
+                        <div class="login-form__forgot-password mb-2" style="display: flex; justify-content: center;">
+                            <a class="aa" th:href="@{/member/find-username}" style="text-decoration: none; color: #8dabfb; flex-grow:1; text-align: center;">아이디 찾기</a>
+                            <a class="bb" th:href="@{/member/request-reset}" style="text-decoration: none; color: #8dabfb; flex-grow:1; text-align: center;">비밀번호 찾기</a>
                         </div>
 
                         <button class="buttons__signup buttons__signup--login-form" type="submit" href="#">로그인</button>
@@ -576,15 +576,16 @@
 
                     <div class="social-media">
                         <h6 class="title__h2">소셜 로그인</h6>
-                        <a class="buttons__signup buttons__signup--social" href="/oauth2/authorization/google">
-                            <img src="https://github.com/Junsu-Ahn/cookers/assets/156152342/b210eae2-e515-4cdf-93ce-3c445e44b727" alt="구글" style="width: 10px; height: 10px;">&nbsp;google</a>
-                        <a class="buttons__signup buttons__signup--social" href="/oauth2/authorization/kakao">
-                            <img src="https://github.com/Junsu-Ahn/cookers/assets/156152342/6183c7c2-d209-4d1a-8276-9232162d1226" alt="카카오" style="width: 10px; height: 10px;">&nbsp;kakao
-                        </a>
-                        <a class="buttons__signup buttons__signup--social" href="/oauth2/authorization/naver">
-                            <img src="https://github.com/Junsu-Ahn/cookers/assets/156152342/3fd07912-a828-4c37-878c-ece4a5feffb4" alt="네이버" style="width: 10px; height: 10px;">&nbsp;naver
-                        </a>
-
+                        <div style="display: flex; flex-direction: column;">
+                            <a class="buttons__signup buttons__signup--social" href="/oauth2/authorization/google">
+                                <img src="https://github.com/Junsu-Ahn/cookers/assets/156152342/b210eae2-e515-4cdf-93ce-3c445e44b727" alt="구글" style="width: 10px; height: 10px;">&nbsp;google</a>
+                            <a class="buttons__signup buttons__signup--social" href="/oauth2/authorization/kakao">
+                                <img src="https://github.com/Junsu-Ahn/cookers/assets/156152342/6183c7c2-d209-4d1a-8276-9232162d1226" alt="카카오" style="width: 10px; height: 10px;">&nbsp;kakao
+                            </a>
+                            <a class="buttons__signup buttons__signup--social" href="/oauth2/authorization/naver">
+                                <img src="https://github.com/Junsu-Ahn/cookers/assets/156152342/3fd07912-a828-4c37-878c-ece4a5feffb4" alt="네이버" style="width: 10px; height: 10px;">&nbsp;naver
+                            </a>
+                        </div>
                     </div>
 
 

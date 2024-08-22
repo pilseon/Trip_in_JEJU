@@ -65,8 +65,6 @@
             border-radius: 30px;
             box-shadow: 0 20px 20px rgba(0, 0, 0, 0.2), 0px 0px 50px rgba(0, 0, 0, 0.2);
             text-align: center;
-            height: auto; /* 높이 자동 조정 */
-            display: flex;
             flex-direction: column;
             justify-content: center;
             background: #3ba4fa url(https://i.ibb.co/b1WpMzD/001-transformed.png) center no-repeat;
@@ -86,13 +84,13 @@
         .header-container h2 {
             margin-top: 20px;
             font-weight: 500;
-            color: blue; /* 헤더 텍스트 색상 */
+            color: #3ba4fa;
         }
 
         .header-container h4 {
-            margin-top: 10px;
-            font-weight: 300;
-            font-color: red; /* 부제목 색상 */
+            margin-top: -130px;
+            font-weight: 700;
+            color: #3ba4fa;
         }
 
         h4 {
@@ -128,7 +126,7 @@
 
         button.btn {
             padding: 10px 20px;
-            background: transparent; /* 투명 배경 */
+            background: orange; /* 투명 배경 */
             border: 1px solid orange; /* 오렌지색 테두리 */
             border-radius: 10px;
             color: black; /* 검정색 텍스트 */
@@ -136,11 +134,11 @@
             cursor: pointer;
             transition: background-color 0.3s, color 0.3s;
             width: 100%;
-            margin-top: 10px;
+            margin-top: 20px;
         }
 
         button.btn:hover {
-            background: orange; /* 호버 시 오렌지색 배경 */
+            background: rgb(255, 187, 0); /* 호버 시 오렌지색 배경 */
             color: #fff; /* 호버 시 흰색 텍스트 */
         }
 
@@ -170,7 +168,8 @@
         }
 
         .login-link {
-            margin-top: 20px;
+            font-weight: bold;
+            margin-top: 140px;
         }
 
         .login-link a {
@@ -208,11 +207,8 @@
     </div>
 </div>
 <div class="container">
-
-            <a href="/"><img src="https://github.com/user-attachments/assets/981bc789-070d-429a-84b5-cdb79fcde946" alt="트립인 제주" width="150" height="150"></a>
-
-    <h2>비밀번호 재설정 요청</h2>
-    <h4 >회원가입 아이디와 이메일이 일치하지 않으면 재설정이 진행되지 않습니다.</h4>
+        <h2 style="margin: 60px 0 0 0; color: #3ba4fa; font-weight: 700;">비밀번호 재설정 요청</h2>
+        <h4 style="margin: 0 0 20px 0; font-size:9px;">※ 회원가입 아이디와 이메일이 일치하지 않으면 <br>재설정이 진행되지 않습니다.</h4>
     <!-- 비밀번호 재설정 이메일 요청 폼 -->
     <form action="/member/request-reset" method="post">
         <label for="username">사용자 아이디</label>

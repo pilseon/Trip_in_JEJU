@@ -76,19 +76,19 @@ public class MemberService {
     @Transactional
     public Member signup(String username, String nickname, String password,
                          String email, String thema, MultipartFile thumbnail, MemberRole role) {
+
         String thumbnailRelPath = null;
 
         if (thumbnail != null && !thumbnail.isEmpty()) {
             // 저장할 파일의 경로 및 이름 설정
-            String fileName = UUID.randomUUID().toString() + ".jpg";
-            File thumbnailFile = new File(genFileDirPath + File.separator + "member" + File.separator + fileName);
+            thumbnailRelPath = "member/" + UUID.randomUUID().toString() + ".jpg";
+            File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
 
             // 디렉토리가 존재하지 않으면 생성
             thumbnailFile.getParentFile().mkdirs();
 
             try {
                 thumbnail.transferTo(thumbnailFile);
-                thumbnailRelPath = "/images/member/" + fileName;
             } catch (IOException e) {
                 throw new RuntimeException("Failed to store file", e);
             }
@@ -100,8 +100,8 @@ public class MemberService {
                 .password(passwordEncoder.encode(password))
                 .email(email)
                 .thema(thema)
-                .thumbnailImg(thumbnailRelPath)
-                .role(MemberRole.MEMBER)
+                .thumbnailImg(thumbnailRelPath)  // 파일 경로 저장
+                .role(role)  // 전달된 role 사용
                 .createDate(LocalDateTime.now())
                 .build();
 

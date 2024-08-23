@@ -15,7 +15,9 @@
         </div>
         <!-- Step images -->
         <div th:each="step : ${event.steps}">
-            <img th:src="${step.imageFilePath}" alt="Step Image" class="w-full max-h-screen object-contain rounded-lg">
+            <div th:if="${step.imageFilePath != null}">
+                <img th:src="@{${step.imageFilePath}}" alt="Step Image" class="w-full max-h-screen object-contain rounded-lg">
+            </div>
         </div>
         <div class="mt-8" th:text="${event.content}" style="white-space: pre-line;"></div>
 

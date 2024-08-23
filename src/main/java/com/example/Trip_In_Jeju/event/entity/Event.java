@@ -1,6 +1,7 @@
 package com.example.Trip_In_Jeju.event.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -20,7 +21,9 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Size(min = 3, message = "{title.size}")
     private String title; // 이벤트 제목
+    @Size(min = 10, message = "{content.size}")
     private String content; // 이벤트 내용
     private String thumbnailImg; // 이벤트 썸네일
 

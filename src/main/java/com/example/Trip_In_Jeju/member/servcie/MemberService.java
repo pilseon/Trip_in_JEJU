@@ -81,7 +81,7 @@ public class MemberService {
 
         if (thumbnail != null && !thumbnail.isEmpty()) {
             // 저장할 파일의 경로 및 이름 설정
-            thumbnailRelPath = "member/" + UUID.randomUUID().toString() + ".jpg";
+                thumbnailRelPath = "member/" + UUID.randomUUID().toString() + ".jpg";
             File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
 
             // 디렉토리가 존재하지 않으면 생성

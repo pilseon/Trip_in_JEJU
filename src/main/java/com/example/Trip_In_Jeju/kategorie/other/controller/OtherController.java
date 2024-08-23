@@ -265,19 +265,7 @@ public class OtherController {
     @Transactional
     @DeleteMapping("/delete/{id}")
     public String deleteOther(@PathVariable("id") Long id, Model model) {
-        // 해당 음식 ID로 음식 정보를 가져옵니다.
-        Other other = otherService.getOtherById(id);
 
-        // 해당 음식에 대한 모든 스크랩 삭제
-        scrapService.removeAllScrapsForItem(other);
-
-        // 해당 음식에 대한 모든 좋아요 삭제
-        likeService.removeAllLikesForItem(other);
-
-        // 해당 음식에 대한 모든 리뷰 삭제
-        ratingService.removeAllRatingsForItem(other);
-
-        // 음식 데이터 삭제
         otherService.deleteOther(id);
 
         Member member = memberService.getCurrentMember();

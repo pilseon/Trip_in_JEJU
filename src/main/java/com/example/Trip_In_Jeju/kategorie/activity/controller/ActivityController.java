@@ -2,8 +2,6 @@ package com.example.Trip_In_Jeju.kategorie.activity.controller;
 
 import com.example.Trip_In_Jeju.kategorie.activity.entity.Activity;
 import com.example.Trip_In_Jeju.kategorie.activity.service.ActivityService;
-import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
-import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
 import com.example.Trip_In_Jeju.like.LikeService;
 import com.example.Trip_In_Jeju.member.CustomUserDetails;
 import com.example.Trip_In_Jeju.member.entity.Member;
@@ -266,16 +264,6 @@ public class ActivityController {
         // 해당 음식 ID로 음식 정보를 가져옵니다.
         Activity activity = activityService.getActivityById(id);
 
-        // 해당 음식에 대한 모든 스크랩 삭제
-        scrapService.removeAllScrapsForItem(activity);
-
-        // 해당 음식에 대한 모든 좋아요 삭제
-        likeService.removeAllLikesForItem(activity);
-
-        // 해당 음식에 대한 모든 리뷰 삭제
-        ratingService.removeAllRatingsForItem(activity);
-
-        // 음식 데이터 삭제
         activityService.deleteActivity(id);
 
         Member member = memberService.getCurrentMember();
@@ -284,6 +272,5 @@ public class ActivityController {
         // 음식 목록 페이지로 리다이렉트
         return "redirect:/activity/list";
     }
-
 
 }

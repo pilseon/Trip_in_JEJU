@@ -3,6 +3,7 @@ package com.example.Trip_In_Jeju.like;
 import com.example.Trip_In_Jeju.kategorie.activity.entity.Activity;
 import com.example.Trip_In_Jeju.kategorie.attractions.entity.Attractions;
 import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
+import com.example.Trip_In_Jeju.kategorie.festivals.entity.Festivals;
 import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
 import com.example.Trip_In_Jeju.kategorie.other.entity.Other;
 import com.example.Trip_In_Jeju.kategorie.shopping.entity.Shopping;
@@ -27,6 +28,10 @@ public class LikeService {
     @Transactional
     public void removeAllLikesForItem(Attractions attractions) {
         likeRepository.deleteByAttractionsId(attractions.getId());
+    }
+    @Transactional
+    public void removeAllLikesForItem(Festivals festivals) {
+        likeRepository.deleteByFestivalsId(festivals.getId());
     }
     @Transactional
     public void removeAllLikesForItem(Dessert dessert) {

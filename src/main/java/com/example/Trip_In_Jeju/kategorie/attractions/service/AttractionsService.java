@@ -9,6 +9,7 @@ import com.example.Trip_In_Jeju.like.repository.LikeRepository;
 import com.example.Trip_In_Jeju.location.entity.Location;
 import com.example.Trip_In_Jeju.location.repository.LocationRepository;
 import com.example.Trip_In_Jeju.member.entity.Member;
+import com.example.Trip_In_Jeju.rating.repository.RatingRepository;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
 import com.example.Trip_In_Jeju.scrap.ScrapRepository;
 import com.example.Trip_In_Jeju.scrap.ScrapService;
@@ -39,6 +40,7 @@ public class AttractionsService {
     private final RatingService ratingService;
     private final ScrapService scrapService;
     private final ScrapRepository scrapRepository;
+    private final RatingRepository ratingRepository;
 
     @Value("${kakao.api.key}")
     private String apiKey;
@@ -200,12 +202,12 @@ public class AttractionsService {
         likeRepository.deleteByAttractionsId(attractionsId);
 
         // 리뷰 삭제
-        ratingService.deleteRatingsByAttractionsId(attractionsId);
-
+        ratingRepository.deleteRatingsByAttractionsId(attractionsId);
 
         attractionsRepository.deleteById(attractionsId);
 
     }
+
     public List<Attractions> getRandomAttractions(int limit) {
         List<Attractions> allAttractions = attractionsRepository.findAll();
         return getRandomItems(allAttractions, limit);

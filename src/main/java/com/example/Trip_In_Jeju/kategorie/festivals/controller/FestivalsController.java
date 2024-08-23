@@ -1,8 +1,8 @@
 package com.example.Trip_In_Jeju.kategorie.festivals.controller;
 
-import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
 import com.example.Trip_In_Jeju.kategorie.festivals.entity.Festivals;
 import com.example.Trip_In_Jeju.kategorie.festivals.service.FestivalsService;
+import com.example.Trip_In_Jeju.like.LikeService;
 import com.example.Trip_In_Jeju.member.CustomUserDetails;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.member.servcie.MemberService;
@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,6 +31,7 @@ public class FestivalsController {
     private final RatingService ratingService;
     private final MemberService memberService;
     private final ScrapService scrapService;
+    private final LikeService likeService;
 
     @GetMapping("/list")
     public String list(
@@ -259,4 +261,16 @@ public class FestivalsController {
         return "redirect:/festivals/detail/" + id + (isScraped ? "?scraped=true" : "?scraped=false");
     }
 
+    @Transactional
+    @DeleteMapping("/delete/{id}")
+    public String deleteFestivals(@PathVariable("id") Long id, Model model) {
+
+        festivalsService.deleteFestivals(id);
+
+        Member member = memberService.getCurrentMember();
+
+        model.addAttribute("nickname", member);
+        // 음식 목록 페이지로 리다이렉트
+        return "redirect:/festivals/list";
+    }
 }

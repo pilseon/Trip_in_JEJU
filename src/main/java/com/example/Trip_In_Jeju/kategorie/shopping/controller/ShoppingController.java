@@ -1,7 +1,6 @@
 package com.example.Trip_In_Jeju.kategorie.shopping.controller;
 
 
-import com.example.Trip_In_Jeju.kategorie.other.entity.Other;
 import com.example.Trip_In_Jeju.kategorie.shopping.entity.Shopping;
 import com.example.Trip_In_Jeju.kategorie.shopping.service.ShoppingService;
 import com.example.Trip_In_Jeju.like.LikeService;
@@ -271,19 +270,7 @@ public class ShoppingController {
     @Transactional
     @DeleteMapping("/delete/{id}")
     public String deleteShopping(@PathVariable("id") Long id, Model model) {
-        // 해당 음식 ID로 음식 정보를 가져옵니다.
-        Shopping shopping = shoppingService.getShoppingById(id);
 
-        // 해당 음식에 대한 모든 스크랩 삭제
-        scrapService.removeAllScrapsForItem(shopping);
-
-        // 해당 음식에 대한 모든 좋아요 삭제
-        likeService.removeAllLikesForItem(shopping);
-
-        // 해당 음식에 대한 모든 리뷰 삭제
-        ratingService.removeAllRatingsForItem(shopping);
-
-        // 음식 데이터 삭제
         shoppingService.deleteShopping(id);
 
         Member member = memberService.getCurrentMember();

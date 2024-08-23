@@ -13,6 +13,7 @@ import com.example.Trip_In_Jeju.location.entity.Location;
 import com.example.Trip_In_Jeju.location.repository.LocationRepository;
 import com.example.Trip_In_Jeju.location.service.VisitRecordService;
 import com.example.Trip_In_Jeju.member.entity.Member;
+import com.example.Trip_In_Jeju.rating.repository.RatingRepository;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
 import com.example.Trip_In_Jeju.scrap.ScrapRepository;
 import com.example.Trip_In_Jeju.scrap.ScrapService;
@@ -43,6 +44,7 @@ public class FoodService {
     private final RatingService ratingService;
     private final ScrapService scrapService; // 추가된 의존성
     private final ScrapRepository scrapRepository;
+    private final RatingRepository ratingRepository;
 
     private final VisitRecordService visitRecordService;
 
@@ -242,7 +244,7 @@ public class FoodService {
         likeRepository.deleteByFoodId(foodId);
 
         // 리뷰 삭제
-        ratingService.deleteRatingsByFoodId(foodId);
+        ratingRepository.deleteRatingsByFoodId(foodId);
 
 
         foodRepository.deleteById(foodId);

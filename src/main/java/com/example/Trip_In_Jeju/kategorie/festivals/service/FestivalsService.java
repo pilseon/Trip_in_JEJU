@@ -2,7 +2,6 @@ package com.example.Trip_In_Jeju.kategorie.festivals.service;
 
 import com.example.Trip_In_Jeju.calendar.entity.Calendar;
 import com.example.Trip_In_Jeju.calendar.repository.CalendarRepository;
-import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
 import com.example.Trip_In_Jeju.kategorie.festivals.entity.Festivals;
 import com.example.Trip_In_Jeju.kategorie.festivals.repository.FestivalsRepository;
 import com.example.Trip_In_Jeju.like.entity.Like;
@@ -10,7 +9,9 @@ import com.example.Trip_In_Jeju.like.repository.LikeRepository;
 import com.example.Trip_In_Jeju.location.entity.Location;
 import com.example.Trip_In_Jeju.location.repository.LocationRepository;
 import com.example.Trip_In_Jeju.member.entity.Member;
+import com.example.Trip_In_Jeju.rating.repository.RatingRepository;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
+import com.example.Trip_In_Jeju.scrap.ScrapRepository;
 import com.example.Trip_In_Jeju.scrap.ScrapService;
 import com.example.Trip_In_Jeju.search.dto.Result;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +39,8 @@ public class FestivalsService {
     private final CalendarRepository calendarRepository;
     private final RatingService ratingService;
     private final ScrapService scrapService;
+    private final ScrapRepository scrapRepository;
+    private final RatingRepository ratingRepository;
 
     @Value("${kakao.api.key}")
     private String apiKey;
@@ -237,5 +240,19 @@ public class FestivalsService {
         Random rand = new Random();
         Collections.shuffle(items, rand);
         return items.stream().limit(limit).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void deleteFestivals(Long festivalsId) {
+        // 먼저 스크랩 테이블에서 관련 데이터를 삭제해요
+        scrapRepository.deleteByAttractionsId(festivalsId);
+
+        // 좋아요 삭제
+        likeRepository.deleteByAttractionsId(festivalsId);
+
+        // 리뷰 삭제
+        ratingRepository.deleteRatingsByFestivalsId(festivalsId);
+
+        festivalsRepository.deleteById(festivalsId);
     }
 }

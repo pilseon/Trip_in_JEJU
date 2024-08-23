@@ -58,6 +58,12 @@
                     </div>
                 </div>
 
+                <!-- 축제가 없는 경우 처리 -->
+                <div th:if="${festivalScraps == null or festivalScraps.isEmpty()}">
+                    <img class="w-72 h-72 mr-auto ml-auto" src="https://github.com/user-attachments/assets/a2f63d9e-ad52-43ef-9663-2f7a686749a3" alt="당황당황">
+                    <p class="text-center pb-10 text-gray-500">해당 날짜에는 등록된 축제가 없습니다</p>
+                </div>
+
                 <!-- Event and Scrap Processing -->
                 <div th:if="${festivalScraps != null and !festivalScraps.isEmpty()}">
                     <div th:each="entry : ${eventsByDate}">
@@ -115,9 +121,6 @@
 
                     <!-- Scrap List -->
                     <div th:if="${nonFestivalScraps != null and !nonFestivalScraps.isEmpty()}" th:each="scrap : ${nonFestivalScraps}">
-                        <!-- 디버깅 메시지로 scrap 객체의 상태 확인 -->
-                        <p th:text="'Scrap info: ' + ${scrap}"></p>
-
                         <!-- Scrap 객체가 null이 아니고, 적어도 하나의 항목이 존재하는 경우에만 표시 -->
                         <div th:if="${scrap.food != null or scrap.dessert != null or scrap.activity != null or scrap.attractions != null or scrap.other != null or scrap.shopping != null}"
                              class="history-item flex items-center p-4 bg-white shadow rounded mb-4">

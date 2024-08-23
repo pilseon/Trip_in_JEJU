@@ -28,20 +28,31 @@ public class EventService {
 
     @Transactional
     public void saveEvent(Event event, MultipartFile thumbnailImg, MultipartFile[] steps) {
-        // Save the thumbnail image
+        // 날짜 검증 로직
+        if (event.getPeriodEnd().isBefore(event.getPeriodStart())) {
+            throw new IllegalArgumentException("종료 날짜는 시작 날짜보다 늦어야 합니다.");
+        }
+
+        // 썸네일 이미지가 없으면 예외 발생
+        if (thumbnailImg == null || thumbnailImg.isEmpty()) {
+            throw new IllegalArgumentException("썸네일 이미지는 필수입니다.");
+        }
+
+        // 나머지 로직은 동일
         String thumbnailImgPath = saveFile(thumbnailImg);
         event.setThumbnailImg(thumbnailImgPath);
 
-        // Save step images
         List<ImageStep> imageSteps = new ArrayList<>();
         for (int i = 0; i < steps.length; i++) {
-            String stepImgPath = saveFile(steps[i]);
-            ImageStep imageStep = new ImageStep();
-            imageStep.setStepNumber(i + 1);
-            imageStep.setImageFilename(steps[i].getOriginalFilename());
-            imageStep.setImageFilePath(stepImgPath);
-            imageStep.setEvent(event);
-            imageSteps.add(imageStep);
+            if (steps[i] != null && !steps[i].isEmpty()) {
+                String stepImgPath = saveFile(steps[i]);
+                ImageStep imageStep = new ImageStep();
+                imageStep.setStepNumber(i + 1);
+                imageStep.setImageFilename(steps[i].getOriginalFilename());
+                imageStep.setImageFilePath(stepImgPath);
+                imageStep.setEvent(event);
+                imageSteps.add(imageStep);
+            }
         }
         event.setSteps(imageSteps);
 

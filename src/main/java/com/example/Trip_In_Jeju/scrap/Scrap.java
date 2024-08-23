@@ -18,6 +18,21 @@ import lombok.Setter;
 @Setter
 public class Scrap {
 
+    public boolean isEmpty() {
+        return dessert == null && food == null && activity == null
+                && attractions == null && other == null && shopping == null;
+    }
+
+    public Scrap() {
+        this.dessert = null;
+        this.food = null;
+        this.activity = null;
+        this.attractions = null;
+        this.other = null;
+        this.shopping = null;
+        this.festivals = null;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -5,32 +5,32 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>컨텐츠 생성 페이지</title>
         <link href="/resource/css/admCreate.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
     <div class="container mx-auto p-4">
         <h1 class="text-2xl font-bold mb-4">이벤트 생성</h1>
-        <form th:action="@{/adm/event/create}" method="post" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-md">
+        <form id="eventForm" th:action="@{/adm/event/create}" method="post" enctype="multipart/form-data" th:object="${event}" class="bg-white p-6 rounded-lg shadow-md">
             <div class="mb-4">
                 <label for="title" class="block text-gray-700 font-bold mb-2">제목 :</label>
-                <input type="text" id="title" name="title" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <input type="text" id="title" name="title" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" minlength="3" title="제목은 최소 3글자 이상이어야 작성 가능합니다." required>
             </div>
             <div class="mb-4">
                 <label for="content" class="block text-gray-700 font-bold mb-2">안내사항 :</label>
-                <textarea id="content" name="content" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                <textarea id="content" name="content" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" minlength="5" title="내용은 최소 10글자 이상이어야 작성 가능합니다." required></textarea>
             </div>
             <div class="mb-4">
                 <label for="thumbnailImg" class="block text-gray-700 font-bold mb-2">배너 이미지 :</label>
-                <input type="file" id="thumbnailImg" name="thumbnailImg" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
+                <input type="file" id="thumbnailImg" name="thumbnailImg" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" required>
+                <p class="text-xs text-red-500" id="thumbnailWarning" style="display: none;">배너 이미지는 필수입니다.</p>
             </div>
             <div class="mb-4">
                 <label for="periodStart" class="block text-gray-700 font-bold mb-2">이벤트 시작 :</label>
-                <input type="date" id="periodStart" name="periodStart" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <input type="date" id="periodStart" name="periodStart" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
             </div>
             <div class="mb-4">
                 <label for="periodEnd" class="block text-gray-700 font-bold mb-2">이벤트 종료:</label>
-                <input type="date" id="periodEnd" name="periodEnd" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <input type="date" id="periodEnd" name="periodEnd" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
             </div>
             <div class="mb-4">
                 <label for="steps" class="block text-gray-700 font-bold mb-2">이미지 첨부:</label>

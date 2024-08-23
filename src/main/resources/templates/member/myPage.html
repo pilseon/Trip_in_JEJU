@@ -7,8 +7,8 @@
     <link href="/resource/css/WeekCalendar.css" rel="stylesheet" type="text/css" />
     <link href="/resource/css/myPage.css" rel="stylesheet" type="text/css" />
 </head>
-<body>
 <section layout:fragment="content" class="section-prod-list">
+<body>
     <div class="container">
         <section class="profile">
             <div class="profile-pic">
@@ -57,36 +57,55 @@
                         </div>
                     </div>
                 </div>
-                <div class="">
-                    <div th:each="entry : ${eventsByDate}" th:if="${entry.value.size() > 0}">
-                    <div th:each="scrap : ${scraps}" th:if="${scrap.festivals != null}" class="history-item flex items-center p-4 bg-white shadow rounded mb-4">
-                        <a th:href="@{/festivals/detail/{id}(id=${scrap.festivals.id})}" class="festival-link">
 
-                                <div  th:if="${scrap.festivals != null}" class="flex items-center">
-                                    <img th:src="@{|/gen/${scrap.festivals.thumbnailImg}|}" alt="Festivals Thumbnail"
-                                         class="w-24 h-24 rounded-md mr-4">
-                                    <div>
-                                        <div>
-                                            <span class="font-bold">축제 일정 : </span>
-                                        <div class="md:inline" th:text="${scrap.festivals.calendar.periodStart} + ' - ' + ${scrap.festivals.calendar.periodEnd}"></div>
-                                        </div>
+                <!-- Event and Scrap Processing -->
+                <div th:if="${festivalScraps != null and !festivalScraps.isEmpty()}">
+                    <div th:each="entry : ${eventsByDate}">
+                        <!-- 해당 날짜에 이벤트가 있는 경우 처리 -->
+                        <div th:if="${entry.value != null and !entry.value.isEmpty()}">
+                            <div th:each="scrap : ${festivalScraps}">
+                                <div th:if="${scrap.festivals != null
+                        and scrap.festivals.calendar.periodStart <= currentDate
+                        and scrap.festivals.calendar.periodEnd >= currentDate}"
+                                     class="history-item flex items-center p-4 bg-white shadow rounded mb-4">
+                                    <a th:href="@{/festivals/detail/{id}(id=${scrap.festivals.id})}" class="festival-link">
+                                        <div class="flex items-center">
+                                            <img th:src="@{|/gen/${scrap.festivals.thumbnailImg}|}" alt="Festivals Thumbnail" class="w-24 h-24 rounded-md mr-4">
                                             <div>
-                                            <span class="font-bold">축제명 : </span>
-                                            <span th:text="${scrap.festivals.title}"></span>
+                                                <div>
+                                                    <span class="font-bold">축제 일정 : </span>
+                                                    <div class="md:inline" th:text="${scrap.festivals.calendar.periodStart} + ' - ' + ${scrap.festivals.calendar.periodEnd}"></div>
+                                                </div>
+                                                <div>
+                                                    <span class="font-bold">축제명 : </span>
+                                                    <span th:text="${scrap.festivals.title}"></span>
+                                                </div>
+                                                <div>
+                                                    <span class="font-bold">카테고리 : </span>
+                                                    <span th:text="${scrap.festivals.subCategory}"></span>
+                                                </div>
+                                                <div>
+                                                    <span class="font-bold">장소 : </span>
+                                                    <span th:text="${scrap.festivals.place}"></span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <span class="font-bold">카테고리 : </span>
-                                            <span th:text="${scrap.festivals.subCategory}"></span>
-                                        </div>
-                                        <div>
-                                            <span class="font-bold">축제명 : </span>
-                                            <span th:text="${scrap.festivals.place}"></span>
-                                        </div>
-                                    </div>
+                                    </a>
                                 </div>
-                        </a>
+                            </div>
+                        </div>
+                        <!-- 축제가 없는 경우 처리 -->
+                        <div th:if="${entry.value == null or entry.value.isEmpty()}">
+                            <img class="w-72 h-72 mr-auto ml-auto" src="https://github.com/user-attachments/assets/a2f63d9e-ad52-43ef-9663-2f7a686749a3" alt="당황당황">
+                            <p class="text-center pb-10 text-gray-500">해당 날짜에는 등록된 축제가 없습니다</p>
+                        </div>
                     </div>
                 </div>
+
+                <!-- 전체적으로 eventsByDate가 null이거나 비어 있는 경우 처리 -->
+                <div th:if="${eventsByDate == null or eventsByDate.isEmpty()}">
+                    <img class="w-72 h-72 mr-auto ml-auto" src="https://github.com/user-attachments/assets/a2f63d9e-ad52-43ef-9663-2f7a686749a3" alt="당황당황">
+                    <p class="text-center pb-10 text-gray-500">해당 날짜에는 등록된 축제가 없습니다</p>
                 </div>
             </div>
 
@@ -95,92 +114,104 @@
                     <h2 class="text-xl font-bold mb-4">찜 목록</h2>
 
                     <!-- Scrap List -->
-                    <div th:each="scrap : ${scraps}" class="history-item flex items-center p-4 bg-white shadow rounded mb-4">
+                    <div th:if="${nonFestivalScraps != null and !nonFestivalScraps.isEmpty()}" th:each="scrap : ${nonFestivalScraps}">
+                        <!-- 디버깅 메시지로 scrap 객체의 상태 확인 -->
+                        <p th:text="'Scrap info: ' + ${scrap}"></p>
 
-                        <!-- Food -->
-                        <div th:if="${scrap.food != null}" class="flex items-center">
-                            <a th:href="@{/food/detail/{id}(id=${scrap.food.id})}">
-                                <img th:src="@{|/gen/${scrap.food.thumbnailImg}|}" alt="음식점 이미지" class="w-24 h-24 rounded-md mr-4">
-                            </a>
-                            <div class="item-info">
-                                <a th:href="@{/food/detail/{id}(id=${scrap.food.id})}" class="no-underline hover:underline text-black">
-                                    <p th:text="${scrap.food.category}" class="inline"></p>/<p th:text="${scrap.food.subCategory}" class="inline"></p>
-                                    <p th:text="${scrap.food.title}" class="text-lg font-bold">음식점 이름</p>
-                                    <p th:text="${scrap.food.location.name}" class="text-m">음식점 위치</p>
+                        <!-- Scrap 객체가 null이 아니고, 적어도 하나의 항목이 존재하는 경우에만 표시 -->
+                        <div th:if="${scrap.food != null or scrap.dessert != null or scrap.activity != null or scrap.attractions != null or scrap.other != null or scrap.shopping != null}"
+                             class="history-item flex items-center p-4 bg-white shadow rounded mb-4">
+
+                            <!-- Food -->
+                            <div th:if="${scrap.food != null}" class="flex items-center">
+                                <a th:href="@{/food/detail/{id}(id=${scrap.food.id})}">
+                                    <img th:src="@{|/gen/${scrap.food.thumbnailImg}|}" alt="음식점 이미지" class="w-24 h-24 rounded-md mr-4">
                                 </a>
+                                <div class="item-info">
+                                    <a th:href="@{/food/detail/{id}(id=${scrap.food.id})}" class="no-underline hover:underline text-black">
+                                        <p th:text="${scrap.food.category}" class="inline"></p>/<p th:text="${scrap.food.subCategory}" class="inline"></p>
+                                        <p th:text="${scrap.food.title}" class="text-lg font-bold">음식점 이름</p>
+                                        <p th:text="${scrap.food.location.name}" class="text-m">음식점 위치</p>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Dessert -->
+                            <div th:if="${scrap.dessert != null}" class="flex items-center">
+                                <a th:href="@{/dessert/detail/{id}(id=${scrap.dessert.id})}">
+                                    <img th:src="@{|/gen/${scrap.dessert.thumbnailImg}|}" alt="디저트 이미지" class="w-24 h-24 rounded-md mr-4">
+                                </a>
+                                <div class="item-info">
+                                    <a th:href="@{/dessert/detail/{id}(id=${scrap.dessert.id})}" class="no-underline hover:underline text-black">
+                                        <p th:text="${scrap.dessert.category}" class="inline"></p>/<p th:text="${scrap.dessert.subCategory}" class="inline"></p>
+                                        <p th:text="${scrap.dessert.title}" class="text-lg font-bold">디저트 이름</p>
+                                        <p th:text="${scrap.dessert.location.name}" class="text-m">디저트 위치</p>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Activity -->
+                            <div th:if="${scrap.activity != null}" class="flex items-center">
+                                <a th:href="@{/activity/detail/{id}(id=${scrap.activity.id})}">
+                                    <img th:src="@{|/gen/${scrap.activity.thumbnailImg}|}" alt="액티비티 이미지" class="w-24 h-24 rounded-md mr-4">
+                                </a>
+                                <div class="item-info">
+                                    <a th:href="@{/activity/detail/{id}(id=${scrap.activity.id})}" class="no-underline hover:underline text-black">
+                                        <p th:text="${scrap.activity.category}" class="inline"></p>/<p th:text="${scrap.activity.subCategory}" class="inline"></p>
+                                        <p th:text="${scrap.activity.title}" class="text-lg font-bold">액티비티 이름</p>
+                                        <p th:text="${scrap.activity.location.name}" class="text-m">액티비티 위치</p>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Attractions -->
+                            <div th:if="${scrap.attractions != null}" class="flex items-center">
+                                <a th:href="@{/attractions/detail/{id}(id=${scrap.attractions.id})}">
+                                    <img th:src="@{|/gen/${scrap.attractions.thumbnailImg}|}" alt="관광지 이미지" class="w-24 h-24 rounded-md mr-4">
+                                </a>
+                                <div class="item-info">
+                                    <a th:href="@{/attractions/detail/{id}(id=${scrap.attractions.id})}" class="no-underline hover:underline text-black">
+                                        <p th:text="${scrap.attractions.category}" class="inline"></p>/<p th:text="${scrap.attractions.subCategory}" class="inline"></p>
+                                        <p th:text="${scrap.attractions.title}" class="text-lg font-bold">관광지 이름</p>
+                                        <p th:text="${scrap.attractions.location.name}" class="text-m">관광지 위치</p>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Other -->
+                            <div th:if="${scrap.other != null}" class="flex items-center">
+                                <a th:href="@{/other/detail/{id}(id=${scrap.other.id})}">
+                                    <img th:src="@{|/gen/${scrap.other.thumbnailImg}|}" alt="기타 이미지" class="w-24 h-24 rounded-md mr-4">
+                                </a>
+                                <div class="item-info">
+                                    <a th:href="@{/other/detail/{id}(id=${scrap.other.id})}" class="no-underline hover:underline text-black">
+                                        <p th:text="${scrap.other.category}" class="inline"></p>/<p th:text="${scrap.other.subCategory}" class="inline"></p>
+                                        <p th:text="${scrap.other.title}" class="text-lg font-bold">기타 이름</p>
+                                        <p th:text="${scrap.other.location.name}" class="text-m">기타 위치</p>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Shopping -->
+                            <div th:if="${scrap.shopping != null}" class="flex items-center">
+                                <a th:href="@{/shopping/detail/{id}(id=${scrap.shopping.id})}">
+                                    <img th:src="@{|/gen/${scrap.shopping.thumbnailImg}|}" alt="쇼핑 이미지" class="w-24 h-24 rounded-md mr-4">
+                                </a>
+                                <div class="item-info">
+                                    <a th:href="@{/shopping/detail/{id}(id=${scrap.shopping.id})}" class="no-underline hover:underline text-black">
+                                        <p th:text="${scrap.shopping.category}" class="inline"></p>/<p th:text="${scrap.shopping.subCategory}" class="inline"></p>
+                                        <p th:text="${scrap.shopping.title}" class="text-lg font-bold">쇼핑 이름</p>
+                                        <p th:text="${scrap.shopping.location.name}" class="text-m">쇼핑 위치</p>
+                                    </a>
+                                </div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Dessert -->
-                        <div th:if="${scrap.dessert != null}" class="flex items-center">
-                            <a th:href="@{/dessert/detail/{id}(id=${scrap.dessert.id})}">
-                                <img th:src="@{|/gen/${scrap.dessert.thumbnailImg}|}" alt="디저트 이미지" class="w-24 h-24 rounded-md mr-4">
-                            </a>
-                            <div class="item-info">
-                                <a th:href="@{/dessert/detail/{id}(id=${scrap.dessert.id})}" class="no-underline hover:underline text-black">
-                                    <p th:text="${scrap.dessert.category}" class="inline"></p>/<p th:text="${scrap.dessert.subCategory}" class="inline"></p>
-                                    <p th:text="${scrap.dessert.title}" class="text-lg font-bold">디저트 이름</p>
-                                    <p th:text="${scrap.dessert.location.name}" class="text-m">디저트 위치</p>
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- Activity -->
-                        <div th:if="${scrap.activity != null}" class="flex items-center">
-                            <a th:href="@{/activity/detail/{id}(id=${scrap.activity.id})}">
-                                <img th:src="@{|/gen/${scrap.activity.thumbnailImg}|}" alt="액티비티 이미지" class="w-24 h-24 rounded-md mr-4">
-                            </a>
-                            <div class="item-info">
-                                <a th:href="@{/activity/detail/{id}(id=${scrap.activity.id})}" class="no-underline hover:underline text-black">
-                                    <p th:text="${scrap.activity.category}" class="inline"></p>/<p th:text="${scrap.activity.subCategory}" class="inline"></p>
-                                    <p th:text="${scrap.activity.title}" class="text-lg font-bold">액티비티 이름</p>
-                                    <p th:text="${scrap.activity.location.name}" class="text-m">액티비티 위치</p>
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- Attractions -->
-                        <div th:if="${scrap.attractions != null}" class="flex items-center">
-                            <a th:href="@{/attractions/detail/{id}(id=${scrap.attractions.id})}">
-                                <img th:src="@{|/gen/${scrap.attractions.thumbnailImg}|}" alt="관광지 이미지" class="w-24 h-24 rounded-md mr-4">
-                            </a>
-                            <div class="item-info">
-                                <a th:href="@{/attractions/detail/{id}(id=${scrap.attractions.id})}" class="no-underline hover:underline text-black">
-                                    <p th:text="${scrap.attractions.category}" class="inline"></p>/<p th:text="${scrap.attractions.subCategory}" class="inline"></p>
-                                    <p th:text="${scrap.attractions.title}" class="text-lg font-bold">관광지 이름</p>
-                                    <p th:text="${scrap.attractions.location.name}" class="text-m">관광지 위치</p>
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- Other -->
-                        <div th:if="${scrap.other != null}" class="flex items-center">
-                            <a th:href="@{/other/detail/{id}(id=${scrap.other.id})}">
-                                <img th:src="@{|/gen/${scrap.other.thumbnailImg}|}" alt="기타 이미지" class="w-24 h-24 rounded-md mr-4">
-                            </a>
-                            <div class="item-info">
-                                <a th:href="@{/other/detail/{id}(id=${scrap.other.id})}" class="no-underline hover:underline text-black">
-                                    <p th:text="${scrap.other.category}" class="inline"></p>/<p th:text="${scrap.other.subCategory}" class="inline"></p>
-                                    <p th:text="${scrap.other.title}" class="text-lg font-bold">기타 이름</p>
-                                    <p th:text="${scrap.other.location.name}" class="text-m">기타 위치</p>
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- Shopping -->
-                        <div th:if="${scrap.shopping != null}" class="flex items-center">
-                            <a th:href="@{/shopping/detail/{id}(id=${scrap.shopping.id})}">
-                                <img th:src="@{|/gen/${scrap.shopping.thumbnailImg}|}" alt="쇼핑 이미지" class="w-24 h-24 rounded-md mr-4">
-                            </a>
-                            <div class="item-info">
-                                <a th:href="@{/shopping/detail/{id}(id=${scrap.shopping.id})}" class="no-underline hover:underline text-black">
-                                    <p th:text="${scrap.shopping.category}" class="inline"></p>/<p th:text="${scrap.shopping.subCategory}" class="inline"></p>
-                                    <p th:text="${scrap.shopping.title}" class="text-lg font-bold">쇼핑 이름</p>
-                                    <p th:text="${scrap.shopping.location.name}" class="text-m">쇼핑 위치</p>
-                                </a>
-                            </div>
-                        </div>
-
+                    <!-- No Scrap List -->
+                    <div th:if="${nonFestivalScraps == null or nonFestivalScraps.isEmpty()}" class="text-center">
+                        <img class="w-72 h-72 mr-auto ml-auto" src="https://github.com/user-attachments/assets/4d54879a-9c3e-48f6-93e7-d427d12f6277" alt="당황당황">
+                        <p class="text-gray-500 pb-10">찜한 목록이 없습니다</p>
                     </div>
                 </div>
             </div>
@@ -189,7 +220,6 @@
     <script th:src="@{/js/main.js}"></script>
     <script th:src="@{/weekcalendarjs/weekcalendar.js}"></script>
     <script th:src="@{/myPagejs/myPage.js}"></script>
-</section>
-</body>>
+</body>
 </section>
 </html>

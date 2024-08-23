@@ -70,7 +70,6 @@ public class MemberController {
             @RequestParam(name = "id", required = false) Long id,
             Model model) {
 
-
         Member currentMember = memberService.getCurrentMember();
         if (currentMember == null) {
             logger.warn("No current member found in myPage method");
@@ -78,53 +77,55 @@ public class MemberController {
         }
         model.addAttribute("member", currentMember);
 
-
         if (date == null) {
             date = LocalDate.now();
         }
         LocalDate startOfWeek = date.with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 1);
         LocalDate endOfWeek = date.with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 7);
 
-
         Festivals festivals = null;
         if (id != null) {
             festivals = festivalsService.getFestivalsById(id);
         }
         if (festivals == null) {
-
             id = getDefaultFestivalId();
             if (id != null) {
                 festivals = festivalsService.getFestivalsById(id);
             }
         }
-
-
         model.addAttribute("festivals", festivals);
 
-
         List<com.example.Trip_In_Jeju.calendar.entity.Calendar> dailyCalendars = calendarService.findCalendarsWithFoodsBetween2(date, date);
-
-
         Set<com.example.Trip_In_Jeju.calendar.entity.Calendar> uniqueCalendars = new HashSet<>(dailyCalendars);
 
-
-        System.out.println("Selected Date: " + date);
-        uniqueCalendars.forEach(event -> System.out.println("Event: " + event));
-
+        if (uniqueCalendars.isEmpty()) {
+            System.out.println("No events found for the selected date: " + date);
+        } else {
+            uniqueCalendars.forEach(event -> System.out.println("Event: " + event));
+        }
 
         Map<LocalDate, List<com.example.Trip_In_Jeju.calendar.entity.Calendar>> eventsByDate = new HashMap<>();
         eventsByDate.put(date, new ArrayList<>(uniqueCalendars));
 
-        // 스크랩 기록 가져오기
         List<Scrap> scraps = scrapService.getScrapsByMember(currentMember);
-        model.addAttribute("scraps", scraps);
 
+        // 축제만 포함하는 리스트
+        List<Scrap> festivalScraps = scraps.stream()
+                .filter(scrap -> scrap.getFestivals() != null)
+                .collect(Collectors.toList());
+
+        List<Scrap> nonFestivalScraps = scraps.stream()
+                .filter(scrap -> scrap.getFestivals() == null)
+                .collect(Collectors.toList());
+
+        model.addAttribute("festivalScraps", festivalScraps);
+        model.addAttribute("nonFestivalScraps", nonFestivalScraps);
+        model.addAttribute("scraps", scraps);
         model.addAttribute("weekStart", startOfWeek);
         model.addAttribute("weekEnd", endOfWeek);
         model.addAttribute("weekDates", List.of(startOfWeek, startOfWeek.plusDays(1), startOfWeek.plusDays(2), startOfWeek.plusDays(3), startOfWeek.plusDays(4), startOfWeek.plusDays(5), startOfWeek.plusDays(6)));
         model.addAttribute("currentDate", date);
         model.addAttribute("eventsByDate", eventsByDate);
-
 
         return "member/myPage";
     }

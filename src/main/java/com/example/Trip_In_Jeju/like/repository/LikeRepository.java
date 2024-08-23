@@ -82,5 +82,5 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
 
     void deleteByShoppingId(Long shoppingId);
 
-
+    void deleteByFestivalsId(long id);
 }

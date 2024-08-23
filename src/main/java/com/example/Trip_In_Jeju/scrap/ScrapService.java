@@ -5,7 +5,6 @@ import com.example.Trip_In_Jeju.kategorie.activity.entity.Activity;
 import com.example.Trip_In_Jeju.kategorie.attractions.entity.Attractions;
 import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
 import com.example.Trip_In_Jeju.kategorie.festivals.entity.Festivals;
-import com.example.Trip_In_Jeju.kategorie.festivals.service.FestivalsService;
 import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
 import com.example.Trip_In_Jeju.kategorie.other.entity.Other;
 import com.example.Trip_In_Jeju.kategorie.shopping.entity.Shopping;
@@ -170,12 +169,14 @@ public class ScrapService {
         return scrapRepository.findByMember(member);
     }
 
-
-
-
     @Transactional
     public void removeAllScrapsForItem(Food food) {
         scrapRepository.deleteByFoodId(food.getId());
+    }
+
+    @Transactional
+    public void removeAllScrapsForItem(Festivals festivals) {
+        scrapRepository.deleteByFestivalsId(festivals.getId());
     }
 
     @Transactional

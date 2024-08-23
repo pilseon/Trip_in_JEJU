@@ -210,3 +210,66 @@ var map, marker, infowindow, ps;
             }
         }
     });
+
+     // 전화번호 입력 시 자동으로 형식을 맞추는 함수
+        function formatPhoneNumber(input) {
+            const phoneNumber = input.value.replace(/\D/g, ''); // 숫자만 추출
+            let formattedNumber = '';
+
+            if (phoneNumber.length <= 3) {
+                formattedNumber = phoneNumber;
+            } else if (phoneNumber.length <= 7) {
+                formattedNumber = `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3)}`;
+            } else if (phoneNumber.length <= 11) {
+                formattedNumber = `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3, 7)}-${phoneNumber.slice(7)}`;
+            } else {
+                formattedNumber = `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3, 7)}-${phoneNumber.slice(7, 11)}`;
+            }
+
+            input.value = formattedNumber;
+        }
+
+        // 입력 필드에 입력할 때마다 형식을 맞추도록 이벤트 리스너 추가
+        document.getElementById('phoneNumber').addEventListener('input', function(event) {
+            formatPhoneNumber(event.target);
+        });
+
+        // 폼 제출 시 전화번호 형식이 올바른지 확인하는 함수
+        function validatePhoneNumber() {
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const phonePattern = /^\d{3}-\d{3,4}-\d{4}$/;
+
+            if (!phonePattern.test(phoneNumber)) {
+                alert('전화번호 형식이 올바르지 않습니다. 올바른 형식: 000-0000-0000');
+                return false;
+            }
+
+            return true;
+        }
+
+        // 폼 제출 시 전화번호 유효성 검사
+        document.querySelector('form').addEventListener('submit', function(event) {
+            if (!validatePhoneNumber()) {
+                event.preventDefault(); // 유효성 검사 실패 시 폼 제출을 막음
+            }
+        });
+
+        document.querySelector('form').addEventListener('submit', function(event) {
+                const checkboxes = document.querySelectorAll('input[name="closedDay[]"]');
+                let isChecked = false;
+
+                checkboxes.forEach(function(checkbox) {
+                    if (checkbox.checked) {
+                        isChecked = true;
+                    }
+                });
+
+                if (!isChecked) {
+                    // 휴무일이 선택되지 않은 경우 "연중무휴" 값을 설정
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'closedDay[]';
+                    input.value = '연중무휴';
+                    this.appendChild(input);
+                }
+            });

@@ -280,19 +280,6 @@ public class FoodController {
     @Transactional
     @DeleteMapping("/delete/{id}")
     public String deleteFood(@PathVariable("id") Long id, Model model) {
-        // 해당 음식 ID로 음식 정보를 가져옵니다.
-        Food food = foodService.getFoodById(id);
-
-        // 해당 음식에 대한 모든 스크랩 삭제
-        scrapService.removeAllScrapsForItem(food);
-
-        // 해당 음식에 대한 모든 좋아요 삭제
-        likeService.removeAllLikesForItem(food);
-
-        // 해당 음식에 대한 모든 리뷰 삭제
-        ratingService.removeAllRatingsForItem(food);
-
-        // 음식 데이터 삭제
         foodService.deleteFood(id);
 
         Member member = memberService.getCurrentMember();

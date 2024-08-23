@@ -51,13 +51,40 @@
             <div id="timeInputs" class="form-group" style="display:none;">
                 <label for="businessHoursStart" class="block text-lg font-semibold text-teal-700">시작시간:</label>
                 <select id="businessHoursStart" name="businessHoursStart" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
+                    <!-- 시간 옵션 추가 -->
                 </select>
+
                 <label for="businessHoursEnd" class="block text-lg font-semibold text-teal-700">종료시간:</label>
                 <select id="businessHoursEnd" name="businessHoursEnd" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
+                    <!-- 시간 옵션 추가 -->
                 </select>
-                <label for="closedDay" class="block text-lg font-semibold text-teal-700">휴무일:</label>
-                <input type="text" id="closedDay" name="closedDay" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
+
+                <label class="block text-lg font-semibold text-teal-700">휴무일:</label>
+                <div id="closedDay" class="mt-2 flex flex-wrap gap-4">
+                    <div>
+                        <label><input type="checkbox" name="closedDay[]" value="월요일"> 월요일</label>
+                    </div>
+                    <div>
+                        <label><input type="checkbox" name="closedDay[]" value="화요일"> 화요일</label>
+                    </div>
+                    <div>
+                        <label><input type="checkbox" name="closedDay[]" value="수요일"> 수요일</label>
+                    </div>
+                    <div>
+                        <label><input type="checkbox" name="closedDay[]" value="목요일"> 목요일</label>
+                    </div>
+                    <div>
+                        <label><input type="checkbox" name="closedDay[]" value="금요일"> 금요일</label>
+                    </div>
+                    <div>
+                        <label><input type="checkbox" name="closedDay[]" value="토요일"> 토요일</label>
+                    </div>
+                    <div>
+                        <label><input type="checkbox" name="closedDay[]" value="일요일"> 일요일</label>
+                    </div>
+                </div>
             </div>
+
 
             <div id="periodInputs" class="form-group" style="display:none;">
                 <label for="period" class="block text-lg font-semibold text-teal-700">기간:</label>
@@ -94,7 +121,7 @@
             <!-- 내용 입력 -->
             <div class="form-group">
                 <label for="content" class="block text-lg font-semibold text-teal-700">내용:</label>
-                <input type="text" id="content" name="content" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50">
+                <textarea id="content" name="content" rows="6" class="mt-2 block w-full border border-teal-300 rounded-lg p-2 focus:border-teal-500 focus:ring focus:ring-teal-500 focus:ring-opacity-50"></textarea>
             </div>
 
             <!-- 제출 버튼 -->
@@ -187,6 +214,62 @@
             updateSubCategoryOptions();
         });
 
+function validatePeriod() {
+        const periodStart = document.getElementById('periodStart').value;
+        const periodEnd = document.getElementById('periodEnd').value;
+
+        if (periodStart && periodEnd && new Date(periodStart) > new Date(periodEnd)) {
+            alert('시작 기간은 종료 기간보다 이전이어야 합니다.');
+            return false;
+        }
+        return true;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // 기간 입력 필드에 이벤트 리스너를 추가합니다.
+        document.getElementById('periodStart').addEventListener('change', validatePeriod);
+        document.getElementById('periodEnd').addEventListener('change', validatePeriod);
+    });
+
+    document.querySelector('form').addEventListener('submit', function(event) {
+        if (!validatePeriod()) {
+            event.preventDefault(); // 유효성 검사 실패 시 폼 제출을 막음
+        }
+    });
+        function validateForm() {
+        // 필수 입력 필드
+        const title = document.getElementById('title').value.trim();
+        const thumbnail = document.getElementById('thumbnail').value.trim();
+        const place = document.getElementById('place').value.trim();
+
+        // 제목 유효성 검사
+        if (title === "") {
+            alert('제목을 입력해주세요.');
+            return false;
+        }
+
+        // 썸네일 유효성 검사
+        if (thumbnail === "") {
+            alert('썸네일 이미지를 업로드해주세요.');
+            return false;
+        }
+
+        // 위치 유효성 검사
+        if (place === "") {
+            alert('위치를 입력해주세요.');
+            return false;
+        }
+
+        // 모든 유효성 검사를 통과하면 폼이 제출됨
+        return true;
+    }
+
+    // 폼 제출 시 유효성 검사 수행
+    document.querySelector('form').addEventListener('submit', function(event) {
+        if (!validateForm()) {
+            event.preventDefault(); // 유효성 검사 실패 시 폼 제출을 막음
+        }
+    });
     </script>
     </body>
 </section>

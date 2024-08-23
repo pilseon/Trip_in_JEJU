@@ -3,7 +3,6 @@ package com.example.Trip_In_Jeju.kategorie.attractions.controller;
 
 import com.example.Trip_In_Jeju.kategorie.attractions.entity.Attractions;
 import com.example.Trip_In_Jeju.kategorie.attractions.service.AttractionsService;
-import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
 import com.example.Trip_In_Jeju.like.LikeService;
 import com.example.Trip_In_Jeju.member.CustomUserDetails;
 import com.example.Trip_In_Jeju.member.entity.Member;
@@ -266,19 +265,7 @@ public class AttractionsController {
     @Transactional
     @DeleteMapping("/delete/{id}")
     public String deleteAttractions(@PathVariable("id") Long id, Model model) {
-        // 해당 음식 ID로 음식 정보를 가져옵니다.
-        Attractions attractions = attractionsService.getAttractionsById(id);
 
-        // 해당 음식에 대한 모든 스크랩 삭제
-        scrapService.removeAllScrapsForItem(attractions);
-
-        // 해당 음식에 대한 모든 좋아요 삭제
-        likeService.removeAllLikesForItem(attractions);
-
-        // 해당 음식에 대한 모든 리뷰 삭제
-        ratingService.removeAllRatingsForItem(attractions);
-
-        // 음식 데이터 삭제
         attractionsService.deleteAttractions(id);
 
         Member member = memberService.getCurrentMember();

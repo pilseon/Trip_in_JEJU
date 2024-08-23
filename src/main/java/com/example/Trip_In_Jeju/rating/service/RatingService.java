@@ -1,11 +1,5 @@
 package com.example.Trip_In_Jeju.rating.service;
 
-import com.example.Trip_In_Jeju.kategorie.activity.entity.Activity;
-import com.example.Trip_In_Jeju.kategorie.attractions.entity.Attractions;
-import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
-import com.example.Trip_In_Jeju.kategorie.food.entity.Food;
-import com.example.Trip_In_Jeju.kategorie.other.entity.Other;
-import com.example.Trip_In_Jeju.kategorie.shopping.entity.Shopping;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.member.repository.MemberRepository;
 import com.example.Trip_In_Jeju.member.servcie.MemberService;
@@ -202,49 +196,6 @@ public class RatingService {
     public List<Rating> getRatingsByUsername(String username) {
 
         return ratingRepository.findByUsername(username);
-    }
-
-
-    @Transactional
-    public void removeAllRatingsForItem(Food food) {
-    }
-    @Transactional
-    public void removeAllRatingsForItem(Activity activity) {
-    }
-    @Transactional
-    public void removeAllRatingsForItem(Attractions attractions) {
-    }
-    @Transactional
-    public void removeAllRatingsForItem(Dessert dessert) {
-    }
-    @Transactional
-    public void removeAllRatingsForItem(Other other) {
-    }
-    @Transactional
-    public void removeAllRatingsForItem(Shopping shopping) {
-    }
-
-
-
-
-    public void deleteRatingsByFoodId(Long foodId) {
-    }
-
-    public void deleteRatingsByActivityId(Long activityId) {
-
-    }
-
-    public void deleteRatingsByAttractionsId(Long attractionsId) {
-    }
-
-    public void deleteRatingsByDessertId(Long dessertId) {
-    }
-
-    public void deleteRatingsByOtherId(Long otherId) {
-
-    }
-
-    public void deleteRatingsByShoppingId(Long shoppingId) {
     }
 
     public boolean hasUserWrittenReview(String username, Long itemId, String category) {

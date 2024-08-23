@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -265,9 +266,16 @@ public class DessertController {
     }
 
 
-    @GetMapping("/delete/{id}")
-    public String deleteDessert(@PathVariable("id") Long id) {
+    @Transactional
+    @DeleteMapping("/delete/{id}")
+    public String deleteDessert(@PathVariable("id") Long id, Model model) {
+
         dessertService.deleteDessert(id);
+
+        Member member = memberService.getCurrentMember();
+
+        model.addAttribute("nickname", member);
+        // 음식 목록 페이지로 리다이렉트
         return "redirect:/dessert/list";
     }
 

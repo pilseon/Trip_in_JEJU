@@ -5,7 +5,7 @@ var currentPosition;
 let visitStartTime;
 let checkingInterval;
 let currentLocation;
-let foodLocations = []; // 서버에서 가져온 음식점 위치 데이터를 저장
+let locationData = {}; // 서버에서 가져온 음식점 위치 데이터를 저장
 let lastCheckedFoodId = null;
 
 function initMap() {
@@ -59,20 +59,21 @@ function startLocationTracking() {
 
             let inRange = false;
 
-            foodLocations.forEach(food => {
-                let distance = calculateDistance(currentLocation.latitude, currentLocation.longitude, food.latitude, food.longitude);
-                console.log(`Distance to foodId ${food.id}: ${distance} meters`);
+            Object.keys(locationData).forEach(category => {
+                locationData[category].forEach(item => {
+                    let distance = calculateDistance(currentLocation.latitude, currentLocation.longitude, item.latitude, item.longitude);
+                    console.log(`Distance to ${category}Id ${item.id}: ${distance} meters`);
 
-                if (distance <= 30 && lastCheckedFoodId !== food.id) { // 거리를 30미터로 설정
-                    inRange = true;
-
-                    if (!visitStartTime || lastCheckedFoodId !== food.id) {
-                        visitStartTime = new Date();
-                        lastCheckedFoodId = food.id;
-                        clearInterval(checkingInterval);
-                        checkingInterval = setInterval(checkVisitTime, 1000, food.id);
+                    if (distance <= 3000 && lastCheckedFoodId !== `${category}-${item.id}`) {
+                        inRange = true;  // 근접하면 inRange를 true로 설정
+                        if (!visitStartTime || lastCheckedFoodId !== `${category}-${item.id}`) {
+                            visitStartTime = new Date();
+                            lastCheckedFoodId = `${category}-${item.id}`;
+                            clearInterval(checkingInterval);
+                            checkingInterval = setInterval(checkVisitTime, 1000, category, item.id);
+                        }
                     }
-                }
+                });
             });
 
             if (!inRange) {
@@ -94,6 +95,7 @@ function startLocationTracking() {
     }
 }
 
+
 function calculateDistance(lat1, lon1, lat2, lon2) {
     const R = 6371e3; // metres
     const φ1 = lat1 * Math.PI/180;
@@ -109,16 +111,16 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
     return R * c;
 }
 
-function checkVisitTime(foodId) {
-    console.log(`Checking visit time for foodId: ${foodId}`);
+function checkVisitTime(category, id) {
+    console.log(`Checking visit time for ${category}Id: ${id}`);
     let currentTime = new Date();
     let timeSpent = (currentTime - visitStartTime) / 1000;
 
-    console.log(`Time spent at foodId ${foodId}: ${timeSpent} seconds`);
+    console.log(`Time spent at ${category}Id ${id}: ${timeSpent} seconds`);
 
-    if (timeSpent >= 20) { // 시간을 20초로 설정
-        console.log(`Time spent is sufficient, registering visit for foodId: ${foodId}`);
-        registerVisit(foodId);
+    if (timeSpent >= 4) { // 시간을 4초로 설정
+        console.log(`Time spent is sufficient, registering visit for ${category}Id: ${id}`);
+        registerVisit(category, id);
         clearInterval(checkingInterval);
         visitStartTime = null;
         lastCheckedFoodId = null;
@@ -162,8 +164,8 @@ function saveMemberId(memberId) {
     console.log("Saved memberId to localStorage:", memberId);
 }
 
-function registerVisit(foodId) {
-    console.log(`Registering visit for foodId: ${foodId}`);
+function registerVisit(category, id) {
+    console.log(`Registering visit for ${category} with id: ${id}`);
 
     getMemberIdFromServer().then(memberId => {
         if (!memberId) {
@@ -172,9 +174,10 @@ function registerVisit(foodId) {
         }
 
         const visitData = {
-            foodId: foodId,
             memberId: memberId
         };
+
+        visitData[`${category}Id`] = id;
 
         console.log("Sending visit data to server:", visitData);
 
@@ -200,58 +203,61 @@ function registerVisit(foodId) {
     });
 }
 
-function loadLocationsAndDisplayMarkers() {
-    fetch('/food/locations')
+
+function loadLocationsAndDisplayMarkers(category) {
+    if (!category) {
+        console.error("Category is undefined");
+        return;
+    }
+
+    fetch(`/${category}/locations`)
         .then(response => response.json())
         .then(data => {
-            console.log('Fetched food locations data:', data);
+            console.log(`Fetched ${category} locations data:`, data);
             if (Array.isArray(data)) {
-                data.forEach(food => {
-                    if (food && food.latitude && food.longitude) {
-                        console.log(`Food data: ${JSON.stringify(food)}`);  // food 객체 로그 추가
-
-                        var markerPosition = new kakao.maps.LatLng(food.latitude, food.longitude);
+                locationData[category] = data;  // 카테고리별 위치 데이터 저장
+                data.forEach(item => {
+                    if (item && item.latitude && item.longitude) {
+                        // 마커 표시
+                        var markerPosition = new kakao.maps.LatLng(item.latitude, item.longitude);
                         var marker = new kakao.maps.Marker({
                             map: map,
                             position: markerPosition
                         });
 
                         var infowindow = new kakao.maps.InfoWindow({
-                            content: `<div style="padding:5px;">${food.title} (Category: ${food.category})</div>`
+                            content: `<div style="padding:5px;">${item.title} (Category: ${item.category})</div>`
                         });
 
                         kakao.maps.event.addListener(marker, 'click', function() {
                             infowindow.open(map, marker);
                         });
 
-                        foodLocations.push(food);
-
                         // 위치가 근처에 있을 때 타이머 시작
-                        if (calculateDistance(currentLocation.latitude, currentLocation.longitude, food.latitude, food.longitude) <= 10000) {
-                            console.log(`Starting timer for foodId: ${food.id}`);  // food.id가 올바르게 전달되는지 확인
-                            startTimerForVisit(food.id);
+                        if (calculateDistance(currentLocation.latitude, currentLocation.longitude, item.latitude, item.longitude) <= 10000) {
+                            startTimerForVisit(category, item.id);
                         }
                     } else {
-                        console.error(`Invalid food data: ${JSON.stringify(food)}`);  // 오류 원인 출력
+                        console.error(`Invalid ${category} data: ${JSON.stringify(item)}`);
                     }
                 });
-
             } else {
-                console.error('Food locations data is not an array:', data);
+                console.error(`${category} locations data is not an array:`, data);
             }
         })
         .catch(error => {
-            console.error('Error fetching food locations:', error);
+            console.error(`Error fetching ${category} locations:`, error);
         });
 }
 
-function startTimerForVisit(foodId) {
+
+function startTimerForVisit(category, id) {
     if (!visitStartTime) {
         visitStartTime = new Date();
-        console.log(`Starting timer for foodId: ${foodId}`);  // foodId 로그 추가
-        checkingInterval = setInterval(checkVisitTime, 1000, foodId); // foodId 전달
+        console.log(`Starting timer for ${category}Id: ${id}`);
+        checkingInterval = setInterval(checkVisitTime, 1000, category, id);
     } else {
-        console.log(`Timer already started for foodId: ${foodId}`);
+        console.log(`Timer already started for ${category}Id: ${id}`);
     }
 }
 
@@ -421,12 +427,21 @@ function clearAutoComplete() {
 window.onload = function () {
     console.log("Window loaded. Calling initMap...");
 
+    // 먼저 지도를 초기화
+    initMap();
+
+    // 모든 카테고리 데이터 로드
+    const categories = ['food', 'activity', 'attractions', 'festivals', 'dessert', 'shopping', 'other'];
+    categories.forEach(category => loadLocationsAndDisplayMarkers(category));
+
+    // 회원 ID를 가져오려고 시도하지만, 실패하더라도 지도 로드에는 영향을 주지 않도록 한다.
     getMemberIdFromServer().then(memberId => {
         if (memberId) {
             console.log('Member ID:', memberId);
-            initMap();
         } else {
-            console.error('Failed to get member ID');
+            console.warn('Failed to get member ID, but the map will still be displayed.');
         }
+    }).catch(error => {
+        console.error('Error occurred while fetching member ID, but the map will still be displayed:', error);
     });
 };

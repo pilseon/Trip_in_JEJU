@@ -142,10 +142,10 @@ public class MemberController {
 
 
 
-    @GetMapping("/admin")
-    public String adminPage() {
-        return "member/admin";
-    }
+//    @GetMapping("/admin")
+//    public String adminPage() {
+//        return "member/admin";
+//    }
 
     @GetMapping("/signup")
     public String signForm(Model model) {
@@ -407,13 +407,19 @@ public class MemberController {
 
     private final RatingService ratingService;
     @GetMapping("/myPage/{username}")
-    public String viewMemberProfile(@PathVariable("username") String username, Model model) {
+    public String viewMemberProfile(@PathVariable("username") String username,
+                                    @RequestParam(value = "category", required = false, defaultValue = "food") String category,
+                                    Model model) {
         Member member = memberService.getMemberByNickname(username);
         if (member == null) {
             return "error/404"; // 사용자 정보를 찾을 수 없는 경우 404 페이지로 리다이렉트
         }
 
         List<Rating> ratings = ratingService.getRatingsByMember(member);
+        if (ratings == null) {
+            ratings = new ArrayList<>(); // 빈 리스트로 초기화
+        }
+        model.addAttribute("Ratings", ratings);
 
         // 평균 점수 계산
         double averageScore = ratings.stream()
@@ -423,19 +429,92 @@ public class MemberController {
 
         String formattedAverageScore = String.format("%.2f", averageScore);
 
-        // 사용자의 방문 기록 가져오기
-        List<VisitRecord> visitRecords = visitRecordService.getVisitRecordsByMemberId(member.getId());
+        // 특정 카테고리의 방문 기록 가져오기
+        List<VisitRecord> visitRecords = visitRecordService.getAllVisitRecordsByMemberId(member.getId());
 
-        Set<Long> reviewedFoodIds = ratings.stream()
-                .map(Rating::getItemId) // 리뷰에 해당하는 음식점 ID 추출
+        Set<Long> reviewedItemIds = ratings.stream()
+                .map(Rating::getItemId)
                 .collect(Collectors.toSet());
 
+        // 각 카테고리별로 분리된 Set 생성
+        Set<Long> reviewedFoodIds = new HashSet<>();
+        Set<Long> reviewedDessertIds = new HashSet<>();
+        Set<Long> reviewedActivityIds = new HashSet<>();
+        Set<Long> reviewedAttractionsIds = new HashSet<>();
+        Set<Long> reviewedFestivalsIds = new HashSet<>();
+        Set<Long> reviewedOtherIds = new HashSet<>();
+        Set<Long> reviewedShoppingIds = new HashSet<>();
+
+        // 각 카테고리별로 ID 추가
+        ratings.forEach(rating -> {
+            switch (rating.getCategory()) {
+                case "food":
+                    reviewedFoodIds.add(rating.getItemId());
+                    break;
+                case "dessert":
+                    reviewedDessertIds.add(rating.getItemId());
+                    break;
+                case "activity":
+                    reviewedActivityIds.add(rating.getItemId());
+                    break;
+                case "attractions":
+                    reviewedAttractionsIds.add(rating.getItemId());
+                    break;
+                case "festivals":
+                    reviewedFestivalsIds.add(rating.getItemId());
+                    break;
+                case "other":
+                    reviewedOtherIds.add(rating.getItemId());
+                    break;
+                case "shopping":
+                    reviewedShoppingIds.add(rating.getItemId());
+                    break;
+            }
+        });
+
+// 각 항목별로 리뷰 상태 확인 및 출력
+        visitRecords.forEach(record -> {
+            if (record.getFood() != null) {
+                System.out.println("Food ID: " + record.getFood().getId());
+                System.out.println("Reviewed: " + reviewedFoodIds.contains(record.getFood().getId()));
+            }
+            if (record.getActivity() != null) {
+                System.out.println("Activity ID: " + record.getActivity().getId());
+                System.out.println("Reviewed: " + reviewedActivityIds.contains(record.getActivity().getId()));
+            }
+            if (record.getAttractions() != null) {
+                System.out.println("Attractions ID: " + record.getAttractions().getId());
+                System.out.println("Reviewed: " + reviewedAttractionsIds.contains(record.getAttractions().getId()));
+            }
+            if (record.getDessert() != null) {
+                System.out.println("Dessert ID: " + record.getDessert().getId());
+                System.out.println("Reviewed: " + reviewedDessertIds.contains(record.getDessert().getId()));
+            }
+            if (record.getFestivals() != null) {
+                System.out.println("Festivals ID: " + record.getFestivals().getId());
+                System.out.println("Reviewed: " + reviewedFestivalsIds.contains(record.getFestivals().getId()));
+            }
+            if (record.getOther() != null) {
+                System.out.println("Other ID: " + record.getOther().getId());
+                System.out.println("Reviewed: " + reviewedOtherIds.contains(record.getOther().getId()));
+            }
+            if (record.getShopping() != null) {
+                System.out.println("Shopping ID: " + record.getShopping().getId());
+                System.out.println("Reviewed: " + reviewedShoppingIds.contains(record.getShopping().getId()));
+            }
+        });
+
         model.addAttribute("member", member);
-        model.addAttribute("Ratings", ratings);
+        model.addAttribute("ratings", ratings);
         model.addAttribute("averageScore", formattedAverageScore);
-        // 평균 점수를 모델에 추가
-        model.addAttribute("visitRecords", visitRecords); // 방문 기록 추가
-        model.addAttribute("reviewedFoodIds", reviewedFoodIds); // 이미 리뷰를 작성한 음식점 ID 리스트 추가
+        model.addAttribute("visitRecords", visitRecords);
+        model.addAttribute("reviewedFoodIds", reviewedFoodIds);
+        model.addAttribute("reviewedDessertIds", reviewedDessertIds);
+        model.addAttribute("reviewedActivityIds", reviewedActivityIds);
+        model.addAttribute("reviewedAttractionsIds", reviewedAttractionsIds);
+        model.addAttribute("reviewedFestivalsIds", reviewedFestivalsIds);
+        model.addAttribute("reviewedOtherIds", reviewedOtherIds);
+        model.addAttribute("reviewedShoppingIds", reviewedShoppingIds);
 
         return "member/memberPage";
     }

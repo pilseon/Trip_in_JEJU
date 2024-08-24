@@ -268,7 +268,9 @@ public class FoodService {
 
         for (Food food : foodLocations) {
             if (isNearLocation(userLocation, food.getLocation())) {
-                VisitRequest visitRequest = new VisitRequest(food.getId(), memberId);
+                VisitRequest visitRequest = new VisitRequest();
+                visitRequest.setMemberId(memberId);
+                visitRequest.setFoodId(food.getId());
                 visitRecordService.saveVisitRecord(visitRequest);
             }
         }

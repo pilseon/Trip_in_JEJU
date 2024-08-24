@@ -25,20 +25,8 @@
 
         @PostMapping("/visitRecord")
         public ResponseEntity<?> registerVisit(@RequestBody VisitRequest visitRequest) {
-            log.info("User is authenticated: {}", SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
             try {
-                System.out.println("VisitRecordController: registerVisit 메서드 호출됨");
-
-                if (visitRequest.getMemberId() == null || visitRequest.getFoodId() == null) {
-                    System.out.println("VisitRecordController: 잘못된 입력 데이터");
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid input data");
-                }
-
-                System.out.println("Received visit request with foodId: " + visitRequest.getFoodId() + " and memberId: " + visitRequest.getMemberId());
-
-                visitRecordService.registerVisit(visitRequest.getMemberId(), visitRequest.getFoodId());
-                System.out.println("VisitRecordController: 서비스 메서드 호출 완료");
-
+                visitRecordService.registerVisit(visitRequest);
                 return ResponseEntity.ok("방문 기록 저장 완료");
             } catch (Exception e) {
                 e.printStackTrace();

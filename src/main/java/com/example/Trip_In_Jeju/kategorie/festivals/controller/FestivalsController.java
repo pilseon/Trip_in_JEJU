@@ -1,8 +1,11 @@
 package com.example.Trip_In_Jeju.kategorie.festivals.controller;
 
+import com.example.Trip_In_Jeju.kategorie.festivals.dto.FestivalsLocationDto;
 import com.example.Trip_In_Jeju.kategorie.festivals.entity.Festivals;
 import com.example.Trip_In_Jeju.kategorie.festivals.service.FestivalsService;
 import com.example.Trip_In_Jeju.like.LikeService;
+import com.example.Trip_In_Jeju.location.dto.LocationRequest;
+import com.example.Trip_In_Jeju.location.service.VisitRecordService;
 import com.example.Trip_In_Jeju.member.CustomUserDetails;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.member.servcie.MemberService;
@@ -11,6 +14,7 @@ import com.example.Trip_In_Jeju.rating.service.RatingService;
 import com.example.Trip_In_Jeju.scrap.ScrapService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,6 +36,7 @@ public class FestivalsController {
     private final MemberService memberService;
     private final ScrapService scrapService;
     private final LikeService likeService;
+    private final VisitRecordService visitRecordService;
 
     @GetMapping("/list")
     public String list(
@@ -48,13 +53,16 @@ public class FestivalsController {
     }
 
     @GetMapping("/detail/{id}")
-    public String getFestivalsDetail(@PathVariable("id") Long id, Model model, Authentication authentication) {
+    public String getDetail(@PathVariable("id") Long id, Model model, Authentication authentication) {
         Festivals festivals = festivalsService.getFestivalsById(id);
         List<Rating> ratings = ratingService.getRatings(id, "festivals");
         double averageScore = ratingService.calculateAverageScore(id, "festivals");
         Member currentMember = memberService.getCurrentMember();
         model.addAttribute("member", currentMember);
         String username = null;
+        boolean canWriteReview = false; // 방문 확인
+        boolean hasWrittenReview = false;
+
         if (authentication != null) {
             Object principal = authentication.getPrincipal();
             if (principal instanceof UserDetails) {
@@ -63,11 +71,18 @@ public class FestivalsController {
                 username = principal.toString();
             }
         }
+
+        if (currentMember != null) {
+            canWriteReview = visitRecordService.hasVisited(currentMember.getId(), "festivals", id);  // category 추가
+            hasWrittenReview = ratingService.hasUserWrittenReview(currentMember.getUsername(), id, "festivals");
+        }
+
         model.addAttribute("festivals", festivals);
         model.addAttribute("ratings", ratings);
         model.addAttribute("averageScore", averageScore);
         model.addAttribute("username", username);
-        model.addAttribute("categoryTitle", festivals.getTitle());
+        model.addAttribute("canWriteReview", canWriteReview);
+        model.addAttribute("hasWrittenReview", hasWrittenReview); // 방문 확인
         return "festivals/detail";
     }
 
@@ -272,5 +287,17 @@ public class FestivalsController {
         model.addAttribute("nickname", member);
         // 음식 목록 페이지로 리다이렉트
         return "redirect:/festivals/list";
+    }
+
+    @PostMapping("/check-visit")
+    public ResponseEntity<?> checkVisit(@RequestParam("memberId") Long memberId, @RequestBody LocationRequest locationRequest) {
+        festivalsService.processFestivalsLocation(memberId, locationRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/locations")
+    public ResponseEntity<List<FestivalsLocationDto>> getFestivalsLocations() {
+        List<FestivalsLocationDto> locations = festivalsService.getAllFestivalsLocations();
+        return ResponseEntity.ok(locations);
     }
 }

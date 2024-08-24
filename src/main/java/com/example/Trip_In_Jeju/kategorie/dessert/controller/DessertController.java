@@ -1,7 +1,10 @@
 package com.example.Trip_In_Jeju.kategorie.dessert.controller;
 
+import com.example.Trip_In_Jeju.kategorie.dessert.dto.DessertLocationDto;
 import com.example.Trip_In_Jeju.kategorie.dessert.entity.Dessert;
 import com.example.Trip_In_Jeju.kategorie.dessert.service.DessertService;
+import com.example.Trip_In_Jeju.location.dto.LocationRequest;
+import com.example.Trip_In_Jeju.location.service.VisitRecordService;
 import com.example.Trip_In_Jeju.member.CustomUserDetails;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.member.servcie.MemberService;
@@ -10,6 +13,7 @@ import com.example.Trip_In_Jeju.rating.service.RatingService;
 import com.example.Trip_In_Jeju.scrap.ScrapService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,6 +34,7 @@ public class DessertController {
     private final RatingService ratingService;
     private final MemberService memberService;
     private final ScrapService scrapService;
+    private final VisitRecordService visitRecordService;
 
     @GetMapping("/list")
     public String list(
@@ -46,31 +51,36 @@ public class DessertController {
     }
 
     @GetMapping("/detail/{id}")
-    public String getDessertDetail(@PathVariable("id") Long id, Model model) {
+    public String getDetail(@PathVariable("id") Long id, Model model, Authentication authentication) {
         Dessert dessert = dessertService.getDessertById(id);
         List<Rating> ratings = ratingService.getRatings(id, "dessert");
         double averageScore = ratingService.calculateAverageScore(id, "dessert");
         Member currentMember = memberService.getCurrentMember();
         model.addAttribute("member", currentMember);
-
         String username = null;
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean canWriteReview = false; // 방문 확인
+        boolean hasWrittenReview = false;
+
         if (authentication != null) {
             Object principal = authentication.getPrincipal();
-            if (principal instanceof CustomUserDetails) {
-                username = ((CustomUserDetails) principal).getNickname();
-            } else if (principal instanceof UserDetails) {
+            if (principal instanceof UserDetails) {
                 username = ((UserDetails) principal).getUsername();
             } else {
                 username = principal.toString();
             }
         }
 
+        if (currentMember != null) {
+            canWriteReview = visitRecordService.hasVisited(currentMember.getId(), "dessert", id);  // category 추가
+            hasWrittenReview = ratingService.hasUserWrittenReview(currentMember.getUsername(), id, "dessert");
+        }
+
         model.addAttribute("dessert", dessert);
         model.addAttribute("ratings", ratings);
         model.addAttribute("averageScore", averageScore);
         model.addAttribute("username", username);
-        model.addAttribute("categoryTitle", dessert.getTitle());
+        model.addAttribute("canWriteReview", canWriteReview);
+        model.addAttribute("hasWrittenReview", hasWrittenReview); // 방문 확인
         return "dessert/detail";
     }
 
@@ -279,4 +289,15 @@ public class DessertController {
         return "redirect:/dessert/list";
     }
 
+    @PostMapping("/check-visit")
+    public ResponseEntity<?> checkVisit(@RequestParam("memberId") Long memberId, @RequestBody LocationRequest locationRequest) {
+        dessertService.processDessertLocation(memberId, locationRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/locations")
+    public ResponseEntity<List<DessertLocationDto>> getDessertLocations() {
+        List<DessertLocationDto> locations = dessertService.getAllDessertLocations();
+        return ResponseEntity.ok(locations);
+    }
 }

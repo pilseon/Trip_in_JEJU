@@ -1,8 +1,11 @@
 package com.example.Trip_In_Jeju.kategorie.activity.controller;
 
+import com.example.Trip_In_Jeju.kategorie.activity.dto.ActivityLocationDto;
 import com.example.Trip_In_Jeju.kategorie.activity.entity.Activity;
 import com.example.Trip_In_Jeju.kategorie.activity.service.ActivityService;
 import com.example.Trip_In_Jeju.like.LikeService;
+import com.example.Trip_In_Jeju.location.dto.LocationRequest;
+import com.example.Trip_In_Jeju.location.service.VisitRecordService;
 import com.example.Trip_In_Jeju.member.CustomUserDetails;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.member.servcie.MemberService;
@@ -11,6 +14,7 @@ import com.example.Trip_In_Jeju.rating.service.RatingService;
 import com.example.Trip_In_Jeju.scrap.ScrapService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,6 +36,7 @@ public class ActivityController {
     private final MemberService memberService;
     private final ScrapService scrapService;
     private final LikeService likeService;
+    private final VisitRecordService visitRecordService;
 
     @GetMapping("/list")
     public String list(
@@ -48,13 +53,16 @@ public class ActivityController {
     }
 
     @GetMapping("/detail/{id}")
-    public String getActivityDetail(@PathVariable("id") Long id, Model model, Authentication authentication) {
+    public String getDetail(@PathVariable("id") Long id, Model model, Authentication authentication) {
         Activity activity = activityService.getActivityById(id);
         List<Rating> ratings = ratingService.getRatings(id, "activity");
         double averageScore = ratingService.calculateAverageScore(id, "activity");
         Member currentMember = memberService.getCurrentMember();
         model.addAttribute("member", currentMember);
         String username = null;
+        boolean canWriteReview = false; // 방문 확인
+        boolean hasWrittenReview = false;
+
         if (authentication != null) {
             Object principal = authentication.getPrincipal();
             if (principal instanceof UserDetails) {
@@ -63,11 +71,18 @@ public class ActivityController {
                 username = principal.toString();
             }
         }
+
+        if (currentMember != null) {
+            canWriteReview = visitRecordService.hasVisited(currentMember.getId(), "activity", id);  // category 추가
+            hasWrittenReview = ratingService.hasUserWrittenReview(currentMember.getUsername(), id, "activity");
+        }
+
         model.addAttribute("activity", activity);
         model.addAttribute("ratings", ratings);
         model.addAttribute("averageScore", averageScore);
         model.addAttribute("username", username);
-        model.addAttribute("categoryTitle", activity.getTitle());
+        model.addAttribute("canWriteReview", canWriteReview);
+        model.addAttribute("hasWrittenReview", hasWrittenReview); // 방문 확인
         return "activity/detail";
     }
 
@@ -273,4 +288,15 @@ public class ActivityController {
         return "redirect:/activity/list";
     }
 
+    @PostMapping("/check-visit")
+    public ResponseEntity<?> checkVisit(@RequestParam("memberId") Long memberId, @RequestBody LocationRequest locationRequest) {
+        activityService.processActivityLocation(memberId, locationRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/locations")
+    public ResponseEntity<List<ActivityLocationDto>> getActivityLocations() {
+        List<ActivityLocationDto> locations = activityService.getAllActivityLocations();
+        return ResponseEntity.ok(locations);
+    }
 }

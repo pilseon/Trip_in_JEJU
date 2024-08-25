@@ -9,9 +9,8 @@
 
     <link href="/resource/css/memberPage.css" rel="stylesheet" type="text/css" />
 </head>
-
-<body>
 <section layout:fragment="content" class="section-prod-list">
+    <body>
     <div class="container">
         <section class="profile">
             <div class="profile-pic">
@@ -25,7 +24,8 @@
         </section>
 
         <div class="holy">
-            <p th:text="'리뷰 수: ' + ${#lists.size(Ratings)}"></p>
+            <p th:if="${Ratings != null and #lists.size(Ratings) > 0}" th:text="'리뷰 수: ' + ${#lists.size(Ratings)}"></p>
+            <p th:if="${Ratings == null or #lists.size(Ratings) == 0}" th:text="'리뷰 수: 0'"></p>
             <p th:text="' 평균 별점: ' + ${averageScore}"></p>
             <section th:if="${#authentication.name == member.username or #authorization.expression('hasAuthority(''ADMIN'')')}" class="navigation mt-2">
                 <button class="nav-button" id="schedule">방문 기록</button>
@@ -37,22 +37,106 @@
                     <ul class="space-y-4">
                         <li th:each="record : ${visitRecords}" class="bg-white shadow rounded-lg p-4 flex items-center justify-between">
                             <div class="flex items-center space-x-4">
-                                <!-- Thumbnail 이미지 -->
-                                <img th:src="@{'/gen/' + ${record.food.thumbnailImg}}" alt="Thumbnail"
-                                     class="w-16 h-16 rounded object-cover">
 
-                                <!-- 음식점 정보 -->
+                                <!-- Thumbnail 이미지 -->
+                                <img th:src="${record.food != null ? '/gen/' + record.food.thumbnailImg :
+                                     record.activity != null ? '/gen/' + record.activity.thumbnailImg :
+                                     record.attractions != null ? '/gen/' + record.attractions.thumbnailImg :
+                                     record.dessert != null ? '/gen/' + record.dessert.thumbnailImg :
+                                     record.festivals != null ? '/gen/' + record.festivals.thumbnailImg :
+                                     record.other != null ? '/gen/' + record.other.thumbnailImg :
+                                     record.shopping != null ? '/gen/' + record.shopping.thumbnailImg : ''}"
+                                     alt="Thumbnail" class="w-16 h-16 rounded object-cover">
+
+                                <!-- 장소 정보 -->
                                 <div>
-                                    <h2 class="text-xl font-semibold text-gray-900" th:text="${record.food.place}">음식점 이름</h2>
+                                    <h2 class="text-xl font-semibold text-gray-900"
+                                        th:text="${record.food != null ? record.food.place :
+                                         record.activity != null ? record.activity.place :
+                                         record.attractions != null ? record.attractions.place :
+                                         record.dessert != null ? record.dessert.place :
+                                         record.festivals != null ? record.festivals.place :
+                                         record.other != null ? record.other.place :
+                                         record.shopping != null ? record.shopping.place : ''}">장소 이름</h2>
                                     <p class="text-gray-600" th:text="${#temporals.format(record.visitTime, 'yyyy-MM-dd')}">방문 시간</p>
                                 </div>
                             </div>
 
                             <!-- 리뷰 작성 상태에 따른 링크 또는 텍스트 -->
-                            <a th:if="${reviewedFoodIds.contains(record.food.id)}" class="text-green-500 flex-shrink-0">
+                            <!-- Food -->
+                            <a th:if="${record.food != null and reviewedFoodIds != null and reviewedFoodIds.contains(record.food.id)}"
+                               class="text-green-500 flex-shrink-0">
                                 <div>리뷰 작성 완료</div>
                             </a>
-                            <a th:unless="${reviewedFoodIds.contains(record.food.id)}" th:href="@{'/food/detail/' + ${record.food.id}}" class="text-yellow-500 hover:text-blue-700 flex-shrink-0">
+                            <a th:if="${record.food != null and (reviewedFoodIds == null or !reviewedFoodIds.contains(record.food.id))}"
+                               th:href="@{'/food/detail/' + ${record.food.id}}"
+                               class="text-yellow-500 hover:text-blue-700 flex-shrink-0">
+                                <div>리뷰 작성 &gt;</div>
+                            </a>
+
+                            <!-- Activity -->
+                            <a th:if="${record.activity != null and reviewedActivityIds != null and reviewedActivityIds.contains(record.activity.id)}"
+                               class="text-green-500 flex-shrink-0">
+                                <div>리뷰 작성 완료</div>
+                            </a>
+                            <a th:if="${record.activity != null and (reviewedActivityIds == null or !reviewedActivityIds.contains(record.activity.id))}"
+                               th:href="@{'/activity/detail/' + ${record.activity.id}}"
+                               class="text-yellow-500 hover:text-blue-700 flex-shrink-0">
+                                <div>리뷰 작성 &gt;</div>
+                            </a>
+
+                            <!-- Attractions -->
+                            <a th:if="${record.attractions != null and reviewedAttractionsIds != null and reviewedAttractionsIds.contains(record.attractions.id)}"
+                               class="text-green-500 flex-shrink-0">
+                                <div>리뷰 작성 완료</div>
+                            </a>
+                            <a th:if="${record.attractions != null and (reviewedAttractionsIds == null or !reviewedAttractionsIds.contains(record.attractions.id))}"
+                               th:href="@{'/attractions/detail/' + ${record.attractions.id}}"
+                               class="text-yellow-500 hover:text-blue-700 flex-shrink-0">
+                                <div>리뷰 작성 &gt;</div>
+                            </a>
+
+                            <!-- Dessert -->
+                            <a th:if="${record.dessert != null and reviewedDessertIds != null and reviewedDessertIds.contains(record.dessert.id)}"
+                               class="text-green-500 flex-shrink-0">
+                                <div>리뷰 작성 완료</div>
+                            </a>
+                            <a th:if="${record.dessert != null and (reviewedDessertIds == null or !reviewedDessertIds.contains(record.dessert.id))}"
+                               th:href="@{'/dessert/detail/' + ${record.dessert.id}}"
+                               class="text-yellow-500 hover:text-blue-700 flex-shrink-0">
+                                <div>리뷰 작성 &gt;</div>
+                            </a>
+
+                            <!-- Festivals -->
+                            <a th:if="${record.festivals != null and reviewedFestivalsIds != null and reviewedFestivalsIds.contains(record.festivals.id)}"
+                               class="text-green-500 flex-shrink-0">
+                                <div>리뷰 작성 완료</div>
+                            </a>
+                            <a th:if="${record.festivals != null and (reviewedFestivalsIds == null or !reviewedFestivalsIds.contains(record.festivals.id))}"
+                               th:href="@{'/festivals/detail/' + ${record.festivals.id}}"
+                               class="text-yellow-500 hover:text-blue-700 flex-shrink-0">
+                                <div>리뷰 작성 &gt;</div>
+                            </a>
+
+                            <!-- Other -->
+                            <a th:if="${record.other != null and reviewedOtherIds != null and reviewedOtherIds.contains(record.other.id)}"
+                               class="text-green-500 flex-shrink-0">
+                                <div>리뷰 작성 완료</div>
+                            </a>
+                            <a th:if="${record.other != null and (reviewedOtherIds == null or !reviewedOtherIds.contains(record.other.id))}"
+                               th:href="@{'/other/detail/' + ${record.other.id}}"
+                               class="text-yellow-500 hover:text-blue-700 flex-shrink-0">
+                                <div>리뷰 작성 &gt;</div>
+                            </a>
+
+                            <!-- Shopping -->
+                            <a th:if="${record.shopping != null and reviewedShoppingIds != null and reviewedShoppingIds.contains(record.shopping.id)}"
+                               class="text-green-500 flex-shrink-0">
+                                <div>리뷰 작성 완료</div>
+                            </a>
+                            <a th:if="${record.shopping != null and (reviewedShoppingIds == null or !reviewedShoppingIds.contains(record.shopping.id))}"
+                               th:href="@{'/shopping/detail/' + ${record.shopping.id}}"
+                               class="text-yellow-500 hover:text-blue-700 flex-shrink-0">
                                 <div>리뷰 작성 &gt;</div>
                             </a>
                         </li>
@@ -105,9 +189,9 @@
             </div>
         </div>
     </div>
-    <script th:src="@{/js/main.js}"></script>
-    <script th:src="@{/myPagejs/myPage.js}"></script>
 
-</section>
+    <script th:src="@{/memberPagejs/memberPage.js}"></script>
 </body>
+</section>
+
 </html>

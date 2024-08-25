@@ -2,12 +2,16 @@ package com.example.Trip_In_Jeju.kategorie.other.service;
 
 import com.example.Trip_In_Jeju.calendar.entity.Calendar;
 import com.example.Trip_In_Jeju.calendar.repository.CalendarRepository;
+import com.example.Trip_In_Jeju.kategorie.other.dto.OtherLocationDto;
 import com.example.Trip_In_Jeju.kategorie.other.entity.Other;
 import com.example.Trip_In_Jeju.kategorie.other.repository.OtherRepository;
 import com.example.Trip_In_Jeju.like.entity.Like;
 import com.example.Trip_In_Jeju.like.repository.LikeRepository;
+import com.example.Trip_In_Jeju.location.dto.LocationRequest;
+import com.example.Trip_In_Jeju.location.dto.VisitRequest;
 import com.example.Trip_In_Jeju.location.entity.Location;
 import com.example.Trip_In_Jeju.location.repository.LocationRepository;
+import com.example.Trip_In_Jeju.location.service.VisitRecordService;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.rating.repository.RatingRepository;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
@@ -41,6 +45,8 @@ public class OtherService {
     private final ScrapService scrapService;
     private final ScrapRepository scrapRepository;
     private final RatingRepository ratingRepository;
+
+    private final VisitRecordService visitRecordService;
 
     @Value("${kakao.api.key}")
     private String apiKey;
@@ -256,5 +262,68 @@ public class OtherService {
         return items.stream().limit(limit).collect(Collectors.toList());
     }
 
+    public void processOtherLocation(Long memberId, LocationRequest locationRequest) {
+        Location userLocation = new Location(locationRequest.getLatitude(), locationRequest.getLongitude());
 
+        List<Other> otherLocations = otherRepository.findAll();
+
+        for (Other other : otherLocations) {
+            if (isNearLocation(userLocation, other.getLocation())) {
+                VisitRequest visitRequest = new VisitRequest();
+                visitRequest.setMemberId(memberId);
+                visitRequest.setOtherId(other.getId());
+                visitRecordService.saveVisitRecord(visitRequest);
+            }
+        }
+    }
+
+    private boolean isNearLocation(Location userLocation, Location foodLocation) {
+        // 위치 간의 거리를 계산하고, 근접 여부를 반환합니다.
+        // 예: 300미터 이내인지 확인
+        double distance = calculateDistance(userLocation, foodLocation);
+        return distance <= 300;
+    }
+
+    private double calculateDistance(Location loc1, Location loc2) {
+        // 지구 반지름 (미터 단위)
+        final double R = 6371e3;
+
+        // 위도와 경도를 라디안 단위로 변환
+        double lat1 = Math.toRadians(loc1.getLatitude());
+        double lat2 = Math.toRadians(loc2.getLatitude());
+        double deltaLat = Math.toRadians(loc2.getLatitude() - loc1.getLatitude());
+        double deltaLon = Math.toRadians(loc2.getLongitude() - loc1.getLongitude());
+
+        // Haversine 공식 적용
+        double a = Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
+                Math.cos(lat1) * Math.cos(lat2) *
+                        Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        // 최종 거리 계산 (미터 단위)
+        double distance = R * c;
+
+        return distance;
+    }
+
+    public List<OtherLocationDto> getAllOtherLocations() {
+
+        List<Other> otherList = otherRepository.findAll();
+
+        List<OtherLocationDto> otherLocationDtos = new ArrayList<>();
+        for (Other other : otherList) {
+            OtherLocationDto dto = new OtherLocationDto(
+                    other.getId(),
+                    other.getTitle(),
+                    other.getLocation().getLatitude(),
+                    other.getLocation().getLongitude(),
+                    other.getCategory(),
+                    other.getPlace()
+            );
+            otherLocationDtos.add(dto);
+        }
+
+        // 변환된 DTO 리스트를 반환합니다.
+        return otherLocationDtos;
+    }
 }

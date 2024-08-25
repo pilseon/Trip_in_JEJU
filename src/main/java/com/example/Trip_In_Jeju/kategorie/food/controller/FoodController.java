@@ -54,7 +54,7 @@ public class FoodController {
     }
 
     @GetMapping("/detail/{id}")
-    public String getFoodDetail(@PathVariable("id") Long id, Model model, Authentication authentication) {
+    public String getDetail(@PathVariable("id") Long id, Model model, Authentication authentication) {
         Food food = foodService.getFoodById(id);
         List<Rating> ratings = ratingService.getRatings(id, "food");
         double averageScore = ratingService.calculateAverageScore(id, "food");
@@ -74,7 +74,7 @@ public class FoodController {
         }
 
         if (currentMember != null) {
-            canWriteReview = visitRecordService.hasVisited(currentMember.getId(), id);
+            canWriteReview = visitRecordService.hasVisited(currentMember.getId(), "food", id);
             hasWrittenReview = ratingService.hasUserWrittenReview(currentMember.getUsername(), id, "food");
         }
 

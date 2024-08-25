@@ -1,9 +1,12 @@
 package com.example.Trip_In_Jeju.kategorie.shopping.controller;
 
 
+import com.example.Trip_In_Jeju.kategorie.shopping.dto.ShoppingLocationDto;
 import com.example.Trip_In_Jeju.kategorie.shopping.entity.Shopping;
 import com.example.Trip_In_Jeju.kategorie.shopping.service.ShoppingService;
 import com.example.Trip_In_Jeju.like.LikeService;
+import com.example.Trip_In_Jeju.location.dto.LocationRequest;
+import com.example.Trip_In_Jeju.location.service.VisitRecordService;
 import com.example.Trip_In_Jeju.member.CustomUserDetails;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.member.servcie.MemberService;
@@ -12,6 +15,7 @@ import com.example.Trip_In_Jeju.rating.service.RatingService;
 import com.example.Trip_In_Jeju.scrap.ScrapService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,6 +37,7 @@ public class ShoppingController {
     private final MemberService memberService;
     private final ScrapService scrapService;
     private final LikeService likeService;
+    private final VisitRecordService visitRecordService;
 
     @GetMapping("/list")
     public String list(
@@ -49,13 +54,16 @@ public class ShoppingController {
     }
 
     @GetMapping("/detail/{id}")
-    public String getShoppingDetail(@PathVariable("id") Long id, Model model, Authentication authentication) {
+    public String getDetail(@PathVariable("id") Long id, Model model, Authentication authentication) {
         Shopping shopping = shoppingService.getShoppingById(id);
         List<Rating> ratings = ratingService.getRatings(id, "shopping");
         double averageScore = ratingService.calculateAverageScore(id, "shopping");
         Member currentMember = memberService.getCurrentMember();
         model.addAttribute("member", currentMember);
         String username = null;
+        boolean canWriteReview = false; // 방문 확인
+        boolean hasWrittenReview = false;
+
         if (authentication != null) {
             Object principal = authentication.getPrincipal();
             if (principal instanceof UserDetails) {
@@ -64,11 +72,18 @@ public class ShoppingController {
                 username = principal.toString();
             }
         }
+
+        if (currentMember != null) {
+            canWriteReview = visitRecordService.hasVisited(currentMember.getId(), "shopping", id);  // category 추가
+            hasWrittenReview = ratingService.hasUserWrittenReview(currentMember.getUsername(), id, "shopping");
+        }
+
         model.addAttribute("shopping", shopping);
         model.addAttribute("ratings", ratings);
         model.addAttribute("averageScore", averageScore);
         model.addAttribute("username", username);
-        model.addAttribute("categoryTitle", shopping.getTitle());
+        model.addAttribute("canWriteReview", canWriteReview);
+        model.addAttribute("hasWrittenReview", hasWrittenReview); // 방문 확인
         return "shopping/detail";
     }
 
@@ -280,5 +295,15 @@ public class ShoppingController {
         return "redirect:/shopping/list";
     }
 
+    @PostMapping("/check-visit")
+    public ResponseEntity<?> checkVisit(@RequestParam("memberId") Long memberId, @RequestBody LocationRequest locationRequest) {
+        shoppingService.processShoppingLocation(memberId, locationRequest);
+        return ResponseEntity.ok().build();
+    }
 
+    @GetMapping("/locations")
+    public ResponseEntity<List<ShoppingLocationDto>> getShoppingLocations() {
+        List<ShoppingLocationDto> locations = shoppingService.getAllShoppingLocations();
+        return ResponseEntity.ok(locations);
+    }
 }

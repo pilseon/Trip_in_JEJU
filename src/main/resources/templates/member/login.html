@@ -48,7 +48,7 @@
       bottom: 0;
       left: 0;
       width: 380px;
-      height: 585px;
+      height: 650px;
       overflow: hidden;
       box-shadow: 0 20px 20px rgba(0, 0, 0, .2), 0px 0px 50px rgba(0, 0, 0, .2);
       border-radius: 30px;
@@ -306,7 +306,7 @@
       -moz-transition: none;
       -o-transition: none;
       transition: none;
-      top: 200px;
+      top: 231px;
     }
 
     .social-media{
@@ -314,7 +314,7 @@
       margin: auto;
       top: initial;
       right: 0;
-      bottom: -20px;
+      bottom: -60px;
       left: 0;
       width: inherit;
       height: 150px;
@@ -375,7 +375,7 @@
     ============================ */
 
     .buttons__signup--sign-up-form{
-      top: 450px;
+      top: 515px;
       -webkit-transition: none;
       -moz-transition: none;
       -o-transition: none;
@@ -531,6 +531,24 @@
         .oauth-btn.naver:hover {
             background-color: #45a049;
         }
+           #passwordMatchMessage {
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        #usernameCheckMessage,
+#nicknameCheckMessage,
+#emailCheckMessage {
+     font-size: 12px;
+            margin-top: 5px;
+}
+           .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 17px;
+        }
+.login-form--register .error-message {
+    display: none;
+}
     </style>
 </head>
 <body >
@@ -549,10 +567,12 @@
                 <div class="title">
                     <a href="/"><img src="https://github.com/user-attachments/assets/981bc789-070d-429a-84b5-cdb79fcde946" alt="트립인 제주" width="200" height="200"></a>
                 </div>
+
                 <div class="buttons">
                     <a id="signUp" class="buttons__signup" href="#">회원가입</a>
                     <a id="login" class="buttons__signup buttons__signup--login" href="#">로그인</a>
                 </div>
+
             </div>
 
             <!-- Login Form -->
@@ -570,6 +590,7 @@
                         </div>
 
                         <button class="buttons__signup buttons__signup--login-form" type="submit" href="#">로그인</button>
+                        <p id="itzy" th:if="${param.error}" class="error-message">[아이디] 혹은 [비밀번호]를 확인해주세요.</p>
                     </form>
 
                     <!-- Social-Media -->
@@ -587,8 +608,6 @@
                             </a>
                         </div>
                     </div>
-
-
                 </div>
             </div>
 
@@ -596,143 +615,293 @@
 
             <div class="login-form login-form--register">
                 <div class="form-wrapper">
-                    <form th:action="@{/member/signup}" th:object="${memberForm}" method="POST" enctype="multipart/form-data" style="margin: 1rem; position:absolute; width: 90%; top: -10%">
-                            <label class="form-wrapper__label" for="signup-username">아이디</label>
-                            <input id="signup-username" class="form-wrapper__input" type="text" placeholder="아이디" name="username" required>
+                    <form th:action="@{/member/signup}" th:object="${memberForm}" method="POST" enctype="multipart/form-data" style="margin: 1rem; position:absolute; width: 90%; top: -15%">
+                        <label class="form-wrapper__label" for="signup-username">아이디&nbsp;    <span id="usernameCheckMessage"></span>  <button  type="button" id="check-username" class="form-wrapper__button">중복 확인</button></label>
+                        <input id="signup-username" class="form-wrapper__input" type="text" placeholder="아이디" name="username" minlength="3" title="아이디는 최소 3글자 이상이어야 합니다." required>
 
-                            <label class="form-wrapper__label" for="signup-password">비밀번호</label>
-                            <input id="signup-password" class="form-wrapper__input" type="password" placeholder="비밀번호" name="password" pattern=".{3,}" title="Password must contain at least 3 characters" required>
 
-                            <label class="form-wrapper__label" for="signup-nickname">닉네임</label>
-                            <input id="signup-nickname" class="form-wrapper__input" type="text" placeholder="닉네임" name="nickname" required>
+                        <label class="form-wrapper__label" for="signup-nickname">닉네임&nbsp;<span id="nicknameCheckMessage"></span> <button  type="button" id="check-nickname" class="form-wrapper__button">중복 확인</button></label>
+                        <input id="signup-nickname" class="form-wrapper__input" type="text" placeholder="닉네임" name="nickname" minlength="2" title="비밀번호는 최소 2글자 이상이어야 합니다." required>
 
-                            <label class="form-wrapper__label" for="signup-email">Email</label>
-                            <input id="signup-email" class="form-wrapper__input" type="email" placeholder="example@hotmail.com" name="email" required>
 
-                            <label class="form-wrapper__label" for="thema"><i class="fas fa-map-marker-alt"></i> 선호하는 여행 테마 (필수)</label>
-                            <select id="thema" name="thema" class="form-wrapper__input">
-                                <option value="--">선호하시는 테마를 선택해 주세요!</option>
-                                <option value="음식점">음식점</option>
-                                <option value="디저트">디저트</option>
-                                <option value="관광지">관광지</option>
-                                <option value="축제">축제</option>
-                                <option value="엑티비티">엑티비티</option>
-                                <option value="쇼핑">쇼핑</option>
-                                <option value="기타">기타</option>
-                            </select>
+                        <label class="form-wrapper__label" for="signup-email">Email&nbsp;   <span id="emailCheckMessage"></span> <button  type="button" id="check-email" class="form-wrapper__button">중복 확인</button></label>
+                        <input id="signup-email" class="form-wrapper__input" type="email" placeholder="example@hotmail.com" name="email" required>
 
-                            <label class="form-wrapper__label" for="thumbnail"><i class="fas fa-image"></i> 프로필 사진</label>
-                            <input id="thumbnail" class="form-wrapper__input" type="file" name="thumbnail" accept="image/png, image/gif, image/jpeg">
+                        <label class="form-wrapper__label" for="signup-password">비밀번호</label>
+                        <input id="signup-password" class="form-wrapper__input" type="password" placeholder="비밀번호" name="password" minlength="4" title="비밀번호는 최소 4글자 이상이어야 합니다." required>
 
-                        <button class="buttons__signup buttons__signup--sign-up-form" type="submit">회원가입</button>
+
+                        <label class="form-wrapper__label" for="signup-password"> 비밀번호 확인 &nbsp; <span id="passwordMatchMessage"></span></label>
+                        <input type="password"  class="form-wrapper__input" id="signup-confirmPassword" name="confirmPassword"  placeholder="비밀번호 확인" oninput="checkPasswordMatch()" required>
+
+
+
+                        <label class="form-wrapper__label" for="thema">
+                            <i class="fas fa-map-marker-alt"></i> 선호하는 여행 테마 (필수)
+                        </label>
+                        <select id="thema" name="thema" class="form-wrapper__input" required>
+                            <option value="" selected>선호하시는 여행테마를 선택해 주세요!</option>
+                            <option value="음식점">음식점</option>
+                            <option value="디저트">디저트</option>
+                            <option value="관광지">관광지</option>
+                            <option value="축제">축제</option>
+                            <option value="엑티비티">엑티비티</option>
+                            <option value="쇼핑">쇼핑</option>
+                            <option value="기타">기타</option>
+                        </select>
+
+                        <label class="form-wrapper__label" for="thumbnail"><i class="fas fa-image"></i> 프로필 사진</label>
+                        <input id="thumbnail" class="form-wrapper__input" type="file" name="thumbnail" accept="image/png, image/gif, image/jpeg">
+
+                        <button class="buttons__signup buttons__signup--sign-up-form" type="submit" >회원가입</button>
+
                     </form>
-
-                    <!-- Social-Media -->
-
-
                 </div>
             </div>
+
         </section>
     </div>
 </div>
 <script>
-    window.addEventListener("load",start)
+    document.addEventListener("DOMContentLoaded", () => {
+        const checkUsernameButton = document.getElementById("check-username");
+        const usernameInput = document.getElementById("signup-username");
+        const usernameCheckMessage = document.getElementById("usernameCheckMessage");
 
-function start(){
+        const checkEmailButton = document.getElementById("check-email");
+        const emailInput = document.getElementById("signup-email");
+        const emailCheckMessage = document.getElementById("emailCheckMessage");
 
-/* ===========================
-    Elements Selectors
-============================ */
+        const checkNicknameButton = document.getElementById("check-nickname");
+        const nicknameInput = document.getElementById("signup-nickname");
+        const nicknameCheckMessage = document.getElementById("nicknameCheckMessage");
 
-  const elm = {
-    arrow: document.querySelector(".form-container__arrow"),
-    overlay: document.querySelector(".overlay"),
-    title: document.querySelector(".title"),
-    signUpButton: document.querySelector(".buttons__signup"),
-    loginButton: document.querySelector(".buttons__signup--login"),
-    loginForm: document.querySelector(".login-form"),
-    registerForm: document.querySelector(".login-form--register")
-  }
+        const passwordInput = document.getElementById("signup-password");
+        const confirmPasswordInput = document.getElementById("signup-confirmPassword");
+        const passwordMatchMessage = document.getElementById("passwordMatchMessage");
 
-/* ===========================
-    Properties Object
-============================ */
+        const signupButton = document.querySelector("button[type='submit']");
 
-  const props = {
-    left: "left: 20px;",
-    bottom: "bottom: -700px;",
-    transition1: "transition: bottom 1s;",
-    transition2: "transition: bottom 2s;",
-    opacity0: "opacity: 0;",
-    opacity1: "opacity: 1;",
-    trnsDelay: "transition-delay: 1s;",
-    zIndex: "z-index: 6;",
-    left0: "left: 0;",
-    trnsDelay0: "transition-delay: 0s;",
-    zIndex0: "z-index: 0;",
-    leftM120: "left: -120px;"
-  }
+        let isUsernameValid = false;
+        let isEmailValid = false;
+        let isNicknameValid = false;
+        let isPasswordValid = false;
 
-/* ===========================
-    Elements Array
-============================ */
-
-  const elms = [elm.arrow, elm.overlay, elm.title, elm.signUpButton, elm.loginButton, elm.loginForm, elm.registerForm]
-
-  function transition (elements, props){
-    for (let i = 0; i < elements.length; i++){
-      elements[i].setAttribute("style", `${props[i]}`)
-    }
-  }
-
-/* ===========================
-    Events
-============================ */
-
-  document.getElementById("signUp").onclick = function (){
-
-    const properties = [props.left, props.opacity0, props.opacity0, `${props.transition1} ${props.bottom}`, `${props.transition2} ${props.bottom}`, props.opacity0, `${props.opacity1} ${props.trnsDelay} ${props.zIndex}`]
-
-    transition(elms, properties)
-  }
-
-  document.getElementById("login").onclick = function (){
-
-    const properties = [props.left, props.opacity0, props.opacity0, `${props.transition1} ${props.bottom}`, `${props.transition2} ${props.bottom}`, `${props.opacity1} ${props.trnsDelay} ${props.zIndex}`, props.opacity0]
-
-    transition(elms, properties)
-  }
-
-  document.getElementById("arrowClick").onclick = function (){
-
-    const properties = [props.leftM120, props.opacity1, props.opacity1, props.opacity1, props.opacity1, `${props.opacity0} ${props.trnsDelay0} ${props.zIndex0}`, `${props.opacity0} ${props.trnsDelay0} ${props.zIndex0}`]
-
-    transition(elms, properties)
-  }
-}
-
-       function dropOranges(selector) {
-        const container = document.querySelector(selector);
-        for (let i = 0; i < 3; i++) {
-            const orange = document.createElement('div');
-            orange.classList.add('orange');
-            orange.style.left = Math.random() * 90 + 'vw'; // 랜덤한 위치 설정
-            container.appendChild(orange);
-
-            // 애니메이션이 끝난 후 아이콘 제거
-            orange.addEventListener('animationend', () => {
-                orange.remove();
-            });
+        // 회원가입 버튼 활성화 체크 함수
+        function checkAllValidations() {
+            if (isUsernameValid && isEmailValid && isNicknameValid && isPasswordValid) {
+                signupButton.disabled = false;
+            } else {
+                signupButton.disabled = true;
+            }
         }
+
+        // 아이디 중복 검사
+        checkUsernameButton.addEventListener("click", async () => {
+            const username = usernameInput.value.trim();
+            if (username) {
+                try {
+                    const response = await fetch(`/member/check-username?username=${encodeURIComponent(username)}`);
+                    const result = await response.json();
+                    if (result.exists) {
+                        usernameCheckMessage.textContent = "아이디는 이미 사용 중입니다.";
+                        usernameCheckMessage.style.color = "red";
+                        isUsernameValid = false;
+                    } else {
+                        usernameCheckMessage.textContent = "아이디는 사용 가능합니다.";
+                        usernameCheckMessage.style.color = "green";
+
+                        isUsernameValid = true;
+                    }
+                    checkAllValidations();
+                } catch (error) {
+                    usernameCheckMessage.textContent = "중복 확인 중 오류가 발생했습니다.";
+                    usernameCheckMessage.style.color = "red";
+                    isUsernameValid = false;
+                }
+            }
+        });
+
+        // 이메일 중복 검사
+        checkEmailButton.addEventListener("click", async () => {
+            const email = emailInput.value.trim();
+            if (email) {
+                try {
+                    const response = await fetch(`/member/check-email?email=${encodeURIComponent(email)}`);
+                    const result = await response.json();
+                    if (result.exists) {
+                        emailCheckMessage.textContent = "이메일은 이미 사용 중입니다.";
+                        emailCheckMessage.style.color = "red";
+                        isEmailValid = false;
+                    } else {
+                        emailCheckMessage.textContent = "이메일은 사용 가능합니다.";
+                        emailCheckMessage.style.color = "green";
+
+                        isEmailValid = true;
+                    }
+                    checkAllValidations();
+                } catch (error) {
+                    emailCheckMessage.textContent = "중복 확인 중 오류가 발생했습니다.";
+                    emailCheckMessage.style.color = "red";
+                    isEmailValid = false;
+                }
+            }
+        });
+
+        // 닉네임 중복 검사
+        checkNicknameButton.addEventListener("click", async () => {
+            const nickname = nicknameInput.value.trim();
+            if (nickname) {
+                try {
+                    const response = await fetch(`/member/check-nickname?nickname=${encodeURIComponent(nickname)}`);
+                    const result = await response.json();
+                    if (result.exists) {
+                        nicknameCheckMessage.textContent = "닉네임은 이미 사용 중입니다.";
+                        nicknameCheckMessage.style.color = "red";
+                        isNicknameValid = false;
+                    } else {
+                        nicknameCheckMessage.textContent = "닉네임은 사용 가능합니다.";
+                        nicknameCheckMessage.style.color = "green";
+
+                        isNicknameValid = true;
+                    }
+                    checkAllValidations();
+                } catch (error) {
+                    nicknameCheckMessage.textContent = "중복 확인 중 오류가 발생했습니다.";
+                    nicknameCheckMessage.style.color = "red";
+                    isNicknameValid = false;
+                }
+            }
+        });
+
+        // 비밀번호 일치 확인
+        confirmPasswordInput.addEventListener("input", () => {
+            const password = passwordInput.value.trim();
+            const confirmPassword = confirmPasswordInput.value.trim();
+            if (password && confirmPassword && password === confirmPassword) {
+                passwordMatchMessage.textContent = "비밀번호가 일치합니다.";
+                passwordMatchMessage.style.color = "green";
+                isPasswordValid = true;
+            } else {
+                passwordMatchMessage.textContent = "비밀번호가 일치하지 않습니다.";
+                passwordMatchMessage.style.color = "red";
+                isPasswordValid = false;
+            }
+            checkAllValidations();
+        });
+
+    });
+
+
+
+       document.getElementById('thema').addEventListener('change', function() {
+         const firstOption = this.querySelector('option[value=""]');
+         if (this.value !== '--') {
+             firstOption.style.display = 'none';
+         } else {
+             firstOption.style.display = 'block'; // 필요에 따라 다시 보이게 설정
+         }
+     });
+     window.addEventListener("load",start)
+
+    function start(){
+
+    /* ===========================
+     Elements Selectors
+    ============================ */
+
+    const elm = {
+     arrow: document.querySelector(".form-container__arrow"),
+     overlay: document.querySelector(".overlay"),
+     title: document.querySelector(".title"),
+     signUpButton: document.querySelector(".buttons__signup"),
+     loginButton: document.querySelector(".buttons__signup--login"),
+     loginForm: document.querySelector(".login-form"),
+     registerForm: document.querySelector(".login-form--register")
     }
 
-    // 페이지 로드 시 귤 아이콘 떨어뜨리기
-    document.addEventListener('DOMContentLoaded', () => {
-        dropOranges('.wrap');
-        setInterval(() => {
-            dropOranges('.wrap');
-        }, 1000); // 1초마다 귤 아이콘 떨어뜨리기
-    });
+    /* ===========================
+     Properties Object
+    ============================ */
+
+    const props = {
+     left: "left: 20px;",
+     bottom: "bottom: -1000px;",
+     transition1: "transition: bottom 1s;",
+     transition2: "transition: bottom 2s;",
+     opacity0: "opacity: 0;",
+     opacity1: "opacity: 1;",
+     trnsDelay: "transition-delay: 1s;",
+     zIndex: "z-index: 6;",
+     left0: "left: 0;",
+     trnsDelay0: "transition-delay: 0s;",
+     zIndex0: "z-index: 0;",
+     leftM120: "left: -120px;"
+    }
+
+    /* ===========================
+     Elements Array
+    ============================ */
+
+    const elms = [elm.arrow, elm.overlay, elm.title, elm.signUpButton, elm.loginButton, elm.loginForm, elm.registerForm]
+
+    function transition (elements, props){
+     for (let i = 0; i < elements.length; i++){
+       elements[i].setAttribute("style", `${props[i]}`)
+     }
+    }
+
+    /* ===========================
+     Events
+    ============================ */
+
+    document.getElementById("signUp").onclick = function (){
+
+     const properties = [props.left, props.opacity0, props.opacity0, `${props.transition1} ${props.bottom}`, `${props.transition2} ${props.bottom}`, props.opacity0, `${props.opacity1} ${props.trnsDelay} ${props.zIndex}`]
+
+     transition(elms, properties)
+    }
+
+    document.getElementById("login").onclick = function (){
+
+     const properties = [props.left, props.opacity0, props.opacity0, `${props.transition1} ${props.bottom}`, `${props.transition2} ${props.bottom}`, `${props.opacity1} ${props.trnsDelay} ${props.zIndex}`, props.opacity0]
+
+     transition(elms, properties)
+    }
+
+    document.getElementById("arrowClick").onclick = function (){
+
+     const properties = [props.leftM120, props.opacity1, props.opacity1, props.opacity1, props.opacity1, `${props.opacity0} ${props.trnsDelay0} ${props.zIndex0}`, `${props.opacity0} ${props.trnsDelay0} ${props.zIndex0}`]
+
+     transition(elms, properties)
+    }
+    }
+
+        function dropOranges(selector) {
+         const container = document.querySelector(selector);
+         for (let i = 0; i < 3; i++) {
+             const orange = document.createElement('div');
+             orange.classList.add('orange');
+             orange.style.left = Math.random() * 90 + 'vw'; // 랜덤한 위치 설정
+             container.appendChild(orange);
+
+             // 애니메이션이 끝난 후 아이콘 제거
+             orange.addEventListener('animationend', () => {
+                 orange.remove();
+             });
+         }
+     }
+
+     // 페이지 로드 시 귤 아이콘 떨어뜨리기
+     document.addEventListener('DOMContentLoaded', () => {
+         dropOranges('.wrap');
+         setInterval(() => {
+             dropOranges('.wrap');
+         }, 1000); // 1초마다 귤 아이콘 떨어뜨리기
+     });
+
+
+
 </script>
 </body>
 </html>

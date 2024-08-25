@@ -66,7 +66,7 @@ public class MemberService {
     @Transactional
     public Member signupSocialUser(String username, String nickname, String email) {
         // 소셜 로그인한 회원 저장
-        return signup(username, nickname, "", email,null,null,MemberRole.ADMIN);
+        return signup(username, nickname, "", email,null,null, MemberRole.MEMBER);
 
     }
 
@@ -81,7 +81,7 @@ public class MemberService {
 
         if (thumbnail != null && !thumbnail.isEmpty()) {
             // 저장할 파일의 경로 및 이름 설정
-                thumbnailRelPath = "member/" + UUID.randomUUID().toString() + ".jpg";
+            thumbnailRelPath = "member/" + UUID.randomUUID().toString() + ".jpg";
             File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
 
             // 디렉토리가 존재하지 않으면 생성
@@ -106,6 +106,19 @@ public class MemberService {
                 .build();
 
         return memberRepository.save(member);
+    }
+
+
+    public boolean usernameExists(String username) {
+        return memberRepository.existsByUsername(username);
+    }
+
+    public boolean nicknameExists(String nickname) {
+        return memberRepository.existsByNickname(nickname);
+    }
+
+    public boolean emailExists(String email) {
+        return memberRepository.existsByEmail(email);
     }
 
     @Transactional
@@ -321,4 +334,8 @@ public class MemberService {
     }
 
 
+
+    public boolean isNicknameDuplicate(String nickname) {
+        return memberRepository.existsByNickname(nickname);
+    }
 }

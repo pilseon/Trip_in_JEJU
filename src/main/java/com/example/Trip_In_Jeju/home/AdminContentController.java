@@ -75,28 +75,29 @@ public class AdminContentController {
             @RequestParam("category") String category,
             @RequestParam("latitude") double latitude,
             @RequestParam("longitude") double longitude,
+            @RequestParam("address") String address,
             @RequestParam(value = "periodStart", required = false) String periodStart,
             @RequestParam(value = "periodEnd", required = false) String periodEnd) {
 
         if (category.equals("음식점")) {
-            foodService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, thumbnail, latitude, longitude, category, subCategory);
+            foodService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, thumbnail, latitude, longitude, category, address, subCategory);
         } else if (category.equals("디저트")) {
-            dessertService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, thumbnail, latitude, longitude, category, subCategory);
+            dessertService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, thumbnail, latitude, longitude, category, address, subCategory);
         }
         else if (category.equals("쇼핑")) {
-            shoppingService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, thumbnail, latitude, longitude, category, subCategory);
+            shoppingService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, thumbnail, latitude, longitude, category, address, subCategory);
         }
         else if (category.equals("액티비티")) {
-            activityService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, thumbnail, latitude, longitude, category, subCategory);
+            activityService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, thumbnail, latitude, longitude, category, address, subCategory);
         }
         else if (category.equals("관광지")) {
-            attractionsService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, thumbnail, latitude, longitude, category, subCategory);
+            attractionsService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, thumbnail, latitude, longitude, category, address, subCategory);
         }
         else if (category.equals("축제")) {
-            festivalsService.create(title, periodStart, periodEnd, content, place, closedDay, websiteUrl, phoneNumber, thumbnail, latitude, longitude, subCategory);
+            festivalsService.create(title, periodStart, periodEnd, content, place, closedDay, websiteUrl, phoneNumber, thumbnail, latitude, longitude, address, subCategory);
         }
         else if (category.equals("기타")) {
-            otherService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, thumbnail, latitude, longitude, category, subCategory);
+            otherService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, thumbnail, latitude, longitude, category, address, subCategory);
         }
 
         return "redirect:/adm/content/create";

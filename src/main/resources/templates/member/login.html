@@ -175,7 +175,7 @@
       margin: auto;
       top: -260px;
       right: 0;
-      bottom: 0;
+      bottom: -35px;
       left: 0;
       padding: 7px 0;
       border: none;
@@ -615,7 +615,7 @@
 
             <div class="login-form login-form--register">
                 <div class="form-wrapper">
-                    <form th:action="@{/member/signup}" th:object="${memberForm}" method="POST" enctype="multipart/form-data" style="margin: 1rem; position:absolute; width: 90%; top: -15%">
+                    <form th:action="@{/member/signup}" th:object="${memberForm}" method="POST" enctype="multipart/form-data" style="margin: 1rem; position:absolute; width: 90%; top: -20%">
                         <label class="form-wrapper__label" for="signup-username">아이디&nbsp;    <span id="usernameCheckMessage"></span>  <button  type="button" id="check-username" class="form-wrapper__button">중복 확인</button></label>
                         <input id="signup-username" class="form-wrapper__input" type="text" placeholder="아이디" name="username" minlength="3" title="아이디는 최소 3글자 이상이어야 합니다." required>
 

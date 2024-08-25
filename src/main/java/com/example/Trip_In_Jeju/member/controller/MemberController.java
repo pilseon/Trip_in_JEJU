@@ -200,7 +200,6 @@ public class MemberController {
                          @RequestParam("email") String email,
                          @RequestParam("thema") String thema,
                          @RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail,
-                         @RequestParam(value = "checkNickname", required = false) String checkNickname,
                          Model model) {
 
         // 현재 로그인된 회원 정보를 가져옵니다.
@@ -208,20 +207,6 @@ public class MemberController {
         if (member == null) {
             // 사용자 정보가 없는 경우 로그인 페이지로 리다이렉트
             return "redirect:/member/login";
-        }
-
-        // 닉네임 중복 확인 버튼이 눌렸는지 확인
-        if ("true".equals(checkNickname)) {
-            // 닉네임 중복 검사
-            if (!member.getNickname().equals(nickname) && memberService.isNicknameDuplicate(nickname)) {
-                model.addAttribute("nicknameError", "이미 사용 중인 닉네임입니다.");
-                model.addAttribute("nicknameErrorColor", "red");
-            } else {
-                model.addAttribute("nicknameError", "사용 가능한 닉네임입니다.");
-                model.addAttribute("nicknameErrorColor", "green");
-            }
-            model.addAttribute("member", member); // 기존 데이터 유지
-            return "member/modify"; // 다시 수정 페이지로 이동
         }
 
         // 닉네임 중복 검사
@@ -238,7 +223,6 @@ public class MemberController {
         // 수정 완료 후 마이페이지로 리다이렉트
         return "redirect:/member/myPage";
     }
-
 
     @GetMapping("/check-username")
     public ResponseEntity<Map<String, Boolean>> checkUsername(@RequestParam("username") String username) {

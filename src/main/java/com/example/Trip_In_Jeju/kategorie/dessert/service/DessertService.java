@@ -78,7 +78,7 @@ public class DessertService {
     }
 
     public void create(String title, String businessHoursStart, String businessHoursEnd, String content, String place, String closedDay,
-                       String websiteUrl, String phoneNumber, MultipartFile thumbnail, double latitude, double longitude,String category, String subCategory) {
+                       String websiteUrl, String phoneNumber, MultipartFile thumbnail, double latitude, double longitude, String address, String category, String subCategory) {
 
         // 이미지를 저장할 디렉토리의 전체 경로를 생성합니다.
         String thumbnailRelPath = DESSERT_IMAGE_DIR + UUID.randomUUID().toString() + ".jpg";
@@ -99,6 +99,7 @@ public class DessertService {
         location.setName(place);
         location.setLatitude(latitude);
         location.setLongitude(longitude);
+        location.setAddress(address);
         location = locationRepository.save(location);
 
         Calendar calendar = new Calendar();

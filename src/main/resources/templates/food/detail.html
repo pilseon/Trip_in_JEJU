@@ -65,7 +65,7 @@
         <!-- 음식점 정보 -->
         <div class="card">
             <div class="card-body">
-                <span class="font-bold" style="font-size: 1.5rem;" th:text="${food.title}"></span>
+                <span class="font-bold" style="font-size: 1.5rem;" th:text="${food.location.name}"></span>
                 <ul class="list-group list-group-flush">
                     <!-- 영업시간 -->
                     <li class="list-group-item">
@@ -82,7 +82,7 @@
                     <!-- 위치 -->
                     <li class="list-group-item">
                         <span style="font-weight: bold;">위치: </span>
-                        <span th:text="${food.location.name}"></span>
+                        <span th:text="${food.location.address}"></span>
                     </li>
                     <!-- 정보 -->
                     <li class="list-group-item">
@@ -95,6 +95,10 @@
                         <span th:text="${food.phoneNumber}"></span>
                     </li>
                 </ul>
+                <!-- 음식점 소개(제목) -->
+                <div class="mt-4">
+                    <span th:text="${food.title}"></span>
+                </div>
 
                 <!-- 음식점 소개(내용) -->
                 <div class="mt-4">
@@ -148,11 +152,11 @@
 
         <!-- 리뷰 작성 및 목록 -->
         <div sec:authorize="isAuthenticated()">
-            <h3 class="mt-4">리뷰 작성</h3>
+            <h3 class="mt-4 text-lg font-semibold">리뷰 작성</h3>
             <div th:if="${canWriteReview && !hasWrittenReview}">
-                <form th:action="@{/food/review/{id}(id=${food.id})}" method="post" enctype="multipart/form-data">
+                <form th:action="@{/food/review/{id}(id=${food.id})}" method="post" enctype="multipart/form-data" class="space-y-4">
                     <div class="form-group">
-                        <label for="score">점수</label>
+                        <label for="score" class="block text-sm font-medium text-gray-700">점수</label>
                         <div class="rating">
                             <input type="radio" id="star5" name="score" value="5" required>
                             <label for="star5"></label>
@@ -167,51 +171,65 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="comment">댓글</label>
-                        <textarea id="comment" name="comment" class="form-control" rows="3" required></textarea>
+                        <label for="comment" class="block text-sm font-medium text-gray-700">댓글</label>
+                        <textarea id="comment" name="comment" class="form-control mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" rows="3" required></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="thumbnail">사진 업로드</label>
-                        <input type="file" id="thumbnail" name="thumbnail" accept="image/png, image/gif, image/jpeg">
+                        <label for="thumbnail" class="block text-sm font-medium text-gray-700">사진 업로드</label>
+                        <input type="file" id="thumbnail" name="thumbnail" accept="image/png, image/gif, image/jpeg" class="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
                     </div>
                     <input type="hidden" name="itemId" th:value="${food.id}">
                     <input type="hidden" name="category" value="food">
-                    <button type="submit" class="btn btn-primary">리뷰 제출</button>
+                    <button type="submit" class="btn w-1/2 bg-yellow-400 text-white py-2 px-4 rounded-md hover:bg-yellow-500 block ml-auto mr-auto">리뷰 제출</button>
                 </form>
             </div>
-            <div th:if="${!canWriteReview || hasWrittenReview}">
-                <p th:if="${hasWrittenReview}">이미 리뷰를 작성하셨습니다.</p>
-                <p th:if="${!canWriteReview}">리뷰를 작성하려면 해당 장소를 방문해야 합니다.</p>
+            <div th:if="${!canWriteReview || hasWrittenReview}" class="list-group-item  mt-4 p-4 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 rounded-md">
+                <p th:if="${hasWrittenReview}" class="font-medium">이미 리뷰를 작성하였습니다.</p>
+                <p th:if="${!canWriteReview}" class="font-medium">리뷰를 작성하려면 해당 장소를 방문해야 합니다.</p>
             </div>
         </div>
-            <!-- 리뷰 목록 -->
-            <h3 class="mt-4">리뷰 목록</h3>
-            <ul class="list-group">
-                <li class="list-group-item" th:each="rating : ${ratings}">
-                    <p>점수:
-                        <span class="rating">
-                            <span th:each="i : ${#numbers.sequence(1,5)}"
-                                  th:classappend="${i <= rating.score ? 'fa-star' : 'fa-star-o'}" class="fa"></span>
-                        </span>
-                    </p>
-                    <p>내용: &nbsp;<span th:text="${rating.comment}"></span></p>
-                    <a th:href="@{|/member/myPage/${rating.username}|}">
-                        <p>작성자: &nbsp;<span th:text="${rating.username}"></span></p>
+
+        <!-- 리뷰 목록 -->
+        <h3 class="mt-6 text-lg font-semibold">리뷰 목록</h3>
+        <ul class="list-group space-y-4 mt-4">
+            <li class="list-group-item p-4 border border-gray-200 rounded-lg flex flex-col md:flex-row items-stretch space-y-4 md:space-y-0 md:space-x-4 relative" th:each="rating : ${ratings}">
+                <!-- 이미지 섹션 -->
+                <div th:if="${rating.thumbnailImg != null}" class="w-full md:w-1/3 flex items-center justify-center">
+                    <img th:src="@{|/gen/${rating.thumbnailImg}|}" alt="리뷰 이미지" class="rounded-lg shadow-md max-h-full object-contain">
+                </div>
+
+                <!-- 내용 섹션 -->
+                <div class="w-full md:w-2/3 bg-gray-50 p-6 rounded-lg shadow-sm flex flex-col justify-between relative">
+                    <!-- 작성자 정보 (오른쪽 상단) -->
+                    <a th:href="@{|/member/myPage/${rating.username}|}" class="absolute top-4 right-4 text-sm text-blue-600 hover:underline">
+                        작성자: <span th:text="${rating.username}"></span>
                     </a>
 
-                    <div th:if="${rating.thumbnailImg != null}">
-                        <img th:src="@{|/gen/${rating.thumbnailImg}|}" alt="리뷰 이미지" style="max-width: 200px;">
+                    <div>
+                        <p class="flex items-center text-lg font-semibold">
+                            점수:
+                            <span class="rating flex ml-2">
+                        <span th:each="i : ${#numbers.sequence(1,5)}" th:classappend="${i <= rating.score ? 'text-yellow-500' : 'text-gray-300'}">&#9733;</span>
+                    </span>
+                        </p>
+                        <p class="mt-4 text-gray-700 leading-relaxed">
+                            <span th:text="${rating.comment}"></span>
+                        </p>
                     </div>
-                    <div sec:authorize="isAuthenticated()"
-                         th:if="${#authentication.principal.username == rating.username or #authorization.expression('hasAuthority(''ADMIN'')')}">
-                        <a th:href="@{/food/review/delete/{id}(id=${food.id}, ratingId=${rating.id})}"
-                           class="btn btn-danger btn-sm">삭제</a>
-                        <a th:href="@{/food/review/edit/{ratingId}(ratingId=${rating.id})}"
-                           class="btn btn-warning btn-sm">수정</a>
+
+                    <!-- 삭제 및 수정 버튼 (오른쪽 하단) -->
+                    <div class="flex justify-end items-center mt-4">
+                        <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal.username == rating.username or #authorization.expression('hasAuthority(''ADMIN'')')}" class="flex space-x-2">
+                            <a th:href="@{/food/review/delete/{id}(id=${food.id}, ratingId=${rating.id})}" class="btn btn-danger btn-sm bg-red-600 text-white py-1 px-2 rounded-md hover:bg-red-700">삭제</a>
+                            <a th:href="@{/food/review/edit/{ratingId}(ratingId=${rating.id})}" class="btn btn-warning btn-sm bg-yellow-500 text-white py-1 px-2 rounded-md hover:bg-yellow-600">수정</a>
+                        </div>
                     </div>
-                </li>
-                <li th:if="${#lists.isEmpty(ratings)}" class="list-group-item">아직 리뷰가 없습니다.</li>
-            </ul>
+                </div>
+            </li>
+            <li th:if="${#lists.isEmpty(ratings)}" class="list-group-item p-4 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 rounded-md">
+                아직 리뷰가 없습니다.
+            </li>
+        </ul>
         </div>
         <br><br><br><br>
     </section>

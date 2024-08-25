@@ -74,7 +74,7 @@ public class FoodService {
         return foodRepository.findAll(pageable);
     }
     public void create(String title, String businessHoursStart, String businessHoursEnd, String content, String place, String closedDay,
-                       String websiteUrl, String phoneNumber, MultipartFile thumbnail, double latitude, double longitude, String category, String subCategory) {
+                       String websiteUrl, String phoneNumber, MultipartFile thumbnail, double latitude, double longitude, String category, String address, String subCategory) {
 
         String thumbnailRelPath = "food/" + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
@@ -92,6 +92,7 @@ public class FoodService {
         location.setName(place);
         location.setLatitude(latitude);
         location.setLongitude(longitude);
+        location.setAddress(address);
         location = locationRepository.save(location);
 
         Calendar calendar = new Calendar();

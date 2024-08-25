@@ -5,10 +5,7 @@ import com.example.Trip_In_Jeju.location.entity.Location;
 import com.example.Trip_In_Jeju.location.service.LocationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,7 +29,9 @@ public class LocationController {
     }
 
     @PostMapping("/save")
-    public String saveLocation(Location location) {
+    public String saveLocation(@RequestBody Location location) {
+        System.out.println("Received Location: " + location.toString()); // 디버깅용 출력
+        // 주소를 기반으로 위도와 경도 설정
         locationService.saveLocation(location);
         return "redirect:/locations";
     }

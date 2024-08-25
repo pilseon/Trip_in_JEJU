@@ -21,10 +21,9 @@
                 <p>가입일: &nbsp; <p class="membership-info" th:text="${#temporals.format(member.createDate, 'yyyy-MM-dd')}">2024-07-25</p></p>
             </div>
             <a href="/member/modify" class="settings-link">프로필 수정</a>
-            <div class="info-box">
+            <div class="info-box" th:if="${not #authentication.principal.username.equals('admin')}">
                 <i class="fas fa-user-times"></i>
                 <span><a th:href="@{/member/delete}" onclick="return confirm('정말로 탈퇴하시겠습니까?')">회원 탈퇴</a></span>
-
             </div>
         </section>
 

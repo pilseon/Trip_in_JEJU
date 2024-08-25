@@ -70,6 +70,7 @@ public class MemberController {
             @RequestParam(name = "id", required = false) Long id,
             Model model) {
 
+
         Member currentMember = memberService.getCurrentMember();
         if (currentMember == null) {
             logger.warn("No current member found in myPage method");
@@ -77,55 +78,53 @@ public class MemberController {
         }
         model.addAttribute("member", currentMember);
 
+
         if (date == null) {
             date = LocalDate.now();
         }
         LocalDate startOfWeek = date.with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 1);
         LocalDate endOfWeek = date.with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 7);
 
+
         Festivals festivals = null;
         if (id != null) {
             festivals = festivalsService.getFestivalsById(id);
         }
         if (festivals == null) {
+
             id = getDefaultFestivalId();
             if (id != null) {
                 festivals = festivalsService.getFestivalsById(id);
             }
         }
+
+
         model.addAttribute("festivals", festivals);
 
+
         List<com.example.Trip_In_Jeju.calendar.entity.Calendar> dailyCalendars = calendarService.findCalendarsWithFoodsBetween2(date, date);
+
+
         Set<com.example.Trip_In_Jeju.calendar.entity.Calendar> uniqueCalendars = new HashSet<>(dailyCalendars);
 
-        if (uniqueCalendars.isEmpty()) {
-            System.out.println("No events found for the selected date: " + date);
-        } else {
-            uniqueCalendars.forEach(event -> System.out.println("Event: " + event));
-        }
+
+        System.out.println("Selected Date: " + date);
+        uniqueCalendars.forEach(event -> System.out.println("Event: " + event));
+
 
         Map<LocalDate, List<com.example.Trip_In_Jeju.calendar.entity.Calendar>> eventsByDate = new HashMap<>();
         eventsByDate.put(date, new ArrayList<>(uniqueCalendars));
 
+        // 스크랩 기록 가져오기
         List<Scrap> scraps = scrapService.getScrapsByMember(currentMember);
-
-        // 축제만 포함하는 리스트
-        List<Scrap> festivalScraps = scraps.stream()
-                .filter(scrap -> scrap.getFestivals() != null)
-                .collect(Collectors.toList());
-
-        List<Scrap> nonFestivalScraps = scraps.stream()
-                .filter(scrap -> scrap.getFestivals() == null)
-                .collect(Collectors.toList());
-
-        model.addAttribute("festivalScraps", festivalScraps);
-        model.addAttribute("nonFestivalScraps", nonFestivalScraps);
         model.addAttribute("scraps", scraps);
+
         model.addAttribute("weekStart", startOfWeek);
         model.addAttribute("weekEnd", endOfWeek);
         model.addAttribute("weekDates", List.of(startOfWeek, startOfWeek.plusDays(1), startOfWeek.plusDays(2), startOfWeek.plusDays(3), startOfWeek.plusDays(4), startOfWeek.plusDays(5), startOfWeek.plusDays(6)));
         model.addAttribute("currentDate", date);
         model.addAttribute("eventsByDate", eventsByDate);
+
 
         return "member/myPage";
     }
@@ -142,10 +141,10 @@ public class MemberController {
 
 
 
-//    @GetMapping("/admin")
-//    public String adminPage() {
-//        return "member/admin";
-//    }
+    @GetMapping("/admin")
+    public String adminPage() {
+        return "member/admin";
+    }
 
     @GetMapping("/signup")
     public String signForm(Model model) {
@@ -159,68 +158,111 @@ public class MemberController {
                          @RequestParam("email") String email,
                          @RequestParam("thema") String thema,
                          @RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail,
+                         Model model,
                          HttpSession session) {
-
-        // 인증 코드 생성 및 이메일 전송
-        String verificationCode = verificationCodeService.generateVerificationCode(email);
-        String subject = "Trip_In_JEJU 회원 가입 인증";
-        String body = String.format(
-                "안녕하세요! Trip_In_Jeju에 가입해 주셔서 감사합니다.<br><br>" +
-                        "회원님의 가입을 진심으로 축하드립니다! 이제 저희와 함께 제주도의 멋진 여행을 계획하고, 잊지 못할 추억을 만들어보세요.<br><br>" +
-                        "아래 코드를 입력하여 이메일 인증을 완료하시면, 더욱 다양한 혜택과 정보를 제공받으실 수 있습니다.<br><br>" +
-                        "인증 코드: <b>%s</b><br><br>" +
-                        "앞으로도 많은 사랑과 관심 부탁드리며, 즐거운 여행 되시길 바랍니다.<br><br>" +
-                        "감사합니다.<br><br>" +
-                        "Trip_In_Jeju 팀",
-                verificationCode
-        );
-        emailService.send(email, subject, body);
-
-        // 인증 코드 세션에 저장
-        session.setAttribute("verificationCode", verificationCode);
-
-        // 프로필 사진 저장 및 회원가입
-        String imageFileName = null;
-        if (thumbnail != null && !thumbnail.isEmpty()) {
-            imageFileName = storeProfilePicture(thumbnail);
-        }
-
-        memberService.signup(username, nickname, password, email, thema, thumbnail, MemberRole.MEMBER);
-
-        return "redirect:/member/login";
-    }
-
-
-    public String storeProfilePicture(MultipartFile profilePicture) {
-        // 이미지 저장 디렉토리 경로
-        String uploadDir = "C:\\work\\Trip_In_Jeju\\src\\main\\resources\\static\\images\\profile";
-
-        // 디렉토리가 존재하지 않으면 생성
-        Path uploadPath = Paths.get(uploadDir);
-        if (!Files.exists(uploadPath)) {
-            try {
-                Files.createDirectories(uploadPath);
-            } catch (IOException e) {
-                throw new IllegalStateException("Could not create upload directory", e);
-            }
-        }
-
-
-        String fileName = UUID.randomUUID().toString();
-        String imageFileName = fileName + ".jpg";
-
-
         try {
-            Path filePath = uploadPath.resolve(imageFileName);
-            Files.copy(profilePicture.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            throw new IllegalStateException("Could not store image file", e);
-        }
+            // 인증 코드 생성 및 이메일 전송
+            String verificationCode = verificationCodeService.generateVerificationCode(email);
+            String subject = "Trip_In_JEJU 회원 가입 인증";
+            String body = String.format(
+                    "안녕하세요! Trip_In_Jeju에 가입해 주셔서 감사합니다.<br><br>" +
+                            "회원님의 가입을 진심으로 축하드립니다! 이제 저희와 함께 제주도의 멋진 여행을 계획하고, 잊지 못할 추억을 만들어보세요.<br><br>" +
+                            "인증 코드: <b>%s</b><br><br>" +
+                            "앞으로도 많은 사랑과 관심 부탁드리며, 즐거운 여행 되시길 바랍니다.<br><br>" +
+                            "감사합니다.<br><br>" +
+                            "Trip_In_Jeju 팀",
+                    verificationCode
+            );
+            emailService.send(email, subject, body);
 
-        // 저장된 파일의 상대 경로를 반환합니다.
-        return "/images/profile/" + imageFileName;
+
+            session.setAttribute("verificationCode", verificationCode);
+
+
+            memberService.signup(username, nickname, password, email, thema, thumbnail, MemberRole.MEMBER);
+
+
+            return "redirect:/member/login";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "오류가 발생하였습니다. 처음부터 다시 시도해주세요!");
+            return "error";
+        }
     }
 
+
+
+
+
+    @PostMapping("/modify")
+    public String modify(@RequestParam("username") String username,
+                         @RequestParam("nickname") String nickname,
+                         @RequestParam(value = "password", required = false) String password,
+                         @RequestParam("email") String email,
+                         @RequestParam("thema") String thema,
+                         @RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail,
+                         @RequestParam(value = "checkNickname", required = false) String checkNickname,
+                         Model model) {
+
+        // 현재 로그인된 회원 정보를 가져옵니다.
+        Member member = memberService.getCurrentMember();
+        if (member == null) {
+            // 사용자 정보가 없는 경우 로그인 페이지로 리다이렉트
+            return "redirect:/member/login";
+        }
+
+        // 닉네임 중복 확인 버튼이 눌렸는지 확인
+        if ("true".equals(checkNickname)) {
+            // 닉네임 중복 검사
+            if (!member.getNickname().equals(nickname) && memberService.isNicknameDuplicate(nickname)) {
+                model.addAttribute("nicknameError", "이미 사용 중인 닉네임입니다.");
+                model.addAttribute("nicknameErrorColor", "red");
+            } else {
+                model.addAttribute("nicknameError", "사용 가능한 닉네임입니다.");
+                model.addAttribute("nicknameErrorColor", "green");
+            }
+            model.addAttribute("member", member); // 기존 데이터 유지
+            return "member/modify"; // 다시 수정 페이지로 이동
+        }
+
+        // 닉네임 중복 검사
+        if (!member.getNickname().equals(nickname) && memberService.isNicknameDuplicate(nickname)) {
+            model.addAttribute("nicknameError", "이미 사용 중인 닉네임입니다.");
+            model.addAttribute("nicknameErrorColor", "red");
+            model.addAttribute("member", member); // 기존 데이터 유지
+            return "member/modify";
+        }
+
+        // 회원 정보를 수정합니다.
+        memberService.modify(member, nickname, password, email, thema, thumbnail);
+
+        // 수정 완료 후 마이페이지로 리다이렉트
+        return "redirect:/member/myPage";
+    }
+
+
+    @GetMapping("/check-username")
+    public ResponseEntity<Map<String, Boolean>> checkUsername(@RequestParam("username") String username) {
+        boolean exists = memberService.usernameExists(username);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("exists", exists);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/check-nickname")
+    public ResponseEntity<Map<String, Boolean>> checkNickname(@RequestParam("nickname") String nickname) {
+        boolean exists = memberService.nicknameExists(nickname);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("exists", exists);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/check-email")
+    public ResponseEntity<Map<String, Boolean>> checkEmail(@RequestParam("email") String email) {
+        boolean exists = memberService.emailExists(email);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("exists", exists);
+        return ResponseEntity.ok(response);
+    }
 
 
     @GetMapping("/verifyCode")
@@ -382,27 +424,8 @@ public class MemberController {
         return "member/modify";
     }
 
-    @PostMapping("/modify")
-    public String modify(@RequestParam("username") String username,
-                         @RequestParam("nickname") String nickname,
-                         @RequestParam(value = "password", required = false) String password,
-                         @RequestParam("email") String email,
-                         @RequestParam("thema") String thema,
-                         @RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail) {
 
-        // 현재 로그인된 회원 정보를 가져옵니다.
-        Member member = memberService.getCurrentMember();
-        if (member == null) {
-            // 사용자 정보가 없는 경우 로그인 페이지로 리다이렉트
-            return "redirect:/member/login";
-        }
 
-        // 회원 정보를 수정합니다.
-        memberService.modify(member, nickname, password, email, thema, thumbnail);
-
-        // 수정 완료 후 마이페이지로 리다이렉트
-        return "redirect:/member/myPage";
-    }
 
 
     private final RatingService ratingService;
@@ -518,6 +541,7 @@ public class MemberController {
 
         return "member/memberPage";
     }
+
 
     @PostMapping("/login")
     public String loginSuccess(HttpServletRequest request, HttpServletResponse response) {

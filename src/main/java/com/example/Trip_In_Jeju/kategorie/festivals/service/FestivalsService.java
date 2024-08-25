@@ -56,7 +56,7 @@ public class FestivalsService {
     public Page<Festivals> getList(int page, String subCategory) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
-        Pageable pageable = PageRequest.of(page, 8, Sort.by(sorts));
+        Pageable pageable = PageRequest.of(page, 5, Sort.by(sorts));
 
         if ("all".equalsIgnoreCase(subCategory)) {
             return festivalsRepository.findAll(pageable);
@@ -68,7 +68,7 @@ public class FestivalsService {
     public Page<Festivals> getList(int page) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
-        Pageable pageable = PageRequest.of(page, 8, Sort.by(sorts));
+        Pageable pageable = PageRequest.of(page, 5, Sort.by(sorts));
 
         return festivalsRepository.findAll(pageable);
     }

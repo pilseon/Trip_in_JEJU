@@ -3,31 +3,37 @@
 <body>
 <section layout:fragment="content" class="section-prod-list">
     <div class="container">
+        <!-- 검색 폼 -->
+        <form id="searchForm" method="GET" action="/activity/list">
+            <input type="hidden" id="page" name="page" value="0">
+            <input type="hidden" id="subCategory" name="subCategory" value="all">
+        </form>
+        
         <!-- 카테고리 버튼 -->
-        <div class="mb-5 flex justify-center gap-4">
+        <div class="mb-4 flex justify-center gap-4">
             <a href="#" data-category="all" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">전체</a>
-            <a href="#" data-category="sports" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">스포츠</a>
-            <a href="#" data-category="experienceActivities" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">체험활동</a>
-            <a href="#" data-category="leisure-entertainment" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">레저/오락</a>
-            <a href="#" data-category="other" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">기타</a>
+            <a href="#" data-category="스포츠" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">스포츠</a>
+            <a href="#" data-category="체험활동" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">체험활동</a>
+            <a href="#" data-category="레저/오락" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">레저/오락</a>
+            <a href="#" data-category="기타" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">기타</a>
         </div>
-        <ul class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-3">
-            <li th:each="activity, loop : ${paging.content}" class="flex flex-col group w-full">
-                <a th:href="@{|/activity/detail/${activity.id}|}"
-                   class="border border-black h-[200px] transition duration-300 rounded-lg hover:rounded-lg hover:-translate-y-1.5 hover:transition hover:duration-300 hover:shadow-md"
-                >
-                    <img class="object-cover object-center block w-full h-full rounded-lg" th:src="@{|/gen/${activity.thumbnailImg}|}" alt="thumbnailImg">
-                </a>
-                <a th:href="@{|/activity/detail/${activity.id}|}" th:text="${activity.title}" class="text-center md:!text-left mt-2"></a>
-            </li>
-        </ul>
+
+        <!-- 지도 영역 -->
+        <div id="map" class="w-full h-[400px] border border-black mb-4"></div>
+
+        <!-- 리스트 영역 (가로 스크롤) -->
+        <div class="w-full overflow-x-auto mb-4">
+            <ul class="flex gap-4">
+                <li th:each="activity : ${paging.content}" class="flex flex-col items-center group w-[200px]" th:data-lat="${activity.location.latitude}" th:data-lng="${activity.location.longitude}">
+                    <a th:href="@{|/activity/detail/${activity.id}|}" class="w-full h-[150px]">
+                        <img class="object-cover object-center w-full h-full rounded-lg" th:src="@{|/gen/${activity.thumbnailImg}|}" alt="${activity.title}">
+                    </a>
+                    <a th:href="@{|/activity/detail/${activity.id}|}" th:text="${activity.place}" class="text-center mt-2"></a>
+                </li>
+            </ul>
+        </div>
 
         <!-- 페이징 처리 시작 -->
-        <form id="searchForm" th:action="@{/activity/list}" method="get">
-            <input type="hidden" id="page" name="page" value="0"/>
-            <input type="hidden" id="subCategory" name="subCategory" value=""/>
-        </form>
-
         <ul th:if="${!paging.isEmpty()}" class="pagination flex justify-center mt-5">
             <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
                 <a class="page-link" href="javascript:void(0)" th:data-page="${paging.number-1}">
@@ -50,11 +56,127 @@
             </li>
         </ul>
     </div>
-
-    <!-- jQuery가 포함되었는지 확인 -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- 고정된 인포윈도우 -->
+    <div id="fixedInfoWindow" style="position: absolute; z-index: 1000; display: none; transition: opacity 0.3s ease-in-out; opacity: 0;">
+        <div id="fixedInfoContent" style="background-color: #efefef; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); overflow: hidden;">
+            <!-- 이 안에 이미지와 텍스트가 들어갑니다 -->
+        </div>
+    </div>
 
     <script layout:fragment="script" type="text/javascript">
+        var mapContainer = document.getElementById('map'),
+            mapOption = {
+                center: new kakao.maps.LatLng(33.450701, 126.570667),
+                level: 10
+            };
+
+        var map = new kakao.maps.Map(mapContainer, mapOption);
+
+        var lastHoveredItem = null;
+
+        // 지도가 완전히 로드된 후 레이아웃을 다시 초기화
+        kakao.maps.event.addListener(map, 'tilesloaded', function() {
+            map.relayout();  // 지도의 크기 및 레이아웃을 다시 초기화
+        });
+
+        // 브라우저 리사이즈 시 지도 크기 재조정
+        window.addEventListener('resize', function() {
+            map.relayout();
+        });
+
+        // 마커를 표시할 위치 데이터를 불러옵니다.
+        fetch('/activity/locations')
+            .then(response => response.json())
+            .then(data => {
+                console.log("Data loaded:", data);
+                data.forEach(activity => {
+                    var markerPosition = new kakao.maps.LatLng(activity.latitude, activity.longitude);
+                    var marker = new kakao.maps.Marker({
+                        position: markerPosition,
+                        map: map
+                    });
+
+                    // 마우스 오버 이벤트 추가
+                    document.querySelectorAll('.group').forEach(function(item) {
+                        item.addEventListener('mouseover', function() {
+                            lastHoveredItem = item;
+
+                            var lat = this.getAttribute('data-lat');
+                            var lng = this.getAttribute('data-lng');
+                            var moveLatLon = new kakao.maps.LatLng(lat, lng);
+
+                            // 지도 이동
+                            map.panTo(moveLatLon);
+
+                            // 지도 이동 후에 인포윈도우 표시 (딜레이 조정 가능)
+                            setTimeout(function() {
+                                console.log("lastHoveredItem:", lastHoveredItem); // lastHoveredItem이 올바르게 설정되었는지 확인
+                                var aElement = lastHoveredItem.querySelector('a:nth-of-type(2)'); // 두 번째 <a> 태그 선택
+
+                                // aElement가 제대로 선택되었는지 확인
+                                if (aElement) {
+                                    console.log('aElement:', aElement); // aElement가 올바르게 선택되었는지 확인
+
+                                    var placeText = aElement.textContent || aElement.innerText;
+                                    console.log('place:', placeText); // placeText가 올바르게 설정되었는지 확인
+
+                                    if (placeText) {
+                                        var imageUrl = lastHoveredItem.querySelector('img').getAttribute('src');
+                                        console.log("imageUrl:", imageUrl); // 이미지 URL이 올바르게 설정되었는지 확인
+
+                                        var content = `
+                                            <div style="width:150px; text-align:center;">
+                                                <img src="${imageUrl}" style="width:150px; height:100px; object-fit: cover;" alt="${placeText}" />
+                                                <div style="font-weight:bold; margin-top:10px; margin-bottom: 5px;">${placeText}</div>
+                                                <a href="${aElement.getAttribute('href')}" style="background-color:white; display:block; text-align:center; margin:5px; border: 1px solid #ccc; border-radius: 10px;">자세히보기</a>
+                                            </div>
+                                        `;
+
+                                        var infoWindow = document.getElementById('fixedInfoContent');
+                                        infoWindow.innerHTML = content;
+                                        var fixedInfoWindow = document.getElementById('fixedInfoWindow');
+                                        fixedInfoWindow.style.opacity = 0; // 시작 시 투명하게 설정
+
+                                        fixedInfoWindow.style.display = 'block'; // 인포윈도우 표시
+
+                                        var proj = map.getProjection();
+                                        var point = proj.containerPointFromCoords(moveLatLon);
+
+                                        fixedInfoWindow.style.left = (point.x - (fixedInfoWindow.offsetWidth / 2) + 300 ) + 'px';
+                                        fixedInfoWindow.style.top = (point.y - (fixedInfoWindow.offsetHeight - 20) + 160 ) + 'px'; // 마커 바로 위에 위치
+
+                                        // 애니메이션 효과 적용
+                                        setTimeout(() => {
+                                            fixedInfoWindow.style.opacity = 1; // 애니메이션을 통해 서서히 나타나게 설정
+                                        }, 100);
+                                    } else {
+                                        console.log('placeText is empty or not found');
+                                    }
+                                } else {
+                                    console.log('aElement is not found');
+                                }
+                            }, 500);
+
+                        });
+
+                        item.addEventListener('click', function() {
+                            document.getElementById('fixedInfoWindow').style.display = 'none'; // 인포윈도우 숨기기
+                            lastHoveredItem = null;
+                        });
+                    });
+
+                    // 지도를 클릭하면 인포윈도우를 숨김
+                    kakao.maps.event.addListener(map, 'click', function() {
+                        if (lastHoveredItem === null) {
+                            document.getElementById('fixedInfoWindow').style.display = 'none';
+                        }
+                    });
+                });
+            })
+            .catch(error => console.error("Error loading data:", error));
+
+        // 페이지네이션과 카테고리 변경 처리
         $(document).ready(function () {
             $(".page-link").on("click", function () {
                 $("#page").val($(this).data("page"));
@@ -65,10 +187,19 @@
                 event.preventDefault();
                 var category = $(this).data("category");
                 $("#subCategory").val(category);
-                $("#page").val(0); // 카테고리 변경 시 페이지 번호를 0으로 초기화
+                $("#page").val(0); // Reset page number to 0 on category change
                 $("#searchForm").submit();
             });
         });
+        function loadPage(page) {
+    fetch(`/activity/list?page=${page}&subCategory=${encodeURIComponent(subCategory)}`)
+        .then(response => response.json())
+        .then(data => {
+            renderData(data.content);  // 실제 페이지 데이터 렌더링
+            updatePagination(data.number, data.totalPages);  // 페이지네이션 업데이트
+        })
+        .catch(error => console.error("Fetching page data failed:", error));
+}
     </script>
 </section>
 </body>

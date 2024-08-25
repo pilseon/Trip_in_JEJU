@@ -115,7 +115,6 @@
                 <span id="nicknameCheckMessage" th:text="${nicknameError}"></span>
             </div>
 
-
             <div class="form-group">
                 <label for="password"><i class="fas fa-lock"></i> 비밀번호(필수)</label>
                 <input type="password" id="password" name="password">
@@ -150,70 +149,61 @@
         <br><br><br>
     </div>
     <script>
-        document.getElementById('thema').addEventListener('change', function() {
-     const firstOption = this.querySelector('option[value=""]');
-     if (this.value !== '--') {
-         firstOption.style.display = 'none';
-     } else {
-         firstOption.style.display = 'block'; // 필요에 따라 다시 보이게 설정
-     }
- });
+        window.addEventListener("load", function() {
+      document.getElementById("password").addEventListener("input", checkPasswordMatch);
+      document.getElementById("confirmPassword").addEventListener("input", checkPasswordMatch);
 
- window.addEventListener("load",start)
-    function previewProfilePicture(event) {
-        var preview = document.getElementById('profilePicturePreview');
-        preview.src = URL.createObjectURL(event.target.files[0]);
-    }
+      document.getElementById("checkNicknameBtn").addEventListener("click", function(event) {
+          event.preventDefault(); // 폼 제출 방지
+          var nickname = document.getElementById("nickname").value;
+          var message = document.getElementById("nicknameCheckMessage");
 
-    function checkPasswordMatch() {
-        var password = document.getElementById("password").value;
-        var confirmPassword = document.getElementById("confirmPassword").value;
-        var message = document.getElementById("passwordMatchMessage");
+          if (nickname.trim() === "") {
+              message.textContent = "닉네임을 입력해주세요.";
+              message.style.color = "red";
+              return;
+          }
 
-        if (password !== "" && confirmPassword !== "") {
-            if (password === confirmPassword) {
-                message.textContent = "비밀번호가 일치합니다";
-                message.style.color = "green";
-            } else {
-                message.textContent = "비밀번호가 일치하지 않습니다";
-                message.style.color = "red";
-            }
-        } else {
-            message.textContent = "";
-        }
-    }
+          var xhr = new XMLHttpRequest();
+          xhr.open("GET", "/check-nickname?nickname=" + encodeURIComponent(nickname), true);
+          xhr.onreadystatechange = function() {
+              if (xhr.readyState === 4 && xhr.status === 200) {
+                  var response = JSON.parse(xhr.responseText);
+                  if (response.exists) {
+                      message.textContent = "이미 사용 중인 닉네임입니다.";
+                      message.style.color = "red";
+                  } else {
+                      message.textContent = "사용 가능한 닉네임입니다.";
+                      message.style.color = "green";
+                  }
+              }
+          };
+          xhr.send();
+      });
+  });
 
-    document.getElementById("checkNicknameBtn").addEventListener("click", function() {
-        var nickname = document.getElementById("nickname").value;
-        var message = document.getElementById("nicknameCheckMessage");
+          function previewProfilePicture(event) {
+              var preview = document.getElementById('profilePicturePreview');
+              preview.src = URL.createObjectURL(event.target.files[0]);
+          }
 
-        if (nickname.trim() === "") {
-            message.textContent = "닉네임을 입력해주세요.";
-            message.style.color = "red";
-            return;
-        }
+          function checkPasswordMatch() {
+              var password = document.getElementById("password").value;
+              var confirmPassword = document.getElementById("confirmPassword").value;
+              var message = document.getElementById("passwordMatchMessage");
 
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", "/member/check-nickname?nickname=" + encodeURIComponent(nickname), true);
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
-                if (response.isDuplicate) {
-                    message.textContent = "이미 사용 중인 닉네임입니다.";
-                    message.style.color = "red";
-                } else {
-                    message.textContent = "사용 가능한 닉네임입니다.";
-                    message.style.color = "green";
-                }
-            }
-        };
-        xhr.send();
-    });
-
-    window.onload = function() {
-        document.getElementById("password").addEventListener("input", checkPasswordMatch);
-        document.getElementById("confirmPassword").addEventListener("input", checkPasswordMatch);
-    };
+              if (password !== "" && confirmPassword !== "") {
+                  if (password === confirmPassword) {
+                      message.textContent = "비밀번호가 일치합니다";
+                      message.style.color = "green";
+                  } else {
+                      message.textContent = "비밀번호가 일치하지 않습니다";
+                      message.style.color = "red";
+                  }
+              } else {
+                  message.textContent = "";
+              }
+          }
     </script>
 </section>
 </body>

@@ -59,11 +59,20 @@ public class FoodService {
         sorts.add(Sort.Order.desc("createDate"));
         Pageable pageable = PageRequest.of(page, 5, Sort.by(sorts));
 
+        Page<Food> paging;
         if ("all".equalsIgnoreCase(subCategory)) {
-            return foodRepository.findAll(pageable);
+            paging = foodRepository.findAll(pageable);
         } else {
-            return foodRepository.findBySubCategory(subCategory, pageable);
+            paging = foodRepository.findBySubCategory(subCategory, pageable);
         }
+
+        // 각 Food 엔티티에 대해 평균 별점 설정
+        paging.forEach(food -> {
+            double averageRating = ratingService.calculateAverageScore(food.getId(), "food");
+            food.setAverageRating(averageRating); // averageRating 필드 설정
+        });
+
+        return paging;
     }
 
     public Page<Food> getList(int page) {

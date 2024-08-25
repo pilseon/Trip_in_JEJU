@@ -3,7 +3,7 @@
 <section layout:fragment="content" class="section-prod-list">
     <div class="container">
         <!-- 검색 폼 -->
-        <form id="searchForm" method="GET" action="/food/list">
+        <form id="searchForm" method="GET" action="/shopping/list">
             <input type="hidden" id="page" name="page" value="0">
             <input type="hidden" id="subCategory" name="subCategory" value="all">
         </form>
@@ -23,11 +23,20 @@
         <!-- 리스트 영역 (가로 스크롤) -->
         <div class="w-full overflow-x-auto mb-4">
             <ul class="flex gap-4">
-                <li th:each="food : ${paging.content}" class="flex flex-col items-center group w-[200px]" th:data-lat="${food.location.latitude}" th:data-lng="${food.location.longitude}">
-                    <a th:href="@{|/food/detail/${food.id}|}" class="w-full h-[150px]">
-                        <img class="object-cover object-center w-full h-full rounded-lg" th:src="@{|/gen/${food.thumbnailImg}|}" alt="${food.title}">
+                <li th:each="shopping : ${paging.content}" class="flex flex-col items-center group w-[200px]" th:data-lat="${shopping.location.latitude}" th:data-lng="${shopping.location.longitude}">
+                    <a th:href="@{|/shopping/detail/${shopping.id}|}" class="w-full h-[150px]">
+                        <img class="object-cover object-center w-full h-full rounded-lg" th:src="@{|/gen/${shopping.thumbnailImg}|}" alt="${shopping.title}">
                     </a>
-                    <a th:href="@{|/food/detail/${food.id}|}" th:text="${food.place}" class="text-center mt-2"></a>
+                    <a th:href="@{|/shopping/detail/${shopping.id}|}" th:text="${shopping.place}" class="text-center mt-2"></a>
+                    <!-- 별점 표시 -->
+                    <div class="mt-2 flex items-center">
+                        <div class="flex items-center">
+                            <span th:each="i : ${#numbers.sequence(1, 5)}"
+                                  th:classappend="${i <= shopping.averageRating ? 'text-yellow-500' : 'text-gray-300'}"
+                                  class="text-lg">&#9733;</span>
+                        </div>
+                        <span class="ml-2 text-gray-600" th:text="'(' + ${shopping.averageRating} + ')'">4.9</span>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -84,12 +93,12 @@
         });
 
         // 마커를 표시할 위치 데이터를 불러옵니다.
-        fetch('/food/locations')
+        fetch('/shopping/locations')
             .then(response => response.json())
             .then(data => {
                 console.log("Data loaded:", data);
-                data.forEach(food => {
-                    var markerPosition = new kakao.maps.LatLng(food.latitude, food.longitude);
+                data.forEach(shopping => {
+                    var markerPosition = new kakao.maps.LatLng(shopping.latitude, shopping.longitude);
                     var marker = new kakao.maps.Marker({
                         position: markerPosition,
                         map: map
@@ -190,7 +199,7 @@
             });
         });
         function loadPage(page) {
-    fetch(`/food/list?page=${page}&subCategory=${encodeURIComponent(subCategory)}`)
+    fetch(`/shopping/list?page=${page}&subCategory=${encodeURIComponent(subCategory)}`)
         .then(response => response.json())
         .then(data => {
             renderData(data.content);  // 실제 페이지 데이터 렌더링

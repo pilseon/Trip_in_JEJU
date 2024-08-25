@@ -29,6 +29,15 @@
                         <img class="object-cover object-center w-full h-full rounded-lg" th:src="@{|/gen/${festivals.thumbnailImg}|}" alt="${festivals.title}">
                     </a>
                     <a th:href="@{|/festivals/detail/${festivals.id}|}" th:text="${festivals.place}" class="text-center mt-2"></a>
+                    <!-- 별점 표시 -->
+                    <div class="mt-2 flex items-center">
+                        <div class="flex items-center">
+                            <span th:each="i : ${#numbers.sequence(1, 5)}"
+                                  th:classappend="${i <= festivals.averageRating ? 'text-yellow-500' : 'text-gray-300'}"
+                                  class="text-lg">&#9733;</span>
+                        </div>
+                        <span class="ml-2 text-gray-600" th:text="'(' + ${festivals.averageRating} + ')'">4.9</span>
+                    </div>
                 </li>
             </ul>
         </div>

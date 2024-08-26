@@ -59,11 +59,20 @@ public class ShoppingService {
         sorts.add(Sort.Order.desc("createDate"));
         Pageable pageable = PageRequest.of(page, 5, Sort.by(sorts));
 
+        Page<Shopping> paging;
         if ("all".equalsIgnoreCase(subCategory)) {
-            return shoppingRepository.findAll(pageable);
+            paging = shoppingRepository.findAll(pageable);
         } else {
-            return shoppingRepository.findBySubCategory(subCategory, pageable);
+            paging = shoppingRepository.findBySubCategory(subCategory, pageable);
         }
+
+        // 각 Shopping 엔티티에 대해 평균 별점 설정
+        paging.forEach(shopping -> {
+            double averageRating = ratingService.calculateAverageScore(shopping.getId(), "shopping");
+            shopping.setAverageRating(averageRating); // averageRating 필드 설정
+        });
+
+        return paging;
     }
 
     public Page<Shopping> getList(int page) {

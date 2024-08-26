@@ -45,18 +45,17 @@
 <section layout:fragment="content" class="section-prod-list">
     <section class="container mt-1">
         <!-- 이미지 컨테이너 -->
-        <div class="image-container">
+        <div class="relative image-container">
             <img class="w-full" style="width: 100%; max-width: 100%;" th:src="@{|/gen/${dessert.thumbnailImg}|}"
                  alt="상품이미지">
             <!-- 스크랩 -->
-            <div class="scrap-button-container mt-4" id="scrapButtonContainer"
-                 style="background-color: #f2f2f2; padding: 10px; border-radius: 5px;">
+            <div class="absolute scrap-button-container top-full mt-2 z-10" id="scrapButtonContainer"
+                 style="background-color: #f2f2f2; padding: 20px; border-radius: 5px;">
                 <form id="scrapForm" th:action="@{/dessert/scrap/{id}(id=${dessert.id})}" method="post"
                       style="display: inline;">
                     <button type="submit" style="background-color: transparent; border: none;">
-                        <i class="fa-heart"
-                           th:classappend="${dessert.scrapCount != null && dessert.scrapCount > 0 ? 'fa-solid heart-filled' : 'fa-regular heart-empty'}"
-                           style="color: #ff6666;"></i>
+                        <i class="fa-bookmark"
+                           th:classappend="${dessert.scrapCount != null && dessert.scrapCount > 0 ? 'fa-solid fa-bookmark' : 'fa-regular fa-bookmark'}"></i>
                     </button>
                 </form>
             </div>
@@ -123,12 +122,6 @@
                         <span class="likes" style="margin-left: 5px;"
                               th:text="'(' + (${dessert.likes} > 999 ? '999+' : ${dessert.likes}) + ')'"> (0) </span>
                     </div>
-                    <!-- 별점 -->
-                    <span>
-                        <a id="averageScoreLink" th:href="@{/dessert/review/{id}(id=${dessert.id})}" style="font-size: 1rem;">
-                            ⭐ <span th:text="${averageScore}">4.9</span> 리뷰 (<span th:text="${ratings.size()}">999+</span>)
-                        </a>
-                    </span>
                 </div>
 
                 <!-- 지도 -->
@@ -141,15 +134,16 @@
         </div>
 
         <!-- 삭제  -->
-        <div sec:authorize="isAuthenticated()" th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
-            <form th:action="@{/dessert/delete/{id}(id=${dessert.id})}" method="post" style="display:inline;"
+        <div class="mt-2" sec:authorize="isAuthenticated()" th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+            <form th:action="@{/dessert/delete/{id}(id=${dessert.id})}" method="post" style="display:flex; justify-content: end;"
                   onsubmit="return confirm('정말 삭제하시겠습니까?');">
                 <input type="hidden" name="_method" value="delete"/>
-                <button type="submit" class="delete-button">
+                <button type="submit" class="delete-button bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded flex items-center gap-2">
                     <i class="fas fa-trash-alt"></i> 삭제
                 </button>
             </form>
         </div>
+
 
         <!-- 리뷰 작성 및 목록 -->
         <div sec:authorize="isAuthenticated()">

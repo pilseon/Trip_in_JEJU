@@ -58,11 +58,20 @@ public class ActivityService {
         sorts.add(Sort.Order.desc("createDate"));
         Pageable pageable = PageRequest.of(page, 5, Sort.by(sorts));
 
+        Page<Activity> paging;
         if ("all".equalsIgnoreCase(subCategory)) {
-            return activityRepository.findAll(pageable);
+            paging = activityRepository.findAll(pageable);
         } else {
-            return activityRepository.findBySubCategory(subCategory, pageable);
+            paging = activityRepository.findBySubCategory(subCategory, pageable);
         }
+
+        // 각 Activity 엔티티에 대해 평균 별점 설정
+        paging.forEach(activity -> {
+            double averageRating = ratingService.calculateAverageScore(activity.getId(), "activity");
+            activity.setAverageRating(averageRating); // averageRating 필드 설정
+        });
+
+        return paging;
     }
 
     public Page<Activity> getList(int page) {
@@ -242,10 +251,10 @@ public class ActivityService {
         }
     }
 
-    private boolean isNearLocation(Location userLocation, Location foodLocation) {
+    private boolean isNearLocation(Location userLocation, Location activityLocation) {
         // 위치 간의 거리를 계산하고, 근접 여부를 반환합니다.
         // 예: 300미터 이내인지 확인
-        double distance = calculateDistance(userLocation, foodLocation);
+        double distance = calculateDistance(userLocation, activityLocation);
         return distance <= 300;
     }
 

@@ -58,11 +58,20 @@ public class FestivalsService {
         sorts.add(Sort.Order.desc("createDate"));
         Pageable pageable = PageRequest.of(page, 5, Sort.by(sorts));
 
+        Page<Festivals> paging;
         if ("all".equalsIgnoreCase(subCategory)) {
-            return festivalsRepository.findAll(pageable);
+            paging = festivalsRepository.findAll(pageable);
         } else {
-            return festivalsRepository.findBySubCategory(subCategory, pageable);
+            paging = festivalsRepository.findBySubCategory(subCategory, pageable);
         }
+
+        // 각 Festivals 엔티티에 대해 평균 별점 설정
+        paging.forEach(festivals -> {
+            double averageRating = ratingService.calculateAverageScore(festivals.getId(), "festivals");
+            festivals.setAverageRating(averageRating); // averageRating 필드 설정
+        });
+
+        return paging;
     }
 
     public Page<Festivals> getList(int page) {
@@ -277,10 +286,10 @@ public class FestivalsService {
         }
     }
 
-    private boolean isNearLocation(Location userLocation, Location foodLocation) {
+    private boolean isNearLocation(Location userLocation, Location festivalsLocation) {
         // 위치 간의 거리를 계산하고, 근접 여부를 반환합니다.
         // 예: 300미터 이내인지 확인
-        double distance = calculateDistance(userLocation, foodLocation);
+        double distance = calculateDistance(userLocation, festivalsLocation);
         return distance <= 300;
     }
 

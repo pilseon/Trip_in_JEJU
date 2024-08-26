@@ -35,6 +35,9 @@
                 <div class="history-list">
                     <h2 class="text-xl font-bold my-2">방문 기록</h2>
                     <ul class="space-y-4">
+                        <li class="text-center">
+                            <a href="/map/map" class="py-2 px-4 bg-blue-300 hover:text-white rounded-xl">위치 등록하러 가기</a>
+                        </li>
                         <li th:each="record : ${visitRecords}" class="bg-white shadow rounded-lg p-4 flex items-center justify-between">
                             <div class="flex items-center space-x-4">
 

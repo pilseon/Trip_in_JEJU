@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let offset = 0;
     const itemWidth = document.querySelector('.slider-item').offsetWidth + 16; // 아이템 너비 + 마진
-    const slideIntervalTime = 2000; // 자동 슬라이드 시간 (밀리초)
+    const slideIntervalTime = 5000; // 자동 슬라이드 시간 (밀리초)
     let slideInterval;
     const totalSlides = document.querySelectorAll('.slider-item').length;
     const visibleSlides = 5; // 화면에 보이는 슬라이드 수 (변경 필요)

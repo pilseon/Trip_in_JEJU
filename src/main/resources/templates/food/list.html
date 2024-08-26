@@ -1,13 +1,49 @@
 <!DOCTYPE html>
 <html layout:decorate="~{layout/layout}">
 <section layout:fragment="content" class="section-prod-list">
+    <ul class="flex justify-around mb-4 w-10/12 mr-auto ml-auto">
+        <li class="relative flex-grow text-center bg-blue-200 rounded-b-xl pb-2" style="flex-basis:0;">
+            <a href="/food/list">
+                <p class="absolute bg-blue-200 w-full bottom-full">&nbsp;</p>음식점
+            </a>
+        </li>
+        <li class="relative flex-grow text-center rounded-b-xl pb-2" style="flex-basis:0;">
+            <a href="/dessert/list">
+                <p class="absolute w-full bottom-full">&nbsp;</p>디저트
+            </a>
+        </li>
+        <li class="relative flex-grow text-center rounded-b-xl pb-2" style="flex-basis:0;">
+            <a href="/shopping/list">
+                <p class="absolute w-full bottom-full">&nbsp;</p>쇼핑
+            </a>
+        </li>
+        <li class="relative flex-grow text-center rounded-b-xl pb-2" style="flex-basis:0;">
+            <a href="/attractions/list">
+                <p class="absolute w-full bottom-full">&nbsp;</p>관광지
+            </a>
+        </li>
+        <li class="relative flex-grow text-center rounded-b-xl pb-2" style="flex-basis:0;">
+            <a href="/festivals/list">
+                <p class="absolute w-full bottom-full">&nbsp;</p>축제
+            </a>
+        </li>
+        <li class="relative flex-grow text-center rounded-b-xl pb-2" style="flex-basis:0;">
+            <a href="/activity/list">
+                <p class="absolute w-full bottom-full">&nbsp;</p>액티비티
+            </a>
+        </li>
+        <li class="relative flex-grow text-center rounded-b-xl pb-2" style="flex-basis:0;">
+            <a href="/other/list">
+                <p class="absolute w-full bottom-full">&nbsp;</p>기타
+            </a>
+        </li>
+    </ul>
     <div class="container">
         <!-- 검색 폼 -->
         <form id="searchForm" method="GET" action="/food/list">
             <input type="hidden" id="page" name="page" value="0">
             <input type="hidden" id="subCategory" name="subCategory" value="all">
         </form>
-
         <!-- 카테고리 버튼 -->
         <div class="mb-4 flex justify-center gap-4">
             <a href="#" data-category="all" class="category-btn px-4 py-2 border rounded hover:bg-gray-200">전체</a>
@@ -19,10 +55,10 @@
         </div>
 
         <!-- 지도 영역 -->
-        <div id="map" class="w-full h-[400px] border border-black mb-4"></div>
+        <div id="map" class="w-10/12 h-[250px] border border-black mb-4 ml-auto mr-auto"></div>
 
         <!-- 리스트 영역 (가로 스크롤) -->
-        <div class="w-full overflow-x-auto mb-4">
+        <div class="w-10/12 overflow-x-auto mb-4 ml-auto mr-auto">
             <ul class="flex gap-4">
                 <li th:each="food : ${paging.content}" class="flex flex-col items-center group w-[200px]" th:data-lat="${food.location.latitude}" th:data-lng="${food.location.longitude}">
                     <a th:href="@{|/food/detail/${food.id}|}" class="w-full h-[150px]">
@@ -32,9 +68,9 @@
                     <!-- 별점 표시 -->
                     <div class="mt-2 flex items-center">
                         <div class="flex items-center">
-                            <span th:each="i : ${#numbers.sequence(1, 5)}"
-                                  th:classappend="${i <= food.averageRating ? 'text-yellow-500' : 'text-gray-300'}"
-                                  class="text-lg">&#9733;</span>
+              <span th:each="i : ${#numbers.sequence(1, 5)}"
+                    th:classappend="${i <= food.averageRating ? 'text-yellow-500' : 'text-gray-300'}"
+                    class="text-lg">&#9733;</span>
                         </div>
                         <span class="ml-2 text-gray-600" th:text="'(' + ${food.averageRating} + ')'">4.9</span>
                     </div>
@@ -151,8 +187,8 @@
                                         var proj = map.getProjection();
                                         var point = proj.containerPointFromCoords(moveLatLon);
 
-                                        fixedInfoWindow.style.left = (point.x - (fixedInfoWindow.offsetWidth / 2) + 300 ) + 'px';
-                                        fixedInfoWindow.style.top = (point.y - (fixedInfoWindow.offsetHeight - 20) + 160 ) + 'px'; // 마커 바로 위에 위치
+                                        fixedInfoWindow.style.left = (point.x - (fixedInfoWindow.offsetWidth / 2) + 365 ) + 'px';
+                                        fixedInfoWindow.style.top = (point.y - (fixedInfoWindow.offsetHeight - 20) + 300 ) + 'px'; // 마커 바로 위에 위치
 
                                         // 애니메이션 효과 적용
                                         setTimeout(() => {
@@ -209,6 +245,5 @@
         .catch(error => console.error("Fetching page data failed:", error));
 }
     </script>
-
 </section>
 </html>

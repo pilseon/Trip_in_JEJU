@@ -196,6 +196,7 @@ function registerVisit(category, id) {
         })
         .then(data => {
             console.log("Visit registered successfully:", data);
+            alert("방문 기록 저장 완료 !");
         })
         .catch(error => {
             console.error('Error registering visit:', error);

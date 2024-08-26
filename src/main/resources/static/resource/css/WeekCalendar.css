@@ -8,21 +8,28 @@
 }
 
 .festival-thumbnail {
-    width: 100px;
     height: auto;
     border-radius: 4px;
     margin-right: 10px;
+    object-fit: cover; /* 이미지가 박스에 맞게 잘리는 경우 이 옵션 사용 */
 }
 
 .event-date, .event-content {
     margin-bottom: 5px;
 }
 
-.festival-info {
+.text-content {
     display: flex;
-    align-items: center;
-    margin-top: 10px;
+    flex-direction: column;
+    justify-content: center; /* 텍스트가 세로로 중앙 정렬되도록 */
 }
+
+.festival-info {
+    align-items: flex-start; /* 텍스트가 이미지의 상단에 맞추어 정렬되도록 변경 */
+    margin-top: 4px;
+    gap: 10px; /* 이미지를 텍스트와 자연스럽게 떨어뜨리는 간격 추가 */
+}
+
 .hidden {
     display: none;
 }

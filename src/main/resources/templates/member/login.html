@@ -175,7 +175,7 @@
       margin: auto;
       top: -260px;
       right: 0;
-      bottom: -35px;
+      bottom: 0;
       left: 0;
       padding: 7px 0;
       border: none;
@@ -375,7 +375,7 @@
     ============================ */
 
     .buttons__signup--sign-up-form{
-      top: 515px;
+      top: 540px;
       -webkit-transition: none;
       -moz-transition: none;
       -o-transition: none;
@@ -544,7 +544,8 @@
            .error-message {
             color: red;
             font-size: 14px;
-            margin-top: 17px;
+            margin-top: 22px;
+            text-align : center;
         }
 .login-form--register .error-message {
     display: none;
@@ -567,17 +568,17 @@
                 <div class="title">
                     <a href="/"><img src="https://github.com/user-attachments/assets/981bc789-070d-429a-84b5-cdb79fcde946" alt="트립인 제주" width="200" height="200"></a>
                 </div>
+                <p id="choose-form-error" th:if="${param.error}" class="error-message" style="display:none;">[아이디] 혹은 [비밀번호]를 확인해주세요.</p>
 
                 <div class="buttons">
                     <a id="signUp" class="buttons__signup" href="#">회원가입</a>
                     <a id="login" class="buttons__signup buttons__signup--login" href="#">로그인</a>
                 </div>
-
             </div>
 
             <!-- Login Form -->
 
-            <div class="login-form">
+            <div  id="login-form" class="login-form">
                 <div class="form-wrapper">
                     <form method="post" style="margin: 1rem; position:absolute; width: 90%; top: -5%">
                         <label class="form-wrapper__label" for="login-username">아이디</label>
@@ -590,7 +591,7 @@
                         </div>
 
                         <button class="buttons__signup buttons__signup--login-form" type="submit" href="#">로그인</button>
-                        <p id="itzy" th:if="${param.error}" class="error-message">[아이디] 혹은 [비밀번호]를 확인해주세요.</p>
+                        <p id="itzy" th:if="${param.error}" class="error-message" >[아이디] 혹은 [비밀번호]를 확인해주세요.</p>
                     </form>
 
                     <!-- Social-Media -->
@@ -615,7 +616,7 @@
 
             <div class="login-form login-form--register">
                 <div class="form-wrapper">
-                    <form th:action="@{/member/signup}" th:object="${memberForm}" method="POST" enctype="multipart/form-data" style="margin: 1rem; position:absolute; width: 90%; top: -20%">
+                    <form th:action="@{/member/signup}" th:object="${memberForm}" method="POST" enctype="multipart/form-data" style="margin: 1rem; position:absolute; width: 90%; top: -23%">
                         <label class="form-wrapper__label" for="signup-username">아이디&nbsp;    <span id="usernameCheckMessage"></span>  <button  type="button" id="check-username" class="form-wrapper__button">중복 확인</button></label>
                         <input id="signup-username" class="form-wrapper__input" type="text" placeholder="아이디" name="username" minlength="3" title="아이디는 최소 3글자 이상이어야 합니다." required>
 
@@ -899,8 +900,23 @@
           }, 1000); // 1초마다 귤 아이콘 떨어뜨리기
       });
 
+  document.addEventListener("DOMContentLoaded", function() {
+         // Choose form error
+        var chooseFormError = document.getElementById("choose-form-error");
+        if (chooseFormError && chooseFormError.textContent.trim() !== "") {
+            // Show alert with the error message
+            alert(chooseFormError.textContent);
+            // Hide the element
+            chooseFormError.style.display = "none";
+        }
 
-
+        // Login form error
+        var loginFormError = document.getElementById("login-form-error");
+        if (loginFormError) {
+            alert(loginFormError.textContent);
+            loginFormError.style.display = "block";
+        }
+    });
 </script>
 </body>
 </html>

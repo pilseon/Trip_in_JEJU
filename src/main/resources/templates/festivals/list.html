@@ -28,7 +28,7 @@
                     <a th:href="@{|/festivals/detail/${festivals.id}|}" class="w-full h-[150px]">
                         <img class="object-cover object-center w-full h-full rounded-lg" th:src="@{|/gen/${festivals.thumbnailImg}|}" alt="${festivals.title}">
                     </a>
-                    <a th:href="@{|/festivals/detail/${festivals.id}|}" th:text="${festivals.place}" class="text-center mt-2"></a>
+                    <a th:href="@{|/festivals/detail/${festivals.id}|}" th:text="${festivals.title}" class="text-center mt-2"></a>
                     <!-- 별점 표시 -->
                     <div class="mt-2 flex items-center">
                         <div class="flex items-center">

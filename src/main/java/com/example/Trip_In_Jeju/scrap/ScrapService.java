@@ -21,6 +21,9 @@ import java.util.Optional;
 public class ScrapService {
     private final ScrapRepository scrapRepository;
 
+
+
+
     @Transactional
     public boolean toggleScrap(Food food, Member member) {
         Optional<Scrap> existingScrap = scrapRepository.findByFoodAndMember(food, member);

@@ -150,54 +150,57 @@
     </div>
     <script>
         window.addEventListener("load", function() {
-            document.getElementById("password").addEventListener("input", checkPasswordMatch);
-            document.getElementById("confirmPassword").addEventListener("input", checkPasswordMatch);
+    var submitBtn = document.getElementById("submitBtn");
+    var message = document.getElementById("nicknameCheckMessage");
 
-            var submitBtn = document.getElementById("submitBtn");
-            var message = document.getElementById("nicknameCheckMessage");
+    // 처음에 제출 버튼 비활성화
+    submitBtn.disabled = true;
+    submitBtn.style.backgroundColor = "#e0e0e0"; // 회색
+    submitBtn.style.cursor = "not-allowed";
 
-            document.getElementById("checkNicknameBtn").addEventListener("click", function(event) {
-                event.preventDefault(); // 폼 제출 방지
-                var nickname = document.getElementById("nickname").value;
+    document.getElementById("checkNicknameBtn").addEventListener("click", function(event) {
+        event.preventDefault(); // 폼 제출 방지
+        var nickname = document.getElementById("nickname").value;
 
-                if (nickname.trim() === "") {
-                    message.textContent = "닉네임을 입력해주세요.";
+        if (nickname.trim() === "") {
+            message.textContent = "닉네임을 입력해주세요.";
+            message.style.color = "red";
+            updateSubmitButton(false); // 버튼 비활성화
+            return;
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/member/check-nickname?nickname=" + encodeURIComponent(nickname), true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                if (response.exists) {
+                    message.textContent = "이미 사용 중인 닉네임입니다.";
                     message.style.color = "red";
                     updateSubmitButton(false); // 버튼 비활성화
-                    return;
-                }
-
-                var xhr = new XMLHttpRequest();
-                xhr.open("GET", "/member/check-nickname?nickname=" + encodeURIComponent(nickname), true);
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        var response = JSON.parse(xhr.responseText);
-                        if (response.exists) {
-                            message.textContent = "이미 사용 중인 닉네임입니다.";
-                            message.style.color = "red";
-                            updateSubmitButton(false); // 버튼 비활성화
-                        } else {
-                            message.textContent = "사용 가능한 닉네임입니다.";
-                            message.style.color = "green";
-                            updateSubmitButton(true); // 버튼 활성화
-                        }
-                    }
-                };
-                xhr.send();
-            });
-
-            function updateSubmitButton(enabled) {
-                if (enabled) {
-                    submitBtn.disabled = false;
-                    submitBtn.style.backgroundColor = "#f59f0b"; // 기본 색상
-                    submitBtn.style.cursor = "pointer";
                 } else {
-                    submitBtn.disabled = true;
-                    submitBtn.style.backgroundColor = "#e0e0e0"; // 회색
-                    submitBtn.style.cursor = "not-allowed";
+                    message.textContent = "사용 가능한 닉네임입니다.";
+                    message.style.color = "green";
+                    updateSubmitButton(true); // 버튼 활성화
                 }
             }
-        });
+        };
+        xhr.send();
+    });
+
+    function updateSubmitButton(enabled) {
+        if (enabled) {
+            submitBtn.disabled = false;
+            submitBtn.style.backgroundColor = "#f59f0b"; // 기본 색상
+            submitBtn.style.cursor = "pointer";
+        } else {
+            submitBtn.disabled = true;
+            submitBtn.style.backgroundColor = "#e0e0e0"; // 회색
+            submitBtn.style.cursor = "not-allowed";
+        }
+    }
+});
+
 
         function previewProfilePicture(event) {
             var preview = document.getElementById('profilePicturePreview');

@@ -75,6 +75,7 @@ public class DessertController {
             hasWrittenReview = ratingService.hasUserWrittenReview(currentMember.getUsername(), id, "dessert");
         }
 
+
         model.addAttribute("dessert", dessert);
         model.addAttribute("ratings", ratings);
         model.addAttribute("averageScore", averageScore);

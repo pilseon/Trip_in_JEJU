@@ -64,7 +64,7 @@
         <!-- 축제 정보 -->
         <div class="card">
             <div class="card-body">
-                <span class="font-bold" style="font-size: 1.5rem;" th:text="${festivals.location.name}"></span>
+                <span class="font-bold" style="font-size: 1.5rem;" th:text="${festivals.title}"></span>
                 <ul class="list-group list-group-flush">
                     <!-- 축제 기간 -->
                     <li class="list-group-item">
@@ -89,11 +89,6 @@
                         <span th:text="${festivals.phoneNumber}"></span>
                     </li>
                 </ul>
-
-                <!-- 축제 소개(제목) -->
-                <div class="mt-4">
-                    <span th:text="${festivals.title}"></span>
-                </div>
 
                 <!-- 축제 소개(내용) -->
                 <div class="mt-4">

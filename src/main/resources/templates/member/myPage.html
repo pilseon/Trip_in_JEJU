@@ -91,7 +91,7 @@
                                                 </div>
                                                 <div>
                                                     <span class="font-bold">장소 : </span>
-                                                    <span th:text="${scrap.festivals.place}"></span>
+                                                    <span th:text="${scrap.festivals.location.address}"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -132,8 +132,8 @@
                                 <div class="item-info">
                                     <a th:href="@{/food/detail/{id}(id=${scrap.food.id})}" class="no-underline hover:underline text-black">
                                         <p th:text="${scrap.food.category}" class="inline"></p>/<p th:text="${scrap.food.subCategory}" class="inline"></p>
-                                        <p th:text="${scrap.food.title}" class="text-lg font-bold">음식점 이름</p>
-                                        <p th:text="${scrap.food.location.name}" class="text-m">음식점 위치</p>
+                                        <p th:text="${scrap.food.location.name}" class="text-lg font-bold">음식점 위치</p>
+                                        <p th:text="${scrap.food.location.address}" class="text-sm">음식점 이름</p>
                                     </a>
                                 </div>
                             </div>
@@ -145,9 +145,9 @@
                                 </a>
                                 <div class="item-info">
                                     <a th:href="@{/dessert/detail/{id}(id=${scrap.dessert.id})}" class="no-underline hover:underline text-black">
-                                        <p th:text="${scrap.dessert.category}" class="inline"></p>/<p th:text="${scrap.dessert.subCategory}" class="inline"></p>
-                                        <p th:text="${scrap.dessert.title}" class="text-lg font-bold">디저트 이름</p>
-                                        <p th:text="${scrap.dessert.location.name}" class="text-m">디저트 위치</p>
+                                        <p th:text="${scrap.dessert.location.address}" class="inline"></p>/<p th:text="${scrap.dessert.subCategory}" class="inline"></p>
+                                        <p th:text="${scrap.dessert.location.name}" class="text-lg font-bold">디저트 위치</p>
+                                        <p th:text="${scrap.dessert.category}" class="text-sm">디저트 이름</p>
                                     </a>
                                 </div>
                             </div>
@@ -160,8 +160,8 @@
                                 <div class="item-info">
                                     <a th:href="@{/activity/detail/{id}(id=${scrap.activity.id})}" class="no-underline hover:underline text-black">
                                         <p th:text="${scrap.activity.category}" class="inline"></p>/<p th:text="${scrap.activity.subCategory}" class="inline"></p>
-                                        <p th:text="${scrap.activity.title}" class="text-lg font-bold">액티비티 이름</p>
-                                        <p th:text="${scrap.activity.location.name}" class="text-m">액티비티 위치</p>
+                                        <p th:text="${scrap.activity.location.name}" class="text-lg font-bold">엑티비티 위치</p>
+                                        <p th:text="${scrap.activity.location.address}" class="text-sm">엑티비티 이름</p>
                                     </a>
                                 </div>
                             </div>
@@ -173,9 +173,9 @@
                                 </a>
                                 <div class="item-info">
                                     <a th:href="@{/attractions/detail/{id}(id=${scrap.attractions.id})}" class="no-underline hover:underline text-black">
-                                        <p th:text="${scrap.attractions.category}" class="inline"></p>/<p th:text="${scrap.attractions.subCategory}" class="inline"></p>
-                                        <p th:text="${scrap.attractions.title}" class="text-lg font-bold">관광지 이름</p>
-                                        <p th:text="${scrap.attractions.location.name}" class="text-m">관광지 위치</p>
+                                        <p th:text="${scrap.attractions.location.address}" class="inline"></p>/<p th:text="${scrap.attractions.subCategory}" class="inline"></p>
+                                        <p th:text="${scrap.attractions.location.name}" class="text-lg font-bold">관광지 위치</p>
+                                        <p th:text="${scrap.attractions.category}" class="text-sm">관광지 이름</p>
                                     </a>
                                 </div>
                             </div>
@@ -187,9 +187,9 @@
                                 </a>
                                 <div class="item-info">
                                     <a th:href="@{/other/detail/{id}(id=${scrap.other.id})}" class="no-underline hover:underline text-black">
-                                        <p th:text="${scrap.other.category}" class="inline"></p>/<p th:text="${scrap.other.subCategory}" class="inline"></p>
-                                        <p th:text="${scrap.other.title}" class="text-lg font-bold">기타 이름</p>
-                                        <p th:text="${scrap.other.location.name}" class="text-m">기타 위치</p>
+                                        <p th:text="${scrap.other.location.address}" class="inline"></p>/<p th:text="${scrap.other.subCategory}" class="inline"></p>
+                                        <p th:text="${scrap.other.location.name}" class="text-lg font-bold">기타 위치</p>
+                                        <p th:text="${scrap.other.category}" class="text-sm">기타 이름</p>
                                     </a>
                                 </div>
                             </div>
@@ -202,8 +202,8 @@
                                 <div class="item-info">
                                     <a th:href="@{/shopping/detail/{id}(id=${scrap.shopping.id})}" class="no-underline hover:underline text-black">
                                         <p th:text="${scrap.shopping.category}" class="inline"></p>/<p th:text="${scrap.shopping.subCategory}" class="inline"></p>
-                                        <p th:text="${scrap.shopping.title}" class="text-lg font-bold">쇼핑 이름</p>
-                                        <p th:text="${scrap.shopping.location.name}" class="text-m">쇼핑 위치</p>
+                                        <p th:text="${scrap.shopping.location.name}" class="text-lg font-bold">쇼핑 위치</p>
+                                        <p th:text="${scrap.shopping.location.address}" class="text-sm">쇼핑 이름</p>
                                     </a>
                                 </div>
                             </div>

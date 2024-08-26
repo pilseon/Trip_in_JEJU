@@ -1,6 +1,43 @@
 <!DOCTYPE html>
 <html layout:decorate="~{layout/layout}">
 <section layout:fragment="content" class="section-prod-list">
+    <ul class="flex justify-around mb-4 w-10/12 mr-auto ml-auto">
+        <li class="relative flex-grow text-center rounded-b-xl pb-2" style="flex-basis:0;">
+            <a href="/food/list">
+                <p class="absolute w-full bottom-full">&nbsp;</p>음식점
+            </a>
+        </li>
+        <li class="relative flex-grow text-center rounded-b-xl pb-2" style="flex-basis:0;">
+            <a href="/dessert/list">
+                <p class="absolute w-full bottom-full">&nbsp;</p>디저트
+            </a>
+        </li>
+        <li class="relative flex-grow text-center bg-blue-200 rounded-b-xl pb-2" style="flex-basis:0;">
+            <a href="/shopping/list">
+                <p class="absolute w-full bg-blue-200 bottom-full">&nbsp;</p>쇼핑
+            </a>
+        </li>
+        <li class="relative flex-grow text-center rounded-b-xl pb-2" style="flex-basis:0;">
+            <a href="/attractions/list">
+                <p class="absolute w-full bottom-full">&nbsp;</p>관광지
+            </a>
+        </li>
+        <li class="relative flex-grow text-center rounded-b-xl pb-2" style="flex-basis:0;">
+            <a href="/festivals/list">
+                <p class="absolute w-full bottom-full">&nbsp;</p>축제
+            </a>
+        </li>
+        <li class="relative flex-grow text-center rounded-b-xl pb-2" style="flex-basis:0;">
+            <a href="/activity/list">
+                <p class="absolute w-full bottom-full">&nbsp;</p>액티비티
+            </a>
+        </li>
+        <li class="relative flex-grow text-center rounded-b-xl pb-2" style="flex-basis:0;">
+            <a href="/other/list">
+                <p class="absolute w-full bottom-full">&nbsp;</p>기타
+            </a>
+        </li>
+    </ul>
     <div class="container">
         <!-- 검색 폼 -->
         <form id="searchForm" method="GET" action="/shopping/list">

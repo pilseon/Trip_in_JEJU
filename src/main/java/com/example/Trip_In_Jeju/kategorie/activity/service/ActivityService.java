@@ -56,7 +56,7 @@ public class ActivityService {
     public Page<Activity> getList(int page, String subCategory) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
-        Pageable pageable = PageRequest.of(page, 5, Sort.by(sorts));
+        Pageable pageable = PageRequest.of(page, 3, Sort.by(sorts));
 
         Page<Activity> paging;
         if ("all".equalsIgnoreCase(subCategory)) {
@@ -77,7 +77,7 @@ public class ActivityService {
     public Page<Activity> getList(int page) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
-        Pageable pageable = PageRequest.of(page, 5, Sort.by(sorts));
+        Pageable pageable = PageRequest.of(page, 3, Sort.by(sorts));
 
         return activityRepository.findAll(pageable);
     }

@@ -55,10 +55,10 @@
         </div>
         
         <!-- 지도 영역 -->
-        <div id="map" class="w-full h-[400px] border border-black mb-4"></div>
+        <div id="map" class="w-10/12 h-[250px] border border-black mb-4 ml-auto mr-auto"></div>
 
         <!-- 리스트 영역 (가로 스크롤) -->
-        <div class="w-full overflow-x-auto mb-4">
+        <div class="w-10/12 overflow-x-auto mb-4 ml-auto mr-auto">
             <ul class="flex gap-4">
                 <li th:each="dessert : ${paging.content}" class="flex flex-col items-center group w-[200px]" th:data-lat="${dessert.location.latitude}" th:data-lng="${dessert.location.longitude}">
                     <a th:href="@{|/dessert/detail/${dessert.id}|}" class="w-full h-[150px]">
@@ -187,8 +187,8 @@
                                         var proj = map.getProjection();
                                         var point = proj.containerPointFromCoords(moveLatLon);
 
-                                        fixedInfoWindow.style.left = (point.x - (fixedInfoWindow.offsetWidth / 2) + 300 ) + 'px';
-                                        fixedInfoWindow.style.top = (point.y - (fixedInfoWindow.offsetHeight - 20) + 160 ) + 'px'; // 마커 바로 위에 위치
+                                        fixedInfoWindow.style.left = (point.x - (fixedInfoWindow.offsetWidth / 2) + 365 ) + 'px';
+                                        fixedInfoWindow.style.top = (point.y - (fixedInfoWindow.offsetHeight - 20) + 300 ) + 'px'; // 마커 바로 위에 위치
 
                                         // 애니메이션 효과 적용
                                         setTimeout(() => {

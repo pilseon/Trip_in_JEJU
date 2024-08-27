@@ -12,6 +12,8 @@ import com.example.Trip_In_Jeju.member.servcie.MemberService;
 import com.example.Trip_In_Jeju.rating.entity.Rating;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
 import com.example.Trip_In_Jeju.scrap.ScrapService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -42,18 +45,21 @@ public class ActivityController {
     public String list(
             Model model,
             @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "subCategory", defaultValue = "all") String subCategory
+            @RequestParam(value = "subCategory", defaultValue = "all") String subCategory,
+            @RequestParam Map<String, String> params,
+            HttpServletRequest request, HttpSession session
     ) {
         Page<Activity> paging = activityService.getList(page, subCategory);
         model.addAttribute("paging", paging);
         model.addAttribute("subCategory", subCategory);
         Member currentMember = memberService.getCurrentMember();
         model.addAttribute("member", currentMember);
+        activityListInitSesstion(params, request,session);
         return "activity/list";
     }
 
     @GetMapping("/detail/{id}")
-    public String getDetail(@PathVariable("id") Long id, Model model, Authentication authentication) {
+    public String getDetail(@PathVariable("id") Long id, Model model, Authentication authentication, HttpSession session) {
         Activity activity = activityService.getActivityById(id);
         List<Rating> ratings = ratingService.getRatings(id, "activity");
         double averageScore = ratingService.calculateAverageScore(id, "activity");
@@ -76,6 +82,9 @@ public class ActivityController {
             canWriteReview = visitRecordService.hasVisited(currentMember.getId(), "activity", id);  // category 추가
             hasWrittenReview = ratingService.hasUserWrittenReview(currentMember.getUsername(), id, "activity");
         }
+
+        String referer = (String) session.getAttribute("prevPage");
+        model.addAttribute("referer", referer);
 
         model.addAttribute("activity", activity);
         model.addAttribute("ratings", ratings);
@@ -298,5 +307,17 @@ public class ActivityController {
     public ResponseEntity<List<ActivityLocationDto>> getActivityLocations() {
         List<ActivityLocationDto> locations = activityService.getAllActivityLocations();
         return ResponseEntity.ok(locations);
+    }
+
+    void activityListInitSesstion(@RequestParam Map<String, String> params, HttpServletRequest request, HttpSession session){
+        StringBuilder referer = new StringBuilder(request.getRequestURL().toString());
+        if (!params.isEmpty()) {
+            referer.append("?");
+            params.forEach((key, value) -> referer.append(key).append("=").append(value).append("&"));
+            referer.setLength(referer.length() - 1); // 마지막 & 제거
+        }
+        session.setAttribute("prevPage", referer.toString());
+
+        System.out.println("referer : " + referer.toString());
     }
 }

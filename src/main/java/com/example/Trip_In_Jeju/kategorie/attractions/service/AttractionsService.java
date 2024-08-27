@@ -85,11 +85,21 @@ public class AttractionsService {
     public void create(String title, String businessHoursStart, String businessHoursEnd, String content, String place, String closedDay,
                        String websiteUrl, String phoneNumber, MultipartFile thumbnail, double latitude, double longitude, String category, String address, String subCategory) {
 
-        String thumbnailRelPath = "attractions/" + UUID.randomUUID().toString() + ".jpg";
+        // 파일 이름에서 확장자 추출 및 UUID를 이용해 고유 파일 이름 생성
+        String extension = "";
+        String originalFilename = thumbnail.getOriginalFilename();
+        if (originalFilename != null && originalFilename.contains(".")) {
+            extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        }
+        String thumbnailRelPath = "attractions/" + UUID.randomUUID().toString() + extension;
+
+        // 파일 저장 경로 설정
         File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
 
-        thumbnailFile.mkdirs();
-
+        // 디렉토리가 없으면 생성
+        if (!thumbnailFile.getParentFile().exists()) {
+            thumbnailFile.getParentFile().mkdirs();
+        }
         try {
             thumbnail.transferTo(thumbnailFile);
         } catch (IOException e) {

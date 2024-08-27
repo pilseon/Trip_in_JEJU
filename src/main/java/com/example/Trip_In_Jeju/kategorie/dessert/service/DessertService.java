@@ -39,10 +39,10 @@ import java.util.stream.Collectors;
 public class DessertService {
     private final DessertRepository dessertRepository;
     private final LocationRepository locationRepository;
-    private final LikeRepository likeRepository;
     private final CalendarRepository calendarRepository;
+    private final LikeRepository likeRepository;
     private final RatingService ratingService;
-    private final ScrapService scrapService; // 추가된 의존성
+    private final ScrapService scrapService;
     private final ScrapRepository scrapRepository;
     private final RatingRepository ratingRepository;
 
@@ -82,15 +82,28 @@ public class DessertService {
 
         return dessertRepository.findAll(pageable);
     }
-    public void create(String title, String businessHoursStart, String businessHoursEnd, String content, String place, String closedDay,
-                       String websiteUrl, String phoneNumber, MultipartFile thumbnail, double latitude, double longitude, String category, String address, String subCategory) {
 
-        String thumbnailRelPath = "dessert/" + UUID.randomUUID().toString() + ".jpg";
+    public void create(String title, String businessHoursStart, String businessHoursEnd, String content, String place, String closedDay,
+                       String websiteUrl, String phoneNumber, MultipartFile thumbnail, double latitude, double longitude, String address, String category, String subCategory) {
+
+        // 파일 이름에서 확장자 추출 및 UUID를 이용해 고유 파일 이름 생성
+        String extension = "";
+        String originalFilename = thumbnail.getOriginalFilename();
+        if (originalFilename != null && originalFilename.contains(".")) {
+            extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        }
+        String thumbnailRelPath = "dessert/" + UUID.randomUUID().toString() + extension;
+
+        // 파일 저장 경로 설정
         File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
 
-        thumbnailFile.mkdirs();
+        // 디렉토리가 없으면 생성
+        if (!thumbnailFile.getParentFile().exists()) {
+            thumbnailFile.getParentFile().mkdirs();
+        }
 
         try {
+            // 업로드된 파일을 저장합니다.
             thumbnail.transferTo(thumbnailFile);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -131,8 +144,6 @@ public class DessertService {
 
     public void create2(String title, String businessHoursStart, String businessHoursEnd, String content, String place, String closedDay,
                         String websiteUrl, String phoneNumber, double latitude, double longitude, String category, String subCategory) {
-
-
 
         // Location 엔티티 생성 및 저장
         Location location = new Location();
@@ -237,6 +248,7 @@ public class DessertService {
 
     public Dessert getDessertById(Long id) {
         Dessert dessert = dessertRepository.findById(id).orElse(null);
+
         if (dessert != null) {
             // 스크랩 수를 업데이트
             int scrapCount = scrapService.getScrapCount(dessert);
@@ -274,9 +286,9 @@ public class DessertService {
     public void processDessertLocation(Long memberId, LocationRequest locationRequest) {
         Location userLocation = new Location(locationRequest.getLatitude(), locationRequest.getLongitude());
 
-        List<Dessert> dessertLocations = dessertRepository.findAll();
+        List<Dessert> dessertsLocations = dessertRepository.findAll();
 
-        for (Dessert dessert : dessertLocations) {
+        for (Dessert dessert : dessertsLocations) {
             if (isNearLocation(userLocation, dessert.getLocation())) {
                 VisitRequest visitRequest = new VisitRequest();
                 visitRequest.setMemberId(memberId);

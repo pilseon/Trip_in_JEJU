@@ -13,6 +13,8 @@ import com.example.Trip_In_Jeju.member.servcie.MemberService;
 import com.example.Trip_In_Jeju.rating.entity.Rating;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
 import com.example.Trip_In_Jeju.scrap.ScrapService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -43,18 +46,21 @@ public class ShoppingController {
     public String list(
             Model model,
             @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "subCategory", defaultValue = "all") String subCategory
+            @RequestParam(value = "subCategory", defaultValue = "all") String subCategory,
+            @RequestParam Map<String, String> params,
+            HttpServletRequest request, HttpSession session
     ) {
         Page<Shopping> paging = shoppingService.getList(page, subCategory);
         model.addAttribute("paging", paging);
         model.addAttribute("subCategory", subCategory);
         Member currentMember = memberService.getCurrentMember();
         model.addAttribute("member", currentMember);
+        shoppingListInitSesstion(params, request,session);
         return "shopping/list";
     }
 
     @GetMapping("/detail/{id}")
-    public String getDetail(@PathVariable("id") Long id, Model model, Authentication authentication) {
+    public String getDetail(@PathVariable("id") Long id, Model model, Authentication authentication, HttpSession session) {
         Shopping shopping = shoppingService.getShoppingById(id);
         List<Rating> ratings = ratingService.getRatings(id, "shopping");
         double averageScore = ratingService.calculateAverageScore(id, "shopping");
@@ -77,6 +83,9 @@ public class ShoppingController {
             canWriteReview = visitRecordService.hasVisited(currentMember.getId(), "shopping", id);  // category 추가
             hasWrittenReview = ratingService.hasUserWrittenReview(currentMember.getUsername(), id, "shopping");
         }
+
+        String referer = (String) session.getAttribute("prevPage");
+        model.addAttribute("referer", referer);
 
         model.addAttribute("shopping", shopping);
         model.addAttribute("ratings", ratings);
@@ -305,5 +314,17 @@ public class ShoppingController {
     public ResponseEntity<List<ShoppingLocationDto>> getShoppingLocations() {
         List<ShoppingLocationDto> locations = shoppingService.getAllShoppingLocations();
         return ResponseEntity.ok(locations);
+    }
+
+    void shoppingListInitSesstion(@RequestParam Map<String, String> params, HttpServletRequest request, HttpSession session){
+        StringBuilder referer = new StringBuilder(request.getRequestURL().toString());
+        if (!params.isEmpty()) {
+            referer.append("?");
+            params.forEach((key, value) -> referer.append(key).append("=").append(value).append("&"));
+            referer.setLength(referer.length() - 1); // 마지막 & 제거
+        }
+        session.setAttribute("prevPage", referer.toString());
+
+        System.out.println("referer : " + referer.toString());
     }
 }

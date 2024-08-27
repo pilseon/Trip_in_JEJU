@@ -37,7 +37,7 @@
     <nav class="navbar navbar-expand-md navbar-dark w-full ml-auto mr-auto bg-blue-200 rounded-bl-3xl rounded-br-3xl">
         <div class="flex container-fluid p-0 h-24 content-center">
             <div class="flex-grow" style="flex-basis: 0">
-                <button class="inline-block" onclick="history.back()"><i class="fa-solid fa-arrow-left fa-xl ml-5 text-white" ></i></button>
+                <a class="inline-block" th:href="${referer}"><i class="fa-solid fa-arrow-left fa-xl ml-5 text-white" ></i></a>
             </div>
             <div class="flex-grow text-center" style="flex-basis: 0">
                 <a class="inline-block w-28" href="/"><img src="https://github.com/user-attachments/assets/e0055092-5d06-426f-ab4e-3626388002b5" alt="textlogo" class="w-28"></a>

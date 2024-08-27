@@ -12,6 +12,8 @@ import com.example.Trip_In_Jeju.member.servcie.MemberService;
 import com.example.Trip_In_Jeju.rating.entity.Rating;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
 import com.example.Trip_In_Jeju.scrap.ScrapService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -42,18 +45,21 @@ public class FestivalsController {
     public String list(
             Model model,
             @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "subCategory", defaultValue = "all") String subCategory
+            @RequestParam(value = "subCategory", defaultValue = "all") String subCategory,
+            @RequestParam Map<String, String> params,
+            HttpServletRequest request, HttpSession session
     ) {
         Page<Festivals> paging = festivalsService.getList(page, subCategory);
         model.addAttribute("paging", paging);
         model.addAttribute("subCategory", subCategory);
         Member currentMember = memberService.getCurrentMember();
         model.addAttribute("member", currentMember);
+        festivalsListInitSesstion(params, request,session);
         return "festivals/list";
     }
 
     @GetMapping("/detail/{id}")
-    public String getDetail(@PathVariable("id") Long id, Model model, Authentication authentication) {
+    public String getDetail(@PathVariable("id") Long id, Model model, Authentication authentication, HttpSession session) {
         Festivals festivals = festivalsService.getFestivalsById(id);
         List<Rating> ratings = ratingService.getRatings(id, "festivals");
         double averageScore = ratingService.calculateAverageScore(id, "festivals");
@@ -76,6 +82,9 @@ public class FestivalsController {
             canWriteReview = visitRecordService.hasVisited(currentMember.getId(), "festivals", id);  // category 추가
             hasWrittenReview = ratingService.hasUserWrittenReview(currentMember.getUsername(), id, "festivals");
         }
+
+        String referer = (String) session.getAttribute("prevPage");
+        model.addAttribute("referer", referer);
 
         model.addAttribute("festivals", festivals);
         model.addAttribute("ratings", ratings);
@@ -299,5 +308,17 @@ public class FestivalsController {
     public ResponseEntity<List<FestivalsLocationDto>> getFestivalsLocations() {
         List<FestivalsLocationDto> locations = festivalsService.getAllFestivalsLocations();
         return ResponseEntity.ok(locations);
+    }
+
+    void festivalsListInitSesstion(@RequestParam Map<String, String> params, HttpServletRequest request, HttpSession session){
+        StringBuilder referer = new StringBuilder(request.getRequestURL().toString());
+        if (!params.isEmpty()) {
+            referer.append("?");
+            params.forEach((key, value) -> referer.append(key).append("=").append(value).append("&"));
+            referer.setLength(referer.length() - 1); // 마지막 & 제거
+        }
+        session.setAttribute("prevPage", referer.toString());
+
+        System.out.println("referer : " + referer.toString());
     }
 }

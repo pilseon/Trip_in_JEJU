@@ -39,10 +39,10 @@ import java.util.stream.Collectors;
 public class DessertService {
     private final DessertRepository dessertRepository;
     private final LocationRepository locationRepository;
-    private final CalendarRepository calendarRepository;
     private final LikeRepository likeRepository;
+    private final CalendarRepository calendarRepository;
     private final RatingService ratingService;
-    private final ScrapService scrapService;
+    private final ScrapService scrapService; // 추가된 의존성
     private final ScrapRepository scrapRepository;
     private final RatingRepository ratingRepository;
 
@@ -53,9 +53,6 @@ public class DessertService {
 
     @Value("${custom.fileDirPath}")
     public String genFileDirPath;
-
-    // 디렉토리 경로를 변경합니다.
-    private static final String DESSERT_IMAGE_DIR = "images/dessert/";
 
     public Page<Dessert> getList(int page, String subCategory) {
         List<Sort.Order> sorts = new ArrayList<>();
@@ -85,19 +82,15 @@ public class DessertService {
 
         return dessertRepository.findAll(pageable);
     }
-
     public void create(String title, String businessHoursStart, String businessHoursEnd, String content, String place, String closedDay,
-                       String websiteUrl, String phoneNumber, MultipartFile thumbnail, double latitude, double longitude, String address, String category, String subCategory) {
+                       String websiteUrl, String phoneNumber, MultipartFile thumbnail, double latitude, double longitude, String category, String address, String subCategory) {
 
-        // 이미지를 저장할 디렉토리의 전체 경로를 생성합니다.
-        String thumbnailRelPath = DESSERT_IMAGE_DIR + UUID.randomUUID().toString() + ".jpg";
+        String thumbnailRelPath = "dessert/" + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
 
-        // 디렉토리가 없으면 생성합니다.
-        thumbnailFile.getParentFile().mkdirs();
+        thumbnailFile.mkdirs();
 
         try {
-            // 업로드된 파일을 저장합니다.
             thumbnail.transferTo(thumbnailFile);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -138,6 +131,8 @@ public class DessertService {
 
     public void create2(String title, String businessHoursStart, String businessHoursEnd, String content, String place, String closedDay,
                         String websiteUrl, String phoneNumber, double latitude, double longitude, String category, String subCategory) {
+
+
 
         // Location 엔티티 생성 및 저장
         Location location = new Location();
@@ -225,10 +220,15 @@ public class DessertService {
 
     public Dessert findById(Long id) {
         Optional<Dessert> optionalDessert = dessertRepository.findById(id);
-        Dessert dessert = optionalDessert.orElseThrow(() -> new RuntimeException("dessert not found with id: " + id));
+        Dessert dessert = optionalDessert.orElseThrow(() -> new RuntimeException("Dessert not found with id: " + id));
         // 스크랩 수를 업데이트
         dessert.setScrapCount(scrapService.getScrapCount(dessert));
         return dessert;
+    }
+
+    public Result findResultById(Long id) {
+        Dessert dessert = findById(id); // 기존의 findById 메서드를 사용
+        return new Result(dessert.getId(), dessert.getTitle(), dessert.getPlace(), dessert.getThumbnailImg(), dessert.getContent());
     }
 
     public void save(Dessert dessert) {
@@ -237,18 +237,12 @@ public class DessertService {
 
     public Dessert getDessertById(Long id) {
         Dessert dessert = dessertRepository.findById(id).orElse(null);
-
         if (dessert != null) {
             // 스크랩 수를 업데이트
             int scrapCount = scrapService.getScrapCount(dessert);
             dessert.setScrapCount(scrapCount);
         }
         return dessert;
-    }
-
-    public Result findResultById(Long id) {
-        Dessert dessert = findById(id); // 기존의 findById 메서드를 사용
-        return new Result(dessert.getId(), dessert.getTitle(), dessert.getPlace(), dessert.getThumbnailImg(), dessert.getContent());
     }
 
     @Transactional
@@ -280,9 +274,9 @@ public class DessertService {
     public void processDessertLocation(Long memberId, LocationRequest locationRequest) {
         Location userLocation = new Location(locationRequest.getLatitude(), locationRequest.getLongitude());
 
-        List<Dessert> dessertsLocations = dessertRepository.findAll();
+        List<Dessert> dessertLocations = dessertRepository.findAll();
 
-        for (Dessert dessert : dessertsLocations) {
+        for (Dessert dessert : dessertLocations) {
             if (isNearLocation(userLocation, dessert.getLocation())) {
                 VisitRequest visitRequest = new VisitRequest();
                 visitRequest.setMemberId(memberId);
@@ -322,9 +316,10 @@ public class DessertService {
     }
 
     public List<DessertLocationDto> getAllDessertLocations() {
-
+        // Dessert 엔티티의 리스트를 데이터베이스에서 가져옵니다.
         List<Dessert> dessertList = dessertRepository.findAll();
 
+        // Dessert 엔티티를 DessertLocationDto로 변환하여 리스트에 추가합니다.
         List<DessertLocationDto> dessertLocationDtos = new ArrayList<>();
         for (Dessert dessert : dessertList) {
             DessertLocationDto dto = new DessertLocationDto(

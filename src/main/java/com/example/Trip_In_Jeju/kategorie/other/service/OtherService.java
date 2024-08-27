@@ -39,10 +39,10 @@ import java.util.stream.Collectors;
 public class OtherService {
     private final OtherRepository otherRepository;
     private final LocationRepository locationRepository;
-    private final CalendarRepository calendarRepository;
     private final LikeRepository likeRepository;
+    private final CalendarRepository calendarRepository;
     private final RatingService ratingService;
-    private final ScrapService scrapService;
+    private final ScrapService scrapService; // 추가된 의존성
     private final ScrapRepository scrapRepository;
     private final RatingRepository ratingRepository;
 
@@ -83,7 +83,7 @@ public class OtherService {
         return otherRepository.findAll(pageable);
     }
     public void create(String title, String businessHoursStart, String businessHoursEnd, String content, String place, String closedDay,
-                       String websiteUrl, String phoneNumber, MultipartFile thumbnail, double latitude, double longitude, String address, String category, String subCategory) {
+                       String websiteUrl, String phoneNumber, MultipartFile thumbnail, double latitude, double longitude, String category, String address, String subCategory) {
 
         String thumbnailRelPath = "other/" + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
@@ -220,10 +220,15 @@ public class OtherService {
 
     public Other findById(Long id) {
         Optional<Other> optionalOther = otherRepository.findById(id);
-        Other other = optionalOther.orElseThrow(() -> new RuntimeException("other not found with id: " + id));
+        Other other = optionalOther.orElseThrow(() -> new RuntimeException("Other not found with id: " + id));
         // 스크랩 수를 업데이트
         other.setScrapCount(scrapService.getScrapCount(other));
         return other;
+    }
+
+    public Result findResultById(Long id) {
+        Other other = findById(id); // 기존의 findById 메서드를 사용
+        return new Result(other.getId(), other.getTitle(), other.getPlace(), other.getThumbnailImg(), other.getContent());
     }
 
     public void save(Other other) {
@@ -232,18 +237,12 @@ public class OtherService {
 
     public Other getOtherById(Long id) {
         Other other = otherRepository.findById(id).orElse(null);
-
         if (other != null) {
             // 스크랩 수를 업데이트
             int scrapCount = scrapService.getScrapCount(other);
             other.setScrapCount(scrapCount);
         }
         return other;
-    }
-
-    public Result findResultById(Long id) {
-        Other other = findById(id); // 기존의 findById 메서드를 사용
-        return new Result(other.getId(), other.getTitle(), other.getPlace(), other.getThumbnailImg(), other.getContent());
     }
 
     @Transactional
@@ -317,9 +316,10 @@ public class OtherService {
     }
 
     public List<OtherLocationDto> getAllOtherLocations() {
-
+        // Other 엔티티의 리스트를 데이터베이스에서 가져옵니다.
         List<Other> otherList = otherRepository.findAll();
 
+        // Other 엔티티를 OtherLocationDto로 변환하여 리스트에 추가합니다.
         List<OtherLocationDto> otherLocationDtos = new ArrayList<>();
         for (Other other : otherList) {
             OtherLocationDto dto = new OtherLocationDto(

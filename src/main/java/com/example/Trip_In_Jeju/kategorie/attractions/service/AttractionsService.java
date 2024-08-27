@@ -39,10 +39,10 @@ import java.util.stream.Collectors;
 public class AttractionsService {
     private final AttractionsRepository attractionsRepository;
     private final LocationRepository locationRepository;
-    private final CalendarRepository calendarRepository;
     private final LikeRepository likeRepository;
+    private final CalendarRepository calendarRepository;
     private final RatingService ratingService;
-    private final ScrapService scrapService;
+    private final ScrapService scrapService; // 추가된 의존성
     private final ScrapRepository scrapRepository;
     private final RatingRepository ratingRepository;
 
@@ -83,7 +83,7 @@ public class AttractionsService {
         return attractionsRepository.findAll(pageable);
     }
     public void create(String title, String businessHoursStart, String businessHoursEnd, String content, String place, String closedDay,
-                       String websiteUrl, String phoneNumber, MultipartFile thumbnail, double latitude, double longitude, String address, String category, String subCategory) {
+                       String websiteUrl, String phoneNumber, MultipartFile thumbnail, double latitude, double longitude, String category, String address, String subCategory) {
 
         String thumbnailRelPath = "attractions/" + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
@@ -128,6 +128,43 @@ public class AttractionsService {
 
         attractionsRepository.save(p);
     }
+
+    public void create2(String title, String businessHoursStart, String businessHoursEnd, String content, String place, String closedDay,
+                        String websiteUrl, String phoneNumber, double latitude, double longitude, String category, String subCategory) {
+
+
+
+        // Location 엔티티 생성 및 저장
+        Location location = new Location();
+        location.setName(place);
+        location.setLatitude(latitude);
+        location.setLongitude(longitude);
+        location = locationRepository.save(location);
+
+        Calendar calendar = new Calendar();
+        calendar.setTitle(title);
+        calendar.setBusinessHoursStart(LocalTime.parse(businessHoursStart));
+        calendar.setBusinessHoursEnd(LocalTime.parse(businessHoursEnd));
+        calendar.setClosedDay(closedDay); // 휴무일 설정
+        calendarRepository.save(calendar);
+
+        Attractions p = Attractions.builder()
+                .title(title)
+                .calendar(calendar)  // Calendar 엔티티 참조
+                .content(content)
+                .location(location)
+                .place(place)
+                .websiteUrl(websiteUrl)
+                .phoneNumber(phoneNumber)
+                .likes(0)
+                .scrapCount(0)
+                .category(category)
+                .subCategory(subCategory) // Ensure subCategory is used if provided
+                .build();
+
+        attractionsRepository.save(p);
+    }
+
 
     public Attractions getAttractions(Long id) {
         Optional<Attractions> attractions = attractionsRepository.findById(id);
@@ -183,10 +220,15 @@ public class AttractionsService {
 
     public Attractions findById(Long id) {
         Optional<Attractions> optionalAttractions = attractionsRepository.findById(id);
-        Attractions attractions = optionalAttractions.orElseThrow(() -> new RuntimeException("attractions not found with id: " + id));
+        Attractions attractions = optionalAttractions.orElseThrow(() -> new RuntimeException("Attractions not found with id: " + id));
         // 스크랩 수를 업데이트
         attractions.setScrapCount(scrapService.getScrapCount(attractions));
         return attractions;
+    }
+
+    public Result findResultById(Long id) {
+        Attractions attractions = findById(id); // 기존의 findById 메서드를 사용
+        return new Result(attractions.getId(), attractions.getTitle(), attractions.getPlace(), attractions.getThumbnailImg(), attractions.getContent());
     }
 
     public void save(Attractions attractions) {
@@ -195,18 +237,12 @@ public class AttractionsService {
 
     public Attractions getAttractionsById(Long id) {
         Attractions attractions = attractionsRepository.findById(id).orElse(null);
-
         if (attractions != null) {
             // 스크랩 수를 업데이트
             int scrapCount = scrapService.getScrapCount(attractions);
             attractions.setScrapCount(scrapCount);
         }
         return attractions;
-    }
-
-    public Result findResultById(Long id) {
-        Attractions attractions = findById(id); // 기존의 findById 메서드를 사용
-        return new Result(attractions.getId(), attractions.getTitle(), attractions.getPlace(), attractions.getThumbnailImg(), attractions.getContent());
     }
 
     @Transactional
@@ -220,8 +256,8 @@ public class AttractionsService {
         // 리뷰 삭제
         ratingRepository.deleteRatingsByAttractionsId(attractionsId);
 
-        attractionsRepository.deleteById(attractionsId);
 
+        attractionsRepository.deleteById(attractionsId);
     }
 
     public List<Attractions> getRandomAttractions(int limit) {
@@ -280,9 +316,10 @@ public class AttractionsService {
     }
 
     public List<AttractionsLocationDto> getAllAttractionsLocations() {
-
+        // Attractions 엔티티의 리스트를 데이터베이스에서 가져옵니다.
         List<Attractions> attractionsList = attractionsRepository.findAll();
 
+        // Attractions 엔티티를 AttractionsLocationDto로 변환하여 리스트에 추가합니다.
         List<AttractionsLocationDto> attractionsLocationDtos = new ArrayList<>();
         for (Attractions attractions : attractionsList) {
             AttractionsLocationDto dto = new AttractionsLocationDto(

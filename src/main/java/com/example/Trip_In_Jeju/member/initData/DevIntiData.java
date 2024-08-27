@@ -9,7 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Profile("prod")
+@Profile({"prod","dev"})
+
 public class DevIntiData implements BeforeIntiData {
     @Bean
     CommandLineRunner initData(MemberService memberService) {

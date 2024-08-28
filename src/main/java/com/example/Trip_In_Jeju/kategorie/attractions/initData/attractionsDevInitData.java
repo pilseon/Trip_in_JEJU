@@ -42,7 +42,7 @@ public class attractionsDevInitData implements BeforeIntiData {
 
                 // 여러 Attractions 데이터 생성
                 createAttractionsData("자매국수","10:00","22:00", "제주도의 대표 국수 맛집입니다.","월요일",
-                        "http://example.com","064-123-4567",33.5101,126.5215,"제주특별자치도 제주시 연동","한식", imagePaths[0]);
+                        "http://example.com","064-123-4567",33.5101,126.5215,"제주특별자치도 제주시 연동","자연경관", imagePaths[0]);
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -43,9 +43,9 @@ public class dessertDevInitData implements BeforeIntiData {
 
                 // 여러 Dessert 데이터 생성
                 createDessertData("자매국수","10:00","22:00", "제주도의 대표 국수 맛집입니다.","월요일",
-                        "http://example.com","064-123-4567",33.5101,126.5215,"제주특별자치도 제주시 연동","한식", imagePaths[0]);
+                        "http://example.com","064-123-4567",33.5101,126.5215,"제주특별자치도 제주시 연동","카페", imagePaths[0]);
                 createDessertData("계절식탁","11:00","23:00", "제주도의 대표 계절식탁입니다.","월요일",
-                        "http://example.com","064-123-4567",33.5201,126.5315,"제주특별자치도 제주시 연동","일식", imagePaths[1]);
+                        "http://example.com","064-123-4567",33.5201,126.5315,"제주특별자치도 제주시 연동","베이커리", imagePaths[1]);
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -33,7 +33,8 @@ public class foodDevInitData implements BeforeIntiData {
 
                 // 여러 이미지 파일 경로 설정 (프로젝트 내부 경로로 수정)
                 String[] imagePaths = {
-                        "/app/resources/static/images/food/sister.jpeg"
+                        "/app/resources/static/images/food/자매식당.jpeg",
+                        "/app/resources/static/images/food/계절식탁.jpg"
                 };
 
                 // 파일 경로를 절대 경로로 변경하여 로깅
@@ -41,33 +42,36 @@ public class foodDevInitData implements BeforeIntiData {
                 System.out.println("이미지 파일 절대 경로: " + file.getAbsolutePath());
 
                 // 여러 Food 데이터 생성
-                createFoodData("자매국수", "제주도의 대표 국수 맛집입니다.", imagePaths[0]);
-
+                createFoodData("자매국수","10:00","22:00", "제주도의 대표 국수 맛집입니다.","월요일",
+                        "http://example.com","064-123-4567",33.5101,126.5215,"제주특별자치도 제주시 연동","한식", imagePaths[0]);
+                createFoodData("계절식탁","11:00","23:00", "제주도의 대표 계절식탁입니다.","월요일",
+                        "http://example.com","064-123-4567",33.5201,126.5315,"제주특별자치도 제주시 연동","일식", imagePaths[1]);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         };
     }
 
-    private void createFoodData(String title, String description, String imagePath) throws IOException {
+    private void createFoodData(String title, String businessHoursStart,String businessHoursEnd, String description,String closedDay,
+                                String websiteUrl,String phoneNumber,double latitude, double longitude,String address, String subCategory, String imagePath) throws IOException {
         MultipartFile thumbnail = getMultipartFile(imagePath);
 
         // Food 데이터 생성
         foodService.create(
                 title,
-                "10:00", // 영업 시작 시간
-                "22:00", // 영업 종료 시간
+                businessHoursStart, // 영업 시작 시간
+                businessHoursEnd, // 영업 종료 시간
                 description,
                 title,
-                "화요일", // 휴무일
-                "http://example.com",
-                "064-123-4567",
+                closedDay, // 휴무일
+                websiteUrl,
+                phoneNumber,
                 thumbnail,
-                33.5101, // 예시 위도
-                126.5215, // 예시 경도
+                latitude, // 예시 위도
+                longitude, // 예시 경도
                 "음식점", // 카테고리
-                "제주특별자치도 제주시 연동", // 주소
-                "한식" // 서브 카테고리
+                address, // 주소
+                subCategory // 서브 카테고리
         );
     }
 

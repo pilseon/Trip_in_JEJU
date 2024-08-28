@@ -155,33 +155,28 @@ public class MemberController {
                          @RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail,
                          Model model,
                          HttpSession session) {
-        try {
-            // 인증 코드 생성 및 이메일 전송
-            String verificationCode = verificationCodeService.generateVerificationCode(email);
-            String subject = "Trip_In_JEJU 회원 가입 인증";
-            String body = String.format(
-                    "안녕하세요! Trip_In_Jeju에 가입해 주셔서 감사합니다.<br><br>" +
-                            "회원님의 가입을 진심으로 축하드립니다! 이제 저희와 함께 제주도의 멋진 여행을 계획하고, 잊지 못할 추억을 만들어보세요.<br><br>" +
-                            "인증 코드: <b>%s</b><br><br>" +
-                            "앞으로도 많은 사랑과 관심 부탁드리며, 즐거운 여행 되시길 바랍니다.<br><br>" +
-                            "감사합니다.<br><br>" +
-                            "Trip_In_Jeju 팀",
-                    verificationCode
-            );
-            emailService.send(email, subject, body);
 
+// 인증 코드 생성 및 이메일 전송
+        String verificationCode = verificationCodeService.generateVerificationCode(email);
+        String subject = "Trip_In_JEJU 회원 가입 인증";
+        String body = String.format(
+                "안녕하세요! Trip_In_Jeju에 가입해 주셔서 감사합니다.<br><br>" +
+                        "회원님의 가입을 진심으로 축하드립니다! 이제 저희와 함께 제주도의 멋진 여행을 계획하고, 잊지 못할 추억을 만들어보세요.<br><br>" +
+                        "인증 코드: <b>%s</b><br><br>" +
+                        "앞으로도 많은 사랑과 관심 부탁드리며, 즐거운 여행 되시길 바랍니다.<br><br>" +
+                        "감사합니다.<br><br>" +
+                        "Trip_In_Jeju 팀",
+                verificationCode
+        );
 
-            session.setAttribute("verificationCode", verificationCode);
+        emailService.send(email, subject, body);
 
+        session.setAttribute("verificationCode", verificationCode);
 
-            memberService.signup(username, nickname, password, email, thema, thumbnail, MemberRole.MEMBER);
+        memberService.signup(username, nickname, password, email, thema, thumbnail, MemberRole.MEMBER);
 
+        return "redirect:/member/login";
 
-            return "redirect:/member/login";
-        } catch (Exception e) {
-            model.addAttribute("errorMessage", "오류가 발생하였습니다. 처음부터 다시 시도해주세요!");
-            return "error";
-        }
     }
 
     @PostMapping("/modify")

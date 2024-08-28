@@ -15,7 +15,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 @Configuration
-@Profile("dev")
+@Profile("prod")
 @RequiredArgsConstructor
 public class foodDevInitData implements BeforeIntiData {
 
@@ -27,10 +27,18 @@ public class foodDevInitData implements BeforeIntiData {
     public ApplicationRunner init() {
         return args -> {
             try {
-                // 여러 이미지 파일 경로 설정
+                // 현재 작업 디렉토리 출력
+                String currentDir = System.getProperty("user.dir");
+                System.out.println("현재 작업 디렉토리: " + currentDir);
+
+                // 여러 이미지 파일 경로 설정 (프로젝트 내부 경로로 수정)
                 String[] imagePaths = {
-                        "C:\\work\\Trip_In_Jeju\\src\\main\\resources\\static\\images\\자매국수.jpeg"
+                        "src/main/resources/static/images/food/자매국수.jpeg"
                 };
+
+                // 파일 경로를 절대 경로로 변경하여 로깅
+                File file = new File(imagePaths[0]);
+                System.out.println("이미지 파일 절대 경로: " + file.getAbsolutePath());
 
                 // 여러 Food 데이터 생성
                 createFoodData("자매국수", "제주도의 대표 국수 맛집입니다.", imagePaths[0]);

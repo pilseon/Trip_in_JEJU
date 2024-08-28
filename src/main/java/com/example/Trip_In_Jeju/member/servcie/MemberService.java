@@ -206,7 +206,7 @@ public class MemberService {
 
     // 썸네일 저장
     private String saveThumbnail(MultipartFile thumbnail) {
-        String thumbnailRelPath = "post/" + UUID.randomUUID().toString() + ".jpg";
+        String thumbnailRelPath = "member/" + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(genFileDirPath + "/" + thumbnailRelPath);
 
         try {

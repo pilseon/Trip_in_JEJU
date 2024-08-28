@@ -33,7 +33,7 @@ public class activityDevInitData implements BeforeIntiData {
 
                 // 여러 이미지 파일 경로 설정 (프로젝트 내부 경로로 수정)
                 String[] imagePaths = {
-                        "/app/resources/static/images/activity/함덕돌핀레저.png",
+                        "/app/resources/static/images/activity/함덕돌핀레저.png"
     
                 };
 

@@ -33,7 +33,7 @@ public class foodDevInitData implements BeforeIntiData {
 
                 // 여러 이미지 파일 경로 설정 (프로젝트 내부 경로로 수정)
                 String[] imagePaths = {
-                        "static/images/food/sister.jpeg"
+                        "https://github.com/user-attachments/assets/e0b5b347-e57a-4d1d-a2dd-26bfce7e10c1"
                 };
 
                 // 파일 경로를 절대 경로로 변경하여 로깅

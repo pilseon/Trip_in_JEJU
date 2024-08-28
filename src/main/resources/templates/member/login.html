@@ -632,7 +632,7 @@
 
 
                         <label class="form-wrapper__label" for="signup-password"> 비밀번호 확인 &nbsp; <span id="passwordMatchMessage"></span></label>
-                        <input type="password"  class="form-wrapper__input" id="signup-confirmPassword" name="confirmPassword"  placeholder="비밀번호 확인" required>
+                        <input type="password"  class="form-wrapper__input" id="signup-confirmPassword" name="confirmPassword"  placeholder="비밀번호 확인" oninput="checkPasswordMatch()" required>
 
 
 
@@ -699,20 +699,19 @@
 
      usernameInput.addEventListener("input", () => {
         usernameCheckMessage.textContent = "";
-        isUsernameValid = false;
-        checkAllValidations();
+        resetValidation();
     });
+
 
     emailInput.addEventListener("input", () => {
         emailCheckMessage.textContent = "";
-        isEmailValid = false;
-        checkAllValidations();
+        resetValidation();
     });
+
 
     nicknameInput.addEventListener("input", () => {
         nicknameCheckMessage.textContent = "";
-        isNicknameValid = false;
-        checkAllValidations();
+        resetValidation();
     });
 
     // 회원가입 버튼 활성화 체크 함수
@@ -904,46 +903,79 @@
     }
     }
 
-        function dropOranges(selector) {
-         const container = document.querySelector(selector);
-         for (let i = 0; i < 3; i++) {
-             const orange = document.createElement('div');
-             orange.classList.add('orange');
-             orange.style.left = Math.random() * 90 + 'vw'; // 랜덤한 위치 설정
-             container.appendChild(orange);
+           let oranges = [];
+        const container = document.querySelector('.wrap');
 
-             // 애니메이션이 끝난 후 아이콘 제거
-             orange.addEventListener('animationend', () => {
-                 orange.remove();
-             });
-         }
-     }
+        // 오렌지 생성 함수
+        function createOrange() {
+          const orange = document.createElement('div');
+          orange.classList.add('orange');
+          orange.style.left = Math.random() * 90 + 'vw'; // 랜덤 위치 설정
+          orange.startTime = Date.now(); // 현재 시간을 시작 시간으로 설정
+          container.appendChild(orange);
+          oranges.push(orange); // 오렌지를 배열에 추가
+        }
 
-     // 페이지 로드 시 귤 아이콘 떨어뜨리기
-     document.addEventListener('DOMContentLoaded', () => {
-         dropOranges('.wrap');
-         setInterval(() => {
-             dropOranges('.wrap');
-         }, 1000); // 1초마다 귤 아이콘 떨어뜨리기
-     });
+        // 오렌지 애니메이션 업데이트 함수
+        function updateOranges() {
+          const currentTime = Date.now();
 
- document.addEventListener("DOMContentLoaded", function() {
-        // Choose form error
-       var chooseFormError = document.getElementById("choose-form-error");
-       if (chooseFormError && chooseFormError.textContent.trim() !== "") {
-           // Show alert with the error message
-           alert(chooseFormError.textContent);
-           // Hide the element
-           chooseFormError.style.display = "none";
-       }
+          oranges.forEach((orange) => {
+            const elapsedTime = (currentTime - orange.startTime) / 1000; // 경과 시간 계산 (초 단위)
+            const progress = elapsedTime / 10; // 10초 애니메이션 기준 진행률 계산
 
-       // Login form error
-       var loginFormError = document.getElementById("login-form-error");
-       if (loginFormError) {
-           alert(loginFormError.textContent);
-           loginFormError.style.display = "block";
-       }
-   });
+            if (progress < 1) {
+              // 애니메이션 진행 중
+              orange.style.transform = `translateY(${progress * 100}vh)`;
+              orange.style.opacity = 1 - progress;
+            } else {
+              // 애니메이션 완료 시
+              orange.remove();
+            }
+          });
+
+          oranges = oranges.filter((orange) => orange.parentElement); // DOM에서 제거된 오렌지 필터링
+
+          requestAnimationFrame(updateOranges); // 다음 애니메이션 프레임 요청
+        }
+
+        // 페이지 가시성 변화 감지 함수
+        function handleVisibilityChange() {
+          if (document.hidden) {
+            // 페이지가 비활성화될 때 실행 중인 애니메이션을 멈추지 않음
+          } else {
+            // 페이지가 다시 활성화되면 애니메이션 상태를 업데이트
+            updateOranges();
+          }
+        }
+
+        // 일정 간격으로 새로운 오렌지 생성
+        setInterval(createOrange, 1000);
+
+        // 페이지 로드 시 애니메이션 시작
+        document.addEventListener('DOMContentLoaded', () => {
+          updateOranges(); // 애니메이션 업데이트 시작
+          document.addEventListener('visibilitychange', handleVisibilityChange); // 페이지 가시성 변화 감지
+        });
+
+  document.addEventListener("DOMContentLoaded", function() {
+         // Choose form error
+        var chooseFormError = document.getElementById("choose-form-error");
+        if (chooseFormError && chooseFormError.textContent.trim() !== "") {
+            // Show alert with the error message
+            alert(chooseFormError.textContent);
+            // Hide the element
+            chooseFormError.style.display = "none";
+        }
+
+        // Login form error
+        var loginFormError = document.getElementById("login-form-error");
+        if (loginFormError) {
+            alert(loginFormError.textContent);
+            loginFormError.style.display = "block";
+        }
+    });
+
 </script>
 </body>
 </html>

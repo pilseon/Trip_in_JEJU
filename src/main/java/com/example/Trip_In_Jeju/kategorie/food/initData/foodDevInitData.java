@@ -15,7 +15,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 @Configuration
-@Profile({"prod","dev"})
+@Profile("dev")
 @RequiredArgsConstructor
 public class foodDevInitData implements BeforeIntiData {
 
@@ -29,7 +29,7 @@ public class foodDevInitData implements BeforeIntiData {
             try {
                 // 여러 이미지 파일 경로 설정
                 String[] imagePaths = {
-                        "src/main/resources/static/images/food/자매국수.jpeg"
+                        "C:\\work\\Trip_In_Jeju\\src\\main\\resources\\static\\images\\자매국수.jpeg"
                 };
 
                 // 여러 Food 데이터 생성

@@ -23,7 +23,7 @@ public class attractionsDevInitData implements BeforeIntiData {
     // 다른 서비스들도 동일하게 주입
 
 
-    @Bean
+    @Bean(name = "attractionsInit")
     public ApplicationRunner init() {
         return args -> {
             try {

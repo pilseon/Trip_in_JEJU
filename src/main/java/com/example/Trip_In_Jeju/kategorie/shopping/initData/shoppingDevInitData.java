@@ -23,7 +23,7 @@ public class shoppingDevInitData implements BeforeIntiData {
     // 다른 서비스들도 동일하게 주입
 
 
-    @Bean
+    @Bean(name = "shoppingInit")
     public ApplicationRunner init() {
         return args -> {
             try {

@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Profile;
 @Profile({"prod","dev"})
 public class DevIntiData implements BeforeIntiData {
 
-    @Bean(name = "memberInit")
+    @Bean
     CommandLineRunner initData(MemberService memberService) {
         return args -> {
             beforeInit();

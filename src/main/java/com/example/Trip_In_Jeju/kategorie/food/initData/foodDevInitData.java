@@ -1,3 +1,4 @@
+/*
 package com.example.Trip_In_Jeju.kategorie.food.initData;
 
 
@@ -90,4 +91,4 @@ public class foodDevInitData implements BeforeIntiData {
                 input
         );
     }
-}
+}*/

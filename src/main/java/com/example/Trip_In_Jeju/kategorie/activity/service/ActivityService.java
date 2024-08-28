@@ -100,14 +100,12 @@ public class ActivityService {
         if (!thumbnailFile.getParentFile().exists()) {
             thumbnailFile.getParentFile().mkdirs();
         }
-
-        thumbnailFile.mkdirs();
-
         try {
             thumbnail.transferTo(thumbnailFile);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
 
         // Location 엔티티 생성 및 저장
         Location location = new Location();

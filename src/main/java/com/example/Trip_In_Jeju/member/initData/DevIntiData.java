@@ -11,7 +11,8 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 @Profile({"prod","dev"})
 public class DevIntiData implements BeforeIntiData {
-    @Bean
+
+    @Bean(name = "memberInit")
     CommandLineRunner initData(MemberService memberService) {
         return args -> {
             beforeInit();

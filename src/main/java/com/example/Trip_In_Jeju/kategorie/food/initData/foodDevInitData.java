@@ -29,7 +29,7 @@ public class foodDevInitData implements BeforeIntiData {
             try {
                 // 여러 이미지 파일 경로 설정
                 String[] imagePaths = {
-                        "\\src\\main\\resources\\static\\images\\food\\자매국수.jpeg"
+                        "src/main/resources/static/images/food/자매국수.jpeg"
                 };
 
                 // 여러 Food 데이터 생성

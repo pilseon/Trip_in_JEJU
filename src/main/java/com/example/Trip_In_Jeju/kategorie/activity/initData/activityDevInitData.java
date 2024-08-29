@@ -33,14 +33,14 @@ public class activityDevInitData implements BeforeIntiData {
 
                 // 여러 이미지 파일 경로 설정 (프로젝트 내부 경로로 수정)
                 String[] imagePaths = {
-                        "/app/resources/static/images/activity/감귤카트.jfif",
-                        "/app/resources/static/images/activity/엑티브파크.jfif",
+                        "/app/resources/static/images/activity/감귤카트.jpg",
+                        "/app/resources/static/images/activity/엑티브파크.jpg",
                         "/app/resources/static/images/activity/와따.png",
-                        "/app/resources/static/images/activity/대유 수렵사격.jfif",
+                        "/app/resources/static/images/activity/대유 수렵사격.jpg",
                         "/app/resources/static/images/activity/어생승마장.png",
-                        "/app/resources/static/images/activity/해빛다이브.jfif",
-                        "/app/resources/static/images/activity/감귤나무숲.jfif",
-                        "/app/resources/static/images/activity/영희네농장.jfif",
+                        "/app/resources/static/images/activity/해빛다이브.jpg",
+                        "/app/resources/static/images/activity/감귤나무숲.jpg",
+                        "/app/resources/static/images/activity/영희네농장.jpg",
                         "/app/resources/static/images/activity/해녀태왁.jpg",
                         "/app/resources/static/images/activity/981파크.jpg"
 

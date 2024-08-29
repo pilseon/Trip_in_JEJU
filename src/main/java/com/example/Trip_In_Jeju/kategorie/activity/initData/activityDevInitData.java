@@ -36,7 +36,7 @@ public class activityDevInitData implements BeforeIntiData {
                         "/app/resources/static/images/activity/감귤카트.jpg",
                         "/app/resources/static/images/activity/엑티브파크.jpg",
                         "/app/resources/static/images/activity/와따.png",
-                        "/app/resources/static/images/activity/대유 수렵사격.jpg",
+                        "/app/resources/static/images/activity/대유수렵사격.jpg",
                         "/app/resources/static/images/activity/어생승마장.png",
                         "/app/resources/static/images/activity/해빛다이브.jpg",
                         "/app/resources/static/images/activity/감귤나무숲.jpg",

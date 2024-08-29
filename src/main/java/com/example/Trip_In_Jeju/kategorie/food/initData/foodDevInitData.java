@@ -40,7 +40,7 @@ public class foodDevInitData implements BeforeIntiData {
                         "/app/resources/static/images/food/우래.jpg",
                         "/app/resources/static/images/food/연태만.jpg",
                         "/app/resources/static/images/food/해오반.jpg",
-                        "/app/resources/static/images/food/돗통 흑돼지.jpg",
+                        "/app/resources/static/images/food/돗통흑돼지.jpg",
                         "/app/resources/static/images/food/계절식탁.jpg",
                         "/app/resources/static/images/food/난산리식당.jpg",
                         "/app/resources/static/images/food/달이뜨는식탁.jpg"

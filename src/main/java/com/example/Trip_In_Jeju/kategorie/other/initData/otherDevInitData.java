@@ -34,7 +34,7 @@ public class otherDevInitData implements BeforeIntiData {
                 // 여러 이미지 파일 경로 설정 (프로젝트 내부 경로로 수정)
                 String[] imagePaths = {
                         "/app/resources/static/images/other/아꼬운냥.jpeg",
-                        "/app/resources/static/images/other/다짐 헬스.png",
+                        "/app/resources/static/images/other/다짐헬스.png",
                         "/app/resources/static/images/other/킹스짐.jpeg",
                         "/app/resources/static/images/other/유휘트니스.jpeg",
                         "/app/resources/static/images/other/뽀로로앤타요.jpeg",

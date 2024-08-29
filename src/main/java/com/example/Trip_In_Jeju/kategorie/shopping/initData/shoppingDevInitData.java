@@ -33,15 +33,15 @@ public class shoppingDevInitData implements BeforeIntiData {
 
                 // 여러 이미지 파일 경로 설정 (프로젝트 내부 경로로 수정)
                 String[] imagePaths = {
-                        "/app/resources/static/images/shopping/동문시장.jfif",
-                        "/app/resources/static/images/shopping/동문수산시장.jfif",
-                        "/app/resources/static/images/shopping/서귀포재래시장.jfif",
-                        "/app/resources/static/images/shopping/신라면세점 제주.jfif",
-                        "/app/resources/static/images/shopping/롯대면세점.jfif",
+                        "/app/resources/static/images/shopping/동문시장.jpg",
+                        "/app/resources/static/images/shopping/동문수산시장.jpg",
+                        "/app/resources/static/images/shopping/서귀포재래시장.jpg",
+                        "/app/resources/static/images/shopping/신라면세점 제주.jpg",
+                        "/app/resources/static/images/shopping/롯대면세점.jpg",
                         "/app/resources/static/images/shopping/중문면세점.jpg",
                         "/app/resources/static/images/shopping/바이제주.jpg",
                         "/app/resources/static/images/shopping/선물고팡.jpg",
-                        "/app/resources/static/images/shopping/제스토리.jfif",
+                        "/app/resources/static/images/shopping/제스토리.jpg",
                         "/app/resources/static/images/shopping/우디버디.png"
 
 

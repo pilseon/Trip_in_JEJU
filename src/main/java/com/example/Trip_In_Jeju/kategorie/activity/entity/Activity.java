@@ -26,6 +26,8 @@ public class Activity {
     @GeneratedValue(strategy = IDENTITY)
     private long id;
     private String title;
+
+    @Column(length = 50000)  // 필요한 경우 길이 제한을 설정합니다.
     private String content;
     private String category;
     private Long hit;

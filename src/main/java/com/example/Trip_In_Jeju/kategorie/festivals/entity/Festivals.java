@@ -26,6 +26,8 @@ public class Festivals {
     @GeneratedValue(strategy = IDENTITY)
     private long id;
     private String title;
+
+    @Column(length = 50000)
     private String content;
     private String category;
     private Long hit;

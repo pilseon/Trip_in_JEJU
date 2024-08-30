@@ -15,7 +15,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 @Configuration
-@Profile("prod")
+//@Profile("prod")
 @Profile("dev")
 @RequiredArgsConstructor
 public class shoppingDevInitData implements BeforeIntiData {

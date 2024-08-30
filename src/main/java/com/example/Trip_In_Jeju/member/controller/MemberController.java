@@ -175,8 +175,7 @@ public class MemberController {
 
         memberService.signup(username, nickname, password, email, thema, thumbnail, MemberRole.MEMBER);
 
-        return "redirect:/member/login";
-
+        return "redirect:/";
     }
 
     @PostMapping("/modify")

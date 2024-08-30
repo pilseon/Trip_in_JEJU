@@ -146,7 +146,7 @@ public class MemberController {
         return "member/login"; // signup.html을 반환
     }
 
-    @PostMapping("/login")
+    @PostMapping("/signup")
     public String signup(@RequestParam("username") String username,
                          @RequestParam("nickname") String nickname,
                          @RequestParam("password") String password,

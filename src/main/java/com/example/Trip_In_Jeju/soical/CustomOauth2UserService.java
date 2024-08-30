@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -60,6 +61,8 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService {
                     .loginId(loginId)
                     .username(username)
                     .provider(provider)
+                    .createDate(LocalDateTime.now())
+                    .role(MemberRole.MEMBER)
                     .email(email)
                     .providerId(providerId)
                     .build();

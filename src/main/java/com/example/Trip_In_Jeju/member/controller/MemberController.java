@@ -160,13 +160,20 @@ public class MemberController {
         String verificationCode = verificationCodeService.generateVerificationCode(email);
         String subject = "Trip_In_JEJU 회원 가입 인증";
         String body = String.format(
-                "안녕하세요! Trip_In_Jeju에 가입해 주셔서 감사합니다.<br><br>" +
-                        "회원님의 가입을 진심으로 축하드립니다! 이제 저희와 함께 제주도의 멋진 여행을 계획하고, 잊지 못할 추억을 만들어보세요.<br><br>" +
-                        "인증 코드: <b>%s</b><br><br>" +
-                        "앞으로도 많은 사랑과 관심 부탁드리며, 즐거운 여행 되시길 바랍니다.<br><br>" +
-                        "감사합니다.<br><br>" +
-                        "Trip_In_Jeju 팀",
-                verificationCode
+                "안녕하세요 %s님! Trip_In_Jeju에 가입해 주셔서 진심으로 감사드립니다.\n" +
+                        "\n" +
+                        "회원님께서 저희 커뮤니티의 일원이 되신 것을 환영합니다. 이제 제주도의 숨겨진 명소부터 잘 알려진 관광지까지, 다양한 여행 정보를 한곳에서 만나보실 수 있습니다. Trip_In_Jeju는 제주도의 자연과 문화, 음식 등 다채로운 매력을 소개하며, 여러분의 여행을 더욱 특별하게 만들어 드리기 위해 최선을 다하고 있습니다.\n" +
+                        "\n" +
+                        "저희와 함께 제주도를 탐험하며, 새로운 경험과 감동을 만나보세요. 편리한 여행 계획은 물론, 현지에서만 느낄 수 있는 색다른 즐거움까지, Trip_In_Jeju는 언제나 회원님의 멋진 여행을 응원합니다.\n" +
+                        "\n" +
+                        "앞으로도 저희와 함께 소중한 추억을 만들어 가시길 바라며, 많은 관심과 사랑 부탁드립니다. 궁금한 점이나 도움이 필요하신 경우 언제든지 연락해 주시면, 최선을 다해 도와드리겠습니다.\n" +
+                        "\n" +
+                        "다시 한번 감사드리며, 제주도에서의 멋진 여정을 기대합니다.\n" +
+                        "\n" +
+                        "감사합니다.\n" +
+                        "\n" +
+                        "Trip_In_Jeju 팀 드림",
+                nickname
         );
 
         emailService.send(email, subject, body);
@@ -175,7 +182,7 @@ public class MemberController {
 
         memberService.signup(username, nickname, password, email, thema, thumbnail, MemberRole.MEMBER);
 
-        return "redirect:/";
+        return "redirect:/member/login";
     }
 
     @PostMapping("/modify")

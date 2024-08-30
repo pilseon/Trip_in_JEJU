@@ -141,10 +141,10 @@ public class MemberController {
         return "member/admin";
     }
 
-    @GetMapping("/login")
-    public String signForm(Model model) {
-        return "member/login"; // signup.html을 반환
-    }
+//    @GetMapping("/signup")
+//    public String signForm(Model model) {
+//        return "member/login"; // signup.html을 반환
+//    }
 
     @PostMapping("/signup")
     public String signup(@RequestParam("username") String username,

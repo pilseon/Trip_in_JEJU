@@ -72,7 +72,7 @@
                                 <div>리뷰 작성 완료</div>
                             </a>
                             <a th:if="${record.food != null and (reviewedFoodIds == null or !reviewedFoodIds.contains(record.food.id))}"
-                               th:href="@{'/food/detail/' + ${record.food.id}}"
+                               th:href="@{'/food/detail/' + ${record.food.id} + '#review-form'}"
                                class="text-yellow-500 hover:text-blue-700 flex-shrink-0">
                                 <div>리뷰 작성 &gt;</div>
                             </a>
@@ -83,7 +83,7 @@
                                 <div>리뷰 작성 완료</div>
                             </a>
                             <a th:if="${record.activity != null and (reviewedActivityIds == null or !reviewedActivityIds.contains(record.activity.id))}"
-                               th:href="@{'/activity/detail/' + ${record.activity.id}}"
+                               th:href="@{'/activity/detail/' + ${record.activity.id} + '#review-form'}"
                                class="text-yellow-500 hover:text-blue-700 flex-shrink-0">
                                 <div>리뷰 작성 &gt;</div>
                             </a>
@@ -94,7 +94,7 @@
                                 <div>리뷰 작성 완료</div>
                             </a>
                             <a th:if="${record.attractions != null and (reviewedAttractionsIds == null or !reviewedAttractionsIds.contains(record.attractions.id))}"
-                               th:href="@{'/attractions/detail/' + ${record.attractions.id}}"
+                               th:href="@{'/attractions/detail/' + ${record.attractions.id} + '#review-form'}"
                                class="text-yellow-500 hover:text-blue-700 flex-shrink-0">
                                 <div>리뷰 작성 &gt;</div>
                             </a>
@@ -105,7 +105,7 @@
                                 <div>리뷰 작성 완료</div>
                             </a>
                             <a th:if="${record.dessert != null and (reviewedDessertIds == null or !reviewedDessertIds.contains(record.dessert.id))}"
-                               th:href="@{'/dessert/detail/' + ${record.dessert.id}}"
+                               th:href="@{'/dessert/detail/' + ${record.dessert.id} + '#review-form'}"
                                class="text-yellow-500 hover:text-blue-700 flex-shrink-0">
                                 <div>리뷰 작성 &gt;</div>
                             </a>
@@ -116,7 +116,7 @@
                                 <div>리뷰 작성 완료</div>
                             </a>
                             <a th:if="${record.festivals != null and (reviewedFestivalsIds == null or !reviewedFestivalsIds.contains(record.festivals.id))}"
-                               th:href="@{'/festivals/detail/' + ${record.festivals.id}}"
+                               th:href="@{'/festivals/detail/' + ${record.festivals.id} + '#review-form'}"
                                class="text-yellow-500 hover:text-blue-700 flex-shrink-0">
                                 <div>리뷰 작성 &gt;</div>
                             </a>
@@ -127,7 +127,7 @@
                                 <div>리뷰 작성 완료</div>
                             </a>
                             <a th:if="${record.other != null and (reviewedOtherIds == null or !reviewedOtherIds.contains(record.other.id))}"
-                               th:href="@{'/other/detail/' + ${record.other.id}}"
+                               th:href="@{'/other/detail/' + ${record.other.id} + '#review-form'}"
                                class="text-yellow-500 hover:text-blue-700 flex-shrink-0">
                                 <div>리뷰 작성 &gt;</div>
                             </a>
@@ -138,7 +138,7 @@
                                 <div>리뷰 작성 완료</div>
                             </a>
                             <a th:if="${record.shopping != null and (reviewedShoppingIds == null or !reviewedShoppingIds.contains(record.shopping.id))}"
-                               th:href="@{'/shopping/detail/' + ${record.shopping.id}}"
+                               th:href="@{'/shopping/detail/' + ${record.shopping.id} + '#review-form'}"
                                class="text-yellow-500 hover:text-blue-700 flex-shrink-0">
                                 <div>리뷰 작성 &gt;</div>
                             </a>

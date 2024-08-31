@@ -7,7 +7,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="/resource/css/click.css" rel="stylesheet" type="text/css"/>
     <link href="/resource/css/rating.css" rel="stylesheet" type="text/css"/>
-    <title>Trip_In_Jeju</title>
     <style>
         .list-group-item {
             padding-left: 0;
@@ -142,7 +141,7 @@
 
 
         <!-- 리뷰 작성 및 목록 -->
-        <div sec:authorize="isAuthenticated()">
+        <div sec:authorize="isAuthenticated()" id="review-form">
             <h3 class="mt-4 text-lg font-semibold">리뷰 작성</h3>
             <div th:if="${canWriteReview && !hasWrittenReview}">
                 <form th:action="@{/food/review/{id}(id=${food.id})}" method="post" enctype="multipart/form-data" class="space-y-4">

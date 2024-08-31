@@ -144,7 +144,7 @@
 
 
         <!-- 리뷰 작성 및 목록 -->
-        <div sec:authorize="isAuthenticated()">
+        <div sec:authorize="isAuthenticated()" id="review-form">
             <h3 class="mt-4 text-lg font-semibold">리뷰 작성</h3>
             <div th:if="${canWriteReview && !hasWrittenReview}">
                 <form th:action="@{/dessert/review/{id}(id=${dessert.id})}" method="post" enctype="multipart/form-data" class="space-y-4">

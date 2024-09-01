@@ -1,16 +1,46 @@
-# <img src="https://github.com/user-attachments/assets/fd649a33-0ec9-4336-86eb-75bbbbe43910">
+# 🚀프로젝트 명 : Trip In Jeju
 
-## 🚀프로젝트 명 : Trip In Jeju
+<img src="https://github.com/user-attachments/assets/1c871a74-31f9-498a-9bdf-0fda3adf97d4" style="border-radius: 10%;">
+
+* 배포 Server URL : https://kkyul.site
 
 ## 🖥️ 프로젝트 설명
+
 * 제주도를 여행하는 여행객을 위한 추천 장소 제공
 * 다양한 여행객들의 리뷰를 통해 여행동선 최소화
 * 여행 일정을 기록하고, 캘린더를 통한 여행 날짜 확인
+* 해당 장소에 직접 방문한 사람들의 생생한 리뷰 확인
 
 ## 🧑‍🤝‍🧑 맴버구성
-* 유필선 - GPS , CALENDAR , AI 작업
-* 어근혁 - MEMBER , LIST , REVIEW 작업
-* 송현지 - LIST CATEGORY , PPT 작업 
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-c3ow{border-color:inherit;text-align:center;vertical-align:top}
+</style>
+<table class="tg"><thead>
+  <tr>
+    <th class="tg-c3ow">유필선</th>
+    <th class="tg-c3ow">어근혁</th>
+    <th class="tg-c3ow">송현지</th>
+  </tr></thead>
+<tbody>
+  <tr>
+    <td class="tg-c3ow" colspan="3"><img src="https://github.com/user-attachments/assets/33c31826-9cff-4aab-bc9d-f27ba7734427" alt="Image" width="400" height="535"></td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"><img src="https://github.com/user-attachments/assets/fe07e6b3-d3d8-4428-8fbc-b77e7849ac12" alt="Image" width="200" height="200"></td>
+    <td class="tg-c3ow"><img src="https://github.com/user-attachments/assets/c35b7954-7d27-4277-a572-07b875651c0b" alt="Image" width="200" height="200"></td>
+    <td class="tg-c3ow"><img src="https://github.com/user-attachments/assets/9fd227fb-dbcf-49c9-bf32-86e72c9bfa91" alt="Image" width="200" height="200"></td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"><a href="https://github.com/pilseon" target="_blank" rel="noopener noreferrer">@pilseon</a></td>
+    <td class="tg-c3ow"><a href="https://github.com/EoGeunHyeok" target="_blank" rel="noopener noreferrer">@EoGeunHyeok</a></td>
+    <td class="tg-c3ow"><a href="https://github.com/hyunji1205" target="_blank" rel="noopener noreferrer">@hyunji1205</a></td>
+  </tr>
+</tbody></table>
 
 ## 🕰️개발 기간
 

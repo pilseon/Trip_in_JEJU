@@ -15,6 +15,7 @@ import com.example.Trip_In_Jeju.rating.entity.Rating;
 import com.example.Trip_In_Jeju.rating.service.RatingService;
 import com.example.Trip_In_Jeju.scrap.Scrap;
 import com.example.Trip_In_Jeju.scrap.ScrapService;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -154,7 +155,7 @@ public class MemberController {
                          @RequestParam("thema") String thema,
                          @RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail,
                          Model model,
-                         HttpSession session) {
+                         HttpSession session) throws MessagingException {
 
 // 인증 코드 생성 및 이메일 전송
         String verificationCode = verificationCodeService.generateVerificationCode(email);
@@ -346,7 +347,7 @@ public class MemberController {
             model.addAttribute("email", email);
             model.addAttribute("message", "이메일로 인증 코드가 전송되었습니다.");
             return "member/verify-reset"; // 인증 코드 입력 폼으로 리턴
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | MessagingException e) {
             model.addAttribute("error", e.getMessage());
             return "member/request-reset"; // 에러 발생 시 다시 요청 폼으로 리턴
         }

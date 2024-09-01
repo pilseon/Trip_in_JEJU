@@ -459,7 +459,7 @@
                     </div>
 
                     <!-- 랜덤 기타 목록 -->
-                    <div th:each="item : ${randomOthersForAll}" class="slider-item w-[49%] h-76 bg-gray-200 rounded-3xl overflow-hidden">
+                    <div th:each="item : ${randomOthersForAll}" class="slider-item w-[49%] h-72 bg-gray-200 rounded-3xl overflow-hidden">
                         <a th:href="@{|/other/detail/${item.id}|}" class="flex items-center justify-center w-full h-full relative">
                             <img th:src="@{|/gen/${item.thumbnailImg}|}" alt="Item Thumbnail" class="w-full h-full object-cover rounded-3xl"/>
                             <div class="absolute bottom-0 left-0 w-full bg-black bg-opacity-25 text-white p-2 text-center rounded-t-3xl">

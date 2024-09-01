@@ -59,8 +59,8 @@
 
         <!-- 리스트 영역 (가로 스크롤) -->
         <div class="w-10/12 overflow-x-auto mb-4 ml-auto mr-auto">
-            <ul class="flex gap-4">
-                <li th:each="attractions : ${paging.content}" class="flex flex-col items-center group w-[200px]" th:data-lat="${attractions.location.latitude}" th:data-lng="${attractions.location.longitude}">
+            <ul class="flex gap-4 w-full">
+                <li th:each="attractions : ${paging.content}" class="flex flex-col items-center group w-[200px] flex-grow" th:data-lat="${attractions.location.latitude}" th:data-lng="${attractions.location.longitude}">
                     <a th:href="@{|/attractions/detail/${attractions.id}|}" class="w-full h-[150px]">
                         <img class="object-cover object-center w-full h-full rounded-lg" th:src="@{|/gen/${attractions.thumbnailImg}|}" alt="${attractions.title}">
                     </a>

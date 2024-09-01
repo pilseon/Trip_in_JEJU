@@ -272,7 +272,7 @@
                     <div class="flex whitespace-nowrap">
                         <!-- 랜덤 음식 목록 -->
                         <div th:if="${randomFoods != null}" class="scroll-container flex overflow-x-hidden whitespace-nowrap w-full mb-6 relative">
-                            <ul  class="scroll-content flex space-x-4 w-full h-64">
+                            <ul class="scroll-content flex space-x-4 w-full h-72">
                                 <li th:each="food : ${randomFoods}" class="swiper-slide flex-none w-1/2 md:w-1/4 lg:w-1/5">
                                     <a th:href="@{|/food/detail/${food.id}|}">
                                         <div class="border rounded-lg p-2 h-full">
@@ -286,9 +286,9 @@
                         </div>
 
                         <!-- 랜덤 디저트 목록 -->
-                        <div th:if="${randomDesserts != null}" class="swiper-slide flex-shrink-0 w-full mb-6">
-                            <ul class="flex space-x-4 w-full h-64">
-                                <li th:each="dessert : ${randomDesserts}" class="flex-none w-1/2 md:w-1/4 lg:w-1/5">
+                        <div th:if="${randomDesserts != null}" class="scroll-container flex overflow-x-hidden whitespace-nowrap w-full mb-6 relative">
+                            <ul class="scroll-content flex space-x-4 w-full h-72">
+                                <li th:each="dessert : ${randomDesserts}" class="swiper-slide flex-none w-1/2 md:w-1/4 lg:w-1/5">
                                     <a th:href="@{|/dessert/detail/${dessert.id}|}">
                                         <div class="border rounded-lg p-2 h-full">
                                             <img th:src="@{|/gen/${dessert.thumbnailImg}|}" alt="Dessert Image" class="w-full h-32 object-cover rounded-md mb-4">
@@ -301,9 +301,9 @@
                         </div>
 
                         <!-- 랜덤 액티비티 목록 -->
-                        <div th:if="${randomActivitys != null}" class="swiper-slide flex-shrink-0 w-full mb-6">
-                            <ul class="flex space-x-4 w-full h-64">
-                                <li th:each="activity : ${randomActivitys}" class="flex-none w-1/2 md:w-1/4 lg:w-1/5">
+                        <div th:if="${randomActivitys != null}" class="scroll-container flex overflow-x-hidden whitespace-nowrap w-full mb-6 relative">
+                            <ul class="scroll-content flex space-x-4 w-full h-72">
+                                <li th:each="activity : ${randomActivitys}" class="swiper-slide flex-none w-1/2 md:w-1/4 lg:w-1/5">
                                     <a th:href="@{|/activity/detail/${activity.id}|}">
                                         <div class="border rounded-lg p-2 h-full">
                                             <img th:src="@{|/gen/${activity.thumbnailImg}|}" alt="Activity Image" class="w-full h-32 object-cover rounded-md mb-4">
@@ -316,9 +316,9 @@
                         </div>
 
                         <!-- 랜덤 관광지 목록 -->
-                        <div th:if="${randomAttractionss != null}" class="swiper-slide flex-shrink-0 w-full mb-6">
-                            <ul class="flex space-x-4 w-full h-64">
-                                <li th:each="attractions : ${randomAttractionss}" class="flex-none w-1/2 md:w-1/4 lg:w-1/5">
+                        <div th:if="${randomAttractionss != null}" class="scroll-container flex overflow-x-hidden whitespace-nowrap w-full mb-6 relative">
+                            <ul class="scroll-content flex space-x-4 w-full h-72">
+                                <li th:each="attractions : ${randomAttractionss}" class="swiper-slide flex-none w-1/2 md:w-1/4 lg:w-1/5">
                                     <a th:href="@{|/attractions/detail/${attractions.id}|}">
                                         <div class="border rounded-lg p-2 h-full">
                                             <img th:src="@{|/gen/${attractions.thumbnailImg}|}" alt="Attractions Image" class="w-full h-32 object-cover rounded-md mb-4">
@@ -331,9 +331,9 @@
                         </div>
 
                         <!-- 랜덤 축제 목록 -->
-                        <div th:if="${randomFestivalss != null}" class="swiper-slide flex-shrink-0 w-full mb-6">
-                            <ul class="flex space-x-4 w-full h-64">
-                                <li th:each="festivals : ${randomFestivalss}" class="flex-none w-1/2 md:w-1/4 lg:w-1/5">
+                        <div th:if="${randomFestivalss != null}" class="scroll-container flex overflow-x-hidden whitespace-nowrap w-full mb-6 relative">
+                            <ul class="scroll-content flex space-x-4 w-full h-72">
+                                <li th:each="festivals : ${randomFestivalss}" class="swiper-slide flex-none w-1/2 md:w-1/4 lg:w-1/5">
                                     <a th:href="@{|/festivals/detail/${festivals.id}|}">
                                         <div class="border rounded-lg p-2 h-full">
                                             <img th:src="@{|/gen/${festivals.thumbnailImg}|}" alt="Festivals Image" class="w-full h-32 object-cover rounded-md mb-4">
@@ -345,9 +345,9 @@
                             </ul>
                         </div>
 
-                        <div th:if="${randomShoppings != null}" class="swiper-slide flex-shrink-0 w-full mb-6">
-                            <ul class="flex space-x-4 w-full h-64">
-                                <li th:each="shopping : ${randomShoppings}" class="flex-none w-1/2 md:w-1/4 lg:w-1/5">
+                        <div th:if="${randomShoppings != null}" class="scroll-container flex overflow-x-hidden whitespace-nowrap w-full mb-6 relative">
+                            <ul class="scroll-content flex space-x-4 w-full h-72">
+                                <li th:each="shopping : ${randomShoppings}" class="swiper-slide flex-none w-1/2 md:w-1/4 lg:w-1/5">
                                     <a th:href="@{|/shopping/detail/${shopping.id}|}">
                                         <div class="border rounded-lg p-2 h-full">
                                             <img th:src="@{|/gen/${shopping.thumbnailImg}|}" alt="Attractions Image" class="w-full h-32 object-cover rounded-md mb-4">
@@ -360,9 +360,9 @@
                         </div>
 
                         <!-- 랜덤 기타 목록 -->
-                        <div th:if="${randomOthers != null}" class="swiper-slide flex-shrink-0 w-full mb-6">
-                            <ul class="flex space-x-4 w-full h-64">
-                                <li th:each="other : ${randomOthers}" class="flex-none w-1/2 md:w-1/4 lg:w-1/5">
+                        <div th:if="${randomOthers != null}" class="scroll-container flex overflow-x-hidden whitespace-nowrap w-full mb-6 relative">
+                            <ul class="scroll-content flex space-x-4 w-full h-72">
+                                <li th:each="other : ${randomOthers}" class="swiper-slide flex-none w-1/2 md:w-1/4 lg:w-1/5">
                                     <a th:href="@{|/other/detail/${other.id}|}">
                                         <div class="border rounded-lg p-2 h-full">
                                             <img th:src="@{|/gen/${other.thumbnailImg}|}" alt="Other Image" class="w-full h-32 object-cover rounded-md mb-4">

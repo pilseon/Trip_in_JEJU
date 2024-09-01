@@ -12,27 +12,25 @@
 * 해당 장소에 직접 방문한 사람들의 생생한 리뷰 확인
 
 ## 🧑‍🤝‍🧑 맴버구성
-<table class="tg" style="margin-left:auto; margin-right:auto;"><thead>
+<table><thead>
   <tr>
-    <th class="tg-c3ow">유필선</th>
-    <th class="tg-c3ow">어근혁</th>
-    <th class="tg-c3ow">송현지</th>
+    <th>유필선</th>
+    <th>어근혁</th>
+    <th>송현지</th>
   </tr></thead>
-<tbody style="margin-left:auto; margin-right:auto;">
+<tbody>
   <tr>
-    <td class="tg-c3ow" colspan="3" style="text-align: center;"><img src="https://github.com/user-attachments/assets/33c31826-9cff-4aab-bc9d-f27ba7734427" alt="Image" width="400" height="535"></td>
+    <td><img src="https://github.com/user-attachments/assets/fe07e6b3-d3d8-4428-8fbc-b77e7849ac12" alt="Image" width="200" height="200"></td>
+    <td><img src="https://github.com/user-attachments/assets/c35b7954-7d27-4277-a572-07b875651c0b" alt="Image" width="200" height="200"></td>
+    <td><img src="https://github.com/user-attachments/assets/9fd227fb-dbcf-49c9-bf32-86e72c9bfa91" alt="Image" width="200" height="200"></td>
   </tr>
   <tr>
-    <td class="tg-c3ow" style="text-align: center;"><img src="https://github.com/user-attachments/assets/fe07e6b3-d3d8-4428-8fbc-b77e7849ac12" alt="Image" width="200" height="200"></td>
-    <td class="tg-c3ow" style="text-align: center;"><img src="https://github.com/user-attachments/assets/c35b7954-7d27-4277-a572-07b875651c0b" alt="Image" width="200" height="200"></td>
-    <td class="tg-c3ow" style="text-align: center;"><img src="https://github.com/user-attachments/assets/9fd227fb-dbcf-49c9-bf32-86e72c9bfa91" alt="Image" width="200" height="200"></td>
+    <td><a href="https://github.com/pilseon" target="_blank" rel="noopener noreferrer">@pilseon</a></td>
+    <td><a href="https://github.com/EoGeunHyeok" target="_blank" rel="noopener noreferrer">@EoGeunHyeok</a></td>
+    <td><a href="https://github.com/hyunji1205" target="_blank" rel="noopener noreferrer">@hyunji1205</a></td>
   </tr>
-  <tr>
-    <td class="tg-c3ow" style="text-align: center;"><a href="https://github.com/pilseon" target="_blank" rel="noopener noreferrer">@pilseon</a></td>
-    <td class="tg-c3ow" style="text-align: center;"><a href="https://github.com/EoGeunHyeok" target="_blank" rel="noopener noreferrer">@EoGeunHyeok</a></td>
-    <td class="tg-c3ow" style="text-align: center;"><a href="https://github.com/hyunji1205" target="_blank" rel="noopener noreferrer">@hyunji1205</a></td>
-  </tr>
-</tbody></table>
+</tbody>
+</table>
 
 ## 🕰️개발 기간
 

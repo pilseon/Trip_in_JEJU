@@ -7,6 +7,7 @@ import com.example.Trip_In_Jeju.member.dto.JoinRequest;
 import com.example.Trip_In_Jeju.member.entity.Member;
 import com.example.Trip_In_Jeju.member.entity.MemberRole;
 import com.example.Trip_In_Jeju.member.repository.MemberRepository;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -255,7 +256,7 @@ public class MemberService {
         throw new DataNotFoundException("해당 이메일로 등록된 사용자가 없습니다."); // 사용자가 없을 경우 예외 발생
     }
 
-    public void sendPasswordResetEmail(String username, String email) {
+    public void sendPasswordResetEmail(String username, String email) throws MessagingException {
         // 사용자 확인
         Member member = memberRepository.findByUsernameAndEmail(username, email)
                 .orElseThrow(() -> new IllegalArgumentException("사용자 정보가 일치하지 않습니다."));

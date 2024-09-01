@@ -14,9 +14,11 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
+import java.util.Base64;
 
 @Service
 @RequiredArgsConstructor
@@ -79,9 +81,8 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService {
     private String encryptProviderId(String providerId) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hash = md.digest(providerId.getBytes());
-            int number = ((hash[0] & 0xFF) << 8) | (hash[1] & 0xFF);
-            return String.format("%02d", number % 100);
+            byte[] hash = md.digest(providerId.getBytes(StandardCharsets.UTF_8));
+            return Base64.getEncoder().encodeToString(hash); // Base64로 변환
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("SHA-256 algorithm not found", e);
         }

@@ -82,7 +82,7 @@ public class FestivalsService {
         return festivalsRepository.findAll(pageable);
     }
     public void create(String title, String periodStart, String periodEnd, String content, String place, String closedDay,
-                       String websiteUrl, String phoneNumber, MultipartFile thumbnail, double latitude, double longitude, String address, String subCategory) {
+                       String websiteUrl, String phoneNumber, MultipartFile thumbnail, double latitude, double longitude, String category, String address, String subCategory) {
 
         // 파일 이름에서 확장자 추출 및 UUID를 이용해 고유 파일 이름 생성
         String extension = "";
@@ -132,6 +132,8 @@ public class FestivalsService {
                 .websiteUrl(websiteUrl)
                 .phoneNumber(phoneNumber)
                 .likes(0)
+                .scrapCount(0)
+                .category(category)
                 .subCategory(subCategory) // Ensure subCategory is used if provided
                 .build();
 

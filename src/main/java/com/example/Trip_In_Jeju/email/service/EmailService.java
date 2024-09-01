@@ -3,7 +3,8 @@ package com.example.Trip_In_Jeju.email.service;
 
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -13,9 +14,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class EmailService {
-    private  final JavaMailSender mailSender;
+
+    private final JavaMailSender mailSender;
+    private static final Logger log = LoggerFactory.getLogger(EmailService.class);
 
     public void send(String to, String subject, String body) {
 
@@ -25,16 +27,18 @@ public class EmailService {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
             mimeMessageHelper.setTo(to); // 메일 수신자
             mimeMessageHelper.setSubject(subject); // 메일 제목
-            mimeMessageHelper.setText(body, true); // 메일 본문 내용, HTML 여부
+            mimeMessageHelper.setText(body, true); // 메일 본문 내용 , HTML 여부
             mailSender.send(mimeMessage); // 메일 발송
+
         } catch (MailAuthenticationException e) {
             log.error("메일 인증 실패: {}", e.getMessage());
-            throw e; // 예외를 다시 던져 호출자에게 알림
+            throw e;
         } catch (MailException e) {
             log.error("메일 전송 실패: {}", e.getMessage());
-            throw e; // 예외를 다시 던져 호출자에게 알림
-        } catch (jakarta.mail.MessagingException e) {
-            throw new RuntimeException(e);
+            throw e;
+        } catch (Exception e) {
+            log.error("알 수 없는 에러 발생: {}", e.getMessage());
+            throw new RuntimeException("메일 전송 중 알 수 없는 에러가 발생했습니다.", e);
         }
     }
 

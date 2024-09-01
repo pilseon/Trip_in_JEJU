@@ -17,7 +17,7 @@ public class EmailService {
     public void send(String to, String subject, String body) {
 
         MimeMessage mimeMessage = mailSender.createMimeMessage();
-
+        System.out.println("메일 확인 중..");
         try {
 
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
@@ -26,9 +26,13 @@ public class EmailService {
             mimeMessageHelper.setText(body, true); // 메일 본문 내용 , HTML 여부
             mailSender.send(mimeMessage); // 메일 발송
 
+            System.out.println("메일 발송했다 !");
+
         } catch(MessagingException e) {
+            System.out.println("실패 1");
             throw new RuntimeException(e);
         } catch (jakarta.mail.MessagingException e) {
+            System.out.println("실패 2");
             throw new RuntimeException(e);
         }
     }

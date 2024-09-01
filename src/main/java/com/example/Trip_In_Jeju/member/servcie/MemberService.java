@@ -264,7 +264,10 @@ public class MemberService {
         String verificationCode = verificationCodeService.generateVerificationCode(email);
         String subject = "비밀번호 재설정 인증코드";
         String body = "비밀번호 재설정을 위한 인증코드: " + verificationCode;
+
+        System.out.println("메일 전송 중 ..");
         emailService.send(email, subject, body);
+        System.out.println("메일 전송 완료");
 
         // 회원 객체에 인증코드 저장
         member.setResetToken(verificationCode);

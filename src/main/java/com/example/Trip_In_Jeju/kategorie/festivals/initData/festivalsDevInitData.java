@@ -35,7 +35,7 @@ public class festivalsDevInitData implements BeforeIntiData {
 
                 // 여러 이미지 파일 경로 설정 (프로젝트 내부 경로로 수정)
                 String[] imagePaths = {
-                        "C:/work/Trip_In_Jeju/src/main/resources/static/images/festivals/제주마축제.jpeg"
+                        "/app/resources/static/images/festivals/제주마축제.jpeg"
                 };
 
 //                String[] imagePaths = {

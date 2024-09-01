@@ -94,7 +94,7 @@ public class AdminContentController {
             attractionsService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, thumbnail, latitude, longitude, category, address, subCategory);
         }
         else if (category.equals("축제")) {
-            festivalsService.create(title, periodStart, periodEnd, content, place, closedDay, websiteUrl, phoneNumber, thumbnail, latitude, longitude, address, subCategory);
+            festivalsService.create(title, periodStart, periodEnd, content, place, closedDay, websiteUrl, phoneNumber, thumbnail, latitude, longitude, category, address, subCategory);
         }
         else if (category.equals("기타")) {
             otherService.create(title, businessHoursStart, businessHoursEnd, content, place, closedDay, websiteUrl, phoneNumber, thumbnail, latitude, longitude, category, address, subCategory);

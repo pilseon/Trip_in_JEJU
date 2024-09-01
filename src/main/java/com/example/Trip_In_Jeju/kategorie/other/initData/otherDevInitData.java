@@ -42,8 +42,8 @@ public class otherDevInitData implements BeforeIntiData {
 //                        "/app/resources/static/images/other/콩순이키즈카페.jpeg",
 //                        "/app/resources/static/images/other/바닷가하우스.jpeg",
 //                        "/app/resources/static/images/other/댕댕샤워.jpeg",
-//                        "/app/resources/static/images/other/배콩스.jpeg",
-//                        "/app/resources/static/images/other/쁘띠레브.jpeg"
+//                        "/app/resources/static/images/other/베콩스.jpeg",
+//                        "/app/resources/static/images/other/쁘띠레브.jpg"
 //                };
 
                 String[] imagePaths = {
@@ -55,8 +55,8 @@ public class otherDevInitData implements BeforeIntiData {
                         "C:/work/Trip_In_Jeju/src/main/resources/static/images/other/콩순이키즈카페.jpeg",
                         "C:/work/Trip_In_Jeju/src/main/resources/static/images/other/바닷가하우스.jpeg",
                         "C:/work/Trip_In_Jeju/src/main/resources/static/images/other/댕댕샤워.jpeg",
-                        "C:/work/Trip_In_Jeju/src/main/resources/static/images/other/배콩스.jpeg",
-                        "C:/work/Trip_In_Jeju/src/main/resources/static/images/other/쁘띠레브.jpeg"
+                        "C:/work/Trip_In_Jeju/src/main/resources/static/images/other/베콩스.jpeg",
+                        "C:/work/Trip_In_Jeju/src/main/resources/static/images/other/쁘띠레브.jpg"
                 };
 
                 // 파일 경로를 절대 경로로 변경하여 로깅

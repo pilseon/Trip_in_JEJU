@@ -90,7 +90,7 @@
 <section layout:fragment="content" class="section-prod-list">
     <div class="container">
         <img id="profilePicturePreview"
-             th:src="@{${member != null && member.thumbnailImg != null ? '/gen/' + member.thumbnailImg : 'https://i.ibb.co/sbGP6nb/image.webp'}}"
+             th:src="@{${member != null && member.thumbnailImg != null ? '/gen/' + member.thumbnailImg : 'https://github.com/user-attachments/assets/e0055092-5d06-426f-ab4e-3626388002b5'}}"
              alt="프로필 사진"
              class="profile-img2"/>
         <form action="showModifyForm" method="post" enctype="multipart/form-data" th:action="@{/member/modify}">

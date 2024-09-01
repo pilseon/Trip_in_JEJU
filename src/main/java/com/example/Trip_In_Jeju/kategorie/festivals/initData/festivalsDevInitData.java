@@ -16,8 +16,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 @Configuration
-@Profile("prod")
-//@Profile("dev")
+//@Profile("prod")
+@Profile("dev")
 @RequiredArgsConstructor
 public class festivalsDevInitData implements BeforeIntiData {
 
@@ -34,13 +34,13 @@ public class festivalsDevInitData implements BeforeIntiData {
                 System.out.println("현재 작업 디렉토리: " + currentDir);
 
                 // 여러 이미지 파일 경로 설정 (프로젝트 내부 경로로 수정)
-                String[] imagePaths = {
-                        "/app/resources/static/images/festivals/제주마축제.jpeg"
-                };
-
 //                String[] imagePaths = {
-//                        "C:/work/Trip_In_Jeju/src/main/resources/static/images/festivals/제주마축제.jpeg"
+//                        "/app/resources/static/images/festivals/제주마축제.jpeg"
 //                };
+
+                String[] imagePaths = {
+                        "C:/work/Trip_In_Jeju/src/main/resources/static/images/festivals/제주마축제.jpeg"
+                };
                 // 파일 경로를 절대 경로로 변경하여 로깅
                 File file = new File(imagePaths[0]);
                 System.out.println("이미지 파일 절대 경로: " + file.getAbsolutePath());

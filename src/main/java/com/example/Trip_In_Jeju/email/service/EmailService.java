@@ -17,25 +17,20 @@ public class EmailService {
     public void send(String to, String subject, String body) {
 
         MimeMessage mimeMessage = mailSender.createMimeMessage();
-        System.out.println("메일 확인 중..");
         try {
-
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
             mimeMessageHelper.setTo(to); // 메일 수신자
             mimeMessageHelper.setSubject(subject); // 메일 제목
             mimeMessageHelper.setText(body, true); // 메일 본문 내용 , HTML 여부
             mailSender.send(mimeMessage); // 메일 발송
 
-            System.out.println("메일 발송했다 !");
-
         } catch(MessagingException e) {
-            System.out.println("실패 1");
             throw new RuntimeException(e);
         } catch (jakarta.mail.MessagingException e) {
-            System.out.println("실패 2");
             throw new RuntimeException(e);
         }
     }
+
     public void sendVerificationCode(String to, String subject, String body, String verificationCode) {
         String bodyWithCode = body + "\n인증 코드: " + verificationCode;
         send(to, subject, bodyWithCode);

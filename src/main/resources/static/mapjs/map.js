@@ -64,9 +64,9 @@ function startLocationTracking() {
                     let distance = calculateDistance(currentLocation.latitude, currentLocation.longitude, item.latitude, item.longitude);
                     console.log(`Distance to ${category}Id ${item.id}: ${distance} meters`);
 
-                    if (distance <= 30 && lastCheckedFoodId !== `${category}-${item.id}`) {
+                    if (distance <= 40 && lastCheckedFoodId !== `${category}-${item.id}`) {
                         inRange = true;  // 근접하면 inRange를 true로 설정
-                        alert("방문기록 저장을 시작합니다.");
+
                         if (!visitStartTime || lastCheckedFoodId !== `${category}-${item.id}`) {
                             visitStartTime = new Date();
                             lastCheckedFoodId = `${category}-${item.id}`;

@@ -119,7 +119,7 @@ function checkVisitTime(category, id) {
 
     console.log(`Time spent at ${category}Id ${id}: ${timeSpent} seconds`);
 
-    if (timeSpent >= 10) { // 시간을 10초로 설정
+    if (timeSpent >= 5) { // 시간을 10초로 설정
         console.log(`Time spent is sufficient, registering visit for ${category}Id: ${id}`);
         registerVisit(category, id);
         clearInterval(checkingInterval);

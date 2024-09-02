@@ -678,7 +678,7 @@
 ><img src="https://github.com/user-attachments/assets/5694c815-83db-446f-847f-7a98e23986bf">
 >
 >1. 홈페이지 접속 시 초기화면으로 화면의 기본 구조는 상단 메인로고 및 검색 , 중간 본문, 하단 메뉴바로 구분 되어 있습니다.
->    - 상단에는 메인 로고 및 메인 사진으로 구성되어있습니다.
+>    - 상단에는 메인 로고 및 메인 사진으로 구성되어 있습니다.
 >    - 중간 본문에는 회원 테마에 맞는 추천 게시글, 테마별 각 1개 추천 게시글, 이벤트로 구성되어있고 클릭을 통해 각 게시글로 이동이 가능합니다.
 >    - 하단 메뉴바는 홈, 맴버페이지, 맵, 마이페이지로 구성되어있고, 가운데 화살표를 눌러 메뉴바를 열어 원하는 다른 페이지로 이동이 가능합니다.
 >
@@ -785,6 +785,17 @@
 >
 > 
 >3. 타유저의 memberPage에 접속을 하게되면 해당 유저가 작성하였던 리뷰 목록을 확인 할 수 있습니다.
+>
+><img src="https://github.com/user-attachments/assets/7379dbd7-ff62-46e1-9d0a-fc3b0e5fd4bc">
+>
+>4. MAP에서 현재위치와 카테고리에 등록된 위치에 따라서 방문 기록에 저장됩니다.
+>
+> 
+>5. 리뷰를 작성한 경우에는 "리뷰 작성 완료", 아직 작성하지 않은경우에는 "리뷰 작성"이 표시됩니다.
+>
+><img src="https://github.com/user-attachments/assets/e0415270-3e51-4d9e-acc6-278985cb36f1">
+>
+>6. 리뷰를 작성한 것들은 리뷰 기록에 남게되며 해당 게시물을 클릭할 경우 DETAIL-FORM으로 이동합니다.
 
 ### EVENT_PAGE
 ><img src="https://github.com/user-attachments/assets/c917d2e4-0212-4d5a-ac5f-58bb7df5f098">
@@ -829,6 +840,34 @@
 >
 > 
 >2. 캘린더를 통해 현재 진행중인 축제를 확인 할 수 있습니다.
+
+### 장소등록-GPS
+><img src="https://github.com/user-attachments/assets/2f5bf6df-00ed-4bcf-a5f1-bea1d8120766">
+>
+>1. 하단에 있는 MAP을 클릭하면 MAP 페이지로 이동할 수 있습니다.
+>
+>
+>2. MAP상에서 현재 위치와 카테고리에 등록된 장소의 위치가 약 50m 이내에 있고, 10초 이상 있을 경우 위치 등록이 가능합니다.
+>
+><img src="https://github.com/user-attachments/assets/3cea01a8-7d7c-4a02-9cd4-e96046e4e733">
+>
+>3. 하단에 있는 연필모양의 아이콘을 클릭하면 방문기록을 확인할 수 있는 페이지로 이동이 가능합니다.
+>
+>
+>4. 리뷰 작성을 클릭하면 해당 카테고리의 DEATIL-FORM으로 접근하여 리뷰를 작성 할 수 있습니다.
+>
+> 
+>5. 리뷰 작성은 해당 장소에 등록이 완료된 경우에만 작성이 가능합니다.
+
+### 리뷰등록
+><img src="https://github.com/user-attachments/assets/3d58a213-c45f-4100-8f6c-10e667dad5cf">
+><img src="https://github.com/user-attachments/assets/c75d1dac-87ec-443d-8a7f-ca8feb4dd2ec">
+>
+>1. 리뷰를 작성을 완료한 후에는 중복 작성이 불가하면 수정 또는 삭제만 가능합니다.
+>
+><img src="https://github.com/user-attachments/assets/a306f9bb-856d-4c79-8d23-c2f55cac6ead">
+>
+>2. 리뷰 수정을 누르면 EDIT-FORM으로 이동하며, 수정이 가능합니다.
 
 ## 🔥 트러블 슈팅
 ### 🐬유필선
@@ -902,3 +941,14 @@ Swiper의 기본 기능을 사용하는 대신, DOM 구조와 스타일을 직�
 
 ### 😎송현지
 
+#### 🚧 카테고리와 하위카테고리의 연동 문제 🚨
+
+🛑 원인\
+사용자가 카테고리를 선택했을 때, 하위 카테고리 선택 박스가 표시되지 않고 선택할 수 있는 옵션이 나타나지 않는 문제가 발생함.
+- subCategoryContainer의 style.display 속성이 올바르게 적용되지 않았기 때문이라고 판단함
+
+🚥 해결
+
+1. 자바스크립트 함수가 항상 올바르게 호출되도록 수정하고, 하위 카테고리 선택 박스가 필요할 때 subCategoryContainer.style.display = 'block';로 설정되도록 코드를 변경함
+
+2. DOMContentLoaded 이벤트 리스너를 사용하여 DOM이 완전히 로드된 후 스크립트가 실행되도록 개선

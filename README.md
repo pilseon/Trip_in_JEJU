@@ -84,24 +84,38 @@
 
 
 ## 💻 기술 스택
-### 백엔드
-* Spring Boot
-*  Spring Security
-*  Spring Data JPA
 
-### 프론트엔드
-* HTML
-* CSS
-* JavaScript
-* Bootstrap
-* Thymeleaf
-* JQuery
-* Tailwind
-* Font Awesome
+<div align=center><h1>📚 STACKS</h1></div>
+<div align=center>
+    <h2> 백엔드 </h2>
+  <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white">
+<img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
+<img src="https://img.shields.io/badge/springsecurity-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white">
+  <br>
 
-### 데이터베이스 
-* MariaDB
-* MySQL Workbench
+<h2> 프론트엔드 </h2>
+  <img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> 
+  <img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white"> 
+  <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
+<br>
+  <img src="https://img.shields.io/badge/jquery-0769AD?style=for-the-badge&logo=jquery&logoColor=white">
+    <img src="https://img.shields.io/badge/bootstrap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white">
+    <img src="https://img.shields.io/badge/fontawesome-339AF0?style=for-the-badge&logo=fontawesome&logoColor=white">
+<br>
+<img src="https://img.shields.io/badge/tailwindcss-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white">
+  <br>
+
+<h2> 데이터베이스 </h2>
+  <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> 
+  <img src="https://img.shields.io/badge/mariaDB-003545?style=for-the-badge&logo=mariaDB&logoColor=white">
+  <br>
+
+<h2> 협업 </h2>
+  <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
+  <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
+<img src="https://img.shields.io/badge/kakaotalk-FFCD00?style=for-the-badge&logo=kakaotalk&logoColor=white">
+  <br>
+</div>
 
 ## 🔗 ER-DIAGRAM
 <img src="https://github.com/user-attachments/assets/e358d3a0-69de-4ae2-aca2-310d46e0d796">
@@ -109,7 +123,7 @@
 ## 📝 FLOW-CHART
 <img src="https://github.com/user-attachments/assets/a36a18c1-7ea2-40ac-9bb2-cd96c2d8d4dd">
 
-## 🔗 ER - Diagram
+## 📱 프로젝트 구조
 ```
 ├─.gradle
 │  ├─8.8
@@ -626,6 +640,36 @@
 <br/>
 
 ### 😎송현지
+#### 🎨UI
+    - PAGE : 메인페이지(전체적인 UI 디자인), 관리자(게시물 작성) , 게시물 상세, 게시물 목록, 마이페이지(스크랩 목록), 로그인, 회원가입, 문의하기(문의 작성하기)
+  <br/>
+
+#### ⚡️기능 구현
+
+#### 게시물 작성
+    - 게시물 작성 시 상위 카테고리 선택 후, 해당 카테고리 내 하위 카테고리를 선택할 수 있는 기능 구현
+    - 권한이 부여된 관리자만 게시물 작성 및 삭제가 가능
+    - 게시물 작성 시 썸네일 이미지를 업로드하고, 이를 게시물 목록에서 미리보기로 표시
+
+
+#### 게시물 LIST
+    - 게시물 목록을 카테고리별로 필터링하여 보여줄 수 있도록 버튼 구현
+    - 목록에서 썸네일 이미지를 통해 게시물의 미리보기를 제공
+    - 썸네일 클릭 시 해당 게시물의 상세 페이지로 이동
+
+#### 게시물 DETAIL
+    - 사용자가 게시물을 스크랩할 수 있도록 스크랩 기능 추가
+    - 사용자가 좋아요 버튼을 클릭할 때마다 좋아요 수가 증가하는 기능 구현
+
+#### 스크랩
+    - 각 회원은 동일한 게시물에 대해 한 번만 스크랩 가능하도록 구현
+    - 스크랩 버튼 클릭 시 버튼 색상이 채워지고, 스크랩된 게시물이 사용자의 찜 목록에 자동으로 추가되도록 구현
+
+#### 마이페이지
+    - 사용자가 스크랩한 게시물의 카테고리, 상호명, 주소를 마이 페이지의 찜 목록에 표시
+
+#### 문의하기
+    - 모든 회원이 자유롭게 문의 내용을 작성하고 제출할 수 있는 기능을 구현
 
 
 ## 📌 페이지 기능 소개

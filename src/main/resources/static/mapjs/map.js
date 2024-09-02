@@ -64,8 +64,9 @@ function startLocationTracking() {
                     let distance = calculateDistance(currentLocation.latitude, currentLocation.longitude, item.latitude, item.longitude);
                     console.log(`Distance to ${category}Id ${item.id}: ${distance} meters`);
 
-                    if (distance <= 3000 && lastCheckedFoodId !== `${category}-${item.id}`) {
+                    if (distance <= 30 && lastCheckedFoodId !== `${category}-${item.id}`) {
                         inRange = true;  // 근접하면 inRange를 true로 설정
+                        alert("방문기록 저장을 시작합니다.");
                         if (!visitStartTime || lastCheckedFoodId !== `${category}-${item.id}`) {
                             visitStartTime = new Date();
                             lastCheckedFoodId = `${category}-${item.id}`;
@@ -118,7 +119,7 @@ function checkVisitTime(category, id) {
 
     console.log(`Time spent at ${category}Id ${id}: ${timeSpent} seconds`);
 
-    if (timeSpent >= 4) { // 시간을 4초로 설정
+    if (timeSpent >= 10) { // 시간을 10초로 설정
         console.log(`Time spent is sufficient, registering visit for ${category}Id: ${id}`);
         registerVisit(category, id);
         clearInterval(checkingInterval);
@@ -196,8 +197,10 @@ function registerVisit(category, id) {
         })
         .then(data => {
             console.log("Visit registered successfully:", data);
+            alert("방문 기록 저장 완료");
         })
         .catch(error => {
+        alert("방문 기록 저장 완료");
             console.error('Error registering visit:', error);
         });
     });
@@ -245,7 +248,7 @@ function loadLocationsAndDisplayMarkers(category) {
                 console.error(`${category} locations data is not an array:`, data);
             }
         })
-        .catch(error => {
+        .catch(error => {xzz
             console.error(`Error fetching ${category} locations:`, error);
         });
 }

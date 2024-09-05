@@ -952,3 +952,6 @@ Swiper의 기본 기능을 사용하는 대신, DOM 구조와 스타일을 직�
 1. 자바스크립트 함수가 항상 올바르게 호출되도록 수정하고, 하위 카테고리 선택 박스가 필요할 때 subCategoryContainer.style.display = 'block';로 설정되도록 코드를 변경함
 
 2. DOMContentLoaded 이벤트 리스너를 사용하여 DOM이 완전히 로드된 후 스크립트가 실행되도록 개선
+
+## 시연 영상
+<a href="https://youtu.be/1DJNi3fg2WE">유튜브 바로가기</a>
